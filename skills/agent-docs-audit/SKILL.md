@@ -1,6 +1,6 @@
 ---
 name: agent-docs-audit
-description: Audit and compress this repo's AGENTS.md files and docs/refs so they take fewer tokens without losing a rule. Finds rules in the wrong folder, repeated or stale rules, ambiguous wording checked against the code, and reference doc sections the repo does not use. Use when asked to shrink, tidy, dedupe or review AGENTS.md or docs/refs, or after several convention or reference doc changes.
+description: Audit and compress this repo's AGENTS.md files and docs/refs so they take fewer tokens without losing a rule. Finds rules in the wrong folder, repeated or stale rules, ambiguous wording checked against the code, and reference doc sections the repo does not use, and with the glossary and unambiguity skills defines every term once and rewrites the wording. Use when asked to shrink, tidy, dedupe or review AGENTS.md or docs/refs, or after several convention or reference doc changes.
 license: MIT
 compatibility: Requires Node.js 18 or newer and git, run inside a git repository.
 ---
@@ -10,7 +10,8 @@ compatibility: Requires Node.js 18 or newer and git, run inside a git repository
 The root `AGENTS.md` sets what an `AGENTS.md` and a reference doc may hold,
 under "Writing an AGENTS.md" and "Reference docs". Follow this skill to hold
 the tree to those rules. Add no rule here: turn a finding that needs a new
-rule into an edit to the root `AGENTS.md`.
+rule into an edit to the root `AGENTS.md`. When the `glossary` and
+`unambiguity` skills are available, use them for the words and the wording.
 
 ## Terms
 
@@ -28,6 +29,10 @@ These words have exactly one meaning in this skill.
 - **Base ref**, written `<ref>`: the git ref the audit compares sizes
   against. The commit where the last audit landed.
 - **Skill directory**, written `<skill-dir>`: the folder holding a `SKILL.md`.
+- **Glossary**: the file that defines the words with a special meaning in a
+  project's documents: `GLOSSARY.md` at the repository root, unless the user
+  names another path.
+- **Invocation text**: the text passed with the skill invocation.
 
 ## 1. Measure
 
@@ -79,8 +84,7 @@ files. Then, for each rule:
 - **Triggers.** Narrow a line that sends the agent to a reference doc on
   routine work, such as "read before writing any function". Keep only the
   cases the rules in the `AGENTS.md` do not settle.
-- **Wording.** Write terse imperative bullets. Keep ADR citations; drop a
-  reason the ADR already holds.
+- **ADRs.** Keep ADR citations; drop a reason the ADR already holds.
 
 Never drop a rule to save words. Keep a list of every rule moved, merged or
 reworded, for the report.
@@ -104,12 +108,36 @@ For each folder changed since `<ref>`, or all of them when asked:
 - To add a page from an origin, copy only the sections the repo needs. Write
   one reference doc per section, each with its footer, then run `--fix`.
 
-## 4. Verify and report
+## 4. Words and sentences
+
+Run this section after every cut and move in sections 2 and 3, so that both
+skills see the final text. Invoke each skill the way the agent invokes a
+skill (in Claude Code, the `Skill` tool).
+
+- **Glossary.** When a skill named `glossary` is available to the agent,
+  invoke it with the invocation text
+  `from agent-docs-audit: glossary <path>, files <every AGENTS.md and every
+  reference doc>`. Take `<path>` from the request when it names one, else
+  `GLOSSARY.md`. Wait for it to finish: it asks its own questions, writes the
+  glossary after its own approval, and prints its glossary report. Without
+  that skill, change no word, and state in the audit report that the glossary
+  was not checked.
+- **Wording.** When a skill named `unambiguity` is available to the agent,
+  invoke it one file at a time. Cover every `AGENTS.md` and every reference
+  doc changed since `<ref>`. Pass the invocation text
+  `from agent-docs-audit: <file path>`. Wait for each run to finish: it shows
+  its rewrite, asks its own approval, and prints its clarity report. Without
+  that skill, change no wording, and state in the audit report that the
+  wording was not rewritten.
+
+## 5. Verify and report
 
 - Re-run the script until it exits 0.
 - When you removed a pointer to another file on the grounds that it loads
   anyway, confirm it does: read a file in that folder and check which
   `AGENTS.md` or `CLAUDE.md` files the agent loaded with it.
 - Report the size table and each rule moved, merged or reworded. Report each
-  ambiguity resolved with the code that settled it, and anything left for the
-  user to decide. Commit only when asked.
+  ambiguity resolved with the code that settled it. Report each term the
+  `glossary` skill added, changed, or removed, and each ambiguity the
+  `unambiguity` skill resolved. Report anything left for the user to decide.
+  Commit only when asked.

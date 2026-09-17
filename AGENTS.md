@@ -34,7 +34,7 @@ These rules hold in every Markdown file of this repository.
   agents can skip. Never name it in a command or in a step another agent
   cannot follow. Examples of agent-specific features: Claude Code's
   `${CLAUDE_SKILL_DIR}`, `$ARGUMENTS`, `AskUserQuestion`, the `Explore`
-  subagent, `ToolSearch`, the scratchpad directory.
+  subagent, `ToolSearch`, the `Skill` tool, the scratchpad directory.
 - **Self-contained.** A skill cites only files inside its own folder. Never
   link to another skill's files. When two skills need the same content,
   duplicate it and keep the copies identical.
@@ -111,6 +111,15 @@ Folders:
   reads the section names of the task format and the subtask format, and the
   file layout. Change a section name or the layout in `skills/task-work/` in
   the same commit.
+- `glossary` writes the glossary and never edits another document.
+  `unambiguity` reads the glossary and never writes it. Both read a glossary
+  entry as a bullet `- **Term**: definition.`; change that form in both
+  skills in the same commit.
+- Each of the two invokes the other by its skill name when the agent has it,
+  and works alone when it does not. `agent-docs-audit` invokes both the same
+  way. An invocation text from a skill starts with `from <skill name>:`, and
+  the invoked skill then skips its own hand-off. Change that form in all three
+  skills in the same commit.
 
 ## Workflow in this repo
 
@@ -130,7 +139,7 @@ Folders:
    ```bash
    grep -n -E \
      -e '\$ARGUMENTS|AskUserQuestion|Explore' \
-     -e 'ToolSearch|scratchpad|CLAUDE_SKILL_DIR' \
+     -e 'ToolSearch|scratchpad|CLAUDE_SKILL_DIR|Skill. tool' \
      skills/<name>/SKILL.md
    ```
 3. Run the banned-word grep from the skill's own

@@ -19,7 +19,14 @@ coding agent that loads `SKILL.md` files.
   returns a short work report with only what the rest of the work needs.
 - [agent-docs-audit](skills/agent-docs-audit/SKILL.md): audits and compresses a
   repo's `AGENTS.md` files and `docs/refs` so they take fewer tokens without
-  losing a rule.
+  losing a rule. With the glossary and unambiguity skills, it also defines
+  every term once and rewrites the wording.
+- [glossary](skills/glossary/SKILL.md): finds the words with a special meaning
+  in a project's documents and writes the glossary that defines each of them
+  once. It reports where the documents disagree with the glossary.
+- [unambiguity](skills/unambiguity/SKILL.md): rewrites one text so that every
+  sentence has one reading, with its meaning unchanged. It reports each
+  ambiguity it resolved and each word that needs a glossary entry.
 
 task-create, task-breakdown, and task-work form a pipeline: the first writes
 `docs/tasks/###-<task-slug>/task.md`, the second adds
@@ -27,6 +34,9 @@ task-create, task-breakdown, and task-work form a pipeline: the first writes
 implements a task or one subtask from those files. With a project-management
 MCP server connected, the first two write items there instead, unless you ask
 for files, and the third reads them.
+
+glossary and unambiguity form a pair: the first writes the glossary, and the
+second rewrites a document with the glossary's terms.
 
 ## Structure
 
