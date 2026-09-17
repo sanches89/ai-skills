@@ -9,11 +9,11 @@ Rules for filling:
 - Write decisions as facts in the present tense.
 - Name real things: file paths with line numbers, symbols, endpoints, tables,
   environment variables, commands. Mark files that do not exist yet as `(new)`.
-- Quantities are numbers with units.
+- Write quantities as numbers with units.
 - `a | b` on a template line means: write exactly one of them.
-- *Approach* says what changes where. *Decisions* says which rules and values
-  the change follows. A fact goes in one of them, not both.
-- No sections other than the ones below.
+- Put what changes where in *Approach*. Put the rules and values the change
+  follows in *Decisions*. Put a fact in one of them, not both.
+- Add no sections other than the ones below.
 
 ---
 

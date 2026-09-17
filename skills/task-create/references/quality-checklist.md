@@ -26,11 +26,12 @@ decision, then run the whole checklist again.
 - [ ] The open-decisions list from research is empty.
 - [ ] Every decision recorded during the interview appears in Approach or
       Decisions.
-- [ ] Every success criterion is produced by at least one component listed in
+- [ ] Every success criterion traces to at least one component listed in
       Approach.
-- [ ] Every path and symbol in the Approach and Context sections was verified
-      to exist during research or is marked `(new)`.
-- [ ] Every success criterion is proved by at least one step in Verification.
+- [ ] Every path and symbol in the Approach and Context sections exists, as
+      verified during research, or carries the mark `(new)`.
+- [ ] Every success criterion has at least one Verification step that proves
+      it.
 - [ ] Verification lists concrete commands or steps. `Run the tests` alone fails
       this check.
 - [ ] Subtasks contains exactly the word `None.`
@@ -57,7 +58,7 @@ decision, then run the whole checklist again.
 
 ## Grep helper
 
-Run this over the draft file. Every hit is removed or is inside quoted
+Run this over the draft file. Remove every hit, unless it sits inside quoted
 user-interface text or code.
 
 ```bash

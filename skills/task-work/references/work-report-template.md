@@ -1,24 +1,24 @@
 # Work report template
 
 The work report is the only thing the caller keeps from a run. The caller
-continues the parent task and the sibling subtasks with it, so every line is a
-fact that changes what the caller does next. Keep the headings exactly as
+continues the parent task and the sibling subtasks with it, so make every line
+a fact that changes what the caller does next. Keep the headings exactly as
 written. Replace every `<placeholder>`.
 
 Rules for filling:
-- At most 30 non-blank lines. Each bullet is at most 2 lines.
-- Facts in the present tense. Name real things: file paths, symbols,
+- Write at most 30 non-blank lines and at most 2 lines per bullet.
+- Write facts in the present tense. Name real things: file paths, symbols,
   endpoints, flags, commands, item identifiers.
 - `a | b` on a template line means: write exactly one of them.
-- A section with nothing to say holds the single word `None.`
-- *Blocked by* exists only when the result is `blocked`.
-- No sections other than the ones below.
+- Write the single word `None.` in a section with nothing to say.
+- Write *Blocked by* only when the result is `blocked`.
+- Add no sections other than the ones below.
 
 What each section keeps:
 - **Result**: `done` when every criterion has evidence from a run made after
   the last edit. `blocked` in every other case.
-- **Criteria**: the counts only. A met criterion is never listed. Every
-  criterion that is not met appears under *Blocked by*.
+- **Criteria**: the counts only. Never list a met criterion. Put every
+  criterion that is not met under *Blocked by*.
 - **Verification**: the target's one verification command. When the target's
   Verification is a list, the words `<number> steps` instead. `pass` only when
   every step passes.
@@ -26,11 +26,11 @@ What each section keeps:
   existing test cases it edited. Without a test setup, the words
   `none: no test setup`.
 - **Changes**: one bullet per changed file, also when the result is `blocked`,
-  because the change made so far is kept: path, symbol, and its behavior
-  after the change. With more than 10 changed files, one bullet per folder
-  instead: the folder path and what changed in it.
-- **Deviations**: each difference between the target's text and what was
-  implemented: what the target says, what was done, and why.
+  because the change made so far stays: path, symbol, and its behavior after
+  the change. With more than 10 changed files, one bullet per folder instead:
+  the folder path and what changed in it.
+- **Deviations**: each difference between the target's text and the
+  implementation: what the target says, what you did, and why.
 - **Affects other work**: only these kinds of fact:
   - a symbol, file, endpoint, flag, or command this work added or renamed that
     the parent or a sibling subtask names or calls;
@@ -46,7 +46,7 @@ What each section keeps:
 
 What the report leaves out:
 - the steps taken and their order;
-- attempts that failed and how they were fixed;
+- attempts that failed and their fixes;
 - command output, logs, stack traces, and code listings;
 - the target's text restated: its Summary, its Goal, or criteria that are met;
 - praise, apologies, offers, questions, and next-step suggestions.

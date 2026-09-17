@@ -5,24 +5,24 @@ Two formats: the **task** and the **subtask**. Fill every section. Replace every
 items and files the same way every time. The task becomes the item body or
 `task.md`. Each subtask becomes a child item or a `###-<subtask-slug>.md` file.
 
-The task format is the same one the `task-create` skill writes. This skill fills
-its Subtasks section and completes the other sections with what research and the
+The task format is the same one the `task-create` skill writes. Fill its
+Subtasks section and complete the other sections with what research and the
 interview settled.
 
 Rules for filling:
 - Write decisions as facts in the present tense.
 - Name real things: file paths with line numbers, symbols, endpoints, tables,
   environment variables, commands. Mark files that do not exist yet as `(new)`.
-- Quantities are numbers with units.
+- Write quantities as numbers with units.
 - `a | b` on a template line means: write exactly one of them.
-- *Approach* says what changes where. *Decisions* says which rules and values
-  the change follows. A fact goes in one of them, not both.
-- A subtask repeats the facts and decisions it needs. It never points at the
+- Put what changes where in *Approach*. Put the rules and values the change
+  follows in *Decisions*. Put a fact in one of them, not both.
+- Repeat in a subtask the facts and decisions it needs. Never point at the
   task for information.
-- Links: in the draft, `Task`, `Depends on`, and the Subtasks list name titles
-  and numbers only. Step 8 replaces them with file links or item links at save
-  time.
-- No sections other than the ones below.
+- Links: in the draft, name titles and numbers only on `Task`, `Depends on`,
+  and in the Subtasks list. Step 8 replaces them with file links or item links
+  at save time.
+- Add no sections other than the ones below.
 
 ---
 

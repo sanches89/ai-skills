@@ -29,10 +29,10 @@ decision, then run the whole checklist again.
 - [ ] Every decision recorded during the interview appears in the task's
       Approach or Decisions section. A subtask that applies a decision restates
       it in its Context section.
-- [ ] Every success criterion of the task is covered by at least one subtask's
-      acceptance criteria.
-- [ ] Every path and symbol in the Approach, Context, and Changes sections was
-      verified to exist during research or is marked `(new)`.
+- [ ] Every success criterion of the task has at least one subtask acceptance
+      criterion that covers it.
+- [ ] Every path and symbol in the Approach, Context, and Changes sections
+      exists, as verified during research, or carries the mark `(new)`.
 - [ ] Dependencies form a valid order: no cycles, no reference to a subtask with
       a higher number.
 - [ ] The task's Subtasks list matches the subtasks written: same count, same
@@ -45,18 +45,18 @@ decision, then run the whole checklist again.
 - [ ] Each subtask has exactly one verification command, or one numbered manual
       sequence when no command can prove it.
 - [ ] Each subtask is mergeable on its own: after it, the project builds and
-      every test, existing and new, passes. Behavior it must not yet expose is
-      behind a guard named in its Context section.
+      every test, existing and new, passes. A guard named in its Context
+      section hides the behavior it must not yet expose.
 - [ ] Each subtask is one concern. No title contains ` and `. No subtask needs a
       second verification command.
 - [ ] No subtask consists only of tests, only of documentation, or only of
       integration or wiring.
-- [ ] Every behavior-free subtask (refactor, scaffolding, migration,
-      configuration) is depended on by a later subtask.
-- [ ] Two consecutive subtasks that cannot be verified separately do not exist.
-      They were merged.
-- [ ] When a guard was introduced, the subtask that completes the guarded
-      behavior removes it, and no later subtask depends on the guard.
+- [ ] A later subtask depends on every behavior-free subtask (refactor,
+      scaffolding, migration, configuration).
+- [ ] Every pair of consecutive subtasks has separate verification. Merge a
+      pair that has not.
+- [ ] The subtask that completes a guarded behavior removes the guard, and no
+      later subtask depends on that guard.
 
 ## Scope
 
@@ -84,7 +84,7 @@ decision, then run the whole checklist again.
 
 ## Grep helper
 
-Run this over the draft file. Every hit is removed or is inside quoted
+Run this over the draft file. Remove every hit, unless it sits inside quoted
 user-interface text or code.
 
 ```bash

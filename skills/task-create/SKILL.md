@@ -8,8 +8,8 @@ argument-hint: <idea>
 # Task Create
 
 Turn an idea into a task that a person or an agent can execute without asking a
-single question. The task records decisions, not options. It has no
-assumptions and no open questions.
+single question. Record decisions, not options. Leave no assumption and no open
+question in the task.
 
 ## Terms
 
@@ -25,8 +25,8 @@ These words have exactly one meaning in this skill.
 - **Tracker**: the project-management server reached through MCP, such as
   Linear, Jira, or GitHub Issues.
 - **Item**: a record in the tracker.
-- **Topic**: a subject that came up during research or interview. It is either
-  brought into scope or listed under Out of scope.
+- **Topic**: a subject that came up during research or interview. It ends
+  either in scope or under Out of scope.
 - **Origin**: where a piece of information was taken from: a file path with
   line numbers, an identifier, or a URL.
 - **Draft**: the output of this skill before approval, kept in the scratch
@@ -42,8 +42,8 @@ These words have exactly one meaning in this skill.
 ## Hard rules
 
 1. **Read-only on the project.** Never edit, create, or delete project files.
-   The only file this skill writes is the task file in Step 8. Drafts go in
-   the scratch directory, never in the repository.
+   Write only the task file, in Step 8. Write drafts in the scratch directory,
+   never in the repository.
 2. **Never ask what research can answer.** Consult code, docs, tests, and
    connected tools before the first question.
 3. **Never assume.** When a decision changes the task and research cannot
@@ -53,18 +53,20 @@ These words have exactly one meaning in this skill.
 5. **One question at a time.** Write every question in chat in the *Question
    format* below, then end the turn and wait for the answer. Never use an
    agent's built-in question or form tool (in Claude Code, `AskUserQuestion`).
-   Questions are plain chat text.
-6. **Stay in scope.** Drop side explorations and adjacent ideas. An adjacent
-   topic appears in the task only under *Out of scope*, and only when a reader
-   would expect it in this task. It appears as a statement that it will not be
-   done.
-7. **No estimates, priorities, or timelines** unless the user asks for them.
+   Write questions as plain chat text.
+6. **Stay in scope.** Drop side explorations and adjacent ideas. Put an
+   adjacent topic in the task only under *Out of scope*, and only when a
+   reader would expect it in this task. Write it as a statement that it will
+   not be done.
+7. **No estimates, priorities, or timelines.** Add them only when the user
+   asks for them.
 8. **Write nothing before the user approves the full task text** (Step 7).
 
 ## Question format
 
-Every question to the user, in every step, uses this exact layout and nothing
-else. One question per message. After printing it, end the turn and wait.
+Use this exact layout, and nothing else, for every question to the user in
+every step. Ask one question per message. After printing it, end the turn and
+wait.
 
 ```
 ❓ QUESTION
@@ -83,10 +85,10 @@ else. One question per message. After printing it, end the turn and wait.
 - **QUESTION**: one decision, one sentence.
 - **CONTEXT**: what research found and what in the task depends on the answer.
   Maximum 520 characters.
-- **OPTIONS**: an ordered list. Top level uses numbers (`1.`, `2.`), nested
-  levels use letters (`a.`, `b.`), then roman numerals (`i.`, `ii.`). Options
-  are concrete and grounded in research: name real files, symbols, values, and
-  identifiers. The user answers with a number or with free text.
+- **OPTIONS**: an ordered list. Use numbers at the top level (`1.`, `2.`),
+  letters at the next level (`a.`, `b.`), then roman numerals (`i.`, `ii.`).
+  Make options concrete and grounded in research: name real files, symbols,
+  values, and identifiers. The user answers with a number or with free text.
 - **MY SUGGESTION**: the option you recommend and why, in at most 180
   characters. Write `None` only when research gives no basis to prefer one.
 
@@ -95,23 +97,23 @@ else. One question per message. After printing it, end the turn and wait.
 ### Step 1: Restate the idea
 
 - Take the idea from the text passed with the skill invocation, or from the
-  conversation. When there is none, asking for it is the first question.
+  conversation. When there is none, ask for it as the first question.
 - Write one sentence in the form: *The idea is to <change> so that <outcome>.*
 - Ask the user to confirm or correct that sentence, in the question format.
-  Do not start research until it is confirmed.
+  Do not start research until the user confirms it.
 
 ### Step 2: Research
 
-Goal: learn everything the project and the connected tools can tell you, so that
-questions to the user are only about decisions.
+Learn everything the project and the connected tools can tell you, so that you
+ask the user only about decisions.
 
 **2a. Codebase.** Locate the areas the idea touches and read the actual code,
 not only file names. Record, with paths and line numbers:
-- entry points, modules, and symbols that will change or be called;
-- how similar features are already built (patterns, naming, error handling,
+- the entry points, modules, and symbols that the change touches or calls;
+- how the project builds similar features (patterns, naming, error handling,
   configuration);
-- test conventions and where tests for the touched areas live;
-- build, lint, and test commands.
+- the test conventions and where tests for the touched areas live;
+- the build, lint, and test commands.
 Use a read-only subagent for broad sweeps when the agent offers one (in Claude
 Code, the `Explore` subagent); otherwise search directly. Read files directly
 for targeted checks.
@@ -128,8 +130,8 @@ keywords like `issue ticket project linear jira notion asana github` and
   any other issue tracker reached through MCP): search for existing items
   related to the idea and record their identifiers. Note which teams,
   projects, or boards exist and which required fields an item needs (type,
-  status, labels). Step 3 decides the destination among them and Step 8 uses
-  it.
+  status, labels). Decide the destination among them in Step 3 and use it in
+  Step 8.
 - **Context7**: for every external library or framework the idea depends on,
   resolve the library. Fetch the documentation for the version pinned in the
   project's manifest or lockfile. Record the API facts the task relies on.
@@ -140,27 +142,27 @@ to install or connect anything.
 
 **2d. Research notes.** Write the research notes in the scratch directory, in
 two parts:
-1. *Facts*: what was learned, each with its origin.
-2. *Open decisions*: every open decision. Each entry states what is being
-   decided and which section of the task it affects.
-Part 2 drives Step 3. Do not show the research notes to the user.
+1. *Facts*: what you learned, each with its origin.
+2. *Open decisions*: every open decision. State for each the decision to make
+   and the section of the task it affects.
+Use part 2 to drive Step 3. Do not show the research notes to the user.
 
 ### Step 3: Interview, one question at a time
 
 Order the open decisions: scope boundaries first, then behavior, then technical
-choices, then delivery details. Delivery details exist only when the task is
-saved to the tracker, by the rule in Step 8: which team, project, or board
-receives the item, and the values of required fields that research did not
-settle.
+choices, then delivery details. Ask delivery details only when the task goes to
+the tracker, by the rule in Step 8: which team, project, or board receives the
+item, and the values of required fields that research did not settle.
 
 For each open decision:
 - Ask it in chat in the question format, then end the turn and wait for the
   answer.
-- QUESTION states the decision. CONTEXT states what in the task depends on it.
-- OPTIONS holds 2 to 4 concrete options grounded in research. Write
+- State the decision in QUESTION. State what in the task depends on it in
+  CONTEXT.
+- Give 2 to 4 concrete options grounded in research in OPTIONS. Write
   `Reuse PaymentService.retry() in src/payments/service.ts:88`, never
   `reuse existing code`.
-- MY SUGGESTION names the option you recommend.
+- Name the option you recommend in MY SUGGESTION.
 
 After each answer:
 - Record the decision as a fact in the research notes.
@@ -189,23 +191,24 @@ Print two lists in chat:
   research or interview and that a reader would expect in this task. Write
   `None.` when there are none.
 
-Then ask, in the question format, whether the lists are confirmed or need a
-change. Repeat until confirmed. Do not write the task before confirmation.
+Then ask, in the question format, whether the user confirms the lists or wants
+a change. Repeat until the user confirms. Do not write the task before
+confirmation.
 
 ### Step 5: Write the task
 
 Fill every section of `references/task-template.md`. Writing rules:
-- Decisions are facts. Write
+- Write decisions as facts. Write
   `Retries use exponential backoff from 500 ms, at most 5 attempts.`
   Never `We decided that...` and never `Retries should probably...`.
-- The *Approach* section names every component that changes, with the path
-  and symbol verified in Step 2, and states its behavior after the change.
-  Mark new files as `(new)`.
-- Success criteria are observable and binary. Someone else can check each one
-  and answer yes or no.
-- The *Verification* section lists the exact commands or manual steps that
+- In the *Approach* section, name every component that changes, with the path
+  and symbol verified in Step 2. State its behavior after the change. Mark new
+  files as `(new)`.
+- Write success criteria that are observable and binary, so that someone else
+  can check each one and answer yes or no.
+- In the *Verification* section, list the exact commands or manual steps that
   prove every success criterion.
-- The *Subtasks* section contains the single word `None.` This skill never
+- Write the single word `None.` in the *Subtasks* section. This skill never
   writes subtasks.
 - Include code only when the exact shape is itself a decision: a schema, an
   interface, a CLI flag, an endpoint signature. Never include implementation
@@ -218,15 +221,16 @@ Write the draft in the scratch directory.
 ### Step 6: Quality check
 
 Run every check in `references/quality-checklist.md`, including the grep helper,
-over the draft. Fix every failure. When a failure can only be fixed with
-information you do not have, return to Step 3 for that single decision, then
-re-run the check. Do not show the task until every check passes.
+over the draft. Fix every failure. When only information you do not have can
+fix a failure, return to Step 3 for that single decision, then re-run the
+check. Do not show the task until every check passes.
 
 ### Step 7: Approval
 
 Show the complete task text in chat. Then ask, in the question format, whether
-the task is approved as written or needs a change. Apply changes, re-run
-Step 6, and ask again. Loop until approved. Write nothing before approval.
+the user approves the task as written or wants a change. Apply changes, re-run
+Step 6, and ask again. Loop until the user approves. Write nothing before
+approval.
 
 ### Step 8: Save
 
@@ -237,7 +241,8 @@ Never ask the user which of the two.
 
 **Saving to the tracker:**
 1. Use the destination and required field values decided in Step 3.
-2. Create one item. Title: the task title. Body: the approved task, unchanged.
+2. Create one item. Use the task title as the title and the approved task,
+   unchanged, as the body.
 
 **Saving to a file**, under the repository root, using the numbering rule
 below:
@@ -248,11 +253,11 @@ below:
 2. Write the task file with the approved task, unchanged.
 
 **Numbering rule.** `###` is a zero-padded three-digit sequence starting at
-`001`. A task takes the next free number across all folders in `docs/tasks/`.
-`<task-slug>` is the task title in kebab-case: lowercase ASCII letters and
-digits, with every other run of characters replaced by one hyphen. It is cut
-to at most 60 characters and has no leading or trailing hyphen. This layout is
-shared with the `task-breakdown` skill, which adds `###-<subtask-slug>.md`
+`001`. Give a task the next free number across all folders in `docs/tasks/`.
+Build `<task-slug>` from the task title in kebab-case: lowercase ASCII letters
+and digits, with every other run of characters replaced by one hyphen. Cut it
+to at most 60 characters and strip a leading or trailing hyphen. The
+`task-breakdown` skill shares this layout and adds `###-<subtask-slug>.md`
 files inside the task's folder.
 
 Finish with one line: the item's identifier and URL, or the path of the task

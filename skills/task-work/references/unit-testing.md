@@ -1,7 +1,7 @@
 # Unit testing
 
-Rules for every test this skill writes. They hold for any language and any
-test framework. A convention of the project wins over a rule here: its
+Follow these rules for every test this skill writes, in any language and any
+test framework. Prefer a convention of the project over a rule here: its
 framework, test location, naming, fixtures, and helpers, as recorded in Step
 4e. Never add a second framework or a second style beside the project's.
 
@@ -9,13 +9,13 @@ framework, test location, naming, fixtures, and helpers, as recorded in Step
 
 - Test behavior through the public interface of the unit: what it returns,
   what it changes, what it raises. Never test how it does it.
-- Every criterion that code can observe has at least one test.
-- Every branch the change adds has a test:
+- Give every criterion that code can observe at least one test.
+- Give every branch the change adds a test:
   - the normal path;
   - the boundaries of each input: empty, zero, one, many, the minimum, the
     maximum, a missing value;
   - every error behavior the target names, one test per error.
-- A bug fix has a regression test that fails on the code before the fix.
+- Give a bug fix a regression test that fails on the code before the fix.
 
 ## What not to test
 
@@ -26,22 +26,22 @@ framework, test location, naming, fixtures, and helpers, as recorded in Step
 
 ## Structure of a test
 
-- One behavior per test. A test has one reason to fail.
-- Three parts, in this order: arrange the inputs, act by calling the unit once,
-  assert the outcome.
-- The test name states the unit, the condition, and the expected result, in
-  the project's naming style. Example:
+- Test one behavior per test, so that a test has one reason to fail.
+- Write three parts, in this order: arrange the inputs, act by calling the
+  unit once, assert the outcome.
+- Name the test by the unit, the condition, and the expected result, in the
+  project's naming style. Example:
   `RetryPolicy.next returns null after the fifth attempt`.
-- No loops and no conditionals inside a test. Many inputs for one behavior use
-  the framework's table or parameterized form.
-- Expected values are literals. Never compute the expected value with the same
-  logic as the code under test.
-- Shared setup uses the project's fixtures and factories. A test shows every
-  value that its assertion depends on.
+- Write no loops and no conditionals inside a test. Use the framework's table
+  or parameterized form for many inputs of one behavior.
+- Write expected values as literals. Never compute the expected value with the
+  same logic as the code under test.
+- Use the project's fixtures and factories for shared setup. Show in the test
+  every value that its assertion depends on.
 
 ## Determinism
 
-A test gives the same result on every run, on every machine, in any order.
+Make a test give the same result on every run, on every machine, in any order.
 - No dependence on the order of tests or on state another test left behind.
 - No real network, no real clock, no random values without a fixed seed.
 - No files outside a temporary folder that the test creates and removes.
@@ -64,24 +64,24 @@ A test gives the same result on every run, on every machine, in any order.
 
 - Assert the specific outcome: the value, the state, the emitted event.
   `does not throw` alone proves nothing.
-- An error test asserts the error type and its message or code.
+- In an error test, assert the error type and its message or code.
 - Assert only what the behavior under test decides. Never assert on incidental
   details such as log text, field order, or internal counters.
-- No snapshot test for logic. A snapshot is allowed only for large rendered
+- Write no snapshot test for logic. Use a snapshot only for large rendered
   output, and only when the project already uses snapshots for that area.
 
 ## A test must be able to fail
 
 - Run each new test before the code exists and confirm it fails for the
   expected reason: the missing behavior, never a mistake in the test.
-- A test for a refactor passes before and after the refactor. Prove it is able
-  to fail by breaking the asserted behavior once, seeing the failure, and
+- Make a test for a refactor pass before and after the refactor. Prove it is
+  able to fail by breaking the asserted behavior once, seeing the failure, and
   restoring the code.
-- Every test holds at least one assertion.
+- Give every test at least one assertion.
 
 ## Kind of test
 
-- Unit tests are the default.
+- Write unit tests by default.
 - Write an integration test only in two cases: the target names one, or a
   criterion has no unit-level proof and the project already has integration
   tests for that area.
@@ -94,5 +94,5 @@ A test gives the same result on every run, on every machine, in any order.
   Update it to the new behavior and list the file in the work report's
   *Changes*.
 - Never delete, skip, or loosen a test to make a run pass.
-- A test that already failed in the baseline is left alone and listed under
+- Leave alone a test that already failed in the baseline and list it under
   *Affects other work*, unless a criterion covers it.
