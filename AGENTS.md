@@ -20,10 +20,8 @@ a `SKILL.md` and, when needed, `references/` for templates and checklists and
   Terms section of its `SKILL.md`, in agreement with the glossary, and no word
   carries two meanings. A new term is added to the glossary in the same
   commit. No open questions, no assumptions, no alternatives left to the
-  reader. Banned in
-  instructions: `TBD`, `maybe`, `might`, `probably`, `possibly`, `perhaps`,
-  `ideally`, `consider`, `could`, `if needed`, `if necessary`, `as appropriate`,
-  `as needed`, `etc`, `and so on`, `or similar`, `something like`.
+  reader. The banned words listed in the glossary never appear in
+  instructions.
 - **Frontmatter.** `name` equals the folder name, lowercase letters, digits, and
   single hyphens, at most 64 characters. `description` says what the skill
   produces and when to use it, in two or three sentences, at most 1024
@@ -81,8 +79,8 @@ and follows the rules the `agent-docs-audit` skill checks:
 - Each folder has a `README.md` that links every file in it and says what each
   answers, and names what was left at the source.
 - Each file answers one question about the subject, keeps only what this repo
-  uses, and ends with a footer of the form `---`, blank line,
-  `Reference: <source URLs>`.
+  uses, and ends with a footer, as defined in `GLOSSARY.md`, holding the source
+  URLs.
 - Prose holds no inline links whose text already names the target; the URLs live
   in the footer. Tables are not padded for alignment.
 - Every folder is indexed by a line in this file.
