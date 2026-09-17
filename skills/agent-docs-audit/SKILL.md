@@ -27,7 +27,8 @@ can decide: a missing `CLAUDE.md` pair, a pointer to a parent file, a refs
 folder no `AGENTS.md` indexes, a README that misses a file, a missing
 source footer, a broken relative link or heading, a cited `docs/refs` path
 that is gone, inline URLs and padded tables. `--fix` rewrites the last two;
-fix the rest by hand. Files over 1000 words are listed as notes.
+fix the rest by hand. Files over 1000 words are listed as notes. `--help`
+lists the flags and exit codes.
 
 ## 2. AGENTS.md
 

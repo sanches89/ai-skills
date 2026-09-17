@@ -5,16 +5,49 @@
 //   node <skill-dir>/scripts/audit.mjs [--base <ref>] [--fix]
 //   (from the audited repo; <skill-dir> is the folder holding SKILL.md)
 //
-// --base  the ref sizes are compared to (default HEAD).
-// --fix   rewrites docs/refs: drops inline URLs whose link text names the
-//         target, and table alignment padding. Everything else is reported.
-//
-// Exits 1 while any error remains. Notes never fail the run.
+// Run with --help for the flags and exit codes.
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, normalize, relative } from "node:path";
 
+const HELP = `Usage: node <skill-dir>/scripts/audit.mjs [--base <ref>] [--fix]
+
+Audit the AGENTS.md files and docs/refs of the git repository that contains
+the current directory. Prints word counts against a base ref and reports the
+checks a script can decide: a missing CLAUDE.md pair, a pointer to a parent
+file, a refs folder no AGENTS.md indexes, a README that misses a file, a
+missing "Reference:" footer, a broken relative link or heading, a cited
+docs/refs path that is gone, inline URLs, and padded tables.
+
+Options:
+  --base <ref>  Git ref the word counts are compared to (default: HEAD)
+  --fix         Rewrite docs/refs files: drop inline URLs whose link text
+                already names the target, and remove table alignment padding.
+                Every other finding is only reported.
+  -h, --help    Print this help and exit
+
+Exit codes:
+  0  no errors (notes, such as files over 1000 words, never fail the run)
+  1  at least one error remains
+  2  invalid arguments
+
+Examples:
+  node <skill-dir>/scripts/audit.mjs
+  node <skill-dir>/scripts/audit.mjs --base v1.2.0
+  node <skill-dir>/scripts/audit.mjs --fix
+`;
+
 const args = process.argv.slice(2);
+if (args.includes("--help") || args.includes("-h")) {
+  process.stdout.write(HELP);
+  process.exit(0);
+}
+const unknown = args.filter((a, i) => a.startsWith("-") && !["--base", "--fix"].includes(a) && !(args[i - 1] === "--base"));
+if (unknown.length || (args.includes("--base") && !args[args.indexOf("--base") + 1])) {
+  const why = unknown.length ? `unknown option ${unknown.join(", ")}` : "--base needs a ref";
+  process.stderr.write(`Error: ${why}. Options: --base <ref>, --fix, --help.\n`);
+  process.exit(2);
+}
 const base = args.includes("--base") ? args[args.indexOf("--base") + 1] : "HEAD";
 const fix = args.includes("--fix");
 
