@@ -36,7 +36,8 @@ a `SKILL.md` and, when needed, `references/` for templates and checklists and
   line however long: Claude Code's frontmatter parser does not read YAML
   block scalars, so a folded `description` breaks discovery there.
 - **Scripts.** Instructions invoke a script as `<skill-dir>/scripts/<file>` and
-  define `<skill-dir>` as the folder holding the `SKILL.md`.
+  define `<skill-dir>` as the folder holding the `SKILL.md`. A skill with a
+  script names its runtime and tools in the `compatibility` frontmatter field.
 - **Questions to the user** are plain chat text, one question per message, in
   the Question format used by `skills/task-create/SKILL.md`. A skill never uses
   an agent's built-in question or form tool.
