@@ -12,7 +12,8 @@ that fails is fixed in the report.
 - [ ] Every ticked entry has evidence: the command or step and its result, from
       a run made after the last edit.
 - [ ] The counts on the report's *Criteria* line equal the ticked and total
-      criteria in the criteria checklist.
+      criterion entries of the criteria checklist. The Verification entry and
+      the command entries are not counted.
 - [ ] The result is `done` only when every entry is ticked. Otherwise it is
       `blocked`, and every entry that is not ticked appears under *Blocked
       by*.

@@ -28,6 +28,10 @@ These words have exactly one meaning in this skill.
 - **Topic**: a subject that came up during research or interview. It is either
   brought into scope or listed under Out of scope.
 - **Draft**: the task text before approval, kept in the scratch directory.
+- **Research notes**: the private file in the scratch directory that holds
+  the facts and the open decisions found in Step 2.
+- **Open decision**: a decision the task needs that research did not settle.
+  Each one becomes one question in Step 3.
 - **Server**: a project-management server reached through MCP.
 - **Scratch directory**: a temporary location outside the repository. In Claude
   Code, the session's scratchpad directory. In any other agent, the system temp
@@ -69,7 +73,7 @@ else. One question per message. After printing it, end the turn and wait.
 <concise context - max of 520 chars>
 
 ☑️ OPTIONS
-<options, use a ordered list, numbers -> letters -> roman numerals>
+<options, use an ordered list, numbers -> letters -> roman numerals>
 
 👉 MY SUGGESTION
 <suggestion - max of 180 chars>
@@ -133,21 +137,20 @@ using keywords like `issue ticket project linear jira notion asana github` and
 If a server is not connected, note that and move on. Do not ask the user to
 install or connect anything.
 
-**2d. Research summary.** Write a private summary in the scratch directory with
+**2d. Research notes.** Write the research notes in the scratch directory, in
 two parts:
-1. *Facts*: what was learned, each with its source (path and line, item
+1. *Facts*: what was learned, each with its origin (path and line, item
    identifier, doc URL).
-2. *Open decisions*: every decision the task needs that research could not
-   settle. Each entry states what is being decided and which section of the task
-   it affects.
-Part 2 drives Step 3. Do not show the full summary to the user.
+2. *Open decisions*: every open decision. Each entry states what is being
+   decided and which section of the task it affects.
+Part 2 drives Step 3. Do not show the research notes to the user.
 
 ### Step 3: Interview, one question at a time
 
 Order the open decisions: scope boundaries first, then behavior, then technical
 choices, then delivery details. Delivery details exist only when a server is
 connected: which team, project, or board receives the item, and the values of
-required fields that research could not settle.
+required fields that research did not settle.
 
 For each open decision:
 - Ask it in chat using the question format, then end the turn and wait for the
@@ -159,7 +162,7 @@ For each open decision:
 - MY SUGGESTION names the option you recommend.
 
 After each answer:
-- Record the decision as a fact in the research summary.
+- Record the decision as a fact in the research notes.
 - If the answer creates new decisions, add them to the list.
 - If the answer or a user remark introduces an adjacent topic, ask one question:
   include it in scope, or list it under *Out of scope*. Never silently expand or
@@ -171,8 +174,8 @@ Do not ask about:
   record it as a decision;
 - preferences that change nothing in the task.
 
-Never ask two decisions in one question. Never ask open-ended questions such as
-"anything else?" except at the scope lock and the approval.
+Never ask two decisions in one question. Never ask an open-ended question such
+as "anything else?".
 
 Continue until the open-decisions list is empty.
 
@@ -229,7 +232,6 @@ approval.
 **If a server is connected** (found in Step 2c):
 1. Use the destination and required field values decided in Step 3.
 2. Create one item. Title: the task title. Body: the approved task, unchanged.
-3. Report the created identifier and URL.
 
 **Otherwise**, write the task file under the repository root using the numbering
 rule below:
@@ -238,12 +240,14 @@ rule below:
    overwrite that `task.md` keeping its number, or write a new folder with a new
    number.
 2. Write `docs/tasks/###-<task-slug>/task.md` with the approved task, unchanged.
-3. Report the path.
 
 **Numbering rule.** `###` is a zero-padded three-digit sequence starting at
 `001`. A task takes the next free number across all folders in `docs/tasks/`.
-`<task-slug>` is the kebab-case form of the task title truncated to 60
-characters. This layout is shared with the `task-breakdown` skill, which adds
-`###-<subtask-slug>.md` files inside the task folder.
+`<task-slug>` is the task title in kebab-case: lowercase ASCII letters and
+digits, every other run of characters replaced by one hyphen, cut to at most
+60 characters, without a leading or trailing hyphen. This layout is shared with
+the `task-breakdown` skill, which adds `###-<subtask-slug>.md` files inside the
+task folder.
 
-Finish with a short recap: destination and identifier or path. Ask nothing else.
+Finish with one line: the item's identifier and URL, or the path of the task
+file. Ask nothing else.

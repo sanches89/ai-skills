@@ -29,6 +29,9 @@ description: >
   explicitly mention "CSV" or "analysis."
 ```
 
+The source folds the value with `>`. This repo keeps every frontmatter value
+on one line, by the Line width rule in `AGENTS.md`.
+
 ---
 
 Reference: https://agentskills.io/skill-creation/optimizing-descriptions

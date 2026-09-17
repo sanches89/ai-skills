@@ -75,8 +75,8 @@ discussion.>
 
 ## Context
 
-- <Fact an implementer needs, with source. Example: Webhook handling lives in
-  src/payments/webhooks.ts:41 (handlePaymentWebhook).>
+- <Fact an implementer needs, with its origin. Example: Webhook handling lives
+  in src/payments/webhooks.ts:41 (handlePaymentWebhook).>
 - <Related item with identifier. Example: Related to PAY-212, which added the
   webhook endpoint.>
 - <Library fact with version. Example: axios 1.7 exposes retry only through

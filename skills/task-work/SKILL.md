@@ -104,7 +104,8 @@ These words have exactly one meaning in this skill.
 10. **No outward actions.** Never commit, push, open a pull request, change an
     item's status, or comment on an item, unless the request that invoked this
     skill says so. When it does, follow the project's conventions for branches
-    and commit messages and make one commit per subtask.
+    and commit messages and make one commit per subtask, or one commit for a
+    target without subtasks.
 11. **The work report holds only what the caller needs.** No narration, no
     failed attempts, no command output, no restated task text.
 
@@ -121,7 +122,7 @@ else. One question per message. After printing it, end the turn and wait.
 <concise context - max of 520 chars>
 
 ☑️ OPTIONS
-<options, use a ordered list, numbers -> letters -> roman numerals>
+<options, use an ordered list, numbers -> letters -> roman numerals>
 
 👉 MY SUGGESTION
 <suggestion - max of 180 chars>
@@ -154,7 +155,8 @@ conversation, as exactly one source:
   Source: *file*. Read it.
 - **A task file** `docs/tasks/###-<task-slug>/task.md`. Source: *file*. Read it
   and every `###-*.md` subtask file in its task folder.
-- **Free text**. Source: *text*. The text is the target.
+- **Free text**, or the path of any other file, whose content is then the
+  text. Source: *text*. The text is the target.
 - **Nothing**: asking for the target is the first question.
 
 The target has subtasks when its task folder holds subtask files, when its item
@@ -191,8 +193,8 @@ ask one question using the question format: which of the two statements holds.
 - Source *server*: it is done when its item is in a completed status.
 - Source *file*: it is done when its verification passes and every file that
   its Changes section marks `(new)` exists.
-When a dependency is not done, stop. Skip to Step 9 with the result `blocked`
-and the dependency named under *Blocked by*.
+When a dependency is not done, go to Step 9 with the result `blocked` and the
+dependency named under *Blocked by*.
 
 **Criteria.** When the target has neither an Acceptance criteria section nor a
 Success criteria section, take the criteria from the list it labels as
@@ -235,8 +237,8 @@ and the repository holds at least one test file. When it has one, record:
 - the fixtures, factories, fakes, and helpers the existing tests use;
 - the command that runs a single test file;
 - which existing tests cover the code that changes.
-When it has none, record that. Hard rule 5 then writes no tests, and the work
-report states it under *Affects other work*.
+When it has none, record that. By hard rule 5 no test is then written, and the
+work report states the missing test setup under *Affects other work*.
 
 **4f. Baseline.** Before changing anything, record in the scratch directory:
 - the output of `git status --porcelain`, when the project is a git repository;
@@ -311,11 +313,12 @@ does not count.
 
 Failures already present in the baseline:
 - a baseline failure that no criterion covers is left alone and listed under
-  *Affects other work*;
+  *Affects other work*. Its command entry is ticked when the run shows no
+  failure beyond the baseline;
 - a baseline failure that a criterion covers is fixed only when the fix is
   inside the target's scope. Otherwise the result is `blocked`.
 
-Stop with the result `blocked` when:
+Go to Step 9 with the result `blocked` when:
 - the same check still fails after 3 different fixes;
 - meeting a criterion needs a change that the chain puts out of scope;
 - two criteria contradict each other;
@@ -350,9 +353,10 @@ after it.
 When the target has subtasks, this skill works them one at a time and then
 proves the task itself.
 
-1. **Order.** Follow the target's Subtasks section. When it has none, order the
-   subtasks so that each comes after every subtask on its `Depends on` line,
-   ties broken by number or identifier, lowest first.
+1. **Baseline and order.** Before any subtask changes a file, run Steps 4c and
+   4f with the task as the target. Then follow the target's Subtasks section.
+   When it has none, order the subtasks so that each comes after every subtask
+   on its `Depends on` line, ties broken by number or identifier, lowest first.
 2. **Work each subtask**, in order, never two at the same time, because they
    share one working tree. Skip a subtask that is done by the rule in Step 3.
    For every other subtask, run Steps 1 to 9 with that subtask as the target.
@@ -360,10 +364,10 @@ proves the task itself.
    it the subtask's path or identifier and the instruction to use this skill,
    and keep only the work report it returns.
 3. **Stop on `blocked`.** When a subtask's result is `blocked`, work no further
-   subtask. Skip to number 5 with the result `blocked`.
-4. **Prove the task.** After the last subtask, run Steps 4c, 5, 7, and 8 with
-   the task as the target: the criteria checklist holds the task's criteria
-   and its Verification.
+   subtask. Go to number 5 with the result `blocked`.
+4. **Prove the task.** After the last subtask, run Steps 5, 7, and 8 with the
+   task as the target: the criteria checklist holds the task's criteria and
+   its Verification, and Step 8 compares with the baseline from number 1.
 5. **One work report** for the task, by Step 9. *Changes* merges the subtasks'
    entries. *Deviations* and *Affects other work* keep only entries that matter
    outside the task: an entry about a subtask of this same task that has since

@@ -123,7 +123,8 @@ Folders:
    `AGENTS.md`, `CLAUDE.md`, or `docs/refs/` changed, and fix every error it
    reports.
 2. Grep the skill for agent-specific tokens and confirm each one sits
-   inside an aside:
+   inside an aside. The verb "Explore" in the `task-create` description is
+   not a token:
 
    ```bash
    grep -n -E \

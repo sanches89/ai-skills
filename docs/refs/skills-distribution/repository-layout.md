@@ -38,6 +38,7 @@ Verified with the CLI against this repo:
   `--copy` copies into every agent folder instead.
 - `-g` uses the same layout under the home directory, for Claude Code
   `~/.claude/skills/<name>`.
+
 ---
 
 Reference: https://github.com/vercel-labs/skills

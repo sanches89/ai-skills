@@ -19,6 +19,9 @@ What each section keeps:
   the last edit. `blocked` in every other case.
 - **Criteria**: the counts only. A met criterion is never listed. Every
   criterion that is not met appears under *Blocked by*.
+- **Verification**: the target's one verification command. When the target's
+  Verification is a list, the words `<number> steps` instead. `pass` only when
+  every step passes.
 - **Tests**: the number of test cases this run added and the number of
   existing test cases it edited. Without a test setup, the words
   `none: no test setup`.
@@ -57,7 +60,7 @@ What the report leaves out:
 **Result:** done | blocked
 **Target:** <item identifier and URL | file path | the word `text`>
 **Criteria:** <number met> of <total> met
-**Verification:** `<the target's verification command>`: pass | fail
+**Verification:** `<verification command>` | <number> steps: pass | fail
 **Tests:** <number> added, <number> edited | none: no test setup
 **Commits:** none | <short hashes, in commit order>
 

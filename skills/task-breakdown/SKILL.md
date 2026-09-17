@@ -32,6 +32,10 @@ These words have exactly one meaning in this skill.
 - **Topic**: a subject that came up during research or interview. It is either
   brought into the task or listed under Out of scope.
 - **Draft**: the breakdown text before approval, kept in the scratch directory.
+- **Research notes**: the private file in the scratch directory that holds
+  the facts and the open decisions found in Step 2.
+- **Open decision**: a decision the breakdown needs that research did not
+  settle. Each one becomes one question in Step 3.
 - **Server**: a project-management server reached through MCP.
 - **Scratch directory**: a temporary location outside the repository. In Claude
   Code, the session's scratchpad directory. In any other agent, the system temp
@@ -76,7 +80,7 @@ else. One question per message. After printing it, end the turn and wait.
 <concise context - max of 520 chars>
 
 ☑️ OPTIONS
-<options, use a ordered list, numbers -> letters -> roman numerals>
+<options, use an ordered list, numbers -> letters -> roman numerals>
 
 👉 MY SUGGESTION
 <suggestion - max of 180 chars>
@@ -104,7 +108,8 @@ conversation, as one of:
   file path or as text.
 - **A task file** `docs/tasks/###-<task-slug>/task.md`. Source: *file*. Read it
   and any `###-*.md` subtask files already in the folder.
-- **Free text**. Source: *text*. The text is the task.
+- **Free text**, or the path of any other file, whose content is then the
+  text. Source: *text*. The text is the task.
 - **Nothing**: asking for the task is the first question.
 
 If the task already has subtasks (children of the item, files in the folder, or
@@ -154,13 +159,13 @@ using keywords like `issue ticket project linear jira notion asana github` and
 If a server is not connected, note that and move on. Do not ask the user to
 install or connect anything.
 
-**2e. Research summary.** Write a private summary in the scratch directory with
+**2e. Research notes.** Write the research notes in the scratch directory, in
 two parts:
-1. *Facts*: what was learned, each with its source (path and line, item
+1. *Facts*: what was learned, each with its origin (path and line, item
    identifier, doc URL).
-2. *Open decisions*: every decision the breakdown needs that research could not
-   settle. Each entry states what is being decided and which subtask it affects.
-Part 2 drives Step 3. Do not show the full summary to the user.
+2. *Open decisions*: every open decision. Each entry states what is being
+   decided and which subtask it affects.
+Part 2 drives Step 3. Do not show the research notes to the user.
 
 ### Step 3: Interview, one question at a time
 
@@ -168,7 +173,7 @@ Order the open decisions: task scope first, then behavior, then technical
 choices, then split choices (guards, ordering), then delivery details. Delivery
 details exist only when the source is *text* and a server is connected: which
 team, project, or board receives the items, and the values of required fields
-that research could not settle.
+that research did not settle.
 
 For each open decision:
 - Ask it in chat using the question format, then end the turn and wait for the
@@ -181,7 +186,7 @@ For each open decision:
 - MY SUGGESTION names the option you recommend.
 
 After each answer:
-- Record the decision as a fact in the research summary.
+- Record the decision as a fact in the research notes.
 - If the answer creates new decisions, add them to the list.
 - If the answer or a user remark introduces an adjacent topic, ask one question:
   include it in the task, or list it under *Out of scope*. Never silently expand
@@ -217,8 +222,8 @@ these constraints:
   guard. If the project has no guard convention, the guard is an interview
   question in Step 3.
 - **Coverage.** Every success criterion of the task maps to at least one
-  subtask. The union of the subtasks' changes equals the task's scope, nothing
-  more.
+  subtask. The union of the subtasks' Changes equals the task's Approach,
+  nothing more.
 
 Then fill the task's Subtasks section and confirm that the task's Verification
 section proves the whole task after every subtask is done.
@@ -288,7 +293,6 @@ The destination follows the source:
    relation, put child links in the task's body and the task's link in each
    child body.
 4. Update the task's Subtasks section with the child links.
-5. Report every created or updated identifier and URL.
 
 **Saving to files**, under the repository root, using the numbering rule below:
 1. Task folder: source *file* reuses the existing `docs/tasks/###-<task-slug>/`.
@@ -301,14 +305,15 @@ The destination follows the source:
    in the folder first. The `Task` line links to `./task.md`, the `Depends on`
    line links to the sibling files, and the task's Subtasks section links to
    each subtask file.
-4. Report every path written.
 
 **Numbering rule.** `###` is a zero-padded three-digit sequence starting at
 `001`. A task takes the next free number across all folders in `docs/tasks/`.
-Subtasks take the next free numbers inside their task folder. A slug is the
-kebab-case form of a title truncated to 60 characters: `<task-slug>` comes from
-the task title, `<subtask-slug>` from the subtask title. This layout is shared
-with the `task-create` skill, which writes `docs/tasks/###-<task-slug>/task.md`.
+Subtasks take the next free numbers inside their task folder. A slug is a title
+in kebab-case: lowercase ASCII letters and digits, every other run of
+characters replaced by one hyphen, cut to at most 60 characters, without a
+leading or trailing hyphen. `<task-slug>` comes from the task title,
+`<subtask-slug>` from the subtask title. This layout is shared with the
+`task-create` skill, which writes `docs/tasks/###-<task-slug>/task.md`.
 
-Finish with a short recap: destination, identifiers or paths, and number of
-subtasks. Ask nothing else.
+Finish with a short recap: every item identifier and URL created or updated, or
+every path written, and the number of subtasks. Ask nothing else.

@@ -21,14 +21,15 @@ From the repo root, with `<skill-dir>` being the folder that holds this
 node <skill-dir>/scripts/audit.mjs --base <ref>
 ```
 
-`<ref>` is where the last audit landed (default `HEAD`). The script prints
-words per `AGENTS.md` and per refs folder against it, and fails on what it
-can decide: a missing `CLAUDE.md` pair, a pointer to a parent file, a refs
-folder no `AGENTS.md` indexes, a README that misses a file, a missing
-source footer, a broken relative link or heading, a cited `docs/refs` path
-that is gone, inline URLs and padded tables. `--fix` rewrites the last two;
-fix the rest by hand. Files over 1000 words are listed as notes. `--help`
-lists the flags and exit codes.
+`<ref>` is the commit where the last audit landed, when the request names
+it. Otherwise omit `--base`: the default `HEAD` measures this audit's own
+edits. The script prints words per `AGENTS.md` and per refs folder against
+`<ref>`, and fails on what it can decide: a missing `CLAUDE.md` pair, a
+pointer to a parent file, a refs folder no `AGENTS.md` indexes, a README
+that misses a file, a missing source footer, a broken relative link or
+heading, a cited `docs/refs` path that is gone, inline URLs and padded
+tables. `--fix` rewrites the last two; fix the rest by hand. Files over 1000
+words are listed as notes. `--help` lists the flags and exit codes.
 
 ## 2. AGENTS.md
 
@@ -36,9 +37,10 @@ Read every `AGENTS.md` before editing any: redundancy is only visible across
 files. Then, for each rule:
 
 - **Placement.** Find every folder the rule applies to. It moves to the
-  deepest folder covering all of them: two siblings share their parent. A
-  rule about another package's code moves there (a client-hook rule written
-  in a component package's file belongs with the hooks).
+  deepest folder covering all of them: a rule for two sibling folders goes
+  in their parent. A rule about another package's code moves to that
+  package (a client-hook rule written in a component package's file belongs
+  with the hooks).
 - **Redundancy.** Delete it when a parent or sibling states it, the same
   file states it twice (a tree comment and a bullet), a header comment, a
   lint message or the types already say it, or it describes how something
@@ -47,13 +49,15 @@ files. Then, for each rule:
   - every path, script, flag, command, export and builder named exists
     (`git ls-files`, `git grep`);
   - "only", "every", "alone" and counts hold across the usages;
-  - an unnamed referent ("calls two") gets its names;
+  - a referent without a name ("calls two helpers") is replaced by the
+    names;
   - a list of triggers ("adds, moves or renames") covers the cases the
     tooling reacts to, deletes included;
   - a mixed and/or condition gets explicit grouping;
   - an example still matches what the code does.
-- **Triggers.** A reference line that forces a read on routine work ("before
-  any function") narrows to when the rules leave a question open.
+- **Triggers.** A line that sends the agent to a reference file on routine
+  work ("read before writing any function") is narrowed to the cases the
+  rules in the `AGENTS.md` do not settle.
 - **Wording.** Terse imperative bullets. Keep ADR citations; drop a reason
   the ADR already holds.
 
@@ -83,7 +87,7 @@ For each folder changed since `<ref>`, or all of them when asked:
 - Re-run the script until it exits 0.
 - When a pointer to another file was removed on the grounds that it loads
   anyway, confirm it does: read a file in that folder and check which
-  `CLAUDE.md` files load with it.
+  `AGENTS.md` or `CLAUDE.md` files the agent loaded with it.
 - Report the size table, each rule moved, merged or reworded, each ambiguity
   resolved with the code that settled it, and anything left for the user to
   decide. Commit only when asked.

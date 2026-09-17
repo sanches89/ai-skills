@@ -77,7 +77,7 @@ wrong, and the mismatch is fixed before commit.
   and its behavior after the change. What changes where.
 - **Decisions**: the rules and values the change follows, stated as facts. Which
   rules the change obeys.
-- **Context**: facts an implementer needs, each with its source: paths with line
+- **Context**: facts an implementer needs, each with its origin: paths with line
   numbers, symbols, conventions, commands, related items, library facts.
 - **Subtasks section**: in a task, the ordered list of its subtasks with
   dependencies. `None.` until `task-breakdown` fills it.
@@ -108,6 +108,12 @@ wrong, and the mismatch is fixed before commit.
   saved. In `task-work` it decides how the chain is built.
 - **Draft**: a task or breakdown text before approval, kept in the scratch
   directory.
+- **Research notes**: in `task-create` and `task-breakdown`, the private file
+  in the scratch directory that holds the facts and the open decisions found
+  during research. Never called a summary, because Summary names a section of
+  the task format.
+- **Open decision**: a decision the task or breakdown needs that research did
+  not settle. Each one becomes one question in the interview.
 - **Scratch directory**: a temporary location outside the repository. In Claude
   Code, the session's scratchpad directory. In any other agent, the system temp
   directory.
@@ -119,7 +125,9 @@ wrong, and the mismatch is fixed before commit.
 - **Number**, written `###`: a zero-padded three-digit sequence starting at
   `001`. A task takes the next free number across all folders in `docs/tasks/`.
   A subtask takes the next free number inside its task folder.
-- **Slug**: the kebab-case form of a title truncated to 60 characters.
+- **Slug**: a title in kebab-case: lowercase ASCII letters and digits, every
+  other run of characters replaced by one hyphen, cut to at most 60 characters,
+  without a leading or trailing hyphen.
   `<task-slug>` comes from the task title, `<subtask-slug>` from the subtask
   title.
 
