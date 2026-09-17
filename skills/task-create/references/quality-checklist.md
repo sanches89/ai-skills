@@ -4,33 +4,34 @@ Run every check over the draft before showing it to the user. A single failure b
 
 ## Ambiguity
 
-- [ ] No banned words in Summary, Success criteria, Decisions, Tasks, or Verification: `TBD`, `TBC`, `TODO`, `maybe`, `might`, `probably`, `possibly`, `perhaps`, `ideally`, `consider`, `could`, `should we`, `if needed`, `if necessary`, `as appropriate`, `as needed`, `etc`, `and so on`, `or similar`, `something like`.
+- [ ] No banned words in Summary, Success criteria, Approach, Decisions, or Verification: `TBD`, `TBC`, `TODO`, `maybe`, `might`, `probably`, `possibly`, `perhaps`, `ideally`, `consider`, `could`, `should we`, `if needed`, `if necessary`, `as appropriate`, `as needed`, `etc`, `and so on`, `or similar`, `something like`.
 - [ ] No question marks anywhere, except inside quoted user-interface text or code.
-- [ ] No alternatives in Decisions or Tasks: no `option A / option B`, no `either ... or`, no `one of`.
+- [ ] No alternatives in Approach or Decisions: no `option A / option B`, no `either ... or`, no `one of`.
 - [ ] Every quantity is a number with a unit. No `fast`, `small`, `large`, `reasonable`, `a few`.
 - [ ] Every named thing is specific: file path, symbol, endpoint, table, environment variable, command. No `the service`, `the config`, `the relevant tests`, `the usual place`.
 
 ## Completeness
 
 - [ ] The open-decisions list from research is empty.
-- [ ] Every decision recorded during the interview appears in Decisions or inside a task.
-- [ ] Every success criterion is covered by at least one task's acceptance criteria.
-- [ ] Every task lists its touched files or areas, and every path and symbol was verified to exist during research or is marked `(new)`.
-- [ ] Dependencies form a valid order: no cycles, no reference to a task with a higher number.
+- [ ] Every decision recorded during the interview appears in Approach or Decisions.
+- [ ] Every success criterion is produced by at least one component listed in Approach.
+- [ ] Every path and symbol in Approach and Context was verified to exist during research or is marked `(new)`.
+- [ ] Every success criterion is proved by at least one step in Verification.
 - [ ] Verification lists concrete commands or steps. `Run the tests` alone fails this check.
+- [ ] Subtasks contains exactly the word `None.`
 
 ## Scope
 
-- [ ] Every task traces to the confirmed restated idea or to a confirmed in-scope item.
-- [ ] Out of scope contains only items that came up during research or interview and that a reader would expect in this work.
+- [ ] Every Approach bullet traces to the confirmed restated idea or to a confirmed in-scope deliverable.
+- [ ] Out of scope contains only topics that came up during research or interview and that a reader would expect in this task.
 - [ ] No sections beyond the template. No Risks, Considerations, Alternatives, Future work, Nice to have, Notes.
 - [ ] No estimates, priorities, or timelines unless the user asked for them.
 
 ## Executability
 
-- [ ] A reader with only the plan and the repository can start Task 1 without asking anything.
-- [ ] Each acceptance criterion is binary: it is either met or not, and someone other than the author can check it.
-- [ ] Each task stands alone as a ticket: title, description, touched areas, and acceptance criteria are all present.
+- [ ] A reader with only the task and the repository can start implementing without asking anything.
+- [ ] Each success criterion is binary: it is either met or not, and someone other than the author can check it.
+- [ ] The `task-breakdown` skill can split the task without new research: every component in Approach has a path, and the commands to build and test are in Context.
 
 ## Grep helper
 

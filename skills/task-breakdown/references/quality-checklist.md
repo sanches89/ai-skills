@@ -1,0 +1,55 @@
+# Quality checklist
+
+Run every check over the draft before showing it to the user. A single failure blocks delivery. Fix the failure, or return to the interview for the one missing decision, then run the whole checklist again.
+
+## Ambiguity
+
+- [ ] No banned words in the task or in any subtask: `TBD`, `TBC`, `TODO`, `maybe`, `might`, `probably`, `possibly`, `perhaps`, `ideally`, `consider`, `could`, `should we`, `if needed`, `if necessary`, `as appropriate`, `as needed`, `etc`, `and so on`, `or similar`, `something like`.
+- [ ] No question marks anywhere, except inside quoted user-interface text or code.
+- [ ] No alternatives in Approach, Decisions, or Changes: no `option A / option B`, no `either ... or`, no `one of`.
+- [ ] Every quantity is a number with a unit. No `fast`, `small`, `large`, `reasonable`, `a few`.
+- [ ] Every named thing is specific: file path, symbol, endpoint, table, environment variable, command. No `the service`, `the config`, `the relevant tests`, `the usual place`.
+
+## Completeness
+
+- [ ] The open-decisions list from research is empty.
+- [ ] Every fact, requirement, and success criterion of the original task appears in the task.
+- [ ] Every decision recorded during the interview appears in the task's Approach or Decisions and, when a subtask applies it, restated in that subtask's Context.
+- [ ] Every success criterion of the task is covered by at least one subtask's acceptance criteria.
+- [ ] Every path and symbol in Approach, Context, and Changes was verified to exist during research or is marked `(new)`.
+- [ ] Dependencies form a valid order: no cycles, no reference to a subtask with a higher number.
+- [ ] The task's Subtasks list matches the subtasks written: same count, same order, same titles.
+- [ ] The task's Verification lists concrete commands or steps. `Run the tests` alone fails this check.
+
+## Subtask rule
+
+- [ ] Each subtask has exactly one verification command, or one numbered manual sequence when no command can prove it.
+- [ ] Each subtask is mergeable on its own: after it, the project builds and every test, existing and new, passes. Behavior it must not yet expose is behind a guard named in its Context.
+- [ ] Each subtask is one concern. No title contains ` and `. No subtask needs a second verification command.
+- [ ] No subtask consists only of tests, only of documentation, or only of integration or wiring.
+- [ ] Every behavior-free subtask (refactor, scaffolding, migration, configuration) is depended on by a later subtask.
+- [ ] Two consecutive subtasks that cannot be verified separately do not exist. They were merged.
+- [ ] When a guard was introduced, the subtask that completes the guarded behavior removes it, and no later subtask depends on the guard.
+
+## Scope
+
+- [ ] Every subtask traces to the confirmed restated task or to a confirmed in-scope deliverable.
+- [ ] The union of all subtasks' Changes equals the task's Approach. Nothing outside it, nothing missing.
+- [ ] Out of scope contains only topics that came up during research or interview and that a reader would expect in this task.
+- [ ] No sections beyond the template. No Risks, Considerations, Alternatives, Future work, Nice to have, Notes.
+- [ ] No estimates, priorities, or timelines unless the user asked for them.
+
+## Executability
+
+- [ ] An agent with only the task and the repository can start subtask 1 without asking anything.
+- [ ] An agent with only one subtask and the repository can implement it without asking anything and without opening the task. No `see task`, `as above`, `same as subtask N`, `as described earlier`.
+- [ ] Each acceptance criterion is binary: it is either met or not, and someone other than the author can check it.
+- [ ] Each subtask stands alone as a ticket: title, task, dependencies, goal, context, changes, acceptance criteria, and verification are all present.
+
+## Grep helper
+
+Run this over the draft file. Every hit is removed or is inside quoted user-interface text or code.
+
+```bash
+grep -nEi '\?|\bTBD\b|\bTBC\b|\bTODO\b|\bmaybe\b|\bmight\b|\bprobably\b|\bpossibly\b|\bperhaps\b|\bideally\b|\bconsider\b|\bcould\b|should we|if needed|if necessary|as appropriate|as needed|\betc\b|and so on|or similar|something like|either .* or|one of the|see task|see parent|as above|same as subtask|as described earlier' <draft-file>
+```
