@@ -22,8 +22,8 @@ wrong, and the mismatch is fixed before commit.
   `name`, `description`, `license`, `compatibility`, `argument-hint`.
 - **Description**: the frontmatter field an agent reads to decide whether to
   load a skill. It says what the skill produces and when to use it.
-- **References**: the `references/` folder of a skill: templates and checklists
-  that the instructions cite and that load only when cited.
+- **References**: the `references/` folder of a skill: templates, checklists,
+  and rules that the instructions cite and that load only when cited.
 - **Scripts**: the `scripts/` folder of a skill: executables the instructions
   run.
 - **Skill directory**, written `<skill-dir>`: the folder holding a `SKILL.md`.
@@ -48,11 +48,12 @@ wrong, and the mismatch is fixed before commit.
   describing a change they want.
 - **Task**: one unit of work written in the task format. `task-create` produces
   it from an idea. `task-breakdown` splits it into subtasks and rewrites it with
-  the Subtasks section filled.
+  the Subtasks section filled. `task-work` implements it.
 - **Original task**: in `task-breakdown`, the task as received, before the skill
   adds anything to it.
 - **Subtask**: one commit-sized unit of work inside a task, written in the
-  subtask format. Only `task-breakdown` writes subtasks.
+  subtask format. Only `task-breakdown` writes subtasks. `task-work` implements
+  them.
 - **Subtask rule**: a subtask is one reviewable change with a single
   verification command, mergeable on its own: after it is merged, the project
   builds and every test, existing and new, passes.
@@ -101,8 +102,10 @@ wrong, and the mismatch is fixed before commit.
 - **Item**: a record in a project-management server. A task is one item, each
   subtask a child item of it. The word is never used for anything else.
 - **Server**: a project-management server reached through MCP.
-- **Source**: where `task-breakdown` got the task. Exactly one of *server* (an
-  item), *file* (a `task.md`), or *text*. It decides where the result is saved.
+- **Source**: where `task-breakdown` or `task-work` got its input. Exactly one
+  of *server* (an item), *file* (a task file, and for `task-work` also a
+  subtask file), or *text*. In `task-breakdown` it decides where the result is
+  saved. In `task-work` it decides how the chain is built.
 - **Draft**: a task or breakdown text before approval, kept in the scratch
   directory.
 - **Scratch directory**: a temporary location outside the repository. In Claude
@@ -119,6 +122,40 @@ wrong, and the mismatch is fixed before commit.
 - **Slug**: the kebab-case form of a title truncated to 60 characters.
   `<task-slug>` comes from the task title, `<subtask-slug>` from the subtask
   title.
+
+## Working a task
+
+- **Target**: the task or subtask `task-work` was asked to implement.
+- **Parent**: the task one level above a task or subtask. For a subtask file,
+  the task file in the same task folder. For an item, the item that the
+  server's parent relation points to. Text has no parent.
+- **Root task**: the task in the chain that has no parent.
+- **Chain**: the target, its parent, that parent's parent, up to the root task.
+- **Criterion**: one observable, binary check that defines the target as done.
+  An entry of the target's Acceptance criteria section, or of its Success
+  criteria section when it has no Acceptance criteria section.
+- **Criteria checklist**: the file in the scratch directory that lists every
+  criterion of the target with its proof and its evidence.
+- **Baseline**: the state of the project before `task-work` changes anything:
+  the list of uncommitted files and the results of the build, lint, type-check,
+  and test commands.
+- **Test setup**: what lets a project run automated tests. A project has one
+  when a test command exists and the repository holds at least one test file.
+  Without one, `task-work` writes no tests.
+- **Unit test**: an automated test of one behavior of one unit, a function, a
+  class, or a module, through its public interface, with every system boundary
+  replaced by a test double.
+- **Regression test**: a test that reproduces a bug. It fails before the fix
+  and passes after it.
+- **Test double**: an object that stands in for a system boundary in a test: a
+  fake, a stub, or a mock.
+- **Deviation**: a difference between what the target's text says and what was
+  implemented, with its reason.
+- **Caller**: whoever invoked `task-work` and reads the work report: the user,
+  or an agent that orchestrates the parent task.
+- **Work report**: the output of `task-work`. Its final message, in the format
+  of its `references/work-report-template.md`. Never called a summary, because
+  Summary names a section of the task format.
 
 ## Repository documents
 

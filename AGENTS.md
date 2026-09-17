@@ -1,8 +1,8 @@
 # AGENTS.md
 
 This repository holds agent skills. Each skill is a folder under `skills/` with
-a `SKILL.md` and, when needed, `references/` for templates and checklists and
-`scripts/` for executables. The README lists the skills.
+a `SKILL.md` and, when needed, `references/` for templates, checklists, and
+rules and `scripts/` for executables. The README lists the skills.
 
 ## Rules for every skill
 
@@ -105,6 +105,10 @@ Folders:
 - Both share the file layout `docs/tasks/###-<task-slug>/task.md` and
   `docs/tasks/###-<task-slug>/###-<subtask-slug>.md`, with the numbering rule
   stated in each `SKILL.md`. A change to the layout is made in both skills in
+  the same commit.
+- `task-work` implements a task or subtask and never writes or edits one. It
+  reads the section names of the task format and the subtask format, and the
+  file layout. Change a section name or the layout in `skills/task-work/` in
   the same commit.
 
 ## Workflow in this repo

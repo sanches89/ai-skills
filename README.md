@@ -14,14 +14,19 @@ coding agent that loads `SKILL.md` files.
 - [task-breakdown](skills/task-breakdown/SKILL.md): takes a task from a
   project-management item, a task file, or text and splits it into commit-sized
   subtasks, each self-contained with one verification command.
+- [task-work](skills/task-work/SKILL.md): implements a task or subtask within
+  the scope set by its parent tasks, proves every acceptance criterion, and
+  returns a short work report with only what the rest of the work needs.
 - [agent-docs-audit](skills/agent-docs-audit/SKILL.md): audits and compresses a
   repo's `AGENTS.md` files and `docs/refs` so they cost less context without
   losing a rule.
 
-task-create and task-breakdown form a pipeline: the first writes
+task-create, task-breakdown, and task-work form a pipeline: the first writes
 `docs/tasks/###-<task-slug>/task.md`, the second adds
-`docs/tasks/###-<task-slug>/###-<subtask-slug>.md` next to it. With a
-project-management MCP server connected, both write items there instead.
+`docs/tasks/###-<task-slug>/###-<subtask-slug>.md` next to it, and the third
+implements a task or one subtask from those files. With a project-management
+MCP server connected, the first two write items there instead, and the third
+reads them.
 
 ## Structure
 
@@ -32,7 +37,7 @@ it should be used.
 skills/
   <skill-name>/
     SKILL.md          # frontmatter (name, description) + instructions
-    references/       # templates and checklists the instructions cite
+    references/       # templates, checklists, and rules the skill cites
     scripts/          # executables the instructions run
 ```
 
