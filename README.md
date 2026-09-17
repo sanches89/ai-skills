@@ -9,16 +9,16 @@ coding agent that loads `SKILL.md` files.
 ## Skills
 
 - [task-create](skills/task-create/SKILL.md): explores an idea by researching
-  code, docs, and MCP servers, interviews you one question at a time, and writes
-  one precise task with no assumptions or open questions.
+  code, docs, and MCP servers, then interviews you one question at a time. It
+  writes one precise task with no assumptions or open questions.
 - [task-breakdown](skills/task-breakdown/SKILL.md): takes a task from a
   project-management item, a task file, or text and splits it into commit-sized
-  subtasks, each self-contained with one verification command.
+  subtasks. Each subtask is self-contained and has one verification command.
 - [task-work](skills/task-work/SKILL.md): implements a task or subtask within
-  the scope set by its parent tasks, proves every acceptance criterion, and
+  the scope set by its parent tasks and proves every acceptance criterion. It
   returns a short work report with only what the rest of the work needs.
 - [agent-docs-audit](skills/agent-docs-audit/SKILL.md): audits and compresses a
-  repo's `AGENTS.md` files and `docs/refs` so they cost less context without
+  repo's `AGENTS.md` files and `docs/refs` so they take fewer tokens without
   losing a rule.
 
 task-create, task-breakdown, and task-work form a pipeline: the first writes
@@ -59,8 +59,10 @@ Without the CLI, clone this repo into your agent's skills folder (e.g.
 
 ## Contributing
 
-Rules for writing skills in this repo are in [AGENTS.md](AGENTS.md). Every
-term with a special meaning is defined in [GLOSSARY.md](GLOSSARY.md).
+Rules for writing skills in this repo are in [AGENTS.md](AGENTS.md). Words with
+a special meaning in the repo's own documents are defined in
+[GLOSSARY.md](GLOSSARY.md). Each skill defines its own words in its Terms
+section.
 
 ## License
 

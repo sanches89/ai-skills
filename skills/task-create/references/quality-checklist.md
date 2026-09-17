@@ -28,8 +28,8 @@ decision, then run the whole checklist again.
       Decisions.
 - [ ] Every success criterion is produced by at least one component listed in
       Approach.
-- [ ] Every path and symbol in Approach and Context was verified to exist during
-      research or is marked `(new)`.
+- [ ] Every path and symbol in the Approach and Context sections was verified
+      to exist during research or is marked `(new)`.
 - [ ] Every success criterion is proved by at least one step in Verification.
 - [ ] Verification lists concrete commands or steps. `Run the tests` alone fails
       this check.
@@ -53,7 +53,7 @@ decision, then run the whole checklist again.
       other than the author can check it.
 - [ ] The `task-breakdown` skill can split the task without new research: every
       component in Approach has a path, and the commands to build and test are
-      in Context.
+      in the Context section.
 
 ## Grep helper
 

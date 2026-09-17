@@ -1,9 +1,9 @@
 # Task template
 
 Two formats: the **task** and the **subtask**. Fill every section. Replace every
-`<placeholder>`. Keep the headings exactly as written so the output maps onto
-items and files the same way every time: the task becomes the item body or
-`task.md`, each subtask becomes a child item or a `###-<subtask-slug>.md` file.
+`<placeholder>`. Keep the headings exactly as written, so the output maps onto
+items and files the same way every time. The task becomes the item body or
+`task.md`. Each subtask becomes a child item or a `###-<subtask-slug>.md` file.
 
 The task format is the same one the `task-create` skill writes. This skill fills
 its Subtasks section and completes the other sections with what research and the
@@ -17,7 +17,7 @@ Rules for filling:
 - `a | b` on a template line means: write exactly one of them.
 - *Approach* says what changes where. *Decisions* says which rules and values
   the change follows. A fact goes in one of them, not both.
-- A subtask repeats the context and decisions it needs. It never points at the
+- A subtask repeats the facts and decisions it needs. It never points at the
   task for information.
 - Links: in the draft, `Task`, `Depends on`, and the Subtasks list name titles
   and numbers only. Step 8 replaces them with file links or item links at save

@@ -48,7 +48,7 @@ What the report leaves out:
 - the steps taken and their order;
 - attempts that failed and how they were fixed;
 - command output, logs, stack traces, and code listings;
-- the target's text restated: its summary, goal, or criteria that are met;
+- the target's text restated: its Summary, its Goal, or criteria that are met;
 - praise, apologies, offers, questions, and next-step suggestions.
 
 ---

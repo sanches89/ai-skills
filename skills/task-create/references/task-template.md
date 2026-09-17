@@ -1,7 +1,7 @@
 # Task template
 
 Fill every section. Replace every `<placeholder>`. Keep the headings exactly as
-written: the task becomes the body of one item or one `task.md` file, and the
+written. The task becomes the body of one item or one `task.md` file. The
 `task-breakdown` skill reads this same format later to fill the Subtasks
 section.
 

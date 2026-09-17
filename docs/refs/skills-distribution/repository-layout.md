@@ -1,7 +1,8 @@
 # Repository layout for discovery
 
-The `skills` CLI takes a repository (`owner/repo`, a git URL, a direct path to
-a skill inside a repo, or a local path) and scans it for `SKILL.md` files.
+The `skills` CLI takes a repository and scans it for `SKILL.md` files. A
+repository is `owner/repo`, a git URL, a direct path to a skill inside a repo,
+or a local path.
 
 ## Scanned locations
 

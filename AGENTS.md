@@ -4,33 +4,49 @@ This repository holds agent skills. Each skill is a folder under `skills/` with
 a `SKILL.md` and, when needed, `references/` for templates, checklists, and
 rules and `scripts/` for executables. The README lists the skills.
 
+## Words and sentences
+
+These rules hold in every Markdown file of this repository.
+
+- **Glossary.** `GLOSSARY.md` defines the words with a special meaning in
+  `AGENTS.md`, `README.md`, and `docs/refs/`. Add a word there only when one
+  of those files uses it.
+- **Terms.** Define every word with a special meaning in a skill in the Terms
+  section of its `SKILL.md`. A skill never cites `GLOSSARY.md` or another
+  skill. A word defined in two skills, or in a skill and the glossary, has the
+  same definition text in each place.
+- **One word, one meaning.** A word has one meaning in the whole repository.
+  When two things need the same word, give each a fixed qualifier and never
+  write the bare word: `Context section` and `context window`, never
+  `context` alone.
+- **One name per thing.** Name a thing by one technical name and use that name
+  every time. Never a synonym.
+- **Sentences.** At most 25 words per sentence. An instruction is one command
+  in the active voice with one action.
+- **No ambiguity.** No open questions, no assumptions, no alternatives left to
+  the reader. A banned word, as listed in `GLOSSARY.md`, never appears in an
+  instruction.
+
 ## Rules for every skill
 
-- **Agent-agnostic.** A skill must work in any coding agent that loads
-  `SKILL.md` files. A feature of one agent may be named only as an aside in
-  prose that other agents can skip, never in a command or in a step another
-  agent cannot follow. Examples of agent-specific features: Claude Code's
+- **Agent-agnostic.** A skill works in any coding agent that loads `SKILL.md`
+  files. Name a feature of one agent only as an aside in prose that other
+  agents can skip. Never name it in a command or in a step another agent
+  cannot follow. Examples of agent-specific features: Claude Code's
   `${CLAUDE_SKILL_DIR}`, `$ARGUMENTS`, `AskUserQuestion`, the `Explore`
   subagent, `ToolSearch`, the scratchpad directory.
-- **Self-contained.** A skill cites only files inside its own folder. Never link
-  to another skill's files. When two skills need the same content, duplicate it
-  and keep the copies identical.
-- **Unambiguous.** `GLOSSARY.md` defines every word with a special meaning in
-  this repo. A skill that uses such a word restates the definition in the
-  Terms section of its `SKILL.md`, in agreement with the glossary, and no word
-  carries two meanings. A new term is added to the glossary in the same
-  commit. No open questions, no assumptions, no alternatives left to the
-  reader. The banned words listed in the glossary never appear in
-  instructions.
-- **Frontmatter.** `name` equals the folder name, lowercase letters, digits, and
-  single hyphens, at most 64 characters. `description` says what the skill
-  produces and when to use it, in two or three sentences, at most 1024
-  characters, and nothing about how it works internally. Every skill sets
-  `license: MIT`. Other fields the format allows: `compatibility` and
+- **Self-contained.** A skill cites only files inside its own folder. Never
+  link to another skill's files. When two skills need the same content,
+  duplicate it and keep the copies identical.
+- **Frontmatter.** `name` equals the folder name: lowercase letters, digits,
+  and single hyphens, at most 64 characters. `description` says what the skill
+  produces and when to use it. It has two or three sentences, at most 1024
+  characters, and nothing about how the skill works internally. Every skill
+  sets `license: MIT`. Other fields the format allows: `compatibility` and
   `metadata`. Any other field, like `argument-hint`, must be one that agents
   without it ignore.
-- **Size.** `SKILL.md` stays under 500 lines. Detail goes to `references/`, and
-  the instruction that cites a reference file says when to read it.
+- **Size.** `SKILL.md` stays under 500 lines. Detail goes to `references/`,
+  and the instruction that cites a file there says when to read it.
 - **Line width.** Every Markdown line outside frontmatter is at most 80
   characters. Wrap prose with a hanging indent under list markers. Write wide
   tables as lists. Split a long command in a code block with `\` line
@@ -40,10 +56,10 @@ rules and `scripts/` for executables. The README lists the skills.
 - **Scripts.** Instructions invoke a script as `<skill-dir>/scripts/<file>` and
   define `<skill-dir>` as the folder holding the `SKILL.md`. A skill with a
   script names its runtime and tools in the `compatibility` frontmatter field.
-- **Questions to the user**, from a skill or from an agent working in this
-  repo, are plain chat text, one question per message, in the Question format
-  used by `skills/task-create/SKILL.md`. Never use an agent's built-in
-  question or form tool.
+- **Questions to the user.** A question from a skill, or from an agent working
+  in this repo, is plain chat text, one question per message. It uses the
+  Question format of `skills/task-create/SKILL.md`. Never use an agent's
+  built-in question or form tool.
 
 ## Distribution
 
@@ -73,14 +89,14 @@ documented under `docs/refs/skills-distribution/`.
 
 ## Reference docs
 
-Reference material lives under `docs/refs/<folder>/`, one folder per subject,
-and follows the rules the `agent-docs-audit` skill checks:
+Reference docs live under `docs/refs/<folder>/`, one folder per subject. They
+follow the rules the `agent-docs-audit` skill checks:
 
 - Each folder has a `README.md` that links every file in it and says what each
   answers, and names what was left at the origin.
-- Each file answers one question about the subject, keeps only what this repo
-  uses, and ends with a footer, as defined in `GLOSSARY.md`, holding the URLs
-  of its origin.
+- Each reference doc answers one question about the subject and keeps only
+  what this repo uses. It ends with a footer, as defined in `GLOSSARY.md`,
+  holding the URLs of its origin.
 - Prose holds no inline links whose text already names the target; the URLs live
   in the footer. Tables are not padded for alignment.
 - Every folder is indexed by a line in this file.
@@ -138,12 +154,23 @@ Folders:
    a rule.
 4. Run `node --check` on every file under `scripts/`.
 5. For `task-create` and `task-breakdown`, diff the two task format blocks. For
-   `task-work`, confirm the section names in the Task and Subtask entries of
-   its Terms section match the headings of the `## Task` and `## Subtask`
-   blocks in `skills/task-breakdown/references/task-template.md`.
-6. For every entry in the skill's Terms section, confirm `GLOSSARY.md` defines
-   the same word with the same meaning, and that every new term in the skill is
-   in the glossary.
+   `task-work`, compare the Task format and Subtask format entries of its Terms
+   section with the `## Task` and `## Subtask` blocks in
+   `skills/task-breakdown/references/task-template.md`. The section names
+   must match.
+6. List every word with two definition texts across `GLOSSARY.md` and the
+   Terms sections. Every word printed is a failure:
+
+   ```bash
+   awk 'FNR == 1 { t = (FILENAME == "GLOSSARY.md") }
+        /^## / { if (e) print e; e = "" }
+        FILENAME != "GLOSSARY.md" && /^## Terms/ { t = 1; next }
+        FILENAME != "GLOSSARY.md" && /^## / { t = 0 }
+        /^- \*\*/ { if (e) print e; e = ""; if (t) e = $0; next }
+        e && /^  / { sub(/^ +/, " "); e = e $0; next }
+        END { if (e) print e }' GLOSSARY.md skills/*/SKILL.md \
+     | sort -u | sed -E 's/^- \*\*([^*]+)\*\*.*/\1/' | uniq -d
+   ```
 7. Confirm no Markdown line exceeds 80 characters:
 
    ```bash
@@ -151,4 +178,17 @@ Folders:
         fm && /^---$/ { fm = 0; next }
         !fm && length > 80 { print FILENAME ":" FNR }' \
      $(git ls-files -co --exclude-standard '*.md')
+   ```
+8. List every sentence over 25 words. A code span counts as one word. A
+   heading, a list marker, and a table row start a new sentence. Every line
+   printed is a failure:
+
+   ```bash
+   for f in $(git ls-files -co --exclude-standard '*.md'); do
+     awk 'FNR == 1 && /^---$/ { fm = 1; next } fm && /^---$/ { fm = 0; next }
+          /^```/ { c = !c; next } fm || c || !NF { next }
+          /^#|^ *[-*] |^\|/ { print "." } { print }' "$f" \
+       | tr '\n' ' ' | sed -E 's/`[^`]*`/X/g' | tr '.!?;:' '\n\n\n\n\n' \
+       | awk -v f="$f" 'NF > 25 { print f ": " $0 }'
+   done
    ```

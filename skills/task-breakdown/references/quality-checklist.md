@@ -27,12 +27,12 @@ decision, then run the whole checklist again.
 - [ ] Every fact, requirement, and success criterion of the original task
       appears in the task.
 - [ ] Every decision recorded during the interview appears in the task's
-      Approach or Decisions and, when a subtask applies it, restated in that
-      subtask's Context.
+      Approach or Decisions section. A subtask that applies a decision restates
+      it in its Context section.
 - [ ] Every success criterion of the task is covered by at least one subtask's
       acceptance criteria.
-- [ ] Every path and symbol in Approach, Context, and Changes was verified to
-      exist during research or is marked `(new)`.
+- [ ] Every path and symbol in the Approach, Context, and Changes sections was
+      verified to exist during research or is marked `(new)`.
 - [ ] Dependencies form a valid order: no cycles, no reference to a subtask with
       a higher number.
 - [ ] The task's Subtasks list matches the subtasks written: same count, same
@@ -46,7 +46,7 @@ decision, then run the whole checklist again.
       sequence when no command can prove it.
 - [ ] Each subtask is mergeable on its own: after it, the project builds and
       every test, existing and new, passes. Behavior it must not yet expose is
-      behind a guard named in its Context.
+      behind a guard named in its Context section.
 - [ ] Each subtask is one concern. No title contains ` and `. No subtask needs a
       second verification command.
 - [ ] No subtask consists only of tests, only of documentation, or only of
