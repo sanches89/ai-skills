@@ -136,7 +136,10 @@ Folders:
    `references/`. Hits are allowed only in lines that quote the banned words as
    a rule.
 4. Run `node --check` on every file under `scripts/`.
-5. For `task-create` and `task-breakdown`, diff the two task format blocks.
+5. For `task-create` and `task-breakdown`, diff the two task format blocks. For
+   `task-work`, confirm the section names in the Task and Subtask entries of
+   its Terms section match the headings of the `## Task` and `## Subtask`
+   blocks in `skills/task-breakdown/references/task-template.md`.
 6. For every entry in the skill's Terms section, confirm `GLOSSARY.md` defines
    the same word with the same meaning, and that every new term in the skill is
    in the glossary.
@@ -145,5 +148,6 @@ Folders:
    ```bash
    awk 'FNR == 1 && /^---$/ { fm = 1; next }
         fm && /^---$/ { fm = 0; next }
-        !fm && length > 80 { print FILENAME ":" FNR }' $(git ls-files '*.md')
+        !fm && length > 80 { print FILENAME ":" FNR }' \
+     $(git ls-files -co --exclude-standard '*.md')
    ```

@@ -37,10 +37,10 @@ wrong, and the mismatch is fixed before commit.
 - **Quality checklist**: a skill's `references/quality-checklist.md`. Every
   check passes before the skill shows its output.
 - **Banned words**: words that mark an assumption or an open question and never
-  appear in instructions or in a skill's output: `TBD`, `maybe`, `might`,
-  `probably`, `possibly`, `perhaps`, `ideally`, `consider`, `could`,
-  `if needed`, `if necessary`, `as appropriate`, `as needed`, `etc`,
-  `and so on`, `or similar`, `something like`.
+  appear in instructions or in a skill's output: `TBD`, `TBC`, `TODO`, `maybe`,
+  `might`, `probably`, `possibly`, `perhaps`, `ideally`, `consider`, `could`,
+  `should we`, `if needed`, `if necessary`, `as appropriate`, `as needed`,
+  `etc`, `and so on`, `or similar`, `something like`.
 
 ## Tasks and subtasks
 
