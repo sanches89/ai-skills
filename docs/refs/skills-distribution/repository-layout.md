@@ -4,19 +4,12 @@ The `skills` CLI takes a repository and scans it for `SKILL.md` files. A
 repository is `owner/repo`, a git URL, a direct path to a skill inside a repo,
 or a local path.
 
-## Scanned locations
+## Scan depth
 
-- The repo root, when it holds a `SKILL.md`.
-- `skills/`, plus `skills/.curated/`, `skills/.experimental/`,
-  `skills/.system/`.
-- The agent-specific folders such as `.agents/skills/` and `.claude/skills/`.
-- Skills declared in `.claude-plugin/marketplace.json` or
-  `.claude-plugin/plugin.json`.
-
-The walk goes three levels deep, so `skills/<category>/<name>/SKILL.md` is found
-too, and a `SKILL.md` at a shallower level shadows anything nested below it.
-This repo stays flat, `skills/<name>/SKILL.md`, so the path of an installed
-skill never changes.
+The walk under `skills/` goes three levels deep, so
+`skills/<category>/<name>/SKILL.md` is found too. A `SKILL.md` at a
+shallower level shadows anything nested below it. This repo stays flat,
+`skills/<name>/SKILL.md`, so the path of an installed skill never changes.
 
 ## Hiding a skill
 
@@ -32,12 +25,9 @@ when the user sets `INSTALL_INTERNAL_SKILLS=1`. Use it for work in progress.
 
 Verified with the CLI against this repo:
 
-- One target agent: the skill is copied straight into that agent's project
-  folder, for Claude Code `./.claude/skills/<name>`.
-- Several target agents: one canonical copy goes to `./.agents/skills/<name>`
-  and each agent's folder gets a symlink to it, so an update lands once.
-  `--copy` copies into every agent folder instead.
-- `-g` uses the same layout under the home directory, for Claude Code
+- Project install: the skill is copied into the agent's project folder, for
+  Claude Code `./.claude/skills/<name>`.
+- `-g`: the same layout under the home directory, for Claude Code
   `~/.claude/skills/<name>`.
 
 ---

@@ -21,7 +21,6 @@ written here.
 - **Question format**: the fixed four-block layout of every question to the
   user: QUESTION, CONTEXT, OPTIONS, MY SUGGESTION. One question per message,
   in plain chat text.
-- **Quality checklist**: a skill's `references/quality-checklist.md`.
 - **Banned words**: words that mark an assumption or an open question: `TBD`,
   `TBC`, `TODO`, `maybe`, `might`, `probably`, `possibly`, `perhaps`,
   `ideally`, `consider`, `could`, `should we`, `if needed`, `if necessary`,

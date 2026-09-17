@@ -42,7 +42,7 @@ These rules hold in every Markdown file of this repository.
   and single hyphens, at most 64 characters. `description` says what the skill
   produces and when to use it. It has two or three sentences, at most 1024
   characters, and nothing about how the skill works internally. Every skill
-  sets `license: MIT`. Other fields the format allows: `compatibility` and
+  sets `license: MIT`. The format also allows `compatibility` and
   `metadata`. Any other field, like `argument-hint`, must be one that agents
   without it ignore.
 - **Size.** `SKILL.md` stays under 500 lines. Detail goes to `references/`,
@@ -63,16 +63,9 @@ These rules hold in every Markdown file of this repository.
 
 ## Distribution
 
-The skills are installed with the `skills` CLI and listed on skills.sh. Both are
-documented under `docs/refs/skills-distribution/`.
-
-- The CLI scans `skills/<name>/SKILL.md`, at most three levels deep. Keep every
-  skill directly under `skills/`, never in a nested category folder, so paths
-  stay stable for people who already installed them.
+- Keep every skill directly under `skills/`, never in a nested category
+  folder, so the path of an installed skill never changes.
 - A skill that is not ready sets `metadata.internal: true` in its frontmatter.
-  The CLI hides it until the user opts in.
-- A skill is listed on skills.sh automatically when someone runs
-  `npx skills add sanches89/ai-skills`. There is nothing to submit.
 - Before committing a layout or frontmatter change, run
   `npx skills add . --list` from the repo root and confirm every skill is found.
 
@@ -84,22 +77,14 @@ documented under `docs/refs/skills-distribution/`.
   command, or field it applies to.
 - No rule that the code, a lint message, or a type already states, and no
   description of how something works.
-- Every `AGENTS.md` has a `CLAUDE.md` beside it that reads exactly
-  `@AGENTS.md`.
 
 ## Reference docs
 
-Reference docs live under `docs/refs/<folder>/`, one folder per subject. They
-follow the rules the `agent-docs-audit` skill checks:
-
-- Each folder has a `README.md` that links every file in it and says what each
-  answers, and names what was left at the origin.
-- Each reference doc answers one question about the subject and keeps only
-  what this repo uses. It ends with a footer, as defined in `GLOSSARY.md`,
-  holding the URLs of its origin.
-- Prose holds no inline links whose text already names the target; the URLs live
-  in the footer. Tables are not padded for alignment.
-- Every folder is indexed by a line in this file.
+Reference docs live under `docs/refs/<folder>/`, one folder per subject. Each
+reference doc answers one question about the subject and keeps only what this
+repo uses. It ends with a footer, as defined in `GLOSSARY.md`, holding the
+URLs of its origin. Each folder's `README.md` says what each file answers and
+names what was left at the origin.
 
 Folders:
 

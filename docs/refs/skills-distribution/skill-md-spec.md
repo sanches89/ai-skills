@@ -9,7 +9,6 @@ skill-name/
   SKILL.md          # required: frontmatter + instructions
   scripts/          # optional: executable code
   references/       # optional: documentation loaded on demand
-  assets/           # optional: templates, images, data
 ```
 
 ## Frontmatter
@@ -30,7 +29,7 @@ skill-name/
 1. `name` and `description` load at startup for every skill, about 100 tokens.
 2. The whole `SKILL.md` body loads on activation. Keep it under 500 lines and
    about 5000 tokens.
-3. Files under `scripts/`, `references/`, `assets/` load only when the
+3. Files under `scripts/` and `references/` load only when the
    instructions send the agent there.
 
 Tell the agent when to read each file, not that files exist: "Read
