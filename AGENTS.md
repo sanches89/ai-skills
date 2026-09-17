@@ -15,18 +15,19 @@ a `SKILL.md` and, when needed, `references/` for templates and checklists and
 - **Self-contained.** A skill cites only files inside its own folder. Never link
   to another skill's files. When two skills need the same content, duplicate it
   and keep the copies identical.
-- **Unambiguous.** Every word with a special meaning is defined in a Terms
-  section of the `SKILL.md`, and no word carries two meanings. No open
+- **Unambiguous.** A skill that gives a word a special meaning defines it in
+  a Terms section of its `SKILL.md`, and no word carries two meanings. No open
   questions, no assumptions, no alternatives left to the reader. Banned in
   instructions: `TBD`, `maybe`, `might`, `probably`, `possibly`, `perhaps`,
   `ideally`, `consider`, `could`, `if needed`, `if necessary`, `as appropriate`,
   `as needed`, `etc`, `and so on`, `or similar`, `something like`.
 - **Frontmatter.** `name` equals the folder name, lowercase letters, digits, and
   single hyphens, at most 64 characters. `description` says what the skill
-  produces and when to use it, in two sentences, at most 1024 characters, and
-  nothing about how it works internally. Every skill sets `license: MIT`.
-  Other fields the format allows: `compatibility` and `metadata`. Any other
-  field, like `argument-hint`, must be one that agents without it ignore.
+  produces and when to use it, in two or three sentences, at most 1024
+  characters, and nothing about how it works internally. Every skill sets
+  `license: MIT`. Other fields the format allows: `compatibility` and
+  `metadata`. Any other field, like `argument-hint`, must be one that agents
+  without it ignore.
 - **Size.** `SKILL.md` stays under 500 lines. Detail goes to `references/`, and
   the instruction that cites a reference file says when to read it.
 - **Line width.** Every Markdown line outside frontmatter is at most 80
@@ -38,9 +39,10 @@ a `SKILL.md` and, when needed, `references/` for templates and checklists and
 - **Scripts.** Instructions invoke a script as `<skill-dir>/scripts/<file>` and
   define `<skill-dir>` as the folder holding the `SKILL.md`. A skill with a
   script names its runtime and tools in the `compatibility` frontmatter field.
-- **Questions to the user** are plain chat text, one question per message, in
-  the Question format used by `skills/task-create/SKILL.md`. A skill never uses
-  an agent's built-in question or form tool.
+- **Questions to the user**, from a skill or from an agent working in this
+  repo, are plain chat text, one question per message, in the Question format
+  used by `skills/task-create/SKILL.md`. Never use an agent's built-in
+  question or form tool.
 
 ## Distribution
 
@@ -56,6 +58,17 @@ documented under `docs/refs/skills-distribution/`.
   `npx skills add sanches89/ai-skills`. There is nothing to submit.
 - Before committing a layout or frontmatter change, run
   `npx skills add . --list` from the repo root and confirm every skill is found.
+
+## Writing an AGENTS.md
+
+- Only the root has one until a folder needs rules of its own. A rule lives in
+  the deepest folder that covers everything it applies to.
+- A rule is a terse imperative bullet that says what to do and names the file,
+  command, or field it applies to.
+- No rule that the code, a lint message, or a type already states, and no
+  description of how something works.
+- Every `AGENTS.md` has a `CLAUDE.md` beside it that reads exactly
+  `@AGENTS.md`.
 
 ## Reference docs
 
@@ -97,8 +110,6 @@ Folders:
 
 - Propose the design of a new skill or a structural change to an existing one,
   and get the user's explicit approval before writing files.
-- Ask the user one question at a time, in chat, in the Question format. Never
-  use a built-in question tool.
 - Commit and push only when the user asks.
 
 ## Checks before committing a skill

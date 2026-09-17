@@ -29,14 +29,15 @@ when the user sets `INSTALL_INTERNAL_SKILLS=1`. Use it for work in progress.
 
 ## Where installs land
 
-The CLI symlinks each agent's skill folder to one canonical copy, so an update
-lands once.
+Verified with the CLI against this repo:
 
-- Project scope, the default: `./<agent folder>/skills/<name>`, for Claude Code
-  `./.claude/skills/<name>`.
-- Global scope, with `-g`: `~/<agent folder>/skills/<name>`, for Claude Code
+- One target agent: the skill is copied straight into that agent's project
+  folder, for Claude Code `./.claude/skills/<name>`.
+- Several target agents: one canonical copy goes to `./.agents/skills/<name>`
+  and each agent's folder gets a symlink to it, so an update lands once.
+  `--copy` copies into every agent folder instead.
+- `-g` uses the same layout under the home directory, for Claude Code
   `~/.claude/skills/<name>`.
-
 ---
 
 Reference: https://github.com/vercel-labs/skills
