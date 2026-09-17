@@ -15,9 +15,12 @@ a `SKILL.md` and, when needed, `references/` for templates and checklists and
 - **Self-contained.** A skill cites only files inside its own folder. Never link
   to another skill's files. When two skills need the same content, duplicate it
   and keep the copies identical.
-- **Unambiguous.** A skill that gives a word a special meaning defines it in
-  a Terms section of its `SKILL.md`, and no word carries two meanings. No open
-  questions, no assumptions, no alternatives left to the reader. Banned in
+- **Unambiguous.** `GLOSSARY.md` defines every word with a special meaning in
+  this repo. A skill that uses such a word restates the definition in the
+  Terms section of its `SKILL.md`, in agreement with the glossary, and no word
+  carries two meanings. A new term is added to the glossary in the same
+  commit. No open questions, no assumptions, no alternatives left to the
+  reader. Banned in
   instructions: `TBD`, `maybe`, `might`, `probably`, `possibly`, `perhaps`,
   `ideally`, `consider`, `could`, `if needed`, `if necessary`, `as appropriate`,
   `as needed`, `etc`, `and so on`, `or similar`, `something like`.
@@ -132,7 +135,10 @@ Folders:
    a rule.
 4. Run `node --check` on every file under `scripts/`.
 5. For `task-create` and `task-breakdown`, diff the two task format blocks.
-6. Confirm no Markdown line exceeds 80 characters:
+6. For every entry in the skill's Terms section, confirm `GLOSSARY.md` defines
+   the same word with the same meaning, and that every new term in the skill is
+   in the glossary.
+7. Confirm no Markdown line exceeds 80 characters:
 
    ```bash
    awk 'FNR == 1 && /^---$/ { fm = 1; next }

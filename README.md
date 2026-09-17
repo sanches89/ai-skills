@@ -54,7 +54,8 @@ Without the CLI, clone this repo into your agent's skills folder (e.g.
 
 ## Contributing
 
-Rules for writing skills in this repo are in [AGENTS.md](AGENTS.md).
+Rules for writing skills in this repo are in [AGENTS.md](AGENTS.md). Every
+term with a special meaning is defined in [GLOSSARY.md](GLOSSARY.md).
 
 ## License
 
