@@ -1,17 +1,27 @@
 # Task template
 
-Two formats: the **task** and the **subtask**. Fill every section. Replace every `<placeholder>`. Keep the headings exactly as written so the output maps onto items and files the same way every time: the task becomes the item body or `task.md`, each subtask becomes a child item or a `###-<subtask-slug>.md` file.
+Two formats: the **task** and the **subtask**. Fill every section. Replace every
+`<placeholder>`. Keep the headings exactly as written so the output maps onto
+items and files the same way every time: the task becomes the item body or
+`task.md`, each subtask becomes a child item or a `###-<subtask-slug>.md` file.
 
-The task format is the same one the `task-create` skill writes. This skill fills its Subtasks section and completes the other sections with what research and the interview settled.
+The task format is the same one the `task-create` skill writes. This skill fills
+its Subtasks section and completes the other sections with what research and the
+interview settled.
 
 Rules for filling:
 - Write decisions as facts in the present tense.
-- Name real things: file paths with line numbers, symbols, endpoints, tables, environment variables, commands. Mark files that do not exist yet as `(new)`.
+- Name real things: file paths with line numbers, symbols, endpoints, tables,
+  environment variables, commands. Mark files that do not exist yet as `(new)`.
 - Quantities are numbers with units.
 - `a | b` on a template line means: write exactly one of them.
-- *Approach* says what changes where. *Decisions* says which rules and values the change follows. A fact goes in one of them, not both.
-- A subtask repeats the context and decisions it needs. It never points at the task for information.
-- Links: in the draft, `Task`, `Depends on`, and the Subtasks list name titles and numbers only. Step 8 replaces them with file links or item links at save time.
+- *Approach* says what changes where. *Decisions* says which rules and values
+  the change follows. A fact goes in one of them, not both.
+- A subtask repeats the context and decisions it needs. It never points at the
+  task for information.
+- Links: in the draft, `Task`, `Depends on`, and the Subtasks list name titles
+  and numbers only. Step 8 replaces them with file links or item links at save
+  time.
 - No sections other than the ones below.
 
 ---
@@ -19,15 +29,17 @@ Rules for filling:
 ## Task
 
 ```markdown
-# <Title. Imperative, under 80 characters. Example: Add retry with backoff to payment webhooks>
+# <Title. Imperative, under 80 characters. Example: Add retry to webhooks>
 
 ## Summary
 
-<Two or three sentences. What changes and why. Present tense. No history of the discussion.>
+<Two or three sentences. What changes and why. Present tense. No history of the
+discussion.>
 
 ## Success criteria
 
-- <Observable, binary outcome. Example: POST /webhooks/payment returns 200 after a transient upstream 503 that recovers within 3 attempts.>
+- <Observable, binary outcome. Example: POST /webhooks/payment returns 200 after
+  a transient upstream 503 that recovers within 3 attempts.>
 - <...>
 
 ## Scope
@@ -44,22 +56,33 @@ Rules for filling:
 
 ## Approach
 
-- <One bullet per component that changes: path and symbol, then its behavior after the change. Example: src/payments/service.ts (PaymentService.send) retries the HTTP call according to RetryPolicy and rethrows the last error after the final attempt.>
-- <New component. Example: src/payments/retry-policy.ts (new) exports RetryPolicy with next(attempt), which returns the delay in ms or null when attempts are exhausted.>
+- <One bullet per component that changes: path and symbol, then its behavior
+  after the change. Example: src/payments/service.ts (PaymentService.send)
+  retries the HTTP call according to RetryPolicy and rethrows the last error
+  after the final attempt.>
+- <New component. Example: src/payments/retry-policy.ts (new) exports
+  RetryPolicy with next(attempt), which returns the delay in ms or null when
+  attempts are exhausted.>
 - <...>
 
 ## Decisions
 
-- <Rule or value the change follows. Example: Backoff starts at 500 ms, doubles per attempt, stops after 5 attempts.>
-- <Convention followed. Example: New tests live in tests/payments/ and use the WebhookFactory fixture from tests/factories.ts:12.>
+- <Rule or value the change follows. Example: Backoff starts at 500 ms, doubles
+  per attempt, stops after 5 attempts.>
+- <Convention followed. Example: New tests live in tests/payments/ and use the
+  WebhookFactory fixture from tests/factories.ts:12.>
 - <...>
 
 ## Context
 
-- <Fact an implementer needs, with source. Example: Webhook handling lives in src/payments/webhooks.ts:41 (handlePaymentWebhook).>
-- <Related item with identifier. Example: Related to PAY-212, which added the webhook endpoint.>
-- <Library fact with version. Example: axios 1.7 exposes retry only through interceptors.>
-- <Commands. Example: build `npm run build`, tests `npm test -- tests/payments`, lint `npm run lint`.>
+- <Fact an implementer needs, with source. Example: Webhook handling lives in
+  src/payments/webhooks.ts:41 (handlePaymentWebhook).>
+- <Related item with identifier. Example: Related to PAY-212, which added the
+  webhook endpoint.>
+- <Library fact with version. Example: axios 1.7 exposes retry only through
+  interceptors.>
+- <Commands. Example: build `npm run build`, tests `npm test -- tests/payments`,
+  lint `npm run lint`.>
 - <...>
 
 ## Subtasks
@@ -79,10 +102,12 @@ Rules for filling:
 ## Subtask
 
 ```markdown
-# <Title. Imperative, under 80 characters. Example: Add RetryPolicy with exponential backoff>
+# <Title. Imperative, under 80 characters. Example: Add RetryPolicy>
 
-**Task:** <task title in the draft; `./task.md` or the task's item link when saved>
-**Depends on:** none | <subtask numbers in the draft; links to the sibling files or items when saved>
+**Task:** <task title in the draft; `./task.md` or the task's item link when
+saved>
+**Depends on:** none | <subtask numbers in the draft; links to the sibling files
+or items when saved>
 
 ## Goal
 
@@ -90,26 +115,35 @@ Rules for filling:
 
 ## Context
 
-- <Only what this subtask needs, restated in full. Path with line numbers and symbol. Example: PaymentService.send() at src/payments/service.ts:88 performs the single HTTP call to retry.>
-- <Decision this subtask applies, restated. Example: Backoff starts at 500 ms, doubles per attempt, stops after 5 attempts.>
-- <Convention this subtask follows, restated. Example: New tests go in tests/payments/ and use the WebhookFactory fixture from tests/factories.ts:12.>
-- <Guard, when the subtask hides incomplete behavior. Example: The new path is behind the PAYMENT_RETRY flag in src/config/flags.ts:20, default false, removed in subtask 4.>
+- <Only what this subtask needs, restated in full. Path with line numbers and
+  symbol. Example: PaymentService.send() at src/payments/service.ts:88 performs
+  the single HTTP call to retry.>
+- <Decision this subtask applies, restated. Example: Backoff starts at 500 ms,
+  doubles per attempt, stops after 5 attempts.>
+- <Convention this subtask follows, restated. Example: New tests go in
+  tests/payments/ and use the WebhookFactory fixture from
+  tests/factories.ts:12.>
+- <Guard, when the subtask hides incomplete behavior. Example: The new path is
+  behind the PAYMENT_RETRY flag in src/config/flags.ts:20, default false,
+  removed in subtask 4.>
 - <...>
 
 ## Changes
 
-- `<path/to/file.ext>`: <function or symbol to add or change, its inputs and outputs, and the behavior on error.>
+- `<path/to/file.ext>`: <function or symbol to add or change, its inputs and
+  outputs, and the behavior on error.>
 - `<path/to/new-file.ext>` (new): <what it contains.>
 - `<path/to/test-file.ext>` (new | existing): <the test cases to add, named.>
 - <...>
 
 ## Acceptance criteria
 
-- <Binary check. Example: RetryPolicy.next(attempt) returns 500, 1000, 2000, 4000, 8000 ms for attempts 1 to 5 and null for attempt 6.>
+- <Binary check. Example: RetryPolicy.next(attempt) returns 500, 1000, 2000,
+  4000, 8000 ms for attempts 1 to 5 and null for attempt 6.>
 - <Binary check. Example: Existing tests in tests/payments/ still pass.>
 - <...>
 
 ## Verification
 
-`<the single command that proves this subtask. Example: npm test -- tests/payments/retry-policy.test.ts>`
+`<one command that proves this subtask. Example: npm test -- retry.test.ts>`
 ```
