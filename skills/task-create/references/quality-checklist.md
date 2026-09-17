@@ -50,7 +50,7 @@ decision, then run the whole checklist again.
 
 - [ ] A reader with only the task and the repository can start implementing
       without asking anything.
-- [ ] Each success criterion is binary: it is either met or not, and someone
+- [ ] Each success criterion is binary: it is met or not met, and someone
       other than the author can check it.
 - [ ] The `task-breakdown` skill can split the task without new research: every
       component in Approach has a path, and the commands to build and test are

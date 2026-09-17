@@ -14,9 +14,9 @@ Rules for filling:
 - Name real things: file paths with line numbers, symbols, endpoints, tables,
   environment variables, commands. Mark files that do not exist yet as `(new)`.
 - Write quantities as numbers with units.
-- `a | b` on a template line means: write exactly one of them.
+- `a | b` on a template line means: write a or b, never both.
 - Put what changes where in *Approach*. Put the rules and values the change
-  follows in *Decisions*. Put a fact in one of them, not both.
+  follows in *Decisions*. Put each fact in one section, not both.
 - Repeat in a subtask the facts and decisions it needs. Never point at the
   task for information.
 - Links: in the draft, name titles and numbers only on `Task`, `Depends on`,

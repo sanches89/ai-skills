@@ -77,7 +77,7 @@ decision, then run the whole checklist again.
 - [ ] An agent with only one subtask and the repository can implement it without
       asking anything and without opening the task. No `see task`, `as above`,
       `same as subtask N`, `as described earlier`.
-- [ ] Each acceptance criterion is binary: it is either met or not, and someone
+- [ ] Each acceptance criterion is binary: it is met or not met, and someone
       other than the author can check it.
 - [ ] Each subtask stands alone as a ticket: title, task, dependencies, goal,
       context, changes, acceptance criteria, and verification are all present.

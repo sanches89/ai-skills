@@ -9,7 +9,7 @@ Rules for filling:
 - Write at most 30 non-blank lines and at most 2 lines per bullet.
 - Write facts in the present tense. Name real things: file paths, symbols,
   endpoints, flags, commands, item identifiers.
-- `a | b` on a template line means: write exactly one of them.
+- `a | b` on a template line means: write a or b, never both.
 - Write the single word `None.` in a section with nothing to say.
 - Write *Blocked by* only when the result is `blocked`.
 - Add no sections other than the ones below.

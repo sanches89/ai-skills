@@ -26,7 +26,7 @@ These words have exactly one meaning in this skill.
   Linear, Jira, or GitHub Issues.
 - **Item**: a record in the tracker.
 - **Topic**: a subject that came up during research or interview. It ends
-  either in scope or under Out of scope.
+  in scope or under Out of scope.
 - **Origin**: where a piece of information was taken from: a file path with
   line numbers, an identifier, or a URL.
 - **Draft**: the output of this skill before approval, kept in the scratch

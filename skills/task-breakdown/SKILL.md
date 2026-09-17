@@ -37,7 +37,7 @@ These words have exactly one meaning in this skill.
 - **Guard**: what hides behavior that later subtasks complete: a feature flag,
   a disabled route, an unexported symbol.
 - **Topic**: a subject that came up during research or interview. It ends
-  either in scope or under Out of scope.
+  in scope or under Out of scope.
 - **Origin**: where a piece of information was taken from: a file path with
   line numbers, an identifier, or a URL.
 - **Draft**: the output of this skill before approval, kept in the scratch
