@@ -1,6 +1,7 @@
 ---
 name: agent-docs-audit
 description: Audit and compress this repo's AGENTS.md files and docs/refs so they cost less context without losing a rule. Finds rules in the wrong folder, repeated or stale rules, ambiguous wording checked against the code, and reference sections the repo does not use. Use when asked to shrink, tidy, dedupe or review AGENTS.md or docs/refs, or after several convention or reference changes.
+license: MIT
 ---
 
 # Agent docs audit

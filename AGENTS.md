@@ -24,9 +24,9 @@ a `SKILL.md` and, when needed, `references/` for templates and checklists and
 - **Frontmatter.** `name` equals the folder name, lowercase letters, digits, and
   single hyphens, at most 64 characters. `description` says what the skill
   produces and when to use it, in two sentences, at most 1024 characters, and
-  nothing about how it works internally. Other fields the format allows:
-  `license`, `compatibility`, `metadata`. Any other field, like `argument-hint`,
-  must be one that agents without it ignore.
+  nothing about how it works internally. Every skill sets `license: MIT`.
+  Other fields the format allows: `compatibility` and `metadata`. Any other
+  field, like `argument-hint`, must be one that agents without it ignore.
 - **Size.** `SKILL.md` stays under 500 lines. Detail goes to `references/`, and
   the instruction that cites a reference file says when to read it.
 - **Line width.** Every Markdown line outside frontmatter is at most 80

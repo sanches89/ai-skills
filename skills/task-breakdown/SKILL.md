@@ -1,6 +1,7 @@
 ---
 name: task-breakdown
 description: Break a task into small, self-contained subtasks, each one a reviewable commit-sized change with its own verification command. Use when the user wants to break down, split, or decompose a task, ticket, or issue into subtasks before implementing it.
+license: MIT
 argument-hint: <task id | task file | task text>
 ---
 
