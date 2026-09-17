@@ -281,7 +281,15 @@ for (const folder of folders) {
 }
 
 // Every docs/refs path the repo cites still exists.
-const cited = git("grep", "-I", "-o", "-h", "-E", "docs/refs/[A-Za-z0-9._/*-]+", "--", ".", ":!docs/refs")
+const grepCited = () => {
+  try {
+    return git("grep", "-I", "-o", "-h", "-E", "docs/refs/[A-Za-z0-9._/*-]+", "--", ".", ":!docs/refs");
+  } catch (e) {
+    if (e.status === 1) return ""; // git grep exits 1 when nothing matches
+    throw e;
+  }
+};
+const cited = grepCited()
   .split("\n")
   .filter(Boolean)
   .map((p) => p.replace(/[.,:;)`'"]+$/, ""));
