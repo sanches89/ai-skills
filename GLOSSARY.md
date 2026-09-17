@@ -79,6 +79,9 @@ wrong, and the mismatch is fixed before commit.
   rules the change obeys.
 - **Context**: facts an implementer needs, each with its origin: paths with line
   numbers, symbols, conventions, commands, related items, library facts.
+- **Origin**: where a piece of information was taken from: a path with line
+  numbers, an item identifier, or a URL. A fact names its origin. The footer
+  of a reference file holds the URLs of the file's origin.
 - **Subtasks section**: in a task, the ordered list of its subtasks with
   dependencies. `None.` until `task-breakdown` fills it.
 - **Verification**: for a task, the commands or manual steps that prove every
@@ -171,15 +174,15 @@ wrong, and the mismatch is fixed before commit.
 - **CLAUDE.md**: a file beside an `AGENTS.md` that reads exactly `@AGENTS.md`,
   so Claude Code loads the same rules.
 - **Reference docs**: the folders under `docs/refs/`, one per subject, holding
-  what this repo uses from external sources. Each has a `README.md` index, and
-  each file ends with a footer.
+  what this repo uses from external documentation. Each has a `README.md`
+  index, and each file ends with a footer.
 - **Footer**: the last block of a reference file: `---`, a blank line, then
-  `Reference:` followed by the source URLs.
+  `Reference:` followed by the URLs of the file's origin.
 - **Audit**: the `agent-docs-audit` procedure applied to `AGENTS.md` and
   `docs/refs/`. Its script measures word counts against a base ref and fails on
   the checks it can decide.
-- **Base ref**: the git ref the audit compares sizes against. The commit where
-  the last audit landed.
+- **Base ref**, written `<ref>`: the git ref the audit compares sizes against.
+  The commit where the last audit landed.
 
 ## Distribution
 

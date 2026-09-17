@@ -25,8 +25,8 @@ task-create, task-breakdown, and task-work form a pipeline: the first writes
 `docs/tasks/###-<task-slug>/task.md`, the second adds
 `docs/tasks/###-<task-slug>/###-<subtask-slug>.md` next to it, and the third
 implements a task or one subtask from those files. With a project-management
-MCP server connected, the first two write items there instead, and the third
-reads them.
+MCP server connected, the first two write items there instead, unless you ask
+for files, and the third reads them.
 
 ## Structure
 

@@ -16,7 +16,7 @@ npx skills add . --list
   `codex`, `cursor`.
 - `-g, --global`: install to the user directory instead of the project.
 - `-y, --yes`: skip confirmation prompts.
-- `-l, --list`: list the skills the source offers without installing.
+- `-l, --list`: list the skills the repository offers without installing.
 
 ## Update installed skills
 

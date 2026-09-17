@@ -18,7 +18,7 @@ Labs, the skills.sh directory it feeds, and the Agent Skills format both expect.
 - [scripts.md](scripts.md): how scripts are referenced from a skill and how to
   design them for agents.
 
-Left at the source: the full list of supported agents and their install folders,
+Left at the origin: the full list of supported agents and their install folders,
 the CLI's `find`, `use`, `init`, `list`, and `remove` commands and its `--copy`
 and `--all` flags, private-repo authentication, download limits, the skills.sh
 badge, API, and packs, the `allowed-tools` field and the `skills-ref` validator,

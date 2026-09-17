@@ -12,24 +12,47 @@ under "Writing an AGENTS.md" and "Reference docs". This skill is the
 procedure for holding the tree to those rules. It adds none: a finding that
 needs a new rule is an edit to the root `AGENTS.md`.
 
+## Terms
+
+These words have exactly one meaning in this skill.
+
+- **AGENTS.md**: the rules for working in this repository. Read by every
+  agent.
+- **CLAUDE.md**: a file beside an `AGENTS.md` that reads exactly
+  `@AGENTS.md`, so Claude Code loads the same rules.
+- **Reference docs**: the folders under `docs/refs/`, one per subject,
+  holding what this repo uses from external documentation. Each has a
+  `README.md` index, and each file ends with a footer.
+- **Origin**: where a reference file was taken from: the external pages
+  whose URLs its footer holds.
+- **Footer**: the last block of a reference file: `---`, a blank line, then
+  `Reference:` followed by the URLs of the file's origin.
+- **Audit**: the procedure of this skill applied to `AGENTS.md` and
+  `docs/refs/`. Its script measures word counts against a base ref and
+  fails on the checks it can decide.
+- **Base ref**, written `<ref>`: the git ref the audit compares sizes
+  against. The commit where the last audit landed.
+- **Skill directory**, written `<skill-dir>`: the folder holding this
+  `SKILL.md`.
+
 ## 1. Measure
 
-From the repo root, with `<skill-dir>` being the folder that holds this
-`SKILL.md` (in Claude Code, `${CLAUDE_SKILL_DIR}` expands to it):
+From the repo root (in Claude Code, `${CLAUDE_SKILL_DIR}` expands to
+`<skill-dir>`):
 
 ```bash
 node <skill-dir>/scripts/audit.mjs --base <ref>
 ```
 
-`<ref>` is the commit where the last audit landed, when the request names
-it. Otherwise omit `--base`: the default `HEAD` measures this audit's own
-edits. The script prints words per `AGENTS.md` and per refs folder against
-`<ref>`, and fails on what it can decide: a missing `CLAUDE.md` pair, a
-pointer to a parent file, a refs folder no `AGENTS.md` indexes, a README
-that misses a file, a missing source footer, a broken relative link or
-heading, a cited `docs/refs` path that is gone, inline URLs and padded
-tables. `--fix` rewrites the last two; fix the rest by hand. Files over 1000
-words are listed as notes. `--help` lists the flags and exit codes.
+Pass the base ref when the request names it. Otherwise omit `--base`: the
+default `HEAD` measures this audit's own edits. The script prints words per
+`AGENTS.md` and per refs folder against the base ref, and fails on what it
+can decide: a missing `CLAUDE.md` pair, a pointer to a parent file, a refs
+folder no `AGENTS.md` indexes, a README that misses a file, a missing
+footer, a broken relative link or heading, a cited `docs/refs` path that is
+gone, inline URLs and padded tables. `--fix` rewrites the last two; fix the
+rest by hand. Files over 1000 words are listed as notes. `--help` lists the
+flags and exit codes.
 
 ## 2. AGENTS.md
 
@@ -76,11 +99,12 @@ For each folder changed since `<ref>`, or all of them when asked:
   what that choice needs.
 - Never move or delete a file that code, an ADR or an `AGENTS.md` cites; the
   script fails when one goes missing.
-- When a whole source is cut from a file, drop its link from the footer.
+- When nothing taken from one origin page is left in a file, drop that
+  page's URL from the footer.
 - Rewrite the folder's `README.md` lines for what each file now answers, and
-  name what was left at the source.
-- Adding a source: copy only the sections needed, one file per section, with
-  its `Reference:` footer, then run `--fix`.
+  name what was left at the origin.
+- Adding an origin page: copy only the sections needed, one file per
+  section, each with its footer, then run `--fix`.
 
 ## 4. Verify and report
 

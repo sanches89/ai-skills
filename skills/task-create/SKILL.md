@@ -27,6 +27,8 @@ These words have exactly one meaning in this skill.
   anything else.
 - **Topic**: a subject that came up during research or interview. It is either
   brought into scope or listed under Out of scope.
+- **Origin**: where a fact was taken from: a path with line numbers, an item
+  identifier, or a URL.
 - **Draft**: the task text before approval, kept in the scratch directory.
 - **Research notes**: the private file in the scratch directory that holds
   the facts and the open decisions found in Step 2.
@@ -148,9 +150,10 @@ Part 2 drives Step 3. Do not show the research notes to the user.
 ### Step 3: Interview, one question at a time
 
 Order the open decisions: scope boundaries first, then behavior, then technical
-choices, then delivery details. Delivery details exist only when a server is
-connected: which team, project, or board receives the item, and the values of
-required fields that research did not settle.
+choices, then delivery details. Delivery details exist only when the task is
+saved to the server, by the rule in Step 8: which team, project, or board
+receives the item, and the values of required fields that research did not
+settle.
 
 For each open decision:
 - Ask it in chat using the question format, then end the turn and wait for the
@@ -229,12 +232,17 @@ approval.
 
 ### Step 8: Save
 
-**If a server is connected** (found in Step 2c):
+The task is saved to a file when the user asked for a file, in the idea or at
+any point in the conversation, or when no server is connected. In every other
+case it is saved to the server found in Step 2c. Never ask the user which of
+the two.
+
+**Saving to the server:**
 1. Use the destination and required field values decided in Step 3.
 2. Create one item. Title: the task title. Body: the approved task, unchanged.
 
-**Otherwise**, write the task file under the repository root using the numbering
-rule below:
+**Saving to a file**, under the repository root, using the numbering rule
+below:
 1. Collision check: if `docs/tasks/` already holds a folder with the same
    `<task-slug>` under any number, ask one question using the question format:
    overwrite that `task.md` keeping its number, or write a new folder with a new

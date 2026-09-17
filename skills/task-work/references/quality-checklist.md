@@ -17,6 +17,8 @@ that fails is fixed in the report.
 - [ ] The result is `done` only when every entry is ticked. Otherwise it is
       `blocked`, and every entry that is not ticked appears under *Blocked
       by*.
+- [ ] When the result is `blocked`, the change made so far is still in the
+      working tree and is listed under *Changes*.
 - [ ] The diff removes, skips, or loosens no test, lint rule, or type check.
 
 ## Tests

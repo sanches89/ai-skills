@@ -298,7 +298,7 @@ for (const folder of folders) {
 
   for (const path of inFolder) {
     const text = readFileSync(path, "utf8");
-    if (!text.includes(FOOTER)) errors.push(`${path}: no "Reference:" footer with the source link`);
+    if (!text.includes(FOOTER)) errors.push(`${path}: no "Reference:" footer with the origin URL`);
     const head = text.includes(FOOTER) ? text.slice(0, text.lastIndexOf(FOOTER)) : text;
     const urls = links(prose(head)).filter(strippable).length;
     if (urls > 0) errors.push(`${path}: ${urls} inline URL(s) the link text already names (--fix)`);

@@ -73,7 +73,8 @@ These words have exactly one meaning in this skill.
 
 1. **The criteria define done.** The result is `done` only when every criterion
    has evidence from a run made after the last edit. Anything else is
-   `blocked`.
+   `blocked`. A `blocked` result keeps the change made so far in the working
+   tree. Never revert it.
 2. **Read the chain before changing a file.** No project file changes before
    Step 6.
 3. **Stay in scope.** Change only what the target's Changes or Approach section

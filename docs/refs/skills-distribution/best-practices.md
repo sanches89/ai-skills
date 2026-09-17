@@ -45,7 +45,7 @@
 - **Validation loops**: do the work, run a validator, fix, repeat until it
   passes.
 - **Plan, validate, execute**: for batch or destructive operations, write a
-  structured plan, check it against a source of truth, then run it.
+  structured plan, check it against the authoritative data, then run it.
 - **Bundled scripts**: when traces show the agent rebuilding the same logic
   every run, write it once under `scripts/`.
 

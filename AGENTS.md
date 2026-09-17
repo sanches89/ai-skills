@@ -77,10 +77,10 @@ Reference material lives under `docs/refs/<folder>/`, one folder per subject,
 and follows the rules the `agent-docs-audit` skill checks:
 
 - Each folder has a `README.md` that links every file in it and says what each
-  answers, and names what was left at the source.
+  answers, and names what was left at the origin.
 - Each file answers one question about the subject, keeps only what this repo
-  uses, and ends with a footer, as defined in `GLOSSARY.md`, holding the source
-  URLs.
+  uses, and ends with a footer, as defined in `GLOSSARY.md`, holding the URLs
+  of its origin.
 - Prose holds no inline links whose text already names the target; the URLs live
   in the footer. Tables are not padded for alignment.
 - Every folder is indexed by a line in this file.

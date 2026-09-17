@@ -25,7 +25,8 @@ What each section keeps:
 - **Tests**: the number of test cases this run added and the number of
   existing test cases it edited. Without a test setup, the words
   `none: no test setup`.
-- **Changes**: one bullet per changed file: path, symbol, and its behavior
+- **Changes**: one bullet per changed file, also when the result is `blocked`,
+  because the change made so far is kept: path, symbol, and its behavior
   after the change. With more than 10 changed files, one bullet per folder
   instead: the folder path and what changed in it.
 - **Deviations**: each difference between the target's text and what was

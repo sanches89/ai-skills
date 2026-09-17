@@ -31,6 +31,8 @@ These words have exactly one meaning in this skill.
   subtask is a child item of it. The word is never used for anything else.
 - **Topic**: a subject that came up during research or interview. It is either
   brought into the task or listed under Out of scope.
+- **Origin**: where a fact was taken from: a path with line numbers, an item
+  identifier, or a URL.
 - **Draft**: the breakdown text before approval, kept in the scratch directory.
 - **Research notes**: the private file in the scratch directory that holds
   the facts and the open decisions found in Step 2.
@@ -171,9 +173,9 @@ Part 2 drives Step 3. Do not show the research notes to the user.
 
 Order the open decisions: task scope first, then behavior, then technical
 choices, then split choices (guards, ordering), then delivery details. Delivery
-details exist only when the source is *text* and a server is connected: which
-team, project, or board receives the items, and the values of required fields
-that research did not settle.
+details exist only when the source is *text* and the breakdown is saved to the
+server, by the rule in Step 8: which team, project, or board receives the
+items, and the values of required fields that research did not settle.
 
 For each open decision:
 - Ask it in chat using the question format, then end the turn and wait for the
@@ -276,8 +278,10 @@ Nothing is created or written before approval.
 The destination follows the source:
 - Source *server*: save to the server, into the same item.
 - Source *file*: save to files, into the same task folder.
-- Source *text*: save to the server when one is connected, using the destination
-  decided in Step 3. Otherwise save to files in a new task folder.
+- Source *text*: save to files in a new task folder when the user asked for
+  files, in the task text or at any point in the conversation, or when no
+  server is connected. In every other case save to the server, using the
+  destination decided in Step 3. Never ask the user which of the two.
 
 **Saving to the server:**
 1. Source *server*: replace the item's body with the approved task and keep its
