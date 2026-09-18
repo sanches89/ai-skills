@@ -1,16 +1,16 @@
 # Update report template
 
-The update report is the only thing the user keeps from a run. Make every
-line a fact that changes what the user does next. Keep the headings exactly
-as written. Replace every `<placeholder>`.
+The update report is all the user keeps from a run. Make every line a fact
+that changes what the user does next. Keep the headings exactly as written.
+Replace every `<placeholder>`.
 
 Rules for filling:
-- Write at most 60 non-blank lines and at most 2 lines per bullet.
-- Write facts in the present tense. Name real things: manifest paths,
-  package names, versions, check commands, files.
+- At most 60 non-blank lines and 2 lines per bullet.
+- Present tense. Name real things: manifest paths, package names, versions,
+  check commands, files.
 - `a | b` on a template line means: write a or b, never both.
-- Write the single word `None.` in a section with nothing to say.
-- Add no sections other than the ones below.
+- The single word `None.` in a section with nothing to say. No section
+  beyond the ones below.
 
 Every dependency with a rewritable range has exactly one state:
 - **updated**: its range now names its candidate version;
@@ -20,25 +20,24 @@ Every dependency with a rewritable range has exactly one state:
 - **up to date**: it has no candidate version.
 
 What each section keeps:
-- **Result**: `done` when Step 7 passes on every install root. Also `done`
-  when Step 5 produced no plan entry. `partial` when Step 7 passes on at
-  least one install root and restored at least one other install root from
-  the baseline copy. `blocked` in every other case.
-- **Request**: the paths and the package names of Step 1, or the word `all`,
-  with the level and the cooldown.
-- **Install roots**: the count of install roots and the count of orphan
-  manifests.
-- **Packages**: the count of dependencies in each state, with the updated
-  count split by bump kind.
-- **Checks**: `pass` when Step 7 passes on every install root. `install only`
-  when every install root is install-only. Otherwise `fail:` with the name
-  of each check command that fails in Step 7 and passes in the baseline
+- **Result**: `done` when Step 7 passes on every install root, or when
+  Step 5 produced no plan entry. `partial` when Step 7 passes on at least
+  one install root and at least one other was restored from the baseline
+  copy. `blocked` in every other case.
+- **Request**: the paths and package names of Step 1, or `all`, with the
+  level and the cooldown.
+- **Install roots**: the count of install roots and of orphan manifests.
+- **Packages**: the count of dependencies in each state, the updated count
+  split by bump kind.
+- **Checks**: `pass` when Step 7 passes on every install root.
+  `install only` when every install root is install-only. Otherwise `fail:`
+  with each check command that fails in Step 7 and passes in the baseline
   results.
 - **Node version**: `<node-version>` and its Node version source.
 - **Updated**: one bullet per manifest with an updated or lowered
-  dependency. Name every such dependency with its current range and its new
-  range. With more than 12 such dependencies in one manifest, name those
-  with bump kind `major` and give the count of the others.
+  dependency, naming each with its current range and its new range. With
+  more than 12 in one manifest, name those with bump kind `major` and count
+  the others.
 - **Constrained**: one bullet per kept or lowered dependency whose hold
   reason is `engines.node`, `peer of`, `@types/node major`, `override`,
   `pinned by`, `cooldown`, or `deprecated`.
@@ -46,16 +45,15 @@ What each section keeps:
   reason is `check:` or `verify:`, with the release notes link from
   `update-rules.md`.
 - **Deprecated**: one bullet per dependency whose current version, or whose
-  `latest` dist-tag version, carries a deprecation message. Quote the message
-  in one line.
+  `latest` dist-tag version, carries a deprecation message, quoted in one
+  line.
 - **Left alone**: one bullet per manifest, naming each range or field with
   its kind from `update-rules.md`.
 - **Unverified**: one bullet per orphan manifest, with the count of ranges
   set there.
 
 What the report leaves out:
-- the steps taken and their order;
-- attempts that failed and their fixes;
+- the steps taken, and attempts that failed;
 - command output, logs, stack traces, and the JSON files of Step 4;
 - the request restated;
 - praise, apologies, offers, questions, and next-step suggestions.

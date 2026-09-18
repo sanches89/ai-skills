@@ -1,9 +1,8 @@
 # Unit testing
 
-Follow these rules for every test this skill writes, in any language and any
-test framework. Prefer a convention of the project over a rule here: its
-framework, test location, naming, fixtures, and helpers, as recorded in Step
-4e. Never add a second framework or a second style beside the project's.
+Rules for every test this skill writes, in any language and framework. A
+convention of the project, as recorded in Step 4e, beats a rule here. Never
+add a second framework or style beside the project's.
 
 ## What to test
 
@@ -30,7 +29,7 @@ framework, test location, naming, fixtures, and helpers, as recorded in Step
 - Write three parts, in this order: arrange the inputs, act by calling the
   unit once, assert the outcome.
 - Name the test by the unit, the condition, and the expected result, in the
-  project's naming style. Example:
+  project's naming style:
   `RetryPolicy.next returns null after the fifth attempt`.
 - Write no loops and no conditionals inside a test. Use the framework's table
   or parameterized form for many inputs of one behavior.
@@ -41,12 +40,12 @@ framework, test location, naming, fixtures, and helpers, as recorded in Step
 
 ## Determinism
 
-Make a test give the same result on every run, on every machine, in any order.
-- No dependence on the order of tests or on state another test left behind.
-- No real network, no real clock, no random values without a fixed seed.
-- No files outside a temporary folder that the test creates and removes.
-- No sleeping and no waiting on real time. Advance a fake clock instead.
-- No dependence on environment variables, locale, or time zone that the test
+A test gives the same result on every run, on every machine, in any order:
+- no dependence on the order of tests or on state another test left behind;
+- no real network, no real clock, no random values without a fixed seed;
+- no files outside a temporary folder that the test creates and removes;
+- no sleeping and no waiting on real time. Advance a fake clock instead;
+- no dependence on environment variables, locale, or time zone that the test
   does not set itself.
 
 ## Test doubles
@@ -57,26 +56,25 @@ Make a test give the same result on every run, on every machine, in any order.
   test double.
 - Never replace the unit under test or any part of it.
 - Use the real collaborator when it is fast and deterministic.
-- Assert on a call to a test double only when the call itself is the behavior,
-  for example `sends exactly one email`.
+- Assert on a call to a test double only when the call itself is the
+  behavior, such as `sends exactly one email`.
 
 ## Assertions
 
 - Assert the specific outcome: the value, the state, the emitted event.
   `does not throw` alone proves nothing.
 - In an error test, assert the error type and its message or code.
-- Assert only what the behavior under test decides. Never assert on incidental
-  details such as log text, field order, or internal counters.
+- Assert only what the behavior under test decides. Never assert on
+  incidental details such as log text, field order, or internal counters.
 - Write no snapshot test for logic. Use a snapshot only for large rendered
-  output, and only when the project already uses snapshots for that area.
+  output, and only where the project already uses snapshots.
 
 ## A test must be able to fail
 
 - Run each new test before the code exists and confirm it fails for the
   expected reason: the missing behavior, never a mistake in the test.
-- Make a test for a refactor pass before and after the refactor. Prove it is
-  able to fail by breaking the asserted behavior once, seeing the failure, and
-  restoring the code.
+- Make a test for a refactor pass before and after the refactor. Break the
+  asserted behavior once, see the failure, and restore the code.
 - Give every test at least one assertion.
 
 ## Kind of test
@@ -85,14 +83,14 @@ Make a test give the same result on every run, on every machine, in any order.
 - Write an integration test only in two cases: the target names one, or a
   criterion has no unit-level proof and the project already has integration
   tests for that area.
-- When the project enforces a coverage threshold, it is part of the test
-  command and holds for the change. Never write a test only to raise a number.
+- A coverage threshold the project enforces is part of the test command and
+  holds for the change. Never write a test only to raise a number.
 
 ## Existing tests
 
 - Edit an existing test only for a behavior the target changes, or for an
-  import, path, or symbol name it renames or moves. Update it to the new
-  behavior or the new name, and list the file in the work report's *Changes*.
+  import, path, or symbol name it renames or moves. List the file under
+  *Changes* in the work report.
 - Never delete, skip, or loosen a test to make a run pass.
 - Leave alone a test that already failed in the baseline and list it under
   *Affects other work*, unless a criterion covers it.

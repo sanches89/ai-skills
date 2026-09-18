@@ -1,63 +1,50 @@
 # Quality checklist
 
-Run every check over the draft before showing it to the user. A single failure
-blocks delivery. Fix the failure, or return to the interview for the one open
-decision, then run the whole checklist again.
+Run every check and every grep helper over the draft. One failure blocks
+delivery. Fix it, or return to the interview for the open decision, then run
+the whole checklist again.
 
 ## Meaning
 
-- [ ] Every fact and every instruction of the input text is in the rewrite.
-- [ ] No fact or instruction is in the rewrite that the input text or a Step 3
-      answer does not hold.
-- [ ] Every passage with two readings is written in the one reading that
-      research or the user settled.
+- [ ] Every fact and instruction of the input text is in the rewrite. The
+      rewrite adds none beyond the input text and the Step 3 answers.
+- [ ] Every passage with two readings is in the reading research or the
+      user settled.
 - [ ] Every code block, code span, URL, and quoted string is byte-identical
       to the input text.
 
 ## Words
 
-- [ ] Every word has one meaning across the rewrite. Every split meaning has
-      its own term, and the bare word is gone.
-- [ ] Every thing has one name across the rewrite, the glossary's when the
-      glossary has one.
-- [ ] Every term keeps the glossary's meaning.
-- [ ] No pronoun has two possible antecedents, and no `the <noun>` points at
-      a thing the sentence does not name.
+- [ ] Every word has one meaning: each split meaning has its own term, and
+      the bare word is gone.
+- [ ] Every thing has one name, the glossary's when it has one, and every
+      term keeps the glossary's meaning.
+- [ ] No pronoun has two antecedents, and no `the <noun>` points at a thing
+      the sentence does not name.
 - [ ] Every quantity is a number with a unit.
-- [ ] No banned words: `TBD`, `TBC`, `TODO`, `maybe`, `might`, `probably`,
-      `possibly`, `perhaps`, `ideally`, `consider`, `could`, `should we`,
-      `if needed`, `if necessary`, `as appropriate`, `as needed`, `etc`,
-      `and so on`, `or similar`, `something like`.
-- [ ] No question marks, except inside quoted text or code.
-- [ ] No alternatives: no `either ... or`, no `one of`, no
-      `option A / option B`, no ungrouped `and/or`.
+- [ ] No `option A / option B` and no ungrouped `and/or`.
 
 ## Sentences
 
-- [ ] No sentence over 25 words, with a code span counted as one word.
-- [ ] Every instruction is one command in the active voice with one action.
-- [ ] Every group of three or more parallel items is a list, one item per
-      line.
-- [ ] Every ordered sequence is a numbered list.
+- [ ] Every instruction is one command with one action.
+- [ ] Three or more parallel items form a list, and an ordered sequence a
+      numbered list.
 
 ## Structure
 
 - [ ] Every heading of the input text is in the rewrite, at the same level
-      and in the same order.
-- [ ] Prose wraps at the width recorded in Step 1.
+      and in the same order. Prose wraps at the width of Step 1.
 - [ ] The rewrite follows every project rule recorded in Step 2d.
 
 ## Report
 
-- [ ] Every ambiguity from research appears under *Resolved* with its
-      decision.
-- [ ] Every candidate appears under *Candidates*.
-- [ ] The open-decisions list from research is empty.
+- [ ] Every ambiguity is under *Resolved* with its decision, every candidate
+      under *Candidates*, and the open-decisions list is empty.
 
 ## Grep helpers
 
-Banned words, questions, and alternatives. Run this over the draft. Remove
-every hit, unless it sits inside quoted text or code.
+Banned words, questions, and alternatives. Remove every hit outside quoted
+text or code.
 
 ```bash
 grep -nEi \
@@ -68,8 +55,8 @@ grep -nEi \
   <draft-file>
 ```
 
-Passive voice. Read every hit. Rewrite it as a command when it is an
-instruction. A definition or a state stays.
+Passive voice. Rewrite a hit that is an instruction as a command. A
+definition or a state stays.
 
 ```bash
 grep -nE '\b(is|are|was|were|be|been|being) +([a-z]+ly +)?[a-z]+(ed|en)\b' \

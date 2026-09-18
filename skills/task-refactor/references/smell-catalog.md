@@ -1,16 +1,11 @@
 # Smell catalog
 
-Every smell this skill reports, in any language. A function is a function, a
-method, or a procedure. A module is a class, a file, or a package. Skip an
-entry that the language of the code has no form for.
-
-Each entry gives:
-- **Signal**: what shows the smell, in the measurement summary or in the code;
-- **Refactoring**: the named change that removes it;
-- **Leave it when**: the case where the structure is right as it is.
-
-The limits named here are the defaults of `measurement-tools.md`. The
-project's own limits replace them.
+Every smell this skill reports. A function is a function, a method, or a
+procedure. A module is a class, a file, or a package. Skip an entry that the
+language of the code has no form for. Each entry gives the **Signal** that
+shows the smell, the **Refactoring** that removes it, and the case to
+**Leave it**. The limits named here are the defaults of
+`measurement-tools.md`; the project's own limits replace them.
 
 ## Duplication
 

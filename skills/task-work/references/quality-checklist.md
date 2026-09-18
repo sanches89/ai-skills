@@ -1,84 +1,62 @@
 # Quality checklist
 
-Run every check before returning the work report. A single failure blocks
-delivery. Fix the failure, then run the whole checklist again. When a check on
-the work fails, go back to Step 6 or Step 7. When a check on the report fails,
-fix the report.
+Run every check and the grep helper before returning the work report. One
+failure blocks delivery. Fix it, then run the whole checklist again.
 
 ## Criteria
 
 - [ ] The criteria checklist holds every criterion of the target, word for
       word, plus the target's Verification.
-- [ ] Every ticked entry has evidence: the command or step and its result, from
-      a run made after the last edit.
-- [ ] The counts on the report's *Criteria* line equal the ticked and total
-      criterion entries of the criteria checklist. The Verification entry and
-      the command entries do not count.
-- [ ] The result is `done` only when every entry has a tick. Otherwise it is
-      `blocked`, and every entry without a tick appears under *Blocked by*.
-- [ ] When the result is `blocked`, the working tree still holds the change
-      made so far, and *Changes* lists it.
-- [ ] The diff removes, skips, or loosens no test, lint rule, or type check.
+- [ ] Every ticked entry has evidence from a run made after the last edit.
+- [ ] The *Criteria* counts equal the ticked and total criterion entries,
+      Verification and command entries excluded.
+- [ ] `done` only when every entry is ticked. Else `blocked`, every unticked
+      entry under *Blocked by*, and the change so far still in the tree.
 
 ## Tests
 
-Skip this section when the project has no test setup. Then confirm instead
-that the diff adds no test and no test framework. Confirm also that the report
-states the missing test setup under *Affects other work*.
+Without a test setup: the diff adds no test and no test framework, and
+*Affects other work* states the missing test setup.
 
 - [ ] Every behavior the diff adds or alters has a test, and every test the
       target names exists.
 - [ ] Every new test failed for the expected reason before it passed.
 - [ ] A bug fix has a regression test.
-- [ ] Every new test holds at least one assertion and tests one behavior.
+- [ ] Every new test holds an assertion and tests one behavior.
+- [ ] No new test uses a real network, clock, unseeded random value, sleep,
+      or file outside a temporary folder. No double replaces the unit under
+      test.
 - [ ] Every test file this run added or edited passes when run alone.
-- [ ] No new test uses the real network, the real clock, unseeded random
-      values, sleeping, or files outside a temporary folder.
-- [ ] Test doubles replace only system boundaries, never the unit under test.
-- [ ] Every edited existing test asserts a behavior the target changes. A
-      test edited for a rename or a move changed only in an import, a path,
-      or a symbol name.
-- [ ] The tests follow the project's framework, location, naming, and
-      fixtures. The diff adds no second framework or style.
-- [ ] The count on the report's *Tests* line equals the test cases added.
+- [ ] Every edited existing test asserts a behavior the target changes, or
+      changed only in an import, a path, or a symbol name.
+- [ ] The *Tests* count equals the test cases added.
 
 ## Scope
 
 - [ ] The target's Changes or Approach section names every changed file, or
       *Deviations* lists it with its reason.
-- [ ] The diff does nothing that any task in the chain lists under *Out of
-      scope*.
-- [ ] The diff does nothing that a sibling subtask delivers.
-- [ ] The diff adds or removes every guard the target names, as stated.
-- [ ] No task file, subtask file, or item changed.
-- [ ] The run made no commit, push, pull request, status change, or comment,
-      unless the request that invoked the skill asked for it.
+- [ ] The diff does nothing under any *Out of scope* of the chain, and
+      nothing a sibling subtask delivers. It removes or loosens no check.
+- [ ] The diff adds or removes every guard the target names.
+- [ ] No task file, subtask file, or item changed. No commit, push, pull
+      request, status change, or comment, unless the request asked.
 
 ## Report
 
 - [ ] The headings are exactly those of `work-report-template.md`. *Blocked
-      by* exists only when the result is `blocked`.
-- [ ] At most 30 non-blank lines. Each bullet is at most 2 lines.
-- [ ] No banned words: `TBD`, `TBC`, `TODO`, `maybe`, `might`, `probably`,
-      `possibly`, `perhaps`, `ideally`, `consider`, `could`, `should we`,
-      `if needed`, `if necessary`, `as appropriate`, `as needed`, `etc`,
-      `and so on`, `or similar`, `something like`.
-- [ ] No question marks, except inside quoted user-interface text or code.
-- [ ] No narration: no steps taken, no failed attempts, no `I tried`,
-      `at first`, `after that`.
-- [ ] No command output, logs, stack traces, or code listings.
-- [ ] The report lists no met criterion and restates none of the target's
-      text.
-- [ ] Every bullet under *Affects other work* is of a kind the template lists.
+      by* exists only on `blocked`.
+- [ ] At most 30 non-blank lines, 2 lines per bullet, `None.` in every
+      empty section.
+- [ ] No command output, no met criterion, no restated target text, no
+      offer or next step.
+- [ ] Every bullet under *Affects other work* is of a kind the template
+      lists.
 - [ ] Every path and symbol in the report exists in the working tree.
-- [ ] Every empty section holds the single word `None.`
-- [ ] The report ends with its last section. No offer, no question, no
-      next-step suggestion.
 
 ## Grep helper
 
-Run this over the report file. Remove every hit, unless it sits inside quoted
-user-interface text or code.
+Run over the report. Remove every hit outside quoted user-interface text or
+code.
 
 ```bash
 grep -nEi \

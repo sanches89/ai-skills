@@ -1,8 +1,6 @@
 # Measurement tools
 
-Read this file in Step 3d. It holds the tool rules, the measure tool, the two
-reports the measure tool reads, and the limits. It also names the tools that
-run only when the project configures them.
+Read this file in Step 3d.
 
 ## Tool rules
 
@@ -13,11 +11,10 @@ run only when the project configures them.
 - Never add a tool to the project's manifest. Never write a tool's
   configuration file or report file inside the repository.
 - Skip a measurement whose tool or runtime is missing. Read the code against
-  the limits instead. Name the skipped measurement in the task's Context
-  section.
+  the limits instead.
 - Write the measure command with its paths and options into the task's
   Context and Verification sections, so that the implementer measures the
-  same way. A number from different options proves nothing.
+  same way.
 
 ## The measure tool
 
@@ -33,7 +30,7 @@ Never install the measure tool into the project. This skill reads a
 measurement summary with `"version": 1`. When the measure command fails to
 start, follow *Without any tool* below.
 
-Run the measure tool from the project root. It changes no project file. It
+Run the measure tool from the project root. It changes no project file and
 prints one measurement summary on stdout, with five measurements:
 - `duplication`, from jscpd, which ships with the measure tool. jscpd reads
   more than 200 languages;
@@ -47,12 +44,11 @@ prints one measurement summary on stdout, with five measurements:
 - `coverage`, from the coverage reports passed with `--coverage-report`: line
   coverage and branch coverage of the files under the paths.
 
-The measure tool never runs the tests. It reads the reports that the
+The measure tool never runs the tests: it reads the reports that the
 project's own test command wrote. Pass each option once per report.
-`--test-report` also takes a folder of JUnit XML files.
-
-The measure tool respects `.gitignore`. It leaves data and prose formats,
-such as JSON, YAML, and Markdown, out of duplication, hotspots, and coverage.
+`--test-report` also takes a folder of JUnit XML files. The measure tool
+respects `.gitignore` and leaves data and prose formats, such as JSON, YAML,
+and Markdown, out of duplication, hotspots, and coverage.
 
 Record the baseline:
 
@@ -72,8 +68,7 @@ implementer's run keeps or improves.
 ## The test report and the coverage report
 
 A test report is a JUnit XML file. A coverage report is a file in LCOV,
-Cobertura XML, JaCoCo XML, or Go cover profile format. Nearly every test
-runner writes one of each.
+Cobertura XML, JaCoCo XML, or Go cover profile format.
 
 - Make the project's own test command write both reports. Add only options.
   Never add a reporter package, a coverage package, or a configuration file.
@@ -150,8 +145,8 @@ or Cobertura option.
   `covered`, `partly` covered, and have `none`. Its `top` list holds every
   function with an uncovered line or branch, highest `crap` first.
 - `crap` is the CRAP score: `ccn^2 * (1 - coverage)^3 + ccn`. A complex
-  function without tests scores highest. It is the riskiest code to refactor
-  and the first to get characterization tests.
+  function without tests scores highest: it is the first to get
+  characterization tests.
 
 The task's success criteria hold these values against the baseline:
 - duplicated lines and clone count, with the value the subtasks reach;
@@ -164,10 +159,6 @@ The task's success criteria hold these values against the baseline:
 Leave out the sum of `ccn`, because Extract Function raises that sum by
 design. Leave out the coverage percentage, because removing covered dead code
 lowers it with no test lost.
-
-A coverage report proves that a test runs a line. It never proves that a test
-asserts the result. Before marking an entry `covered`, read the tests that run
-its code. Confirm that they assert what the code returns, changes, or raises.
 
 ## Limits
 
@@ -185,13 +176,12 @@ A project configures a limit in its linter or its analysis tool. Examples:
 - `gocyclo` and `dupl` of golangci-lint;
 - the design rules of PMD, and a SonarQube quality profile.
 
-A value over a limit is a reason to read the code. It becomes a finding only
-when `smell-catalog.md` has no *Leave it when* case for it.
+A value over a limit becomes a finding only when `smell-catalog.md` has no
+*Leave it when* case for it.
 
 ## Tools that run only when the project configures them
 
-Run each of these only through the command the project already has. Never
-introduce one.
+Run each of these only through the command the project already has.
 - **Coverage**, such as `c8`, `coverage.py`, `tarpaulin`, or JaCoCo. Coverage
   built into the toolchain, as in Go and the Node.js test runner, needs no
   configuration. Use it in Step 4 to write the coverage report.
@@ -218,8 +208,8 @@ first of these that the project has:
    afterwards.
 
 State in the subtask that the implementer reviews the full diff after every
-tool run. A tool changes strings, comments, or look-alike symbols that the
-refactoring never meant.
+tool run, because a tool also changes strings, comments, and look-alike
+symbols.
 
 ## Without any tool
 

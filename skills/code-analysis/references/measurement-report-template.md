@@ -1,23 +1,22 @@
 # Measurement report template
 
-The measurement report is the only thing the user keeps from a run. Make
-every line a fact that changes what the user does next. Keep the headings
-exactly as written. Replace every `<placeholder>`.
+The measurement report is all the user keeps from a run: make every line a
+fact that changes what the user does next. Keep the headings exactly as
+written. Replace every `<placeholder>`.
 
 Rules for filling:
-- Write at most 60 non-blank lines and at most 2 lines per bullet.
-- Write facts in the present tense. Name real things: file paths, symbols,
-  branch names, test names, configuration files.
+- At most 60 non-blank lines and 2 lines per bullet.
+- Present tense. Name real things: paths, symbols, branch names, test
+  names, configuration files.
 - `a | b` on a template line means: write a or b, never both.
 - With a base name, write each value on a *Measurements* line as
-  `<before> to <after>`, with the value of the base summary first. Without
-  a base name, write the value alone.
-- Write the single word `None.` in a section with nothing to say.
-- Add no sections other than the ones below.
+  `<before> to <after>`, base summary first. Without one, the value alone.
+- The single word `None.` in a section with nothing to say. No section
+  beyond the ones below.
 
 What each section keeps:
-- **Result**: `done` when Step 4b printed a summary. `blocked` with the
-  reason in every other case.
+- **Result**: `done` when Step 4b printed a summary, else `blocked` with the
+  reason.
 - **Scope**: `files` of the current summary, the repository root, and the
   ignore globs.
 - **Base**: `none`, or the base name with the short hash of the base commit,
@@ -25,8 +24,7 @@ What each section keeps:
 - **Limits**: the three limits, the clone floor, and their source: the
   configuration file that sets them, or `defaults`.
 - **Tools**: the `tool` value of `duplication`; the `tool` value of
-  `complexity`, or `no lizard` when lizard did not run; the test runner, or
-  `no test command` when 2c found none.
+  `complexity`, or `no lizard`; the test runner, or `no test command`.
 - **Comparison**: `none` without a base name. `worse` when `worse` of the
   current summary is not empty. `better` when `worse` is empty and `better`
   of `diff.json` is not. `same` in every other case.
@@ -34,20 +32,17 @@ What each section keeps:
   other than `ok` in the current summary gets `skipped` with its reason.
 - **Changes**: only with a base name. Each bullet names the values, clones,
   functions, tests, and files that `diff.json` lists. A bullet with more
-  than three names gives the count and the first three. Without a base
-  name, the single word `None.`
+  than three names gives the count and the first three.
 - **Findings**: the findings of Step 6 in rank order, numbered. The marker
-  is `new` for an entry that `diff.json` lists under `added`. It is
-  `changed` for an entry in a changed file that `diff.json` does not list
-  under `added`. It is empty in every other case.
+  is `new` for an entry that `diff.json` lists under `added`, `changed` for
+  another entry in a changed file, else empty.
 - **Skipped**: every measurement with a status other than `ok` in either
   summary, with its reason. The base tests and coverage, when Step 3b
   skipped them, with the reason. Every list cut at 200 entries. The count of
   findings left out per kind.
 
 What the report leaves out:
-- the steps taken and their order;
-- attempts that failed and their fixes;
+- the steps taken, and attempts that failed;
 - command output, logs, stack traces, and the JSON of the summaries;
 - the request restated;
 - praise, apologies, offers, questions, and next-step suggestions.

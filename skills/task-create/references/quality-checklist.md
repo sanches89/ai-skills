@@ -1,65 +1,48 @@
 # Quality checklist
 
-Run every check over the draft before showing it to the user. A single failure
-blocks delivery. Fix the failure, or return to the interview for the one missing
-decision, then run the whole checklist again.
+Run every check and the grep helper over the draft. One failure blocks
+delivery. Fix it, or return to the interview for the missing decision, then
+run the whole checklist again.
 
 ## Ambiguity
 
-- [ ] No banned words in Summary, Success criteria, Approach, Decisions, or
-      Verification: `TBD`, `TBC`, `TODO`, `maybe`, `might`, `probably`,
-      `possibly`, `perhaps`, `ideally`, `consider`, `could`, `should we`,
-      `if needed`, `if necessary`, `as appropriate`, `as needed`, `etc`,
-      `and so on`, `or similar`, `something like`.
-- [ ] No question marks anywhere, except inside quoted user-interface text or
-      code.
-- [ ] No alternatives in Approach or Decisions: no `option A / option B`, no
-      `either ... or`, no `one of`.
-- [ ] Every quantity is a number with a unit. No `fast`, `small`, `large`,
-      `reasonable`, `a few`.
-- [ ] Every named thing is specific: file path, symbol, endpoint, table,
-      environment variable, command. No `the service`, `the config`,
-      `the relevant tests`, `the usual place`.
+- [ ] No alternative in Approach or Decisions: no `option A / option B`.
+- [ ] Every quantity is a number with a unit: no `fast`, `small`, `a few`.
+- [ ] Every named thing is a path, symbol, endpoint, table, environment
+      variable, or command: no `the service`, `the relevant tests`.
 
 ## Completeness
 
-- [ ] The open-decisions list from research is empty.
-- [ ] Every decision recorded during the interview appears in Approach or
-      Decisions.
-- [ ] Every success criterion traces to at least one component listed in
-      Approach.
-- [ ] Every path and symbol in the Approach and Context sections exists, as
-      verified during research, or carries the mark `(new)`.
-- [ ] Every success criterion has at least one Verification step that proves
-      it.
-- [ ] Verification lists concrete commands or steps. `Run the tests` alone fails
-      this check.
-- [ ] Subtasks contains exactly the word `None.`
+- [ ] The open-decisions list is empty, and every interview decision is in
+      Approach or Decisions.
+- [ ] Every success criterion is binary, traces to a component in Approach,
+      and has a Verification step that proves it.
+- [ ] Every path and symbol in Approach and Context exists, as verified in
+      research, or carries `(new)`.
+- [ ] Verification holds concrete commands or steps, and Subtasks holds
+      exactly `None.`
 
 ## Scope
 
-- [ ] Every Approach bullet traces to the confirmed restated idea or to a
-      confirmed in-scope deliverable.
-- [ ] Out of scope contains only topics that came up during research or
-      interview and that a reader would expect in this task.
-- [ ] No sections beyond the template. No Risks, Considerations, Alternatives,
-      Future work, Nice to have, Notes.
-- [ ] No estimates, priorities, or timelines unless the user asked for them.
+- [ ] Every Approach bullet traces to the restated idea or a confirmed
+      in-scope deliverable.
+- [ ] Out of scope holds only topics from research or interview that a
+      reader would expect in this task.
+- [ ] No section beyond the template. No estimate, priority, or timeline
+      unless the user asked.
 
 ## Executability
 
-- [ ] A reader with only the task and the repository can start implementing
-      without asking anything.
-- [ ] Each success criterion is binary: it is met or not met, and someone
-      other than the author can check it.
-- [ ] The `task-breakdown` skill can split the task without new research: every
-      component in Approach has a path, and the commands to build and test are
-      in the Context section.
+- [ ] A reader with only the task and the repository can start without
+      asking anything.
+- [ ] The `task-breakdown` skill can split the task without new research:
+      every Approach component has a path, and Context holds the build and
+      test commands.
 
 ## Grep helper
 
-Run this over the draft file. Remove every hit, unless it sits inside quoted
-user-interface text or code.
+Run over the draft. Remove every hit outside quoted user-interface text or
+code.
 
 ```bash
 grep -nEi \

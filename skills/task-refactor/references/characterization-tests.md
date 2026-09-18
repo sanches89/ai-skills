@@ -2,11 +2,10 @@
 
 Read this file in Step 6. A characterization test records what the code does
 today, so that a refactoring that changes behavior fails a test. The review
-names the test cases and the seam in the subtask. The implementer writes the
-tests. Follow these rules in any language and any test framework. Prefer a
-convention of the project over a rule here: its framework, test location,
-naming, fixtures, and helpers, as recorded in Step 3c. Never name a second
-framework or a second style beside the project's.
+names the test cases and the seam in the subtask; the implementer writes the
+tests. A convention of the project, from Step 3c, replaces a rule here:
+its framework, test location, naming, fixtures, and helpers. Never name a
+second framework or style beside the project's.
 
 ## What to record
 
@@ -21,10 +20,9 @@ framework or a second style beside the project's.
 - Name each test case by the unit, the condition, and the result it records,
   in the project's naming style. Example:
   `parseRange returns an empty list for "5-1"`.
-- Take the result from the current code. Run the code, or read it, and write
-  the result into the test case name as a literal, right or wrong.
-- Put a result that looks wrong under the task's *Out of scope*. Keep the
-  test case recording that result.
+- Run or read the current code. Write its result into the test case name as
+  a literal, right or wrong. Put a result that looks wrong under the task's
+  *Out of scope* and keep the test case.
 - Before merging clones, record the behavior of every copy. Two copies that
   differ in one branch are two behaviors.
 
@@ -58,7 +56,7 @@ characterization test:
   restores it. When the project configures mutation testing, name it here
   for a `high` risk subtask instead.
 - Every test holds at least one assertion.
-- The characterization tests stay in the change. They are the proof of the
+- The characterization tests stay in the change, as the proof of the
   refactoring and the safety net of the next one.
 - A characterization test changes only in an import, a path, or a symbol
   name that a subtask moves or renames. Its assertion never changes.

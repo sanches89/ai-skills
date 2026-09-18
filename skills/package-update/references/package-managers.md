@@ -1,9 +1,7 @@
 # Package managers
 
-Read this file in Step 2b. It maps each package manager to the files that
-identify it, its install commands, and its recursive run command. It also
-gives the peer report and the rule for a version mismatch. Run every command
-of this file from the install root.
+Read this file in Step 2b. Run every command of this file from the install
+root.
 
 ## Detection
 
@@ -38,8 +36,7 @@ The plain install rewrites the lockfile.
 
 ## Recursive run command
 
-Step 2d records the recursive run command of a script when a workspace root
-does not define the script. Each command skips a member without the script.
+Each command skips a member without the script.
 - npm: `npm run <script> --workspaces --if-present`.
 - pnpm: `pnpm -r --if-present run <script>`.
 - yarn 1: `yarn workspace <member name> run <script>`, once per member whose
@@ -49,8 +46,7 @@ does not define the script. Each command skips a member without the script.
 
 ## Peer report
 
-Step 3 records the peer report as the baseline peer report. Step 7 compares
-the peer report with the baseline peer report. A problem is:
+A problem is:
 - npm: a line with `missing:` or `invalid:` in the output of
   `npm ls --depth=0`;
 - pnpm: a line under `Issues with peer dependencies found` in the output of

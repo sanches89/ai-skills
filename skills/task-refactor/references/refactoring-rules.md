@@ -1,18 +1,16 @@
 # Refactoring rules
 
-Read this file in Step 7. Every subtask of the refactor task follows these
-rules, in any language. Write the rules of *Behavior*, *Size of a change*,
+Read this file in Step 7. Write the rules of *Behavior*, *Size of a change*,
 *Tests during a refactoring*, and *Never* into the task's Decisions section.
-Write the rules that a subtask's refactoring needs into that subtask's
-Context section. Prefer a convention of the project over a rule here, as
-recorded in Step 3a.
+Write the rules a subtask's refactoring needs into that subtask's Context
+section. A convention of the project, from Step 3a, replaces a rule here.
 
 ## Behavior
 
 - Change structure only. Keep every returned value, state change, raised
   error, written output, and call to an external system the same.
-- Keep odd behavior too. A caller depends on it until a test or the user says
-  otherwise. Put it under the task's *Out of scope*.
+- Keep odd behavior too, under the task's *Out of scope*. A caller depends
+  on it until a test or the user says otherwise.
 - Keep the order of side effects. Two writes, two calls, or a write and a
   read stay in the order they had.
 - Keep the evaluation rules of the language in mind. Extracting a
@@ -41,15 +39,15 @@ recorded in Step 3a.
 ## Duplication
 
 - Merge two copies only when they state the same rule and change together.
-- Leave two copies alone when they only look alike today. Different reasons
-  to change outweigh the lines saved.
+- Leave two copies alone when they only look alike today and change for
+  different reasons.
 - Extract shared code from three copies, or from two copies of one rule.
 - Give the extracted function the name of the rule, never the name of its
   callers.
 - Never merge copies by adding a flag parameter that selects the behavior.
   Keep two functions and extract their shared part.
 - Add a new interface, base type, generic parameter, or option only with
-  three users. The wrong abstraction costs more than the duplication.
+  three users.
 
 ## Names
 
@@ -94,7 +92,7 @@ recorded in Step 3a.
   no caller.
 - Remove a parameter, a field, or a branch that no caller uses, by the same
   proof.
-- Remove commented-out code. Version control keeps it.
+- Remove commented-out code.
 - Remove a comment that repeats the code. Keep a comment that says why.
 
 ## Contract changes the request names

@@ -1,9 +1,6 @@
 # Update rules
 
-Read this file in Step 2c. It defines the range styles this skill rewrites
-and the constraints that lower a candidate version. It also defines the
-ranges left alone, the groups, the ladder, the bisection, the checkpoint,
-the hold reasons, and the release notes link. Steps 2 to 7 follow it.
+Read this file in Step 2c. Steps 2 to 7 follow it.
 
 ## Range style
 
@@ -23,8 +20,7 @@ kind `range form`. The other forms are:
 
 ## Reading the Node version
 
-Step 2c takes the first Node version source that exists. Read each source
-as follows:
+Read each Node version source of Step 2c as follows:
 - `.nvmrc` and `.node-version`: the version in the file. `20` reads as
   `20.0.0`, and `v20.11.0` as `20.11.0`. A value that starts with a letter,
   like `lts/*`, means: take the version from `node -v`;
@@ -66,8 +62,7 @@ allowed, hold the package.
    When the current major of `@types/node` is above the major of
    `<node-version>`, hold the package with the reason `@types/node major`.
 4. **Overrides.** Hold a package named in `overrides`, `resolutions`, or
-   `pnpm.overrides` of the root manifest, with the reason `override`. The
-   override pins a version tree for a reason the manifest does not state.
+   `pnpm.overrides` of the root manifest, with the reason `override`.
 5. **Pins.** Step 2e records the held packages and the capped packages from
    these files:
    - Renovate: hold a package in `ignoreDeps` with the reason
@@ -109,8 +104,8 @@ Every range and field below stays as it is. The update report lists it under
 
 ## Groups
 
-A group is the unit of a major plan entry. Three rules put candidate packages
-with bump kind `major` into one group:
+A group is the unit of a major plan entry. Three rules put candidate
+packages with bump kind `major` into one group:
 - **a scope**: every candidate package whose name starts with the same
   `@<scope>/` prefix, except `@types/`;
 - **a twin pair**: `<name>` and `@types/<name>`. For `@<scope>/<name>` the

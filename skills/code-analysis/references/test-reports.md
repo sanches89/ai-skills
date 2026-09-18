@@ -1,8 +1,6 @@
 # Test reports
 
-Read this file in Step 2c. It says where to take the install command and the
-test command from. It gives the options that make each test runner write a
-JUnit report and a coverage report.
+Read this file in Step 2c.
 
 ## Sources
 
@@ -56,15 +54,13 @@ of the project:
 
 Take the package manager from the `packageManager` field of `package.json`
 when the field exists, else from the lockfile. For any other ecosystem, take
-the install command of the CI workflow. Without one, record `unknown` and
-the reason `no install command`. Step 3b then skips the base tests and
-coverage.
+the install command of the CI workflow. Without one, record `unknown` with
+the reason `no install command`.
 
 ## Report options per runner
 
-Add these options to the test command. Add nothing else: no reporter
-package, no coverage package, no configuration file. `<dir>` is the output
-folder that Steps 3b and 4a set.
+Add these options to the test command and nothing else. `<dir>` is the
+output folder that Steps 3b and 4a set.
 
 ```bash
 # Node.js test runner
@@ -104,32 +100,32 @@ dotnet test --collect:"XPlat Code Coverage" --results-directory <dir>
 For any other runner, read its help for a JUnit option and for an LCOV or
 Cobertura option.
 
-Record `<junit-report>` and `<coverage-report>` as the path of the JUnit
-report and of the coverage report relative to `<dir>`, such as `junit.xml`
-and `lcov.info`. Every JUnit report and coverage report that the measure
-tool reads lives under `<dir>`, and `<coverage-report>` is always one file.
-The runners below need a step to put them there:
+Record `<junit-report>` and `<coverage-report>` as the paths of the JUnit
+report and the coverage report relative to `<dir>`, such as `junit.xml` and
+`lcov.info`. Every report the measure tool reads lives under `<dir>`, and
+`<coverage-report>` is always one file. The runners below need a step to
+put them there:
 - .NET writes the coverage report as
   `<dir>/<guid>/coverage.cobertura.xml`. Read `<guid>` from `ls <dir>`
   after the run. Record `<guid>/coverage.cobertura.xml`;
 - Maven and Gradle write into the build output, which the report options do
   not move. After the test run, copy the folder of JUnit files to
-  `<dir>/junit`. Copy the JaCoCo XML file to `<dir>/jacoco.xml`. Record
+  `<dir>/junit` and the JaCoCo XML file to `<dir>/jacoco.xml`. Record
   `junit` and `jacoco.xml`. Copy from the folder the run wrote in: the
   worktree in Step 3, the repository root in Step 4.
 
-Skip a report that needs a package the project lacks:
+Skip a report that needs a package the project lacks, with the reason
+`<runner> needs <package>`:
 - JUnit for Jest without `jest-junit`;
 - coverage for Vitest without `@vitest/coverage-v8` or
   `@vitest/coverage-istanbul`;
 - coverage for pytest without `pytest-cov`;
 - coverage for Rust without `cargo-llvm-cov`.
 
-Skip the JUnit report for Go, Rust, and .NET: the options above write none.
-The reason is `<runner> needs <package>` for a missing package, and
-`<runner> writes no JUnit report` for Go, Rust, and .NET.
+Skip the JUnit report for Go, Rust, and .NET, with the reason
+`<runner> writes no JUnit report`.
 
 Turn branch coverage on when the runner has an option for it. A Go cover
 profile holds no branch data. Keep the project's own coverage threshold in
-force. The threshold is part of the test command. A threshold failure still
-leaves the JUnit report and the coverage report written.
+force: it is part of the test command, and a threshold failure still leaves
+both reports written.

@@ -8,10 +8,9 @@ argument-hint: "[path...] [package name...] [latest | minor | patch] [cooldown <
 
 # Package Update
 
-Take one repository and move every dependency in every `package.json` to the
-highest version that the project's own check commands accept. Change only
-manifests and lockfiles. Return the change in the working tree plus an update
-report.
+Move every dependency in every `package.json` of one repository to the
+highest version that the project's own check commands accept. Return the
+change in the working tree plus an update report.
 
 ## Terms
 
@@ -35,92 +34,48 @@ These words have exactly one meaning in this skill.
 
 ## Hard rules
 
-1. **Only manifests and lockfiles change.** Edit a `package.json`. Let the
-   package manager rewrite the lockfile. Never edit source code, a
-   configuration file, or a CI file. Never edit a lockfile by hand. Hold a
-   package whose candidate version needs a code change. Put that package in
-   the update report under *Needs migration*.
-2. **Read before changing.** Change no project file before Step 6.
-3. **The `latest` dist-tag is the ceiling.** Never set a range to a
-   prerelease version, unless the current range already names a prerelease
-   of that package. Never set a range to a deprecated version. Never set a
-   range to a version published fewer than 7 days ago: take the highest
-   version published at least 7 days ago instead. A cooldown in the request
-   replaces the 7 days.
-4. **Constraints lower a candidate version.** The constraints are:
-   - the project's Node version;
-   - the peer ranges inside the install root;
-   - the `@types/node` major;
-   - every package named in `overrides`, `resolutions`, or `pnpm.overrides`;
-   - every pin in a Renovate, Dependabot, or `.ncurc` file.
-   `references/update-rules.md` defines each one.
-5. **Some ranges and fields never change.** They are:
-   - a `workspace:`, `file:`, `link:`, `catalog:`, git, or URL range;
-   - a `*`, `x`, or `latest` range;
-   - the range of a dependency that names a workspace member;
-   - every range in `peerDependencies`;
-   - the `packageManager` field;
-   - the `engines` field.
-   Put each one in the update report under *Left alone*.
-6. **The range style stays.** A `^`, `~`, exact, or `npm:` alias range keeps
-   its form with the new version. Never add, remove, or downgrade a
-   dependency. Never move a dependency between sections.
-7. **The project's package manager does every install.** Detect the package
-   manager once, in Step 2b. Never switch it. Never mix two package
-   managers. Prove a lockfile with the frozen install. Rewrite a lockfile
-   with the plain install. `references/package-managers.md` gives both
-   commands per package manager.
-8. **The check commands decide.** The check commands are the project's
-   install, type check, lint, build, and test commands from Step 2d. Never
-   delete, skip, or loosen a test, a lint rule, or a type check. A check
-   command that fails in the baseline results never counts against a
-   version.
-9. **One plan entry, one install, one run of the check commands.** Take the
-   checkpoint before an apply. Restore the checkpoint after a fail. Never
-   repair a failing plan entry with a code change.
-10. **No tool enters the project.** Run npm-check-updates and semver from the
-    npx cache. Never add either to a manifest. Never write an `.ncurc` file.
-11. **Never ask what research can answer.** Consult the manifests, the
-    lockfiles, the docs, and the registry before the first question.
-12. **Never assume.** When a decision changes the work and research cannot
-    settle it, ask the user.
-13. **No outward actions.** Never commit, push, or open a pull request. Do any
-    of these only when the request says so. Then make one commit per accepted
-    plan entry. Follow the project's conventions for branches and commit
-    messages.
-14. **The update report holds only what the user needs.** Write no narration,
-    no failed attempts, no command output.
+1. **Only manifests and lockfiles change**, from Step 6 on, through the
+   script and the package manager. Never edit source code, a configuration
+   file, a CI file, or a lockfile by hand.
+2. **No tool enters the project.** Run npm-check-updates and semver from the
+   npx cache. Never add either to a manifest or write an `.ncurc` file.
+3. **Never ask what research can answer.** Consult the manifests, the
+   lockfiles, the docs, and the registry first.
+4. **Never assume.** When a decision changes the work and research cannot
+   settle it, ask the user.
+5. **No outward actions.** Commit, push, or open a pull request only when
+   the request says so. Then make one commit per accepted plan entry, in
+   the project's branch and commit conventions.
 
 ## Script
 
 `scripts/set-range.mjs` rewrites the range of one dependency in one
-`package.json` and keeps every other byte of the file. Run the script as
+`package.json` and keeps every other byte. Run it as
 `node <skill-dir>/scripts/set-range.mjs`, where `<skill-dir>` is the folder
-holding this `SKILL.md` (in Claude Code, `${CLAUDE_SKILL_DIR}` expands to
-it). Run the script with `--help` for the options and the exit codes. Step 6
-writes every range with this script.
+holding this `SKILL.md` (in Claude Code, `${CLAUDE_SKILL_DIR}`). Run it with
+`--help` for the options and the exit codes. Step 6 writes every range with
+it.
 
 ## Workflow
 
 ### Step 1: Load the request
 
-Resolve the text passed with the skill invocation, or the request given in the
-conversation, into four values:
+Resolve the invocation text, or the request in the conversation, into four
+values:
 - **Paths**: files or folders that limit the manifests. Default: the whole
   repository.
 - **Package names**: names that limit the dependencies. Default: every
   dependency.
-- **Level**: `latest`, `minor`, or `patch`. Default: `latest`. Level `minor`
-  never bumps a major. Level `patch` never bumps a minor.
-- **Cooldown**: the number of days between the publish date of a version and
-  today, below which this skill run never takes the version. Default: 7.
+- **Level**: `latest`, `minor`, or `patch`. Default: `latest`. `minor` never
+  bumps a major. `patch` never bumps a minor.
+- **Cooldown**: the number of days since a version's publish date below
+  which the run never takes it. Default: 7.
 
-Record whether the request asks for commits: hard rule 13 applies.
+Record whether the request asks for commits, for hard rule 5.
 
 Write private notes in a scratch directory outside the repository from this
-step on, written `<scratch-dir>` in commands (in Claude Code, the session's
-scratchpad directory; in any other agent, the system temp directory). Keep in
-the notes every list that a later step reads.
+step on, written `<scratch-dir>` in commands (in Claude Code, the scratchpad
+directory). Keep in them every list that a later step reads.
 
 ### Step 2: Inventory
 
@@ -134,30 +89,24 @@ git ls-files -co --exclude-standard -- '*package.json' \
   | grep -vE '(^|/)(dist|build|out|coverage)/'
 ```
 
-**2b. Install roots.** Read `references/package-managers.md` now. It maps each
-package manager to its lockfile, its workspace file, its install commands, its
-recursive run command, and its peer report. Then assign each manifest one
-kind:
+**2b. Install roots.** Read `references/package-managers.md` now. Assign
+each manifest one kind:
 - a manifest with a `workspaces` field, or with a `pnpm-workspace.yaml`
-  beside it, is a workspace root. Its members are the manifests that its
-  workspace globs match. The folder of the workspace root is the install
-  root of the workspace root and of its members;
+  beside it, is a workspace root. Its members are the manifests its
+  workspace globs match. Its folder is the install root of itself and of
+  its members;
 - a manifest beside a lockfile, and not a member, is the root manifest of a
   standalone install root: its own folder;
 - every other manifest is an orphan manifest. Step 6 sets its ranges without
   an install. The update report lists it under *Unverified*.
 
-Record the package manager of each install root: the name before `@` in the
-`packageManager` field of the root manifest, else the package manager that
-owns the lockfile. Record the version that the field names. When the package
-manager on PATH has a different major, follow the *Version* rule of
-`package-managers.md`.
+Record the package manager and version of each install root by the
+*Detection* section of `package-managers.md`. When the package manager on
+PATH has a different major, follow its *Version* section. Every later
+install of that install root runs with that package manager, never another.
 
-**2c. Node version.** Read `references/update-rules.md` now. It defines how
-to read each Node version source and the constraints. It also defines the
-ranges left alone, the groups, the ladder, the bisection, and the checkpoint
-that Steps 2 to 7 use. Take the first Node version source that exists, in
-this order:
+**2c. Node version.** Read `references/update-rules.md` now. Take the first
+Node version source that exists, in this order:
 1. `.nvmrc`;
 2. `.node-version`;
 3. the `volta.node` field of the root manifest;
@@ -178,8 +127,7 @@ this order:
 When a workspace root has no `scripts` entry of item 2, record instead the
 recursive run command of `package-managers.md` for each of the six names.
 An install root with no check command beyond the install commands is an
-install-only root. The update report says `install only` for that install
-root.
+install-only root.
 
 **2e. Pins.** Read these files: `renovate.json`, `.renovaterc`,
 `.renovaterc.json`, `.github/renovate.json`, and `.github/dependabot.yml`.
@@ -194,15 +142,14 @@ root manifest. Record two lists, as `update-rules.md` says under *Pins* and
 Record in the scratch directory, before changing anything:
 - the output of `git status --porcelain`. When the request asks for commits
   and a manifest or a lockfile has uncommitted changes, ask one question:
-  commit or stash them before the run continues. Otherwise continue;
+  commit or stash them first;
 - the baseline results, per install root: the result of the frozen install,
   then of each check command, with pass or fail and the duration. When the
   frozen install fails, run the plain install instead and record
   `install (frozen)` as a baseline failure;
 - the baseline order: the check commands sorted by duration, shortest
   first. Keep that order for every later run of the check commands;
-- the baseline peer report, per install root: the peer report of
-  `package-managers.md`;
+- the baseline peer report, per install root, from `package-managers.md`;
 - the baseline copy and the checkpoint, as `update-rules.md` defines under
   *Checkpoint*.
 
@@ -225,20 +172,18 @@ npx --yes npm-check-updates@23 --workspaces --root \
 ```
 
 Drop `--workspaces --root` for a standalone install root and for an orphan
-manifest: with those flags, npm-check-updates prints nothing there. Drop
-`--peer` for an orphan manifest. Drop `--filter` when the request names no
-package. Put under `--reject`:
-- every workspace member name;
-- `@types/node`;
-- every held package of Step 2e.
-
-The output maps each manifest path to the dependencies with a higher
-version, each with its new range in the manifest's own style.
+manifest. Drop `--peer` for an orphan manifest. Drop `--filter` when the
+request names no package. `<held package names>` are the held packages of
+Step 2e. The output maps each manifest path to the dependencies with a
+higher version, each with its new range in the manifest's own style. Remove
+from it every range that *Left alone* of `update-rules.md` names. Record
+each range and field under *Left alone*, with its kind, for the update
+report.
 
 With level `latest`, run the command a second time with `--target minor`
-into `<scratch-dir>/<root>-minor.json`. That file holds the highest minor
-of every current major. With level `minor` or `patch`, copy
-`<root>-latest.json` to `<root>-minor.json`.
+into `<scratch-dir>/<root>-minor.json`: the highest minor of every current
+major. With level `minor` or `patch`, copy `<root>-latest.json` to
+`<root>-minor.json`.
 
 Write one `<name>@<version>` line per dependency of `<root>-latest.json`
 into `<scratch-dir>/<root>-specs.txt`, with the version written without its
@@ -255,9 +200,8 @@ done < <scratch-dir>/<root>-specs.txt > <scratch-dir>/<root>-facts.tsv
 ```
 
 Check each candidate version against the constraints of `update-rules.md`,
-in the order that file gives them. When a constraint refuses a candidate
-version, replace it with the highest rung of the ladder that every
-constraint allows. When no rung is allowed, hold the package. Then add
+in its order. Lower or hold a refused candidate version as its *Constraints*
+section says. Then add
 `@types/node` as a candidate package in every manifest that has it, with the
 version that constraint 3 of `update-rules.md` gives. Record per candidate
 package:
@@ -323,16 +267,16 @@ while IFS=$'\t' read -r manifest name range; do
 done < <scratch-dir>/<root>-<batch>.tsv
 ```
 
-A non-zero exit of the script stops the loop. Fix the TSV line that failed.
-Then run the loop again: the script leaves a range that already equals its
-new value as it is.
+A non-zero exit of the script stops the loop. Fix the TSV line that failed,
+then run the loop again: the script leaves a range that already equals its
+new value as it is. Never repair a fail with a code change. The bisection
+and the ladder hold what breaks.
 
 **6a. Minor and patch.** Apply the *minor and patch* plan entry. On a pass,
 mark the plan entry accepted. On a fail, bisect the plan entry as
 `update-rules.md` defines under *Bisection*. The bisection holds each
-breaking package with the reason `check: <name>`, where `<name>` is the
-first check command that fails. Then replace the checkpoint. With commits
-requested, commit now.
+breaking package with the reason `check: <name>`. Then replace the
+checkpoint. With commits requested, commit now.
 
 **6b. Major groups.** Without commits requested, apply every approved group
 as one batch. On a pass, mark every group accepted. On a fail, bisect the
@@ -381,29 +325,25 @@ Step 7 passes for an install root when all of these hold:
 - every `overrides`, `resolutions`, and `pnpm.overrides` field is unchanged;
 - no file outside the install root changed.
 
-On a fail, act on the first condition above that fails:
-- the frozen install: run the plain install. Then run this step again;
+On a fail, act on the first condition above that fails, then run this step
+again:
+- the frozen install: run the plain install;
 - a check command or the peer report: find the accepted plan entry that
   causes the fail by bisection, with a plan entry as the unit. Hold every
-  package of that plan entry with the reason `verify: <condition>`, where
-  `<condition>` quotes the failing condition. Then run this step again;
+  package of that plan entry with the reason `verify: <condition>`;
 - a condition on a manifest: restore that manifest from the checkpoint. Set
-  its accepted ranges again with the script. Run the plain install. Then run
-  this step again;
+  its accepted ranges again with the script. Run the plain install;
 - a condition on a file that is not a manifest or a lockfile: revert a
   tracked file with `git checkout -- <file>`, and delete an untracked file.
-  Then run this step again.
 
 After 3 fails on one install root, restore that install root from the
 baseline copy. Then hold every package of that install root.
 
 ### Step 8: Update report
 
-Fill `references/update-report-template.md`. Read that file now: it holds the
-format and the rules for what each section keeps and leaves out. Write the
-report in the scratch directory. Run every check in
-`references/quality-checklist.md` over the report, including the grep helper.
-Fix every failure.
+Read `references/update-report-template.md` now and fill it in the scratch
+directory. Run every check in `references/quality-checklist.md` over the
+report, grep helper included, and fix every failure.
 
-Send the update report as the final message, unchanged. Ask nothing and offer
-nothing after it.
+Send the update report as the final message, unchanged. Ask nothing and
+offer nothing after it.

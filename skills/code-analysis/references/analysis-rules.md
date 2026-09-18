@@ -1,12 +1,9 @@
 # Analysis rules
 
-Read this file in Step 6. It says which entries to read, how to classify
-each one, what becomes a finding with which action, and how to rank the
-findings.
-
-A function is a function, a method, or a procedure. A module is a class, a
-file, or a package. A finding is one location that these rules keep after
-its code is read, with its evidence and its action.
+Read this file in Step 6. A function is a function, a method, or a
+procedure. A module is a class, a file, or a package. A finding is one
+location that these rules keep after its code is read, with its evidence
+and its action.
 
 ## What to read
 
@@ -65,10 +62,10 @@ finding.
 
 A hotspot is a finding only when its file holds an entry of
 `complexity.top`, `duplication.top`, or `coverage.functions.top` that these
-rules keep. Then the finding is that entry. The hotspot score of the file
-ranks it under *Ranking*. Add the commit subjects to its evidence: what kind
-of change keeps hitting the file. A hotspot with no such entry is no
-finding. It appears only on the *Hotspots* line under *Measurements*.
+rules keep. Then the finding is that entry, ranked by the hotspot score of
+the file under *Ranking*, with the commit subjects added to its evidence:
+what kind of change keeps hitting the file. A hotspot with no such entry
+appears only on the *Hotspots* line under *Measurements*.
 
 ## Tests
 
@@ -95,11 +92,10 @@ With a base name, when `tests.total` fell, add one finding of kind
   of kind `file no test loads`, one finding per file. The action is
   `add tests`. Leave a file that holds only declarations, types, or
   constants.
-- With a base name, a changed file with an uncovered line is a finding of
-  kind `changed code without tests`. Confirm that an uncovered line is in
-  a changed hunk: read `git diff <base-commit> -- <file>` against the lines
-  the coverage report marks. Keep the finding only when at least one
-  uncovered line is in a changed hunk. The action is
+- With a base name, a changed file with an uncovered line in a changed hunk
+  is a finding of kind `changed code without tests`. Read
+  `git diff <base-commit> -- <file>` against the lines the coverage report
+  marks to confirm the hunk. The action is
   `add tests for the changed lines`. A changed file in
   `coverage.filesNotInReport` is a finding of this kind too.
 
