@@ -32,6 +32,11 @@ coding agent that loads `SKILL.md` files.
 - [unambiguity](skills/unambiguity/SKILL.md): rewrites one text so that every
   sentence has one reading, with its meaning unchanged. It reports each
   ambiguity it resolved and each word that needs a glossary entry.
+- [package-update](skills/package-update/SKILL.md): updates every dependency
+  in every `package.json` of a repository to the highest version that the
+  project's install, build, lint, type check, and tests accept. It changes
+  only manifests and lockfiles and returns a short update report with what
+  moved, what stayed, and why.
 
 task-create, task-breakdown, and task-work form a pipeline: the first writes
 `docs/tasks/###-<task-slug>/task.md`, the second adds
@@ -46,6 +51,9 @@ what it does.
 
 glossary and unambiguity form a pair: the first writes the glossary, and the
 second rewrites a document with the glossary's terms.
+
+package-update works alone. It leaves a major version that needs a code change
+for task-create to turn into a task.
 
 ## Structure
 
