@@ -1,0 +1,14 @@
+{
+  "name": "ai-skills",
+  "private": true,
+  "description": "Agent skills for development work.",
+  "license": "MIT",
+  "packageManager": "pnpm@11.22.0",
+  "scripts": {
+    "context-size": "node scripts/context-size.mjs",
+    "prepare": "git config core.hooksPath .githooks"
+  },
+  "devDependencies": {
+    "gpt-tokenizer": "^4.0.0"
+  }
+}

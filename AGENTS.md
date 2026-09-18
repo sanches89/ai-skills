@@ -146,6 +146,8 @@ Folders:
 
 - Propose the design of a new skill or a structural change to an existing one,
   and get the user's explicit approval before writing files.
+- Run `pnpm install` once after cloning so the pre-commit hook in
+  `.githooks/` regenerates `CONTEXT-SIZE.md` on every commit.
 - Commit and push only when the user asks.
 
 ## Checks before committing a skill
