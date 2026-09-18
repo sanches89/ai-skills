@@ -100,6 +100,12 @@ to install for the user instead of the project. The skills are also listed on
 Without the CLI, clone this repo into your agent's skills folder (e.g.
 `~/.claude/skills/`).
 
+In Claude Code, three skills run only when you type their command:
+`/agent-docs-audit`, `/code-analysis`, and `/package-update`. Their
+`disable-model-invocation: true` frontmatter field stops the agent from
+starting them on its own. An agent that does not support that field starts
+them from their descriptions, like the other skills.
+
 ## Contributing
 
 Rules for writing skills in this repo are in [AGENTS.md](AGENTS.md),
