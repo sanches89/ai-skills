@@ -51,7 +51,7 @@ These rules hold in every Markdown file of this repository.
   duplicate it and keep the copies identical.
 - **Frontmatter.** `name` equals the folder name: lowercase letters, digits,
   and single hyphens, at most 64 characters. `description` says what the skill
-  produces and when to use it. It has two or three sentences, at most 1024
+  produces and when to use it. It has two or three sentences, fewer than 524
   characters, and nothing about how the skill works internally. Every skill
   sets `license: MIT`. The format also allows `compatibility` and
   `metadata`. Any other field, like `argument-hint`, must be one that agents

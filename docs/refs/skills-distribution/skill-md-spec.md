@@ -15,8 +15,9 @@ skill-name/
 
 - `name`, required: 1 to 64 characters; lowercase `a-z`, `0-9`, hyphens; no
   leading, trailing, or double hyphen; equals the folder name.
-- `description`, required: 1 to 1024 characters; what the skill does and when to
-  use it, with the keywords that identify matching tasks.
+- `description`, required: 1 to 1024 characters by the spec, fewer than 524 in
+  this repo by the Frontmatter rule in `AGENTS.md`; what the skill does and
+  when to use it, with the keywords that identify matching tasks.
 - `license`, optional: a license name or the name of a bundled license file.
 - `compatibility`, optional: 1 to 500 characters; only when the skill needs a
   specific product, package, or network access, for example
