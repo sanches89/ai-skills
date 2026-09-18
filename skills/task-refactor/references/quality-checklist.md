@@ -1,102 +1,111 @@
 # Quality checklist
 
-Run every check before returning the refactor report. A single failure blocks
-delivery. Fix the failure, then run the whole checklist again. When a check on
-the work fails, go back to Step 8 or Step 9. When a check on the report fails,
-fix the report.
+Run every check over the draft before showing it to the user. A single failure
+blocks delivery. Fix the failure, or return to the step that owns the missing
+fact, then run the whole checklist again.
 
-## Behavior
+## Ambiguity
 
-- [ ] Every command from Step 3b ran after the last edit. No check fails
-      beyond the baseline.
-- [ ] The diff changes no literal, condition, default value, error message,
-      or log text.
-- [ ] The diff swaps the order of no two side effects.
-- [ ] The diff adds no feature, fixes no bug, and tunes no performance.
-- [ ] Every behavior that looks wrong is under *Bugs found*, and the code
-      still has it.
-- [ ] The diff removes, skips, or loosens no test, lint rule, or type check.
-- [ ] No assertion of an existing test changed.
+- [ ] No banned words in the task or in any subtask: `TBD`, `TBC`, `TODO`,
+      `maybe`, `might`, `probably`, `possibly`, `perhaps`, `ideally`,
+      `consider`, `could`, `should we`, `if needed`, `if necessary`,
+      `as appropriate`, `as needed`, `etc`, `and so on`, `or similar`,
+      `something like`.
+- [ ] No question marks anywhere, except inside quoted user-interface text or
+      code.
+- [ ] No alternatives in Approach, Decisions, or Changes: no
+      `option A / option B`, no `either ... or`, no `one of`.
+- [ ] Every quantity is a number with a unit. No `fast`, `small`, `large`,
+      `reasonable`, `a few`.
+- [ ] Every named thing is specific: file path, symbol, endpoint, table,
+      environment variable, command. No `the service`, `the config`,
+      `the relevant tests`, `the usual place`.
 
-## Contract and scope
+## Behavior and contract
 
-- [ ] Every part of the contract listed in Step 2 has the same name,
-      signature, and format. A change that the request names is the only
-      exception, and the *Contract* line states it.
-- [ ] Every changed file is in the refactor scope, or hard rule 6 allows it.
-- [ ] The diff touches no generated code, vendored code, lockfile, build
-      output, snapshot file, or database migration that already ran.
-- [ ] The diff does nothing that a task read in Step 2 lists under *Out of
-      scope*.
-- [ ] Every applied plan entry is one the user approved, or one the requested
-      task names.
-- [ ] The diff adds no dependency, tool, configuration file, or code pattern
-      the project does not use.
-- [ ] No task file, subtask file, or item changed.
-- [ ] The run made no commit, push, pull request, status change, or comment,
-      unless the request asked for it.
+- [ ] No subtask adds a feature, fixes a bug, or tunes performance.
+- [ ] Every wrong-looking behavior in the refactor scope is under *Out of
+      scope*, with its location and the statement that it stays.
+- [ ] Every part of the contract listed in Step 2 has a success criterion that
+      keeps its name, signature, and format. A change that the request names
+      is the only exception, and Approach states it.
+- [ ] No subtask deletes, skips, or loosens a test, a lint rule, or a type
+      check. An existing test changes only in an import, a path, or a symbol
+      name that a refactoring moves or renames. No assertion changes.
+- [ ] Every file a subtask changes is in the refactor scope, or hard rule 6
+      allows it and the subtask's Context says why.
+- [ ] No subtask touches generated code, vendored code, a lockfile, build
+      output, a snapshot file, or a database migration that already ran.
+- [ ] No subtask does what a task read in Step 2 lists under *Out of scope*.
+- [ ] No subtask adds a dependency, a tool, a configuration file, or a code
+      pattern the project does not use.
 
-## Tests
+## Subtask rule
 
-Skip this section when the project has no test setup. Then confirm instead
-that the diff adds no test and no test framework. Confirm also that every
-applied plan entry is from the safe set.
-
-- [ ] Every applied plan entry changed only code that a test covers, or is
-      from the safe set.
-- [ ] Every characterization test passed on the unchanged code and failed
-      once when the asserted behavior was broken.
-- [ ] Every characterization test holds at least one assertion with a literal
-      expected value.
-- [ ] No new test uses the real network, the real clock, unseeded random
-      values, sleeping, or files outside a temporary folder.
-- [ ] The tests follow the project's framework, location, naming, and
-      fixtures. The diff adds no second framework or style.
-- [ ] The count on the report's *Tests* line equals the tests added.
+- [ ] Each subtask applies exactly one refactoring named in
+      `smell-catalog.md`, and its Context names the smell with its evidence.
+- [ ] Each subtask has exactly one verification command. It ran on the
+      current code and failed.
+- [ ] Each subtask is mergeable on its own: after it, the project builds and
+      every test, existing and new, passes.
+- [ ] A subtask on uncovered code is from the safe set, or names a
+      characterization test file in Changes. That file lists every test case
+      and comes before the code it covers.
+- [ ] Each named characterization test records a behavior of the code the
+      subtask changes: the normal path, a boundary, or an error.
+- [ ] Without a test setup, every subtask is from the safe set and no
+      subtask names a test or a test framework.
+- [ ] A contract change that the request names is three subtasks: add the
+      new form, move the callers, remove the old form.
+- [ ] Dependencies form a valid order: no cycles, no reference to a subtask
+      with a higher number. Remove Dead Code and Rename subtasks come first.
 
 ## Measurements
 
-- [ ] Both measurement summaries came from the same limits and the same
-      ignore globs. The second run named every file the plan entries created.
-- [ ] Both test reports and both coverage reports came from the same test
-      command with the same options.
-- [ ] The second run exited 0, or the *Measurements* section states one trade
-      per name in its `worse` list.
-- [ ] No `tests` name and no `coverage` name is in the `worse` list. No trade
-      excuses a lost test, a failed test, a skipped test, or new code that
-      no test runs.
+- [ ] Every baseline value in the task's Context section equals the
+      measurement summary, the test report, and the coverage report of
+      Step 4.
 - [ ] Every skipped measurement appears as `skipped` with its reason.
-- [ ] No applied plan entry exists only to move a number. Each one names a
-      smell from `smell-catalog.md`.
+- [ ] No subtask exists only to move a number. Each one names a smell from
+      `smell-catalog.md`.
+- [ ] The task's success criteria state the test counts and the coverage
+      counts against the baseline. The Verification section holds the
+      commands that produce them.
 - [ ] The scratch directory holds every measurement summary and tool report.
       The repository holds none.
 
-## Report
+## Completeness
 
-- [ ] The headings are exactly those of `refactor-report-template.md`.
-- [ ] At most 45 non-blank lines. Each bullet is at most 2 lines.
-- [ ] The counts on the *Plan entries* line equal the bullets under *Applied*
-      and the approved plan entries.
-- [ ] The result is `done` only when every approved plan entry is applied and
-      Step 9 passes.
-- [ ] Every approved plan entry is under *Applied* or under *Dropped*.
-- [ ] No banned words: `TBD`, `TBC`, `TODO`, `maybe`, `might`, `probably`,
-      `possibly`, `perhaps`, `ideally`, `consider`, `could`, `should we`,
-      `if needed`, `if necessary`, `as appropriate`, `as needed`, `etc`,
-      `and so on`, `or similar`, `something like`.
-- [ ] No question marks, except inside quoted user-interface text or code.
-- [ ] No narration: no steps taken, no failed attempts, no `I tried`,
-      `at first`, `after that`.
-- [ ] No command output, logs, stack traces, or code listings.
-- [ ] Every path and symbol in the report exists in the working tree, except
-      a symbol that an applied plan entry removed.
-- [ ] Every empty section holds the single word `None.`
-- [ ] The report ends with its last section. No offer, no question, no
-      next-step suggestion.
+- [ ] Every finding of Step 5 is a subtask or an *Out of scope* entry with
+      its reason.
+- [ ] Every path and symbol in the Approach, Context, and Changes sections
+      exists in the working tree, or carries the mark `(new)`.
+- [ ] The task's Subtasks list matches the subtasks written: same count, same
+      order, same titles.
+- [ ] The union of all subtasks' Changes equals the task's Approach. Nothing
+      outside it, nothing missing.
+- [ ] The task's Verification lists the commands from 3b, the test command
+      with the report options, and the measure command. `Run the tests`
+      alone fails this check.
+- [ ] No sections beyond the template. No Risks, Considerations,
+      Alternatives, Future work, Nice to have, Notes.
+
+## Executability
+
+- [ ] An agent with only the task and the repository can start subtask 1
+      without asking anything.
+- [ ] An agent with only one subtask and the repository can implement it
+      without asking anything and without opening the task. No `see task`,
+      `as above`, `same as subtask N`, `as described earlier`.
+- [ ] Each acceptance criterion is binary: it is met or not met, and someone
+      other than the author can check it.
+- [ ] Each subtask stands alone as a ticket: title, task, dependencies, goal,
+      context, changes, acceptance criteria, and verification are all
+      present.
 
 ## Grep helper
 
-Run this over the report file. Remove every hit, unless it sits inside quoted
+Run this over the draft file. Remove every hit, unless it sits inside quoted
 user-interface text or code.
 
 ```bash
@@ -104,7 +113,7 @@ grep -nEi \
   -e '\?|\bTBD\b|\bTBC\b|\bTODO\b|\bmaybe\b|\bmight\b|\bprobably\b' \
   -e '\bpossibly\b|\bperhaps\b|\bideally\b|\bconsider\b|\bcould\b' \
   -e 'should we|if needed|if necessary|as appropriate|as needed' \
-  -e '\betc\b|and so on|or similar|something like' \
-  -e '\bI tried\b|\bat first\b|\bafter that\b' \
-  <report-file>
+  -e '\betc\b|and so on|or similar|something like|either .* or|one of the' \
+  -e 'see task|see parent|as above|same as subtask|as described earlier' \
+  <draft-file>
 ```

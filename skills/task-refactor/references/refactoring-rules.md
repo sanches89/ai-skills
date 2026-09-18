@@ -1,14 +1,18 @@
 # Refactoring rules
 
-Follow these rules for every plan entry, in any language. Prefer a convention
-of the project over a rule here, as recorded in Step 3a.
+Read this file in Step 7. Every subtask of the refactor task follows these
+rules, in any language. Write the rules of *Behavior*, *Size of a change*,
+*Tests during a refactoring*, and *Never* into the task's Decisions section.
+Write the rules that a subtask's refactoring needs into that subtask's
+Context section. Prefer a convention of the project over a rule here, as
+recorded in Step 3a.
 
 ## Behavior
 
 - Change structure only. Keep every returned value, state change, raised
   error, written output, and call to an external system the same.
 - Keep odd behavior too. A caller depends on it until a test or the user says
-  otherwise. Put it in the refactor report under *Bugs found*.
+  otherwise. Put it under the task's *Out of scope*.
 - Keep the order of side effects. Two writes, two calls, or a write and a
   read stay in the order they had.
 - Keep the evaluation rules of the language in mind. Extracting a
@@ -21,18 +25,18 @@ of the project over a rule here, as recorded in Step 3a.
 
 ## Size of a change
 
-- Apply one refactoring per plan entry. Give it its name from
+- Apply one refactoring per subtask. Give it its name from
   `smell-catalog.md`.
-- Keep the code able to build and pass after every plan entry.
-- Restore the checkpoint when a check fails. Then apply the refactoring
-  another way. Never stack a repair on a failing change.
+- Keep the code able to build and pass after every subtask.
+- Revert the change of a subtask when a check fails. Then apply the
+  refactoring another way. Never stack a repair on a failing change.
 - Keep a mechanical change apart from a structural one. A rename, a move, and
-  a format change each get their own plan entry.
+  a format change each get their own subtask.
 - Reformat only the lines a refactoring touches. Leave every other line as it
   is.
 - Use a tool for a mechanical edit across many files: the agent's
-  language-server rename, or a structural rewrite tool from
-  `measurement-tools.md`. Review the full diff it produces.
+  language-server rename, or the structural rewrite tool that the subtask's
+  Context names. Review the full diff it produces.
 
 ## Duplication
 
@@ -95,7 +99,7 @@ of the project over a rule here, as recorded in Step 3a.
 
 ## Contract changes the request names
 
-- Change a part of the contract through three plan entries: add the new form
+- Change a part of the contract through three subtasks: add the new form
   beside the old one, move every caller, remove the old form.
 - Keep the old form working until its last caller moved.
 - In a library that others install, keep the old form and mark it deprecated
@@ -103,14 +107,14 @@ of the project over a rule here, as recorded in Step 3a.
 
 ## Tests during a refactoring
 
-- Run the tests that cover the changed code after every plan entry.
+- Run the tests that cover the changed code after every subtask.
 - Edit an existing test only for an import, a path, or a symbol name that the
   refactoring moved or renamed.
 - Treat a test that fails after a refactoring as proof of a behavior change.
-  Restore the checkpoint. Never edit the assertion.
+  Revert the change. Never edit the assertion.
 - Treat a test that breaks on every structure change as a finding. It asserts
-  on how the code works. List it under *Left for later*.
-- Keep the characterization tests of Step 7 in the change.
+  on how the code works. List it under the task's *Out of scope*.
+- Keep the characterization tests that a subtask names in the change.
 
 ## Never
 
@@ -121,4 +125,4 @@ of the project over a rule here, as recorded in Step 3a.
   request naming it.
 - Never silence a compiler warning, a lint rule, or a type error to make a
   check pass.
-- Never continue past the refactor plan. List what is left.
+- Never continue past the refactor task. List what is left.

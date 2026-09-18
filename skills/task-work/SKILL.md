@@ -1,6 +1,6 @@
 ---
 name: task-work
-description: Use when the user wants a task, subtask, ticket, or issue implemented, worked on, started, finished, or picked up, given as an item identifier, a task file, a subtask file, or text. Not for restructuring code without a behavior change.
+description: Use when the user wants a task, subtask, ticket, or issue implemented, worked on, started, finished, or picked up, given as an item identifier, a task file, a subtask file, or text, including a refactor task written by a code review. Not for writing a task from an idea or splitting one into subtasks.
 license: MIT
 argument-hint: <task or subtask id | file | text>
 ---
@@ -217,8 +217,10 @@ use a test double. Prefer a convention of the project over that file. Then:
   Confirm they pass before the refactor and after it. Break the asserted
   behavior once to see each test fail, then restore it, as
   `references/unit-testing.md` states;
-- edit an existing test only when the target changes the behavior it asserts.
-  Fix every other failing test in the code, by hard rule 4.
+- edit an existing test only for a behavior the target changes, or for an
+  import, path, or symbol name it renames or moves. Never edit an assertion
+  for a rename or a move. Fix every other failing test in the code, by hard
+  rule 4.
 
 When a decision is missing, research first. When research cannot settle it, ask
 one question. Record the answer in the Step 2 notes and, in the work report,

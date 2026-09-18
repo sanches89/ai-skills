@@ -24,7 +24,7 @@ counts one tier.
 ## Summary
 
 Tokens per skill and tier. With all 9 skills installed, the startup
-tier costs 569 tokens per session. Using one skill then adds its
+tier costs 621 tokens per session. Using one skill then adds its
 `SKILL.md` and the references it reads.
 
 | Skill            | Startup | SKILL.md | References | Scripts |  Total |
@@ -35,10 +35,10 @@ tier costs 569 tokens per session. Using one skill then adds its
 | package-update   |      59 |    4,758 |      5,627 |   1,864 | 12,249 |
 | task-breakdown   |      64 |    3,279 |      2,377 |       0 |  5,656 |
 | task-create      |      59 |    2,183 |      1,402 |       0 |  3,585 |
-| task-refactor    |      70 |    4,251 |      9,352 |       0 | 13,603 |
-| task-work        |      62 |    3,710 |      3,017 |       0 |  6,727 |
+| task-refactor    |     105 |    5,409 |      9,494 |       0 | 14,903 |
+| task-work        |      79 |    3,757 |      3,063 |       0 |  6,820 |
 | unambiguity      |      68 |    2,156 |      2,009 |       0 |  4,165 |
-| **All skills**   |     569 |   27,523 |     32,867 |   8,987 | 69,377 |
+| **All skills**   |     621 |   28,728 |     33,055 |   8,987 | 70,770 |
 
 ## Files per skill
 
@@ -106,26 +106,26 @@ Lines, words, and tokens of every file, grouped by skill.
 
 ### task-refactor
 
-| File                                     | Lines | Words | Tokens |
-|------------------------------------------|------:|------:|-------:|
-| `SKILL.md`                               |   356 | 2,933 |  4,251 |
-| `references/characterization-tests.md`   |    85 |   740 |    950 |
-| `references/measurement-tools.md`        |   244 | 1,709 |  2,828 |
-| `references/quality-checklist.md`        |   110 |   891 |  1,290 |
-| `references/refactor-report-template.md` |   103 |   708 |  1,109 |
-| `references/refactoring-rules.md`        |   124 | 1,026 |  1,284 |
-| `references/smell-catalog.md`            |   184 | 1,316 |  1,891 |
-| **Total**                                | 1,206 | 9,323 | 13,603 |
+| File                                   | Lines |  Words | Tokens |
+|----------------------------------------|------:|-------:|-------:|
+| `SKILL.md`                             |   422 |  3,692 |  5,409 |
+| `references/characterization-tests.md` |    64 |    581 |    767 |
+| `references/measurement-tools.md`      |   236 |  1,692 |  2,767 |
+| `references/quality-checklist.md`      |   119 |    964 |  1,441 |
+| `references/refactoring-rules.md`      |   128 |  1,070 |  1,360 |
+| `references/smell-catalog.md`          |   184 |  1,316 |  1,891 |
+| `references/task-template.md`          |   149 |    744 |  1,268 |
+| **Total**                              | 1,302 | 10,059 | 14,903 |
 
 ### task-work
 
 | File                                 | Lines | Words | Tokens |
 |--------------------------------------|------:|------:|-------:|
-| `SKILL.md`                           |   305 | 2,683 |  3,710 |
-| `references/quality-checklist.md`    |    89 |   736 |  1,074 |
-| `references/unit-testing.md`         |    98 |   782 |    984 |
+| `SKILL.md`                           |   307 | 2,717 |  3,757 |
+| `references/quality-checklist.md`    |    91 |   756 |  1,100 |
+| `references/unit-testing.md`         |    98 |   796 |  1,004 |
 | `references/work-report-template.md` |    92 |   638 |    959 |
-| **Total**                            |   584 | 4,839 |  6,727 |
+| **Total**                            |   588 | 4,907 |  6,820 |
 
 ### unambiguity
 

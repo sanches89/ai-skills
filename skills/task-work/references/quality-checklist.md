@@ -35,7 +35,9 @@ states the missing test setup under *Affects other work*.
 - [ ] No new test uses the real network, the real clock, unseeded random
       values, sleeping, or files outside a temporary folder.
 - [ ] Test doubles replace only system boundaries, never the unit under test.
-- [ ] Every edited existing test asserts a behavior the target changes.
+- [ ] Every edited existing test asserts a behavior the target changes. A
+      test edited for a rename or a move changed only in an import, a path,
+      or a symbol name.
 - [ ] The tests follow the project's framework, location, naming, and
       fixtures. The diff adds no second framework or style.
 - [ ] The count on the report's *Tests* line equals the test cases added.

@@ -13,9 +13,11 @@ run only when the project configures them.
 - Never add a tool to the project's manifest. Never write a tool's
   configuration file or report file inside the repository.
 - Skip a measurement whose tool or runtime is missing. Read the code against
-  the limits instead. Name the skipped measurement in the refactor report.
-- Run a tool with the same paths and the same options before and after the
-  change. A number from different options proves nothing.
+  the limits instead. Name the skipped measurement in the task's Context
+  section.
+- Write the measure command with its paths and options into the task's
+  Context and Verification sections, so that the implementer measures the
+  same way. A number from different options proves nothing.
 
 ## The measure tool
 
@@ -57,24 +59,15 @@ Record the baseline:
 ```bash
 <measure> <path>... \
   --ignore "<glob>,<glob>" \
-  --test-report <scratch-dir>/before-junit.xml \
-  --coverage-report <scratch-dir>/before-coverage.info \
-  > <scratch-dir>/before.json
-```
-
-Compare after the change. The measure tool reuses the limits and the ignore
-globs of the first summary. Name the first paths again, plus every file that a
-plan entry created outside them. Pass the reports of the new test run:
-
-```bash
-<measure> <path>... \
-  --test-report <scratch-dir>/after-junit.xml \
-  --coverage-report <scratch-dir>/after-coverage.info \
-  --compare <scratch-dir>/before.json > <scratch-dir>/after.json
+  --test-report <scratch-dir>/junit.xml \
+  --coverage-report <scratch-dir>/coverage.info \
+  > <scratch-dir>/baseline.json
 ```
 
 Exit codes: `0` summary printed, `1` unexpected failure, `2` invalid
-arguments, `3` the comparison found a worse measurement.
+arguments, `3` the comparison found a worse measurement. The review runs no
+comparison. The task's success criteria state the baseline values that the
+implementer's run keeps or improves.
 
 ## The test report and the coverage report
 
@@ -159,25 +152,22 @@ or Cobertura option.
 - `crap` is the CRAP score: `ccn^2 * (1 - coverage)^3 + ccn`. A complex
   function without tests scores highest. It is the riskiest code to refactor
   and the first to get characterization tests.
-- With `--compare`, `delta` holds each compared value before and after.
-  `worse` names every value that got worse. `notCompared` names every
-  measurement that one of the two runs skipped.
 
-The comparison covers these values:
-- duplicated lines and clone count;
-- the number of functions over each limit, and the highest `ccn`;
+The task's success criteria hold these values against the baseline:
+- duplicated lines and clone count, with the value the subtasks reach;
+- the number of functions over each limit, and the highest `ccn`, with the
+  value the subtasks reach;
 - `tests.total`, which is worse when it falls, because a test is gone;
 - `tests.failed` and `tests.skipped`, which are worse when they rise;
 - uncovered lines and uncovered branches, which are worse when they rise.
 
-It ignores the sum of `ccn`, because Extract Function raises that sum by
-design. It ignores the coverage percentage, because removing covered dead code
+Leave out the sum of `ccn`, because Extract Function raises that sum by
+design. Leave out the coverage percentage, because removing covered dead code
 lowers it with no test lost.
 
 A coverage report proves that a test runs a line. It never proves that a test
-asserts the result. Before marking a plan entry `covered`, read the tests that
-run its code. Confirm that they assert what the code returns, changes, or
-raises.
+asserts the result. Before marking an entry `covered`, read the tests that run
+its code. Confirm that they assert what the code returns, changes, or raises.
 
 ## Limits
 
@@ -205,10 +195,10 @@ introduce one.
 - **Coverage**, such as `c8`, `coverage.py`, `tarpaulin`, or JaCoCo. Coverage
   built into the toolchain, as in Go and the Node.js test runner, needs no
   configuration. Use it in Step 4 to write the coverage report.
-- **Mutation testing**, such as Stryker, mutmut, PIT, or cargo-mutants. Use
-  it in Step 7 to prove that the tests of a `high` risk plan entry are able
-  to fail. Without it, break the asserted behavior by hand once, as
-  `characterization-tests.md` states.
+- **Mutation testing**, such as Stryker, mutmut, PIT, or cargo-mutants. Name
+  it in the Context of a `high` risk subtask as the proof that its tests are
+  able to fail. Without it, the subtask states that the implementer breaks
+  the asserted behavior by hand once, as `characterization-tests.md` states.
 - **Dead-code detection**, such as knip, vulture, `deadcode`, or the unused
   warnings of the compiler. Treat each hit as a signal. Prove it by the search
   that `refactoring-rules.md` requires.
@@ -217,7 +207,8 @@ introduce one.
 
 ## Structural rewrite tools
 
-For a mechanical edit across many files, prefer in this order:
+For a mechanical edit across many files, name in the subtask's Context the
+first of these that the project has:
 1. the agent's language-server rename or move, when the agent has one;
 2. the project's own codemod tool, when it configures one;
 3. ast-grep, run as `npx --yes --package @ast-grep/cli ast-grep`. It matches
@@ -226,8 +217,9 @@ For a mechanical edit across many files, prefer in this order:
 4. hand edits, one file at a time, with a text search for the old form
    afterwards.
 
-Review the full diff after every tool run. A tool changes strings, comments,
-or look-alike symbols that the refactoring never meant.
+State in the subtask that the implementer reviews the full diff after every
+tool run. A tool changes strings, comments, or look-alike symbols that the
+refactoring never meant.
 
 ## Without any tool
 
@@ -240,5 +232,5 @@ When the measure command fails to start, measure by reading:
   `git log --since="12 months ago" --oneline -- <file> | wc -l`;
 - take the test counts from the output of the test command, and the coverage
   from the summary that the coverage command prints.
-Write `skipped` with the reason on the *Measurements* lines of the refactor
-report.
+Write `skipped` with the reason on the baseline lines of the task's Context
+section.

@@ -17,10 +17,11 @@ coding agent that loads `SKILL.md` files.
 - [task-work](skills/task-work/SKILL.md): implements a task or subtask within
   the scope set by its parent tasks and proves every acceptance criterion. It
   returns a short work report with only what the rest of the work needs.
-- [task-refactor](skills/task-refactor/SKILL.md): refactors code in any
-  language without changing its behavior, in small tested steps. It returns a
-  short refactor report with duplication, complexity, unit tests, and coverage
-  measured before and after.
+- [task-refactor](skills/task-refactor/SKILL.md): reviews code in any
+  language for refactoring, with duplication, complexity, unit tests, and
+  coverage measured. It writes a refactor task with one subtask per
+  refactoring, each with its tests and one verification command, and changes
+  no code.
 - [agent-docs-audit](skills/agent-docs-audit/SKILL.md): audits and compresses a
   repo's `AGENTS.md` files and `docs/refs` so they take fewer tokens without
   losing a rule. With the glossary and unambiguity skills, it also defines
@@ -43,16 +44,23 @@ coding agent that loads `SKILL.md` files.
   branch with it. It returns a measurement report with ranked findings and
   changes no code.
 
-task-create, task-breakdown, and task-work form a pipeline: the first writes
-`docs/tasks/###-<task-slug>/task.md`, the second adds
-`docs/tasks/###-<task-slug>/###-<subtask-slug>.md` next to it, and the third
-implements a task or one subtask from those files. With a project-management
-MCP server connected, the first two write items there instead, unless you ask
-for files, and the third reads them.
+The task-* skills form a pipeline. task-create writes
+`docs/tasks/###-<task-slug>/task.md`. task-breakdown adds
+`docs/tasks/###-<task-slug>/###-<subtask-slug>.md` next to it. task-refactor
+writes both from a code review. task-work implements a task or one subtask
+from those files. With a project-management MCP server connected, the writers
+create items there instead, unless you ask for files, and task-work reads
+them. Each skill ends with the input of the next, so these sequences work
+without an edit in between:
 
-task-refactor works beside the pipeline. It takes a path, a symbol, a git
-range, text, or one of those tasks, and restructures the code without changing
-what it does.
+1. an idea, then task-create, task-breakdown, and task-work;
+2. an idea, then task-create and task-work, when the task is one commit;
+3. code, then task-refactor and task-work;
+4. task-work, then task-refactor on the same task, then task-work on the
+   refactor task, to clean up after a feature;
+5. task-refactor, then task-breakdown, then task-work, for a different split
+   of the refactor task;
+6. code-analysis, then task-refactor or task-create on a finding.
 
 glossary and unambiguity form a pair: the first writes the glossary, and the
 second rewrites a document with the glossary's terms.

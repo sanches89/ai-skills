@@ -107,22 +107,27 @@ Folders:
 
 - `task-create` writes one task and never writes subtasks. `task-breakdown`
   writes subtasks for a task and never creates a task from an idea.
-- Both use one task format. The code block in
+  `task-refactor` reviews code and writes one refactor task with one subtask
+  per refactoring. It never changes project code and never edits an existing
+  task or subtask.
+- The three use one task format. The code block in
   `skills/task-create/references/task-template.md` and the `## Task` block in
   `skills/task-breakdown/references/task-template.md` must stay identical except
-  for the Subtasks section. Change them together and diff them afterwards.
-- Both share the file layout `docs/tasks/###-<task-slug>/task.md` and
+  for the Subtasks section. The `## Task` and `## Subtask` blocks in
+  `skills/task-breakdown/references/task-template.md` and in
+  `skills/task-refactor/references/task-template.md` must stay identical.
+  Change them together and diff them afterwards.
+- The three share the file layout `docs/tasks/###-<task-slug>/task.md` and
   `docs/tasks/###-<task-slug>/###-<subtask-slug>.md`, with the numbering rule
-  stated in each `SKILL.md`. A change to the layout is made in both skills in
-  the same commit.
+  stated in each `SKILL.md`. A change to the layout is made in the three
+  skills in the same commit.
 - `task-work` implements a task or subtask and never writes or edits one. It
   reads the section names of the task format and the subtask format, and the
   file layout. Change a section name or the layout in `skills/task-work/` in
   the same commit.
-- `task-refactor` restructures code and never changes its behavior. It never
-  writes or edits a task or a subtask. It reads the section names of the task
-  format and the subtask format, and the file layout. Change a section name or
-  the layout in `skills/task-refactor/` in the same commit.
+- End `task-create`, `task-breakdown`, and `task-refactor` with the paths
+  written or the identifiers created, and nothing else. The next `task-*`
+  skill takes that line as its input without an edit.
 - `glossary` writes the glossary and never edits another document.
   `unambiguity` reads the glossary and never writes it. Both read a glossary
   entry as a bullet `- **Term**: definition.`; change that form in both
@@ -167,8 +172,18 @@ Folders:
    a rule.
 4. Run `node --check` on every file under `scripts/`.
 5. For `task-create` and `task-breakdown`, diff the two task format blocks. For
-   `task-work` and `task-refactor`, confirm that every section name printed
-   below is a heading in the `## Task` or `## Subtask` block of
+   `task-breakdown` and `task-refactor`, diff the `## Task` and `## Subtask`
+   blocks. Any output is a failure:
+
+   ```bash
+   diff <(sed -n '/^## Task$/,$p' \
+            skills/task-breakdown/references/task-template.md) \
+        <(sed -n '/^## Task$/,$p' \
+            skills/task-refactor/references/task-template.md)
+   ```
+
+   For `task-work` and `task-refactor`, confirm that every section name
+   printed below is a heading in the `## Task` or `## Subtask` block of
    `skills/task-breakdown/references/task-template.md`:
 
    ```bash

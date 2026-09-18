@@ -90,9 +90,9 @@ Make a test give the same result on every run, on every machine, in any order.
 
 ## Existing tests
 
-- Edit an existing test only when the target changes the behavior it asserts.
-  Update it to the new behavior and list the file in the work report's
-  *Changes*.
+- Edit an existing test only for a behavior the target changes, or for an
+  import, path, or symbol name it renames or moves. Update it to the new
+  behavior or the new name, and list the file in the work report's *Changes*.
 - Never delete, skip, or loosen a test to make a run pass.
 - Leave alone a test that already failed in the baseline and list it under
   *Affects other work*, unless a criterion covers it.
