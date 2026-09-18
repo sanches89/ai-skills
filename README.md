@@ -37,6 +37,11 @@ coding agent that loads `SKILL.md` files.
   project's install, build, lint, type check, and tests accept. It changes
   only manifests and lockfiles and returns a short update report with what
   moved, what stayed, and why.
+- [code-analysis](skills/code-analysis/SKILL.md): measures a repository's
+  duplication, complexity, hotspots, unit tests, and coverage, and reads the
+  code behind every number. With a base branch, it compares the current
+  branch with it. It returns a measurement report with ranked findings and
+  changes no code.
 
 task-create, task-breakdown, and task-work form a pipeline: the first writes
 `docs/tasks/###-<task-slug>/task.md`, the second adds
@@ -54,6 +59,9 @@ second rewrites a document with the glossary's terms.
 
 package-update works alone. It leaves a major version that needs a code change
 for task-create to turn into a task.
+
+code-analysis works alone and changes no code. A finding it reports is input
+for task-create or task-refactor.
 
 ## Structure
 

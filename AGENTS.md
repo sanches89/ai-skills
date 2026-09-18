@@ -136,6 +136,11 @@ Folders:
   way. An invocation text from a skill starts with `from <skill name>:`, and
   the invoked skill then skips its own hand-off. Change that form in all three
   skills in the same commit.
+- `task-refactor` and `code-analysis` both run the measure tool and make the
+  project's test command write its reports. The code block of report
+  options in `skills/task-refactor/references/measurement-tools.md` and in
+  `skills/code-analysis/references/test-reports.md` must stay identical.
+  Change them together and diff them afterwards.
 
 ## Workflow in this repo
 
@@ -206,4 +211,13 @@ Folders:
        | tr '\n' ' ' | sed -E 's/`[^`]*`/X/g' | tr '.!?;:' '\n\n\n\n\n' \
        | awk -v f="$f" 'NF > 25 { print f ": " $0 }'
    done
+   ```
+9. For `task-refactor` and `code-analysis`, diff the two code blocks of
+   report options. Any output is a failure:
+
+   ```bash
+   diff <(awk '/^# Node.js test runner/,/^```$/' \
+            skills/task-refactor/references/measurement-tools.md) \
+        <(awk '/^# Node.js test runner/,/^```$/' \
+            skills/code-analysis/references/test-reports.md)
    ```
