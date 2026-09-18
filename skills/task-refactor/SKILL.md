@@ -1,6 +1,6 @@
 ---
 name: task-refactor
-description: Refactor code in any programming language without changing its behavior, in small tested steps, and return a short refactor report with duplication, complexity, test results, and coverage measured before and after. Use when the user wants to refactor, clean up, simplify, restructure, deduplicate, untangle, or reduce the complexity or technical debt of a file, folder, symbol, diff, task, or subtask, even when they only say the code is messy or hard to change.
+description: Use when the user wants code refactored, cleaned up, simplified, restructured, deduplicated, or untangled without changing what it does, or only says a file, symbol, diff, or task is messy, complex, or hard to change. Not for a feature or a bug fix.
 license: MIT
 compatibility: Works in any project, with or without git. The measurements need Node.js 20 or newer with npx, network access on the first run, and read access to github.com/sanches89/code-measure. Complexity also needs uv, pipx, or a Python that has lizard. A missing tool skips its measurement and never blocks the work.
 argument-hint: <path | symbol | git range | task or subtask id | file | text>

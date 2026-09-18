@@ -1,6 +1,6 @@
 ---
 name: unambiguity
-description: Rewrite a text so that it is clear and unambiguous, with one word per meaning, one name per thing, every referent and quantity named, short sentences, instructions as commands, and no open questions or assumptions, while its meaning stays the same. Use when the user wants to clarify, disambiguate, tighten, or make precise a document, a rule set, a spec, a README, an AGENTS.md, or any instruction text.
+description: Use when the user wants a document, spec, README, AGENTS.md, prompt, or any instruction text clarified, disambiguated, or made precise with its meaning kept, or says a text is vague, read two ways, or misread by an agent. Not for writing the glossary.
 license: MIT
 argument-hint: <file path | text>
 ---

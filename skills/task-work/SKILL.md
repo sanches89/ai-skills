@@ -1,6 +1,6 @@
 ---
 name: task-work
-description: Implement a task or subtask so that every acceptance criterion is proven met, within the scope set by its parent tasks, and return a short work report holding only what the rest of the work needs. Use when the user wants to work on, implement, execute, start, or finish a task, subtask, ticket, or issue, given as an item identifier, a task file, a subtask file, or text.
+description: Use when the user wants a task, subtask, ticket, or issue implemented, worked on, started, finished, or picked up, given as an item identifier, a task file, a subtask file, or text. Not for restructuring code without a behavior change.
 license: MIT
 argument-hint: <task or subtask id | file | text>
 ---

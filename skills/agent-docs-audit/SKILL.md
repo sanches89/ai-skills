@@ -1,6 +1,6 @@
 ---
 name: agent-docs-audit
-description: Audit and compress this repo's AGENTS.md files and docs/refs so they take fewer tokens without losing a rule. Finds rules in the wrong folder, repeated or stale rules, ambiguous wording checked against the code, and reference doc sections the repo does not use, and with the glossary and unambiguity skills defines every term once and rewrites the wording. Use when asked to shrink, tidy, dedupe or review AGENTS.md or docs/refs, or after several convention or reference doc changes.
+description: Use when the user asks to audit, review, shrink, tidy, dedupe, or compress the AGENTS.md or CLAUDE.md files or docs/refs of a repository, or says the agent instructions are too long, stale, or repetitive. Also after several rule or reference changes.
 license: MIT
 compatibility: Requires Node.js 18 or newer and git, run inside a git repository.
 ---

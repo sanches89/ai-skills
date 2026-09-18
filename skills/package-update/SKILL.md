@@ -1,6 +1,6 @@
 ---
 name: package-update
-description: Update every dependency in every package.json of a repository to the highest version that the project's install, type check, lint, build, and tests accept, changing only manifests and lockfiles, and return a short update report of what moved, what stayed, and why. Use when the user wants to update, upgrade, bump, or refresh npm packages or dependencies, fix outdated packages, or bring a single package or a monorepo to current library versions.
+description: Use when the user wants the npm packages or dependencies of a package or monorepo updated, upgraded, bumped, or brought to current versions, or says packages are outdated or a lockfile is stale. Not for changing source code to fit a new version.
 license: MIT
 compatibility: Requires Node.js 22 or newer with npx, git, network access to the package registry, and the project's package manager (npm, pnpm, yarn, or bun) on PATH. npx fetches npm-check-updates and semver into its own cache on the first run.
 argument-hint: "[path...] [package name...] [latest | minor | patch] [cooldown <days>]"

@@ -1,6 +1,6 @@
 ---
 name: task-create
-description: Explore an idea and turn it into a precise, unambiguous task. Use when the user wants to explore, plan, scope, or spec an idea, feature, change, or refactor before implementing it.
+description: Use when the user wants an idea, feature, change, bug, or refactor explored, planned, scoped, or written up as a task, ticket, issue, or spec before implementation. Not for a task that already exists and needs splitting or implementing.
 license: MIT
 argument-hint: <idea>
 ---

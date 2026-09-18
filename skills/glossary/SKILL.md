@@ -1,6 +1,6 @@
 ---
 name: glossary
-description: Create or update a project's GLOSSARY.md so that every word the project's documents use with two readings, and that no other word settles, has one definition. Use when the user wants to create, update, clean up, or audit a glossary, settle words that the documents use with two meanings or two words used for one thing, or remove entries that explain the obvious.
+description: Use when the user wants a project's glossary or GLOSSARY.md created, updated, cleaned up, or audited, or says the documents use one word for two things, two words for one thing, or undefined terms. Not for rewriting the documents themselves.
 license: MIT
 argument-hint: <glossary path | files to cover | words to define>
 ---
