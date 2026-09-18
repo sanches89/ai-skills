@@ -4,6 +4,7 @@ description: Use when the user wants the code measured or analyzed, asks how com
 license: MIT
 compatibility: Requires Node.js 20 or newer with npx and git, run inside a git repository, with network access on the first run. Complexity needs lizard on PATH, or uv, pipx, or a Python that has lizard. Tests and coverage need the project's own test command. A missing tool skips its measurement and never blocks the report.
 argument-hint: "[base]"
+disable-model-invocation: true
 ---
 
 # Code Analysis

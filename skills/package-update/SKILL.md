@@ -4,6 +4,7 @@ description: Use when the user wants the npm packages or dependencies of a packa
 license: MIT
 compatibility: Requires Node.js 22 or newer with npx, git, network access to the package registry, and the project's package manager (npm, pnpm, yarn, or bun) on PATH. npx fetches npm-check-updates and semver into its own cache on the first run.
 argument-hint: "[path...] [package name...] [latest | minor | patch] [cooldown <days>]"
+disable-model-invocation: true
 ---
 
 # Package Update

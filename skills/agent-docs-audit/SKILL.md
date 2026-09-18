@@ -3,6 +3,7 @@ name: agent-docs-audit
 description: Use when the user asks to audit, review, shrink, tidy, dedupe, or compress the AGENTS.md or CLAUDE.md files or docs/refs of a repository, or says the agent instructions are too long, stale, or repetitive. Also after several rule or reference changes.
 license: MIT
 compatibility: Requires Node.js 18 or newer and git, run inside a git repository.
+disable-model-invocation: true
 ---
 
 # Agent docs audit
