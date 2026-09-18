@@ -23,47 +23,13 @@ question in the task.
    settle it, ask the user.
 4. **Never leave an open question in the task.** State every decision as a
    fact.
-5. **One question at a time.** Write every question in chat in the *Question
-   format* below, then end the turn and wait for the answer. Never use an
-   agent's built-in question or form tool (in Claude Code, `AskUserQuestion`).
-   Write questions as plain chat text.
-6. **Stay in scope.** Drop side explorations and adjacent ideas. Put an
+5. **Stay in scope.** Drop side explorations and adjacent ideas. Put an
    adjacent topic in the task only under *Out of scope*, and only when a
    reader would expect it in this task. Write it as a statement that it will
    not be done.
-7. **No estimates, priorities, or timelines.** Add them only when the user
+6. **No estimates, priorities, or timelines.** Add them only when the user
    asks for them.
-8. **Write nothing before the user approves the full task text** (Step 7).
-
-## Question format
-
-Use this exact layout, and nothing else, for every question to the user in
-every step. Ask one question per message. After printing it, end the turn and
-wait.
-
-```
-❓ QUESTION
-<question>
-
-📚 CONTEXT
-<what research found and what depends on the answer - max of 520 chars>
-
-☑️ OPTIONS
-<options, use an ordered list, numbers -> letters -> roman numerals>
-
-👉 MY SUGGESTION
-<suggestion - max of 180 chars>
-```
-
-- **QUESTION**: one decision, one sentence.
-- **CONTEXT**: what research found and what in the task depends on the answer.
-  Maximum 520 characters.
-- **OPTIONS**: an ordered list. Use numbers at the top level (`1.`, `2.`),
-  letters at the next level (`a.`, `b.`), then roman numerals (`i.`, `ii.`).
-  Make options concrete and grounded in research: name real files, symbols,
-  values, and identifiers. The user answers with a number or with free text.
-- **MY SUGGESTION**: the option you recommend and why, in at most 180
-  characters. Write `None` only when research gives no basis to prefer one.
+7. **Write nothing before the user approves the full task text** (Step 7).
 
 ## Workflow
 
@@ -72,8 +38,8 @@ wait.
 - Take the idea from the text passed with the skill invocation, or from the
   conversation. When there is none, ask for it as the first question.
 - Write one sentence in the form: *The idea is to <change> so that <outcome>.*
-- Ask the user to confirm or correct that sentence, in the question format.
-  Do not start research until the user confirms it.
+- Ask the user to confirm or correct that sentence. Do not start research
+  until the user confirms it.
 
 ### Step 2: Research
 
@@ -121,7 +87,7 @@ scratch directory, in two parts:
    each the decision to make and the section of the task it affects.
 Use part 2 to drive Step 3. Do not show the research notes to the user.
 
-### Step 3: Interview, one question at a time
+### Step 3: Interview
 
 Order the open decisions: scope boundaries first, then behavior, then technical
 choices, then delivery details. Ask delivery details only when the task goes to
@@ -129,14 +95,11 @@ the tracker, by the rule in Step 8: which team, project, or board receives the
 item, and the values of required fields that research did not settle.
 
 For each open decision:
-- Ask it in chat in the question format, then end the turn and wait for the
-  answer.
-- State the decision in QUESTION. State what in the task depends on it in
-  CONTEXT.
-- Give 2 to 4 concrete options grounded in research in OPTIONS. Write
+- State the decision in one sentence. State what in the task depends on it.
+- Give 2 to 4 concrete options grounded in research. Write
   `Reuse PaymentService.retry() in src/payments/service.ts:88`, never
   `reuse existing code`.
-- Name the option you recommend in MY SUGGESTION.
+- Name the option you recommend.
 
 After each answer:
 - Record the decision as a fact in the research notes.
@@ -151,8 +114,7 @@ Do not ask about:
   record it as a decision;
 - preferences that change nothing in the task.
 
-Never ask two decisions in one question. Never ask an open-ended question such
-as "anything else?".
+Never ask an open-ended question such as "anything else?".
 
 Continue until the open-decisions list is empty.
 
@@ -165,9 +127,8 @@ Print two lists in chat:
   research or interview and that a reader would expect in this task. Write
   `None.` when there are none.
 
-Then ask, in the question format, whether the user confirms the lists or wants
-a change. Repeat until the user confirms. Do not write the task before
-confirmation.
+Then ask whether the user confirms the lists or wants a change. Repeat until
+the user confirms. Do not write the task before confirmation.
 
 ### Step 5: Write the task
 
@@ -201,10 +162,9 @@ check. Do not show the task until every check passes.
 
 ### Step 7: Approval
 
-Show the complete task text in chat. Then ask, in the question format, whether
-the user approves the task as written or wants a change. Apply changes, re-run
-Step 6, and ask again. Loop until the user approves. Write nothing before
-approval.
+Show the complete task text in chat. Then ask whether the user approves the
+task as written or wants a change. Apply changes, re-run Step 6, and ask
+again. Loop until the user approves. Write nothing before approval.
 
 ### Step 8: Save
 
@@ -221,9 +181,8 @@ Never ask the user which of the two.
 **Saving to a file**: the task file is `docs/tasks/###-<task-slug>/task.md`
 under the repository root, by the numbering rule below:
 1. Collision check: when `docs/tasks/` already holds a folder with the same
-   `<task-slug>` under any number, ask one question in the question format:
-   overwrite that `task.md` keeping its number, or write a new folder with a
-   new number.
+   `<task-slug>` under any number, ask one question: overwrite that `task.md`
+   keeping its number, or write a new folder with a new number.
 2. Write the task file with the approved task, unchanged.
 
 **Numbering rule.** `###` is a zero-padded three-digit sequence starting at

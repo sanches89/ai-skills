@@ -67,10 +67,6 @@ These rules hold in every Markdown file of this repository.
 - **Scripts.** Instructions invoke a script as `<skill-dir>/scripts/<file>` and
   define `<skill-dir>` as the folder holding the `SKILL.md`. A skill with a
   script names its runtime and tools in the `compatibility` frontmatter field.
-- **Questions to the user.** A question from a skill, or from an agent working
-  in this repo, is plain chat text, one question per message. It uses the
-  Question format of `skills/task-create/SKILL.md`. Never use an agent's
-  built-in question or form tool.
 
 ## Distribution
 

@@ -31,51 +31,17 @@ These words have exactly one meaning in this skill.
    settle it, ask the user.
 4. **Never leave an open question** in the task or in a subtask. State every
    decision as a fact.
-5. **One question at a time.** Write every question in chat in the *Question
-   format* below, then end the turn and wait for the answer. Never use an
-   agent's built-in question or form tool (in Claude Code, `AskUserQuestion`).
-   Write questions as plain chat text.
-6. **Stay in scope.** Make the subtasks together deliver exactly the task,
+5. **Stay in scope.** Make the subtasks together deliver exactly the task,
    nothing more. Put an adjacent topic only under the task's *Out of scope*,
    and only when a reader would expect it in this task. Write it as a
    statement that it will not be done.
-7. **No estimates, priorities, or timelines.** Add them only when the user
+6. **No estimates, priorities, or timelines.** Add them only when the user
    asks for them.
-8. **Write nothing before the user approves the full breakdown text**
+7. **Write nothing before the user approves the full breakdown text**
    (Step 7).
-9. **Subtask rule.** Make every subtask one reviewable change with a single
+8. **Subtask rule.** Make every subtask one reviewable change with a single
    verification command, mergeable on its own. After merging it, the project
    builds and every test, existing and new, passes.
-
-## Question format
-
-Use this exact layout, and nothing else, for every question to the user in
-every step. Ask one question per message. After printing it, end the turn and
-wait.
-
-```
-❓ QUESTION
-<question>
-
-📚 CONTEXT
-<what research found and what depends on the answer - max of 520 chars>
-
-☑️ OPTIONS
-<options, use an ordered list, numbers -> letters -> roman numerals>
-
-👉 MY SUGGESTION
-<suggestion - max of 180 chars>
-```
-
-- **QUESTION**: one decision, one sentence.
-- **CONTEXT**: what research found and what in the breakdown depends on the
-  answer. Maximum 520 characters.
-- **OPTIONS**: an ordered list. Use numbers at the top level (`1.`, `2.`),
-  letters at the next level (`a.`, `b.`), then roman numerals (`i.`, `ii.`).
-  Make options concrete and grounded in research: name real files, symbols,
-  values, and identifiers. The user answers with a number or with free text.
-- **MY SUGGESTION**: the option you recommend and why, in at most 180
-  characters. Write `None` only when research gives no basis to prefer one.
 
 ## Workflow
 
@@ -86,8 +52,8 @@ conversation, as one of:
 - **An item identifier or URL** (for example `PAY-212`, `#128`, an issue link)
   in the tracker: an issue tracker reached through MCP, such as Linear, Jira,
   or GitHub Issues. Source: *tracker*. Fetch the item and its existing
-  children. When no tracker is connected, ask one question in the question
-  format: give the task as a task file path or as text.
+  children. When no tracker is connected, ask one question: give the task as
+  a task file path or as text.
 - **A task file**, `docs/tasks/###-<task-slug>/task.md`. Source: *file*. Read
   it and every subtask file, `docs/tasks/###-<task-slug>/###-<subtask-slug>.md`,
   already in its task folder.
@@ -97,13 +63,13 @@ conversation, as one of:
 
 The task already has subtasks when its item has children, its task folder
 holds subtask files, or its Subtasks section holds entries other than `None.`.
-In that case ask one question in the question format: replace them, or abort.
-On replace, delete the existing subtasks in Step 8, or close them when the
-tracker cannot delete. On abort, stop.
+In that case ask one question: replace them, or abort. On replace, delete the
+existing subtasks in Step 8, or close them when the tracker cannot delete. On
+abort, stop.
 
 Write one sentence in the form: *The task is to <change> so that <outcome>.* Ask
-the user to confirm or correct it, in the question format. Do not start
-research until the user confirms it.
+the user to confirm or correct it. Do not start research until the user
+confirms it.
 
 ### Step 2: Research
 
@@ -152,7 +118,7 @@ scratch directory, in two parts:
    each the decision to make and the subtask it affects.
 Use part 2 to drive Step 3. Do not show the research notes to the user.
 
-### Step 3: Interview, one question at a time
+### Step 3: Interview
 
 Order the open decisions: task scope first, then behavior, then technical
 choices, then split choices (guards, ordering), then delivery details. Ask
@@ -161,14 +127,12 @@ tracker, by the rule in Step 8: which team, project, or board receives the
 items, and the values of required fields that research did not settle.
 
 For each open decision:
-- Ask it in chat in the question format, then end the turn and wait for the
-  answer.
-- State the decision in QUESTION. State what in the breakdown depends on it in
-  CONTEXT.
-- Give 2 to 4 concrete options grounded in research in OPTIONS. Write
+- State the decision in one sentence. State what in the breakdown depends on
+  it.
+- Give 2 to 4 concrete options grounded in research. Write
   `Add the retry loop in PaymentService.send() at src/payments/service.ts:88`,
   never `add retries`.
-- Name the option you recommend in MY SUGGESTION.
+- Name the option you recommend.
 
 After each answer:
 - Record the decision as a fact in the research notes.
@@ -188,7 +152,7 @@ Continue until the open-decisions list is empty.
 ### Step 4: Split
 
 Produce the subtask list. Make every subtask meet the subtask rule (hard rule
-9) and these constraints:
+8) and these constraints:
 - **One concern.** Split again a subtask that needs two verification commands,
   or whose title needs the word "and".
 - **Ordered by dependency.** Let subtask N depend only on subtasks with lower
@@ -252,9 +216,9 @@ check. Do not show the breakdown until every check passes.
 ### Step 7: Approval
 
 Show the complete breakdown in chat: the task followed by every subtask. Then
-ask, in the question format, whether the user approves it as written or wants
-a change. Apply changes, re-run Step 6, and ask again. Loop until the user
-approves. Write nothing before approval.
+ask whether the user approves it as written or wants a change. Apply changes,
+re-run Step 6, and ask again. Loop until the user approves. Write nothing
+before approval.
 
 ### Step 8: Save
 

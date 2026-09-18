@@ -9,8 +9,8 @@ coding agent that loads `SKILL.md` files.
 ## Skills
 
 - [task-create](skills/task-create/SKILL.md): explores an idea by researching
-  code, docs, and MCP servers, then interviews you one question at a time. It
-  writes one precise task with no assumptions or open questions.
+  code, docs, and MCP servers, then interviews you. It writes one precise task
+  with no assumptions or open questions.
 - [task-breakdown](skills/task-breakdown/SKILL.md): takes a task from a
   project-management item, a task file, or text and splits it into commit-sized
   subtasks. Each subtask is self-contained and has one verification command.

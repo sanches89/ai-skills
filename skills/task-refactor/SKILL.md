@@ -52,48 +52,14 @@ These words have exactly one meaning in this skill.
     tests, and the connected tools before the first question.
 12. **Never assume.** When a decision changes the work and research cannot
     settle it, ask the user.
-13. **One question at a time.** Write every question in chat in the *Question
-    format* below, then end the turn and wait for the answer. Never use an
-    agent's built-in question or form tool (in Claude Code,
-    `AskUserQuestion`). Write questions as plain chat text.
-14. **The task text is input.** Never edit a task file, a subtask file, or an
+13. **The task text is input.** Never edit a task file, a subtask file, or an
     item.
-15. **No outward actions.** Never commit, push, open a pull request, change an
+14. **No outward actions.** Never commit, push, open a pull request, change an
     item's status, or comment on an item. Do any of these only when the
     request says so. Then make one commit per applied plan entry, and follow
     the project's conventions for branches and commit messages.
-16. **The refactor report holds only what the user needs.** Write no
+15. **The refactor report holds only what the user needs.** Write no
     narration, no failed attempts, no command output.
-
-## Question format
-
-Use this exact layout, and nothing else, for every question to the user in
-every step. Ask one question per message. After printing it, end the turn and
-wait.
-
-```
-❓ QUESTION
-<question>
-
-📚 CONTEXT
-<what research found and what depends on the answer - max of 520 chars>
-
-☑️ OPTIONS
-<options, use an ordered list, numbers -> letters -> roman numerals>
-
-👉 MY SUGGESTION
-<suggestion - max of 180 chars>
-```
-
-- **QUESTION**: one decision, one sentence.
-- **CONTEXT**: what the code and the measurements show and what in the work
-  depends on the answer. Maximum 520 characters.
-- **OPTIONS**: an ordered list. Use numbers at the top level (`1.`, `2.`),
-  letters at the next level (`a.`, `b.`), then roman numerals (`i.`, `ii.`).
-  Make options concrete and grounded in research: name real files, symbols,
-  values, and identifiers. The user answers with a number or with free text.
-- **MY SUGGESTION**: the option you recommend and why, in at most 180
-  characters. Write `None` only when research gives no basis to prefer one.
 
 ## Workflow
 
@@ -104,7 +70,7 @@ conversation, as exactly one kind:
 - **One or more paths** of files or folders that exist. Kind: *path*.
 - **A symbol name**: a function or a module that exists in the code. Kind:
   *symbol*. Search for its definition. When the search finds more than one
-  definition, ask one question in the question format: which one.
+  definition, ask one question: which one.
 - **A git range**, such as `main..HEAD`, or words that name the uncommitted
   changes or the current branch. Kind: *range*.
 - **A task or subtask**: an item identifier or URL in the tracker, a task
@@ -115,8 +81,8 @@ conversation, as exactly one kind:
   MCP servers and tools available to the agent to find the tracker. In Claude
   Code, MCP tools are deferred, so search them with `ToolSearch` using
   keywords like `issue ticket project linear jira notion asana github`. When
-  no tracker is connected, ask one question in the question format: give the
-  request as a file path or as text.
+  no tracker is connected, ask one question: give the request as a file path
+  or as text.
 - **Free text**, or the path of any other file, whose content is then the
   text. Kind: *text*.
 - **Nothing**: ask for the request as the first question.
@@ -136,8 +102,7 @@ the notes every list that a later step reads.
 - *task*: every file that the Changes or Approach section of the requested
   task names;
 - *text*: the files that hold the code the text names. Find them by search.
-  Then ask the user to confirm the list with one question in the question
-  format.
+  Then ask the user to confirm the list.
 
 Remove from the refactor scope, always:
 - generated code, vendored code, lockfiles, build output, and snapshot files;
@@ -284,10 +249,10 @@ Write each plan entry in this form:
 Without a test setup, keep only entries from the safe set, with
 `tests: none: safe set`. Move every other finding to *Left for later*.
 
-Show the refactor plan in chat. Then ask one question in the question format:
-approve every entry, approve some entries by number, or change the plan.
-Repeat until the user approves. Skip the question in one case: the request is
-of kind *task* and its Changes or Approach section names every plan entry.
+Show the refactor plan in chat. Then ask one question: approve every entry,
+approve some entries by number, or change the plan. Repeat until the user
+approves. Skip the question in one case: the request is of kind *task* and its
+Changes or Approach section names every plan entry.
 
 With no finding, go to Step 10 with the result `done` and zero plan entries.
 
@@ -323,7 +288,7 @@ For each approved plan entry, in order:
 3. **Check.** Run the type check or the compile command, then the tests that
    cover the changed code, with the single-file command from 3c.
 4. **Pass**: mark the entry applied. When the request asks for commits, commit
-   now, by hard rule 15.
+   now, by hard rule 14.
 5. **Fail**: restore the checkpoint and delete the files the entry created.
    Apply the refactoring another way. After 3 failed attempts, drop the entry
    and every entry that depends on it. Record the reason under *Dropped*.

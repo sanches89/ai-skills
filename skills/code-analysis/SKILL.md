@@ -44,44 +44,10 @@ report. Return a measurement report. Change no project file.
    git history, and the summaries before the first question.
 8. **Never assume.** When a decision changes the work and research cannot
    settle it, ask the user.
-9. **One question at a time.** Write every question in chat in the *Question
-   format* below. Then end the turn and wait for the answer. Never use an
-   agent's built-in question or form tool (in Claude Code,
-   `AskUserQuestion`). Write questions as plain chat text.
-10. **No outward actions.** Never commit, push, open a pull request, or post
-    a comment.
-11. **The measurement report holds only what the user needs.** Write no
+9. **No outward actions.** Never commit, push, open a pull request, or post
+   a comment.
+10. **The measurement report holds only what the user needs.** Write no
     narration, no failed attempts, no command output.
-
-## Question format
-
-Use this exact layout, and nothing else, for every question to the user in
-every step. Ask one question per message. After printing it, end the turn and
-wait.
-
-```
-❓ QUESTION
-<question>
-
-📚 CONTEXT
-<what research found and what depends on the answer - max of 520 chars>
-
-☑️ OPTIONS
-<options, use an ordered list, numbers -> letters -> roman numerals>
-
-👉 MY SUGGESTION
-<suggestion - max of 180 chars>
-```
-
-- **QUESTION**: one decision, one sentence.
-- **CONTEXT**: what the code, the git history, and the summaries show and
-  what in the work depends on the answer. Maximum 520 characters.
-- **OPTIONS**: an ordered list. Use numbers at the top level (`1.`, `2.`),
-  letters at the next level (`a.`, `b.`), then roman numerals (`i.`, `ii.`).
-  Make options concrete and grounded in research: name real files, symbols,
-  branches, and commands. The user answers with a number or with free text.
-- **MY SUGGESTION**: the option you recommend and why, in at most 180
-  characters. Write `None` only when research gives no basis to prefer one.
 
 ## Script
 
@@ -102,16 +68,15 @@ the conversation, as exactly one kind:
 - **Nothing**: no base name. The run analyzes the working tree alone.
 - **One name**: the base name. It names a branch, a tag, or a commit.
   Confirm it with `git rev-parse --verify --quiet "<base name>^{commit}"`.
-  When the command fails, ask one question in the question format: which
-  base name to use.
-- **Anything else**: ask one question in the question format: which one
-  name is the base name, or none.
+  When the command fails, ask one question: which base name to use.
+- **Anything else**: ask one question: which one name is the base name, or
+  none.
 
 With a base name, record the base commit: the output of
 `git merge-base <base name> HEAD`. When that command fails, the base name and
-`HEAD` share no history. Then ask one question in the question format, with
-two options: take the commit that the base name resolves to as the base
-commit, or give another base name.
+`HEAD` share no history. Then ask one question with two options: take the
+commit that the base name resolves to as the base commit, or give another
+base name.
 
 The current code is the working tree, with its uncommitted and untracked
 files. Record the output of `git status --porcelain` and of

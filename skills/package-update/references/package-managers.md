@@ -17,8 +17,7 @@ beside the root manifest names the package manager:
 - bun: `bun.lock` or `bun.lockb`.
 
 With two lockfiles beside one root manifest and no `packageManager` field,
-ask one question in the question format: which package manager the project
-uses.
+ask one question: which package manager the project uses.
 
 ## Workspace file
 
@@ -74,5 +73,5 @@ PATH lacks, run the package manager as follows in every command:
 - yarn 2 or newer, without `yarnPath`, with `corepack` on PATH:
   `corepack yarn <arguments>`.
 - yarn 2 or newer, without `yarnPath` and without `corepack`: ask one
-  question in the question format: which yarn to run.
+  question: which yarn to run.
 - bun: `npx --yes bun@<version> <arguments>`.

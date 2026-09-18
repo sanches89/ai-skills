@@ -61,42 +61,8 @@ copied into another document, such as a `## Terms` section.
     the glossary in the glossary report, with its path and line. When Step 7
     invokes the `unambiguity` skill, that skill rewrites a document under its
     own rules and approval.
-11. **One question at a time.** Write every question in chat in the
-    *Question format* below, then end the turn and wait for the answer.
-    Never use an agent's built-in question or form tool (in Claude Code,
-    `AskUserQuestion`). Write questions as plain chat text.
-12. **Write nothing before the user approves the full glossary text**
+11. **Write nothing before the user approves the full glossary text**
     (Step 6).
-
-## Question format
-
-Use this exact layout, and nothing else, for every question to the user in
-every step. Ask one question per message. After printing it, end the turn and
-wait.
-
-```
-❓ QUESTION
-<question>
-
-📚 CONTEXT
-<what research found and what depends on the answer - max of 520 chars>
-
-☑️ OPTIONS
-<options, use an ordered list, numbers -> letters -> roman numerals>
-
-👉 MY SUGGESTION
-<suggestion - max of 180 chars>
-```
-
-- **QUESTION**: one decision, one sentence.
-- **CONTEXT**: what research found and what in the glossary depends on the
-  answer. Maximum 520 characters.
-- **OPTIONS**: an ordered list. Use numbers at the top level (`1.`, `2.`),
-  letters at the next level (`a.`, `b.`), then roman numerals (`i.`, `ii.`).
-  Make options concrete and grounded in research: name real files, symbols,
-  values, and identifiers. The user answers with a number or with free text.
-- **MY SUGGESTION**: the option you recommend and why, in at most 180
-  characters. Write `None` only when research gives no basis to prefer one.
 
 ## Workflow
 
@@ -113,8 +79,8 @@ wait.
   no glossary exists. Step 7 invokes no skill.
 - Write one sentence in the form: *The glossary at <path> covers <document
   set>.* Name the files, or the rule that selects them.
-- Ask the user to confirm or correct that sentence, in the question format.
-  Do not start research until the user confirms it.
+- Ask the user to confirm or correct that sentence. Do not start research
+  until the user confirms it.
 
 ### Step 2: Research
 
@@ -167,23 +133,20 @@ scratch directory, in two parts:
    each the decision to make and the entries it affects.
 Use part 2 to drive Step 3. Do not show the research notes to the user.
 
-### Step 3: Interview, one question at a time
+### Step 3: Interview
 
 Order the open decisions: conflicts first, then synonym pairs, then entries
 to remove, then meanings research did not settle, then sections.
 
 For each open decision:
-- Ask it in chat in the question format, then end the turn and wait for the
-  answer.
-- State the decision in QUESTION. Name the usages that depend on it in
-  CONTEXT.
-- Give 2 to 4 concrete options grounded in research in OPTIONS. For a
-  conflict, offer a qualifier per thing and a new word per thing:
-  `backend component` and `frontend component`, never `component`. For a
-  synonym pair, offer each word as the one name. For the entries to remove,
-  ask one question that lists every entry with the condition it fails. Offer
-  to remove all, some by name, or none.
-- Name the option you recommend in MY SUGGESTION.
+- State the decision in one sentence. Name the usages that depend on it.
+- Give 2 to 4 concrete options grounded in research. For a conflict, offer a
+  qualifier per thing and a new word per thing: `backend component` and
+  `frontend component`, never `component`. For a synonym pair, offer each
+  word as the one name. For the entries to remove, ask one question that
+  lists every entry with the condition it fails. Offer to remove all, some by
+  name, or none.
+- Name the option you recommend.
 
 After each answer:
 - Record the decision as a fact in the research notes.
@@ -229,9 +192,9 @@ the check. Do not show the glossary until every check passes.
 ### Step 6: Approval
 
 Show the complete glossary text in chat, followed by the glossary report as it
-stands. Then ask, in the question format, whether the user approves the
-glossary as written or wants a change. Apply changes, re-run Step 5, and ask
-again. Loop until the user approves. Write nothing before approval.
+stands. Then ask whether the user approves the glossary as written or wants a
+change. Apply changes, re-run Step 5, and ask again. Loop until the user
+approves. Write nothing before approval.
 
 ### Step 7: Save
 
@@ -243,13 +206,13 @@ all of these hold:
 - the glossary report holds at least one disagreement;
 - a skill named `unambiguity` is available to the agent;
 - no other skill invoked this run.
-Ask one question in the question format: which documents with disagreements
-to rewrite now. Offer every listed document, the documents the user names,
-and none. For each chosen document, in the order listed, invoke the
-`unambiguity` skill with the invocation text `from glossary: <file path>`.
-Invoke it the way the agent invokes a skill (in Claude Code, the `Skill`
-tool). Wait for it to finish: it shows its own rewrite, asks its own
-approval, and prints its own clarity report.
+Ask one question: which documents with disagreements to rewrite now. Offer
+every listed document, the documents the user names, and none. For each
+chosen document, in the order listed, invoke the `unambiguity` skill with the
+invocation text `from glossary: <file path>`. Invoke it the way the agent
+invokes a skill (in Claude Code, the `Skill` tool). Wait for it to finish: it
+shows its own rewrite, asks its own approval, and prints its own clarity
+report.
 
 Finish with the glossary report:
 - *Added*: each new term.

@@ -46,41 +46,7 @@ does not settle the reading.
    defines it. Never write a glossary entry yourself. Put every candidate
    that Step 2b left undefined in the clarity report. A word that fails the
    entry test is no candidate.
-8. **One question at a time.** Write every question in chat in the *Question
-   format* below, then end the turn and wait for the answer. Never use an
-   agent's built-in question or form tool (in Claude Code, `AskUserQuestion`).
-   Write questions as plain chat text.
-9. **Write nothing before the user approves the full rewrite** (Step 6).
-
-## Question format
-
-Use this exact layout, and nothing else, for every question to the user in
-every step. Ask one question per message. After printing it, end the turn and
-wait.
-
-```
-❓ QUESTION
-<question>
-
-📚 CONTEXT
-<what research found and what depends on the answer - max of 520 chars>
-
-☑️ OPTIONS
-<options, use an ordered list, numbers -> letters -> roman numerals>
-
-👉 MY SUGGESTION
-<suggestion - max of 180 chars>
-```
-
-- **QUESTION**: one decision, one sentence.
-- **CONTEXT**: what research found and what in the rewrite depends on the
-  answer. Maximum 520 characters.
-- **OPTIONS**: an ordered list. Use numbers at the top level (`1.`, `2.`),
-  letters at the next level (`a.`, `b.`), then roman numerals (`i.`, `ii.`).
-  Make options concrete and grounded in research: name real files, symbols,
-  values, and identifiers. The user answers with a number or with free text.
-- **MY SUGGESTION**: the option you recommend and why, in at most 180
-  characters. Write `None` only when research gives no basis to prefer one.
+8. **Write nothing before the user approves the full rewrite** (Step 6).
 
 ## Workflow
 
@@ -148,21 +114,18 @@ scratch directory, in two parts:
    the decision to make and the passage it affects.
 Use part 2 to drive Step 3. Do not show the research notes to the user.
 
-### Step 3: Interview, one question at a time
+### Step 3: Interview
 
 Order the open decisions: passages with two readings first, then referents,
 then quantities, then terms and names, then wording.
 
 For each open decision:
-- Ask it in chat in the question format, then end the turn and wait for the
-  answer.
-- State the decision in QUESTION. Quote the passage and its readings in
-  CONTEXT.
-- Give each reading as an option in OPTIONS, worded as the sentence that
-  replaces the passage. Write
+- State the decision in one sentence. Quote the passage and its readings.
+- Give each reading as an option, worded as the sentence that replaces the
+  passage. Write
   `Retry the call at most 5 times, then raise the last error.`, never
   `keep the retry behavior`.
-- Name the option you recommend in MY SUGGESTION.
+- Name the option you recommend.
 
 After each answer:
 - Record the decision as a fact in the research notes.
@@ -206,9 +169,9 @@ the check. Do not show the rewrite until every check passes.
 ### Step 6: Approval
 
 Show the complete rewrite in chat, followed by the clarity report as it
-stands. Then ask, in the question format, whether the user approves the
-rewrite as written or wants a change. Apply changes, re-run Step 5, and ask
-again. Loop until the user approves. Write nothing before approval.
+stands. Then ask whether the user approves the rewrite as written or wants a
+change. Apply changes, re-run Step 5, and ask again. Loop until the user
+approves. Write nothing before approval.
 
 ### Step 7: Save
 

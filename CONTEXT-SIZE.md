@@ -30,15 +30,15 @@ tier costs 569 tokens per session. Using one skill then adds its
 | Skill            | Startup | SKILL.md | References | Scripts |  Total |
 |------------------|--------:|---------:|-----------:|--------:|-------:|
 | agent-docs-audit |      69 |    1,542 |          0 |   3,581 |  5,123 |
-| code-analysis    |      61 |    3,248 |      7,584 |   3,542 | 14,374 |
-| glossary         |      57 |    3,137 |      1,499 |       0 |  4,636 |
-| package-update   |      59 |    5,115 |      5,636 |   1,864 | 12,615 |
-| task-breakdown   |      64 |    3,672 |      2,377 |       0 |  6,049 |
-| task-create      |      59 |    2,591 |      1,402 |       0 |  3,993 |
-| task-refactor    |      70 |    4,609 |      9,352 |       0 | 13,961 |
-| task-work        |      62 |    4,066 |      3,017 |       0 |  7,083 |
-| unambiguity      |      68 |    2,537 |      2,009 |       0 |  4,546 |
-| **All skills**   |     569 |   30,517 |     32,876 |   8,987 | 72,380 |
+| code-analysis    |      61 |    2,889 |      7,584 |   3,542 | 14,015 |
+| glossary         |      57 |    2,755 |      1,499 |       0 |  4,254 |
+| package-update   |      59 |    4,758 |      5,627 |   1,864 | 12,249 |
+| task-breakdown   |      64 |    3,279 |      2,377 |       0 |  5,656 |
+| task-create      |      59 |    2,183 |      1,402 |       0 |  3,585 |
+| task-refactor    |      70 |    4,251 |      9,352 |       0 | 13,603 |
+| task-work        |      62 |    3,710 |      3,017 |       0 |  6,727 |
+| unambiguity      |      68 |    2,156 |      2,009 |       0 |  4,165 |
+| **All skills**   |     569 |   27,523 |     32,867 |   8,987 | 69,377 |
 
 ## Files per skill
 
@@ -56,82 +56,82 @@ Lines, words, and tokens of every file, grouped by skill.
 
 | File                                        | Lines | Words | Tokens |
 |---------------------------------------------|------:|------:|-------:|
-| `SKILL.md`                                  |   285 | 2,003 |  3,248 |
+| `SKILL.md`                                  |   250 | 1,768 |  2,889 |
 | `references/analysis-rules.md`              |   135 | 1,021 |  1,460 |
 | `references/measure-tool.md`                |   153 | 1,131 |  2,131 |
 | `references/measurement-report-template.md` |   116 |   825 |  1,416 |
 | `references/quality-checklist.md`           |    83 |   643 |  1,002 |
 | `references/test-reports.md`                |   135 |   819 |  1,575 |
 | `scripts/diff-summaries.mjs`                |   428 | 1,618 |  3,542 |
-| **Total**                                   | 1,335 | 8,060 | 14,374 |
+| **Total**                                   | 1,300 | 7,825 | 14,015 |
 
 ### glossary
 
 | File                              | Lines | Words | Tokens |
 |-----------------------------------|------:|------:|-------:|
-| `SKILL.md`                        |   267 | 2,275 |  3,137 |
+| `SKILL.md`                        |   230 | 2,018 |  2,755 |
 | `references/glossary-template.md` |    40 |   239 |    344 |
 | `references/quality-checklist.md` |   104 |   727 |  1,155 |
-| **Total**                         |   411 | 3,241 |  4,636 |
+| **Total**                         |   374 | 2,984 |  4,254 |
 
 ### package-update
 
 | File                                   | Lines | Words | Tokens |
 |----------------------------------------|------:|------:|-------:|
-| `SKILL.md`                             |   445 | 3,298 |  5,115 |
-| `references/package-managers.md`       |    78 |   545 |    927 |
+| `SKILL.md`                             |   409 | 3,067 |  4,758 |
+| `references/package-managers.md`       |    77 |   537 |    918 |
 | `references/quality-checklist.md`      |    90 |   693 |  1,093 |
 | `references/update-report-template.md` |   112 |   726 |  1,137 |
 | `references/update-rules.md`           |   213 | 1,526 |  2,479 |
 | `scripts/set-range.mjs`                |   220 |   921 |  1,864 |
-| **Total**                              | 1,158 | 7,709 | 12,615 |
+| **Total**                              | 1,121 | 7,470 | 12,249 |
 
 ### task-breakdown
 
 | File                              | Lines | Words | Tokens |
 |-----------------------------------|------:|------:|-------:|
-| `SKILL.md`                        |   308 | 2,522 |  3,672 |
+| `SKILL.md`                        |   272 | 2,261 |  3,279 |
 | `references/quality-checklist.md` |    98 |   731 |  1,121 |
 | `references/task-template.md`     |   149 |   740 |  1,256 |
-| **Total**                         |   555 | 3,993 |  6,049 |
+| **Total**                         |   519 | 3,732 |  5,656 |
 
 ### task-create
 
 | File                              | Lines | Words | Tokens |
 |-----------------------------------|------:|------:|-------:|
-| `SKILL.md`                        |   238 | 1,804 |  2,591 |
+| `SKILL.md`                        |   197 | 1,536 |  2,183 |
 | `references/quality-checklist.md` |    71 |   473 |    752 |
 | `references/task-template.md`     |    85 |   399 |    650 |
-| **Total**                         |   394 | 2,676 |  3,993 |
+| **Total**                         |   353 | 2,408 |  3,585 |
 
 ### task-refactor
 
 | File                                     | Lines | Words | Tokens |
 |------------------------------------------|------:|------:|-------:|
-| `SKILL.md`                               |   391 | 3,172 |  4,609 |
+| `SKILL.md`                               |   356 | 2,933 |  4,251 |
 | `references/characterization-tests.md`   |    85 |   740 |    950 |
 | `references/measurement-tools.md`        |   244 | 1,709 |  2,828 |
 | `references/quality-checklist.md`        |   110 |   891 |  1,290 |
 | `references/refactor-report-template.md` |   103 |   708 |  1,109 |
 | `references/refactoring-rules.md`        |   124 | 1,026 |  1,284 |
 | `references/smell-catalog.md`            |   184 | 1,316 |  1,891 |
-| **Total**                                | 1,241 | 9,562 | 13,961 |
+| **Total**                                | 1,206 | 9,323 | 13,603 |
 
 ### task-work
 
 | File                                 | Lines | Words | Tokens |
 |--------------------------------------|------:|------:|-------:|
-| `SKILL.md`                           |   339 | 2,921 |  4,066 |
+| `SKILL.md`                           |   305 | 2,683 |  3,710 |
 | `references/quality-checklist.md`    |    89 |   736 |  1,074 |
 | `references/unit-testing.md`         |    98 |   782 |    984 |
 | `references/work-report-template.md` |    92 |   638 |    959 |
-| **Total**                            |   618 | 5,077 |  7,083 |
+| **Total**                            |   584 | 4,839 |  6,727 |
 
 ### unambiguity
 
 | File                              | Lines | Words | Tokens |
 |-----------------------------------|------:|------:|-------:|
-| `SKILL.md`                        |   223 | 1,780 |  2,537 |
+| `SKILL.md`                        |   186 | 1,531 |  2,156 |
 | `references/clarity-rules.md`     |    72 |   700 |  1,096 |
 | `references/quality-checklist.md` |    87 |   565 |    913 |
-| **Total**                         |   382 | 3,045 |  4,546 |
+| **Total**                         |   345 | 2,796 |  4,165 |

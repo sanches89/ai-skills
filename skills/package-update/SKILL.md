@@ -84,47 +84,12 @@ These words have exactly one meaning in this skill.
     lockfiles, the docs, and the registry before the first question.
 12. **Never assume.** When a decision changes the work and research cannot
     settle it, ask the user.
-13. **One question at a time.** Write every question in chat in the *Question
-    format* below. Then end the turn and wait for the answer. Never use an
-    agent's built-in question or form tool (in Claude Code,
-    `AskUserQuestion`). Write questions as plain chat text.
-14. **No outward actions.** Never commit, push, or open a pull request. Do any
+13. **No outward actions.** Never commit, push, or open a pull request. Do any
     of these only when the request says so. Then make one commit per accepted
     plan entry. Follow the project's conventions for branches and commit
     messages.
-15. **The update report holds only what the user needs.** Write no narration,
+14. **The update report holds only what the user needs.** Write no narration,
     no failed attempts, no command output.
-
-## Question format
-
-Use this exact layout, and nothing else, for every question to the user in
-every step. Ask one question per message. After printing it, end the turn and
-wait.
-
-```
-❓ QUESTION
-<question>
-
-📚 CONTEXT
-<what research found and what depends on the answer - max of 520 chars>
-
-☑️ OPTIONS
-<options, use an ordered list, numbers -> letters -> roman numerals>
-
-👉 MY SUGGESTION
-<suggestion - max of 180 chars>
-```
-
-- **QUESTION**: one decision, one sentence.
-- **CONTEXT**: what the manifests, the registry, and the check commands show
-  and what in the work depends on the answer. Maximum 520 characters.
-- **OPTIONS**: an ordered list. Use numbers at the top level (`1.`, `2.`),
-  letters at the next level (`a.`, `b.`), then roman numerals (`i.`, `ii.`).
-  Make options concrete and grounded in research: name real manifests,
-  packages, versions, and files. The user answers with a number or with free
-  text.
-- **MY SUGGESTION**: the option you recommend and why, in at most 180
-  characters. Write `None` only when research gives no basis to prefer one.
 
 ## Script
 
@@ -150,7 +115,7 @@ conversation, into four values:
 - **Cooldown**: the number of days between the publish date of a version and
   today, below which this skill run never takes the version. Default: 7.
 
-Record whether the request asks for commits: hard rule 14 applies.
+Record whether the request asks for commits: hard rule 13 applies.
 
 Write private notes in a scratch directory outside the repository from this
 step on, written `<scratch-dir>` in commands (in Claude Code, the session's
@@ -228,9 +193,8 @@ root manifest. Record two lists, as `update-rules.md` says under *Pins* and
 
 Record in the scratch directory, before changing anything:
 - the output of `git status --porcelain`. When the request asks for commits
-  and a manifest or a lockfile has uncommitted changes, ask one question in
-  the question format: commit or stash them before the run continues.
-  Otherwise continue;
+  and a manifest or a lockfile has uncommitted changes, ask one question:
+  commit or stash them before the run continues. Otherwise continue;
 - the baseline results, per install root: the result of the frozen install,
   then of each check command, with pass or fail and the duration. When the
   frozen install fails, run the plain install instead and record
@@ -339,10 +303,10 @@ Show in chat:
 - the packages held by a constraint, each with its hold reason;
 - the *Left alone* list.
 
-Then ask one question in the question format, with three options: approve
-every plan entry, approve some plan entries by number, or change the plan. A
-change names a package to exclude, a manifest to exclude, or a package to cap
-at a version. Repeat the question until the user approves.
+Then ask one question with three options: approve every plan entry, approve
+some plan entries by number, or change the plan. A change names a package to
+exclude, a manifest to exclude, or a package to cap at a version. Repeat the
+question until the user approves.
 
 With no candidate package, go to Step 8 with the result `done` and zero plan
 entries.

@@ -44,13 +44,10 @@ These words have exactly one meaning in this skill.
    docs, and the connected tools before the first question.
 7. **Never assume.** When a decision changes the work and research cannot
    settle it, ask the user.
-8. **One question at a time.** Write every question in chat in the *Question
-   format* below, then end the turn and wait for the answer. Never use an
-   agent's built-in question or form tool (in Claude Code, `AskUserQuestion`).
-   Write questions as plain chat text. The caller is whoever invoked this
-   skill: the user, or the agent that spawned the subagent this skill runs
-   in. When the caller is an agent, it relays the question to the user and
-   passes the answer back.
+8. **The caller relays questions.** The caller is whoever invoked this skill:
+   the user, or the agent that spawned the subagent this skill runs in. When
+   the caller is an agent, it relays the question to the user and passes the
+   answer back.
 9. **The task text is input.** Never edit a task file, a subtask file, or an
    item. Put a wrong or stale fact found in one in the work report.
 10. **No outward actions.** Never commit, push, open a pull request, change an
@@ -60,36 +57,6 @@ These words have exactly one meaning in this skill.
     per subtask, or one commit for a target without subtasks.
 11. **The work report holds only what the caller needs.** Write no narration,
     no failed attempts, no command output, no restated task text.
-
-## Question format
-
-Use this exact layout, and nothing else, for every question to the user in
-every step. Ask one question per message. After printing it, end the turn and
-wait.
-
-```
-❓ QUESTION
-<question>
-
-📚 CONTEXT
-<what research found and what depends on the answer - max of 520 chars>
-
-☑️ OPTIONS
-<options, use an ordered list, numbers -> letters -> roman numerals>
-
-👉 MY SUGGESTION
-<suggestion - max of 180 chars>
-```
-
-- **QUESTION**: one decision, one sentence.
-- **CONTEXT**: what the chain and the code show and what in the work depends on
-  the answer. Maximum 520 characters.
-- **OPTIONS**: an ordered list. Use numbers at the top level (`1.`, `2.`),
-  letters at the next level (`a.`, `b.`), then roman numerals (`i.`, `ii.`).
-  Make options concrete and grounded in research: name real files, symbols,
-  values, and identifiers. The user answers with a number or with free text.
-- **MY SUGGESTION**: the option you recommend and why, in at most 180
-  characters. Write `None` only when research gives no basis to prefer one.
 
 ## Workflow
 
@@ -104,8 +71,8 @@ exactly one source:
   find the tracker, list the MCP servers and tools available to the agent. In
   Claude Code, MCP tools are deferred, so search them with `ToolSearch` using
   keywords like `issue ticket project linear jira notion asana github`. When
-  no tracker is connected, ask one question in the question format: give the
-  target as a file path or as text.
+  no tracker is connected, ask one question: give the target as a file path
+  or as text.
 - **A subtask file**, `docs/tasks/###-<task-slug>/###-<subtask-slug>.md`.
   Source: *file*. Read it.
 - **A task file**, `docs/tasks/###-<task-slug>/task.md`. Source: *file*. Read
@@ -143,7 +110,7 @@ task in the chain:
 
 The target says what to do. The rest of the chain bounds it. When the target
 contradicts a decision or an *Out of scope* entry of another task in the chain,
-ask one question in the question format: which of the two statements holds.
+ask one question: which of the two statements holds.
 
 ### Step 3: Check readiness
 
@@ -160,8 +127,7 @@ section, or from its Success criteria section when it has no Acceptance
 criteria section. When it has neither section, take them from the list it
 labels as acceptance criteria, success criteria, or definition of done. When
 it has no such list, write the criteria from its text, each observable and
-binary. Then ask the user to confirm them with one question in the question
-format. Repeat until the user confirms.
+binary. Then ask the user to confirm them. Repeat until the user confirms.
 
 **Subtasks.** When the target has subtasks, continue with the section *Target
 with subtasks* instead of Step 4.
@@ -173,7 +139,7 @@ section and in its Changes or Approach section exists. Read the code that
 changes and the code that calls it, not only file names. When a named path or
 symbol is gone, search for where it moved:
 - exactly one match: use it and record a deviation;
-- no match, or more than one: ask one question in the question format.
+- no match, or more than one: ask one question.
 
 **4b. Conventions.** Read README, CLAUDE.md, AGENTS.md, CONTRIBUTING, and the
 docs that cover the touched areas. Record the naming, error handling, test
@@ -255,8 +221,8 @@ use a test double. Prefer a convention of the project over that file. Then:
   Fix every other failing test in the code, by hard rule 4.
 
 When a decision is missing, research first. When research cannot settle it, ask
-one question in the question format. Record the answer in the Step 2 notes
-and, in the work report, under *Affects other work*.
+one question. Record the answer in the Step 2 notes and, in the work report,
+under *Affects other work*.
 
 ### Step 7: Verify
 
