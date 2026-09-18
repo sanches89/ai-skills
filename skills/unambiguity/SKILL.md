@@ -7,53 +7,20 @@ argument-hint: <file path | text>
 
 # Unambiguity
 
-Take one text and rewrite it so that every sentence has exactly one reading.
-Keep the meaning. Ask the user about every passage whose reading research
-cannot settle. Write only the file the text came from. When the `glossary`
-skill is available, use it to define the terms the text needs before the
-rewrite.
+Take one text, the input text, and rewrite it so that every sentence has
+exactly one reading. Keep the meaning. Ask the user about every passage whose
+reading research cannot settle. Write only the file the text came from. When
+the `glossary` skill is available, use it to define the terms the text needs
+before the rewrite.
 
-## Terms
-
-These words have exactly one meaning in this skill.
-
-- **Input text**: the text this skill rewrites: the content of the file the
-  user names, or the text the user pastes.
-- **Invocation text**: the text passed with the skill invocation.
-- **Rewrite**: the output of this skill: the input text with every ambiguity
-  resolved and its meaning unchanged.
-- **Ambiguity**: a passage of the input text that has more than one reading,
-  or that breaks a rule in `references/clarity-rules.md`.
-- **Reading**: one meaning a reader can take from a passage.
-- **Referent**: the thing a word points at, such as the thing behind `it`,
-  `this`, or `the service`.
-- **Instruction**: a sentence that tells the reader to do something.
-- **Glossary**: the file that defines the words with a special meaning in a
-  project's documents: `GLOSSARY.md` at the repository root, unless the user
-  names another path.
-- **Term**: a word or phrase with a special meaning in the project's
-  documents.
-- **Candidate**: a term that has no glossary entry yet.
-- **Qualifier**: a fixed word placed before a term to split one word into two
-  terms: `backend component` and `frontend component`.
-- **Origin**: where a piece of information was taken from: a file path with
-  line numbers, an identifier, or a URL.
-- **Banned words**: words that mark an assumption or an open question: `TBD`,
-  `TBC`, `TODO`, `maybe`, `might`, `probably`, `possibly`, `perhaps`,
-  `ideally`, `consider`, `could`, `should we`, `if needed`, `if necessary`,
-  `as appropriate`, `as needed`, `etc`, `and so on`, `or similar`,
-  `something like`.
-- **Draft**: the output of this skill before approval, kept in the scratch
-  directory.
-- **Research notes**: the private file in the scratch directory that holds
-  the facts and the open decisions found in Step 2.
-- **Open decision**: a decision that research did not settle. Each one becomes
-  one question in Step 3.
-- **Scratch directory**: a temporary location outside the repository. In Claude
-  Code, the session's scratchpad directory. In any other agent, the system temp
-  directory.
-- **Clarity report**: the final message of this skill after the rewrite: every
-  ambiguity resolved with its decision, and the candidates found.
+An ambiguity is a passage of the input text that has more than one reading,
+or that breaks a rule in `references/clarity-rules.md`. A term is a word or
+phrase with an entry in the project's glossary, `GLOSSARY.md` at the
+repository root unless the user names another path. A candidate is a word
+that passes the entry test and has no glossary entry: at one usage at least,
+a reader can take it in two ways that lead to different actions; no word or
+phrase with one reading fits every usage; and the sentence around that usage
+does not settle the reading.
 
 ## Hard rules
 
@@ -61,9 +28,11 @@ These words have exactly one meaning in this skill.
    instruction. When a passage has two readings and research cannot settle
    which one holds, ask the user.
 2. **Read-only on the project.** Never edit, create, or delete project files.
-   Write only the input file, in Step 7. Write drafts in the scratch
-   directory, never in the repository. When Step 2b invokes the `glossary`
-   skill, that skill writes the glossary under its own rules and approval.
+   Write only the input file, in Step 7. Write drafts in a scratch directory
+   outside the repository (in Claude Code, the session's scratchpad
+   directory; in any other agent, the system temp directory). When Step 2b
+   invokes the `glossary` skill, that skill writes the glossary under its own
+   rules and approval.
 3. **Never ask what research can answer.** Consult the input text, the
    glossary, the code, and the docs the text names before the first question.
 4. **Never assume.** When a reading changes the rewrite and research cannot
@@ -75,7 +44,8 @@ These words have exactly one meaning in this skill.
    list, but never move content between sections.
 7. **Terms keep the glossary's meaning.** Use a term exactly as the glossary
    defines it. Never write a glossary entry yourself. Put every candidate
-   that Step 2b left undefined in the clarity report.
+   that Step 2b left undefined in the clarity report. A word that fails the
+   entry test is no candidate.
 8. **One question at a time.** Write every question in chat in the *Question
    format* below, then end the turn and wait for the answer. Never use an
    agent's built-in question or form tool (in Claude Code, `AskUserQuestion`).
@@ -143,8 +113,9 @@ readings.
 
 **2b. The glossary.** When the glossary exists, read it in full. Read every
 `## Terms`, `## Definitions`, or `## Glossary` section in the input text.
-Record every term the input text uses with its definition. Record every
-candidate.
+Record every term the input text uses with its definition. Run the entry test
+on every word whose sense in the text differs from its common sense. Record
+every candidate with the readings a reader can take.
 
 Then define the candidates with the `glossary` skill when all of these hold:
 - there is at least one candidate;
@@ -161,7 +132,7 @@ candidates for the clarity report.
 
 **2c. Referents.** For every referent without a name, search the input text,
 the code, and the docs the text names for the thing it points at. Record the
-name and its origin. Example: `the service` is `PaymentService` at
+name and where it was found. Example: `the service` is `PaymentService` at
 `src/payments/service.ts:12`.
 
 **2d. Conventions.** When the input text belongs to a project, read the
@@ -169,10 +140,10 @@ project's rules for documents: AGENTS.md, CLAUDE.md, CONTRIBUTING, a style
 guide. Record the rules that bind the rewrite: line width, headings, section
 names, required words.
 
-**2e. Research notes.** Write the research notes in the scratch directory, in
-two parts:
+**2e. Research notes.** Write the research notes, a private file in the
+scratch directory, in two parts:
 1. *Facts*: every ambiguity with its readings and, when settled, the reading
-   that holds with its origin.
+   that holds with the path and line, identifier, or URL that settled it.
 2. *Open decisions*: every ambiguity research did not settle. State for each
    the decision to make and the passage it affects.
 Use part 2 to drive Step 3. Do not show the research notes to the user.
@@ -218,8 +189,8 @@ Rewriting rules:
 - Split every sentence over 25 words.
 - Write parallel items as a list, one item per line.
 - Give every quantity a number and a unit.
-- Replace every banned word, question, and alternative by the decision from
-  Step 3.
+- Replace every banned word, as listed in `references/clarity-rules.md`,
+  every question, and every alternative by the decision from Step 3.
 - Keep code blocks, code spans, URLs, and quoted strings byte-identical.
 - Wrap prose at the width recorded in Step 1.
 
@@ -245,9 +216,8 @@ For a file path, write the approved rewrite to that file, unchanged. For
 pasted text, the rewrite shown in Step 6 is the output. Finish with the
 clarity report:
 - *Resolved*: one bullet per ambiguity, at most 2 lines: its kind, the
-  passage before and after, and the decision that settled it with its origin
-  or the user's answer.
-- *Candidates*: every term the input text uses without a definition, with
-  the meaning the rewrite uses. Write `None.` when the `glossary` skill
-  defined them all.
+  passage before and after, and the decision that settled it. Name the path
+  and line, identifier, or URL that settled it, or the user's answer.
+- *Candidates*: every candidate, with its readings and the reading the
+  rewrite uses. Write `None.` when the `glossary` skill defined them all.
 Ask nothing else.

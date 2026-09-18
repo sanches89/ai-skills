@@ -16,45 +16,15 @@ question.
 
 These words have exactly one meaning in this skill.
 
-- **Task**: one unit of work in the task format.
-- **Task format**: the sections of a task, in order: Summary, Success
-  criteria, Scope, Approach, Decisions, Context, Subtasks, Verification.
-- **Original task**: the task as received, before this skill adds anything to
-  it.
-- **Subtask**: one commit-sized unit of work inside a task.
-- **Subtask format**: the sections of a subtask, in order: Task, Depends on,
-  Goal, Context, Changes, Acceptance criteria, Verification.
-- **Breakdown**: the task plus its ordered subtasks. This is what the user
-  approves in Step 7.
-- **Source**: where the input of this skill came from. Exactly one of:
-  *tracker*, *file*, or *text*.
-- **Tracker**: the project-management server reached through MCP, such as
-  Linear, Jira, or GitHub Issues.
-- **Item**: a record in the tracker.
-- **Task folder**: `docs/tasks/###-<task-slug>/`.
-- **Task file**: `docs/tasks/###-<task-slug>/task.md`.
-- **Subtask file**: `docs/tasks/###-<task-slug>/###-<subtask-slug>.md`.
 - **Guard**: what hides behavior that later subtasks complete: a feature flag,
   a disabled route, an unexported symbol.
-- **Topic**: a subject that came up during research or interview. It ends
-  in scope or under Out of scope.
-- **Origin**: where a piece of information was taken from: a file path with
-  line numbers, an identifier, or a URL.
-- **Draft**: the output of this skill before approval, kept in the scratch
-  directory.
-- **Research notes**: the private file in the scratch directory that holds
-  the facts and the open decisions found in Step 2.
-- **Open decision**: a decision that research did not settle. Each one becomes
-  one question in Step 3.
-- **Scratch directory**: a temporary location outside the repository. In Claude
-  Code, the session's scratchpad directory. In any other agent, the system temp
-  directory.
 
 ## Hard rules
 
 1. **Read-only on the project.** Never edit, create, or delete project files.
    Write only the task file and the subtask files, in Step 8. Write drafts in
-   the scratch directory, never in the repository.
+   a scratch directory outside the repository (in Claude Code, the session's
+   scratchpad directory; in any other agent, the system temp directory).
 2. **Never ask what research can answer.** Consult code, docs, tests, and
    connected tools before the first question.
 3. **Never assume.** When a decision changes any subtask and research cannot
@@ -113,12 +83,14 @@ wait.
 
 Resolve the text passed with the skill invocation, or the task given in the
 conversation, as one of:
-- **An item identifier or URL** (for example `PAY-212`, `#128`, an issue link).
-  Source: *tracker*. Fetch the item and its existing children. When no tracker
-  is connected, ask one question in the question format: give the task as a
-  task file path or as text.
-- **A task file.** Source: *file*. Read it and every subtask file already in
-  its task folder.
+- **An item identifier or URL** (for example `PAY-212`, `#128`, an issue link)
+  in the tracker: an issue tracker reached through MCP, such as Linear, Jira,
+  or GitHub Issues. Source: *tracker*. Fetch the item and its existing
+  children. When no tracker is connected, ask one question in the question
+  format: give the task as a task file path or as text.
+- **A task file**, `docs/tasks/###-<task-slug>/task.md`. Source: *file*. Read
+  it and every subtask file, `docs/tasks/###-<task-slug>/###-<subtask-slug>.md`,
+  already in its task folder.
 - **Free text**, or the path of any other file, whose content is then the
   text. Source: *text*. Treat the text as the task.
 - **Nothing**: ask for the task as the first question.
@@ -172,11 +144,12 @@ keywords like `issue ticket project linear jira notion asana github` and
 When an MCP server is not connected, note that and move on. Do not ask the user
 to install or connect anything.
 
-**2e. Research notes.** Write the research notes in the scratch directory, in
-two parts:
-1. *Facts*: what you learned, each with its origin.
-2. *Open decisions*: every open decision. State for each the decision to make
-   and the subtask it affects.
+**2e. Research notes.** Write the research notes, a private file in the
+scratch directory, in two parts:
+1. *Facts*: what you learned, each with the file path and line numbers,
+   identifier, or URL it came from.
+2. *Open decisions*: every decision that research did not settle. State for
+   each the decision to make and the subtask it affects.
 Use part 2 to drive Step 3. Do not show the research notes to the user.
 
 ### Step 3: Interview, one question at a time
@@ -309,17 +282,18 @@ Choose the destination by the source:
    body and the task's link in each child body.
 4. Update the task's Subtasks section with the child links.
 
-**Saving to files**, under the repository root, using the numbering rule below:
-1. Task folder: for source *file*, reuse the existing task folder. For source
-   *text*, create a new task folder with the next free number.
-2. Task: write the task file with the approved task. For source *file*,
-   overwrite the previous task file; the approved text contains its every
-   fact.
-3. Subtasks: write one subtask file per subtask, numbered `001` upward in
-   subtask order. When replacing, delete the previous subtask files in the
-   task folder first. Link the `Task` line to `./task.md` and the
-   `Depends on` line to the sibling files. Link the task's Subtasks section to
-   each subtask file.
+**Saving to files**, under the repository root, by the numbering rule below:
+1. Task folder, `docs/tasks/###-<task-slug>/`: for source *file*, reuse the
+   existing task folder. For source *text*, create a new task folder with the
+   next free number.
+2. Task: write the task file, `task.md` in the task folder, with the approved
+   task. For source *file*, overwrite the previous task file; the approved
+   text contains its every fact.
+3. Subtasks: write one subtask file per subtask, `###-<subtask-slug>.md` in
+   the task folder, numbered `001` upward in subtask order. When replacing,
+   delete the previous subtask files in the task folder first. Link the
+   `Task` line to `./task.md` and the `Depends on` line to the sibling files.
+   Link the task's Subtasks section to each subtask file.
 
 **Numbering rule.** `###` is a zero-padded three-digit sequence starting at
 `001`. Give a task the next free number across all folders in `docs/tasks/`.

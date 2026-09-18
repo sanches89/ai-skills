@@ -14,9 +14,10 @@ in Step 2d, over a rule here.
   thing, such as `server` and `tracker`, or one thing written two ways, such
   as `task file`, `task.md`, and `the task's file`. Fix: keep one name
   everywhere. Take the glossary's term when it has one.
-- **Undefined term.** Find: a word with a special meaning that the glossary
-  and the text do not define. Fix: use it the same way everywhere, and put it
-  in the clarity report as a candidate. Never define it in the text.
+- **Undefined term.** Find: a word that a reader can take in two ways that
+  lead to different actions, and that no word with one reading replaces. The
+  glossary does not define it. Fix: use it the same way everywhere, and put
+  it in the clarity report as a candidate. Never define it in the text.
 - **Referent without a name.** Find: `it`, `this`, `that`, `the service`,
   `the config`, `the relevant tests`, `the usual place`, or a pronoun with
   two possible antecedents. Fix: write the name of the thing.

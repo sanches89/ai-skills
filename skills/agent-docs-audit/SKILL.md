@@ -13,40 +13,20 @@ the tree to those rules. Add no rule here: turn a finding that needs a new
 rule into an edit to the root `AGENTS.md`. When the `glossary` and
 `unambiguity` skills are available, use them for the words and the wording.
 
-## Terms
-
-These words have exactly one meaning in this skill.
-
-- **Reference doc**: a file under `docs/refs/<folder>/`. It answers one
-  question about the folder's subject and ends with a footer.
-- **Footer**: the last block of a reference doc: `---`, a blank line, then
-  `Reference:` followed by the URLs of the doc's origin.
-- **Origin**: where a piece of information was taken from: a file path with
-  line numbers, an identifier, or a URL.
-- **Audit**: the procedure of this skill applied to `AGENTS.md` and
-  `docs/refs/`. Its script measures word counts against a base ref and
-  fails on the checks it can decide.
-- **Base ref**, written `<ref>`: the git ref the audit compares sizes
-  against. The commit where the last audit landed.
-- **Skill directory**, written `<skill-dir>`: the folder holding a `SKILL.md`.
-- **Glossary**: the file that defines the words with a special meaning in a
-  project's documents: `GLOSSARY.md` at the repository root, unless the user
-  names another path.
-- **Invocation text**: the text passed with the skill invocation.
-
 ## 1. Measure
 
-Run from the repo root (in Claude Code, `${CLAUDE_SKILL_DIR}` expands to
-`<skill-dir>`):
+Run from the repo root, with `<skill-dir>` the folder holding this
+`SKILL.md` (in Claude Code, `${CLAUDE_SKILL_DIR}` expands to it):
 
 ```bash
 node <skill-dir>/scripts/audit.mjs --base <ref>
 ```
 
-Pass the base ref when the request names it. Otherwise omit `--base`: the
-default `HEAD` measures this audit's own edits. The script prints words per
-`AGENTS.md` and per refs folder against the base ref. It fails on what it can
-decide:
+`<ref>` is the base ref: the git ref the audit compares sizes against, the
+commit where the last audit landed. Pass it when the request names it.
+Otherwise omit `--base`: the default `HEAD` measures this audit's own edits.
+The script prints words per `AGENTS.md` and per refs folder against the base
+ref. It fails on what it can decide:
 - a missing `CLAUDE.md` pair;
 - a pointer to a parent file;
 - a refs folder no `AGENTS.md` indexes;

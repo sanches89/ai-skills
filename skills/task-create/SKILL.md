@@ -11,39 +11,12 @@ Turn an idea into a task that a person or an agent can execute without asking a
 single question. Record decisions, not options. Leave no assumption and no open
 question in the task.
 
-## Terms
-
-These words have exactly one meaning in this skill.
-
-- **Idea**: the user's input. A sentence or a paragraph describing a change they
-  want.
-- **Task**: one unit of work in the task format.
-- **Task format**: the sections of a task, in order: Summary, Success
-  criteria, Scope, Approach, Decisions, Context, Subtasks, Verification.
-- **Subtask**: one commit-sized unit of work inside a task.
-- **Task file**: `docs/tasks/###-<task-slug>/task.md`.
-- **Tracker**: the project-management server reached through MCP, such as
-  Linear, Jira, or GitHub Issues.
-- **Item**: a record in the tracker.
-- **Topic**: a subject that came up during research or interview. It ends
-  in scope or under Out of scope.
-- **Origin**: where a piece of information was taken from: a file path with
-  line numbers, an identifier, or a URL.
-- **Draft**: the output of this skill before approval, kept in the scratch
-  directory.
-- **Research notes**: the private file in the scratch directory that holds
-  the facts and the open decisions found in Step 2.
-- **Open decision**: a decision that research did not settle. Each one becomes
-  one question in Step 3.
-- **Scratch directory**: a temporary location outside the repository. In Claude
-  Code, the session's scratchpad directory. In any other agent, the system temp
-  directory.
-
 ## Hard rules
 
 1. **Read-only on the project.** Never edit, create, or delete project files.
-   Write only the task file, in Step 8. Write drafts in the scratch directory,
-   never in the repository.
+   Write only the task file, in Step 8. Write drafts in a scratch directory
+   outside the repository (in Claude Code, the session's scratchpad
+   directory; in any other agent, the system temp directory).
 2. **Never ask what research can answer.** Consult code, docs, tests, and
    connected tools before the first question.
 3. **Never assume.** When a decision changes the task and research cannot
@@ -140,11 +113,12 @@ keywords like `issue ticket project linear jira notion asana github` and
 When an MCP server is not connected, note that and move on. Do not ask the user
 to install or connect anything.
 
-**2d. Research notes.** Write the research notes in the scratch directory, in
-two parts:
-1. *Facts*: what you learned, each with its origin.
-2. *Open decisions*: every open decision. State for each the decision to make
-   and the section of the task it affects.
+**2d. Research notes.** Write the research notes, a private file in the
+scratch directory, in two parts:
+1. *Facts*: what you learned, each with the file path and line numbers,
+   identifier, or URL it came from.
+2. *Open decisions*: every decision that research did not settle. State for
+   each the decision to make and the section of the task it affects.
 Use part 2 to drive Step 3. Do not show the research notes to the user.
 
 ### Step 3: Interview, one question at a time
@@ -244,8 +218,8 @@ Never ask the user which of the two.
 2. Create one item. Use the task title as the title and the approved task,
    unchanged, as the body.
 
-**Saving to a file**, under the repository root, using the numbering rule
-below:
+**Saving to a file**: the task file is `docs/tasks/###-<task-slug>/task.md`
+under the repository root, by the numbering rule below:
 1. Collision check: when `docs/tasks/` already holds a folder with the same
    `<task-slug>` under any number, ask one question in the question format:
    overwrite that `task.md` keeping its number, or write a new folder with a

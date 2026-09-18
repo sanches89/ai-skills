@@ -17,13 +17,18 @@ coding agent that loads `SKILL.md` files.
 - [task-work](skills/task-work/SKILL.md): implements a task or subtask within
   the scope set by its parent tasks and proves every acceptance criterion. It
   returns a short work report with only what the rest of the work needs.
+- [task-refactor](skills/task-refactor/SKILL.md): refactors code in any
+  language without changing its behavior, in small tested steps. It returns a
+  short refactor report with duplication, complexity, unit tests, and coverage
+  measured before and after.
 - [agent-docs-audit](skills/agent-docs-audit/SKILL.md): audits and compresses a
   repo's `AGENTS.md` files and `docs/refs` so they take fewer tokens without
   losing a rule. With the glossary and unambiguity skills, it also defines
   every term once and rewrites the wording.
-- [glossary](skills/glossary/SKILL.md): finds the words with a special meaning
-  in a project's documents and writes the glossary that defines each of them
-  once. It reports where the documents disagree with the glossary.
+- [glossary](skills/glossary/SKILL.md): finds the words that a project's
+  documents use with two readings and that no other word settles. It writes
+  the glossary that defines each of them once and reports where the documents
+  disagree with it.
 - [unambiguity](skills/unambiguity/SKILL.md): rewrites one text so that every
   sentence has one reading, with its meaning unchanged. It reports each
   ambiguity it resolved and each word that needs a glossary entry.
@@ -34,6 +39,10 @@ task-create, task-breakdown, and task-work form a pipeline: the first writes
 implements a task or one subtask from those files. With a project-management
 MCP server connected, the first two write items there instead, unless you ask
 for files, and the third reads them.
+
+task-refactor works beside the pipeline. It takes a path, a symbol, a git
+range, text, or one of those tasks, and restructures the code without changing
+what it does.
 
 glossary and unambiguity form a pair: the first writes the glossary, and the
 second rewrites a document with the glossary's terms.
@@ -69,10 +78,9 @@ Without the CLI, clone this repo into your agent's skills folder (e.g.
 
 ## Contributing
 
-Rules for writing skills in this repo are in [AGENTS.md](AGENTS.md). Words with
-a special meaning in the repo's own documents are defined in
-[GLOSSARY.md](GLOSSARY.md). Each skill defines its own words in its Terms
-section.
+Rules for writing skills in this repo are in [AGENTS.md](AGENTS.md),
+including the test a word passes before a skill's Terms section or the repo's
+glossary defines it.
 
 ## License
 

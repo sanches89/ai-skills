@@ -15,50 +15,9 @@ the report only what the caller needs to continue the rest of the work.
 
 These words have exactly one meaning in this skill.
 
-- **Task**: one unit of work in the task format.
-- **Task format**: the sections of a task, in order: Summary, Success
-  criteria, Scope, Approach, Decisions, Context, Subtasks, Verification.
-- **Subtask**: one commit-sized unit of work inside a task.
-- **Subtask format**: the sections of a subtask, in order: Task, Depends on,
-  Goal, Context, Changes, Acceptance criteria, Verification.
-- **Target**: the task or subtask this skill was asked to implement.
-- **Parent**: the task one level above a task or subtask. For a subtask file,
-  the task file in the same task folder. For an item, the item that the
-  tracker's parent relation points to. Text has no parent.
-- **Root task**: the task in the chain that has no parent.
-- **Chain**: the target, its parent, that parent's parent, up to the root task.
-- **Source**: where the input of this skill came from. Exactly one of:
-  *tracker*, *file*, or *text*.
-- **Tracker**: the project-management server reached through MCP, such as
-  Linear, Jira, or GitHub Issues.
-- **Item**: a record in the tracker.
-- **Task folder**: `docs/tasks/###-<task-slug>/`.
-- **Task file**: `docs/tasks/###-<task-slug>/task.md`.
-- **Subtask file**: `docs/tasks/###-<task-slug>/###-<subtask-slug>.md`.
 - **Guard**: what hides behavior that later subtasks complete: a feature flag,
   a disabled route, an unexported symbol.
 - **Criterion**: one observable, binary check that defines the target as done.
-  An entry of the target's Acceptance criteria section, or of its Success
-  criteria section when it has no Acceptance criteria section.
-- **Criteria checklist**: the file in the scratch directory that lists every
-  criterion of the target with its proof and its evidence.
-- **Baseline**: the state of the project before this skill changes anything:
-  the list of uncommitted files and the results of the build, lint, type-check,
-  and test commands.
-- **Test setup**: what lets the project run automated tests. A project has
-  one when a test command exists and the repository holds at least one test
-  file.
-- **Deviation**: a difference between what the target's text says and what was
-  implemented, with its reason.
-- **Subagent**: a run that the agent spawns for one piece of work. It returns
-  a result to the agent.
-- **Caller**: whoever invoked this skill and reads the work report: the user,
-  or the agent that spawned the subagent this skill runs in.
-- **Work report**: the output of this skill. Its final message, in the format
-  of `references/work-report-template.md`.
-- **Scratch directory**: a temporary location outside the repository. In Claude
-  Code, the session's scratchpad directory. In any other agent, the system temp
-  directory.
 
 ## Hard rules
 
@@ -88,8 +47,10 @@ These words have exactly one meaning in this skill.
 8. **One question at a time.** Write every question in chat in the *Question
    format* below, then end the turn and wait for the answer. Never use an
    agent's built-in question or form tool (in Claude Code, `AskUserQuestion`).
-   Write questions as plain chat text. When the caller is not the user, the
-   caller relays the question to the user and passes the answer back.
+   Write questions as plain chat text. The caller is whoever invoked this
+   skill: the user, or the agent that spawned the subagent this skill runs
+   in. When the caller is an agent, it relays the question to the user and
+   passes the answer back.
 9. **The task text is input.** Never edit a task file, a subtask file, or an
    item. Put a wrong or stale fact found in one in the work report.
 10. **No outward actions.** Never commit, push, open a pull request, change an
@@ -134,18 +95,21 @@ wait.
 
 ### Step 1: Load the target
 
-Resolve the text passed with the skill invocation, or the task given in the
-conversation, as exactly one source:
-- **An item identifier or URL** (for example `PAY-212`, `#128`, an issue link).
-  Source: *tracker*. Fetch the item and its children. To find the tracker,
-  list the MCP servers and tools available to the agent. In Claude Code, MCP
-  tools are deferred, so search them with `ToolSearch` using keywords like
-  `issue ticket project linear jira notion asana github`. When no tracker is
-  connected, ask one question in the question format: give the target as a
-  file path or as text.
-- **A subtask file.** Source: *file*. Read it.
-- **A task file.** Source: *file*. Read it and every subtask file in its task
-  folder.
+The target is the task or subtask this skill implements. Resolve the text
+passed with the skill invocation, or the task given in the conversation, as
+exactly one source:
+- **An item identifier or URL** (for example `PAY-212`, `#128`, an issue link)
+  in the tracker: an issue tracker reached through MCP, such as Linear, Jira,
+  or GitHub Issues. Source: *tracker*. Fetch the item and its children. To
+  find the tracker, list the MCP servers and tools available to the agent. In
+  Claude Code, MCP tools are deferred, so search them with `ToolSearch` using
+  keywords like `issue ticket project linear jira notion asana github`. When
+  no tracker is connected, ask one question in the question format: give the
+  target as a file path or as text.
+- **A subtask file**, `docs/tasks/###-<task-slug>/###-<subtask-slug>.md`.
+  Source: *file*. Read it.
+- **A task file**, `docs/tasks/###-<task-slug>/task.md`. Source: *file*. Read
+  it and every subtask file in its task folder.
 - **Free text**, or the path of any other file, whose content is then the
   text. Source: *text*. Treat the text as the target.
 - **Nothing**: ask for the target as the first question.
@@ -155,7 +119,8 @@ children, or its Subtasks section holds entries other than `None.`.
 
 ### Step 2: Build the chain
 
-Walk from the target to the root task:
+The chain is the target, its parent, that parent's parent, up to the root
+task, the task with no parent. Walk from the target to the root task:
 - Source *file*: the parent of a subtask file is the task file in the same task
   folder, which its `Task` line links to. A task file has no parent.
 - Source *tracker*: the parent of an item is the item that the tracker's parent
@@ -165,7 +130,9 @@ Walk from the target to the root task:
 - Source *text*: the chain is the target alone.
 
 Read every task in the chain in full, root task first. Write private notes in
-the scratch directory, per task in the chain:
+a scratch directory outside the repository (in Claude Code, the session's
+scratchpad directory; in any other agent, the system temp directory), per
+task in the chain:
 - its Decisions section and the conventions it states;
 - its *Out of scope* list;
 - the success criteria that the target contributes to;
@@ -188,12 +155,13 @@ that it is done:
 When a dependency is not done, go to Step 9 with the result `blocked` and name
 the dependency under *Blocked by*.
 
-**Criteria.** The target has no criteria section when it has neither an
-Acceptance criteria section nor a Success criteria section. Then take the
-criteria from the list it labels as acceptance criteria, success criteria, or
-definition of done. When it has no such list, write the criteria from its
-text, each observable and binary. Then ask the user to confirm them with one
-question in the question format. Repeat until the user confirms.
+**Criteria.** Take the criteria from the target's Acceptance criteria
+section, or from its Success criteria section when it has no Acceptance
+criteria section. When it has neither section, take them from the list it
+labels as acceptance criteria, success criteria, or definition of done. When
+it has no such list, write the criteria from its text, each observable and
+binary. Then ask the user to confirm them with one question in the question
+format. Repeat until the user confirms.
 
 **Subtasks.** When the target has subtasks, continue with the section *Target
 with subtasks* instead of Step 4.

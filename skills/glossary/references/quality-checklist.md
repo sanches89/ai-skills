@@ -11,6 +11,15 @@ decision, then run the whole checklist again.
       alphabetical order.
 - [ ] The header names the document set.
 
+## Entry test
+
+- [ ] Every term has, at one usage at least, two readings that lead to
+      different actions.
+- [ ] No term has a word or phrase with one reading that fits every usage.
+- [ ] No term has its reading settled by the sentence around every usage.
+- [ ] No definition holds a path, a placeholder, a format, a list of allowed
+      values, a section list, or a condition.
+
 ## Definitions
 
 - [ ] Every definition starts with a noun phrase that names the kind of thing.
@@ -28,9 +37,9 @@ decision, then run the whole checklist again.
 
 - [ ] Every term has exactly one entry.
 - [ ] No two entries define the same thing.
-- [ ] Every conflict from research ends as two terms, each with a qualifier
-      or its own word. The bare word has no entry.
-- [ ] Every synonym pair from research ends as one term, and the retired word
+- [ ] Every conflict from research ends as a rename in the glossary report,
+      with a qualifier or its own word per thing. The bare word has no entry.
+- [ ] Every synonym pair from research ends as one word, and the retired word
       appears in the glossary report.
 - [ ] Every term has at least one usage in the document set.
 - [ ] Every restatement matches its entry word for word, or the mismatch
@@ -40,6 +49,10 @@ decision, then run the whole checklist again.
 
 - [ ] Every usage that disagrees with the glossary appears in the report with
       its path and line.
+- [ ] Every entry removed appears in the report with the condition it failed
+      or the word `unused`.
+- [ ] Every fact taken out of a definition appears in the report with the
+      document and line that use it.
 - [ ] The open-decisions list from research is empty.
 
 ## Grep helpers
@@ -54,6 +67,15 @@ grep -nEi \
   -e 'should we|if needed|if necessary|as appropriate|as needed' \
   -e '\betc\b|and so on|or similar|something like|either .* or|one of the' \
   <draft-file>
+```
+
+Facts of an instruction inside a definition: a path, a placeholder, a
+section list, or a condition. Read every hit and move the fact to the
+glossary report.
+
+```bash
+grep -nE -e '`[^`]*/[^`]*`|<[a-z-]+>|sections? of|in order:' \
+  -e '\bwhen (a|the|it|no) ' <draft-file>
 ```
 
 Terms with two definition texts across the draft and every document that
