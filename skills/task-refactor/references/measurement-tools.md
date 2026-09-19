@@ -19,8 +19,8 @@ Read this file in Step 3d.
 ## The measure tool
 
 The measure tool is `code-measure`, from the repository
-`github.com/sanches89/code-measure`. It needs Node.js 20 or newer. The measure
-command `<measure>` is one of two forms:
+`github.com/sanches89/code-measure`. It needs Node.js 22.13 or newer. The
+measure command `<measure>` is one of two forms:
 - `code-measure`, when `PATH` has it;
 - otherwise `npx --yes "github:sanches89/code-measure#semver:^1"`. `npx`
   fetches the newest release of major version 1 into its own cache. The first

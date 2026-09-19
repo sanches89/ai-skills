@@ -5,9 +5,9 @@ Read this file in Step 2b.
 ## Command
 
 The measure tool is `code-measure`, from the npm package `code-measure`,
-with its source at `github.com/sanches89/code-measure`. It needs Node.js 20
-or newer. The measure command `<measure>` takes the first form below whose
-condition holds:
+with its source at `github.com/sanches89/code-measure`. It needs Node.js
+22.13 or newer. The measure command `<measure>` takes the first form below
+whose condition holds:
 - `code-measure`, when `PATH` has it, `code-measure --version` prints a
   version that starts with `1.`, and `code-measure --help` names
   `--mutation-report`;
