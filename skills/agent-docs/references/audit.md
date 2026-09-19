@@ -1,21 +1,12 @@
----
-name: agent-docs-audit
-description: Use when the user asks to audit, review, shrink, tidy, dedupe, or compress the AGENTS.md or CLAUDE.md files or docs/refs of a repository, or says the agent instructions are too long, stale, or repetitive. Also after several rule or reference changes.
-license: MIT
-compatibility: Requires Node.js 18 or newer and git, run inside a git repository.
-disable-model-invocation: true
----
-
 # Agent docs audit
 
-Hold every `AGENTS.md` and reference doc to the rules of the root
-`AGENTS.md`, under "Writing an AGENTS.md" and "Reference docs". Add no rule
-here: a finding that needs a new rule becomes an edit to the root
-`AGENTS.md`.
+Hold every `AGENTS.md` and reference doc to the rules in `SKILL.md` and to
+the doc rules the repo's root `AGENTS.md` adds. Add no rule here: a finding
+that needs a new rule becomes an edit to the root `AGENTS.md`.
 
 ## 1. Measure
 
-Run from the repo root, with `<skill-dir>` the folder holding this
+Run from the repo root, with `<skill-dir>` the folder holding
 `SKILL.md` (in Claude Code, `${CLAUDE_SKILL_DIR}` expands to it):
 
 ```bash
@@ -50,6 +41,8 @@ files. Then, for each rule:
   - the same file states it twice, as a tree comment and a bullet;
   - a header comment, a lint message, or the types already say it;
   - it describes how something works rather than what to do.
+- **Lists.** Join a list of short items, such as words, names or paths,
+  into its parent line, separated by commas.
 - **Ambiguity.** Check every claim against the code, never the wording:
   - confirm every path, script, flag, command, export and builder named
     exists (`git ls-files`, `git grep`);
@@ -94,7 +87,7 @@ Code, the `Skill` tool).
 
 - **Glossary.** When a skill named `glossary` is available to the agent,
   invoke it with the invocation text
-  `from agent-docs-audit: glossary <path>, files <every AGENTS.md and every
+  `from agent-docs: glossary <path>, files <every AGENTS.md and every
   reference doc>`. Take `<path>` from the request when it names one, else
   `GLOSSARY.md`. Wait for it to finish: it asks its own questions, writes
   after its own approval, and prints its glossary report. Without that
@@ -102,7 +95,7 @@ Code, the `Skill` tool).
   was not checked.
 - **Wording.** When a skill named `unambiguity` is available to the agent,
   invoke it one file at a time with the invocation text
-  `from agent-docs-audit: <file path>`. Cover every `AGENTS.md` and every
+  `from agent-docs: <file path>`. Cover every `AGENTS.md` and every
   reference doc changed since `<ref>`. Wait for each run to finish: it
   shows its rewrite, asks its own approval, and prints its clarity report.
   Without that skill, change no wording, and state in the audit report that

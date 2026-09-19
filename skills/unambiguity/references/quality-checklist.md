@@ -27,8 +27,9 @@ the whole checklist again.
 ## Sentences
 
 - [ ] Every instruction is one command with one action.
-- [ ] Three or more parallel items form a list, and an ordered sequence a
-      numbered list.
+- [ ] Three or more parallel clauses or steps form a list, and an ordered
+      sequence a numbered list. Short items stay inline, separated by
+      commas.
 
 ## Structure
 

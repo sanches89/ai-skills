@@ -60,9 +60,10 @@ of the project, recorded in Step 2d, wins over a rule here.
 
 ## Structure
 
-- **Parallel items in prose.** Find: three or more items joined in one
-  sentence, such as files, steps, or conditions. Fix: write a list, one item
-  per line.
+- **Parallel items in prose.** Find: three or more clauses or steps joined
+  in one sentence. Fix: write a list, one item per line. Keep short items,
+  such as words, names, or paths, inline and separated by commas. Never nest
+  a list only to split short items.
 - **Order without numbers.** Find: steps whose order matters, written as
   prose or as an unordered list. Fix: a numbered list in execution order.
 - **Example that does not match.** Find: an example that contradicts the rule

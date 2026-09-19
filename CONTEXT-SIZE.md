@@ -24,33 +24,34 @@ counts one tier.
 ## Summary
 
 Tokens per skill and tier. With all 9 skills installed, the startup
-tier costs 621 tokens per session. Using one skill then adds its
+tier costs 626 tokens per session. Using one skill then adds its
 `SKILL.md` and the references it reads.
 
-| Skill            | Startup | SKILL.md | References | Scripts |  Total |
-|------------------|--------:|---------:|-----------:|--------:|-------:|
-| agent-docs-audit |      69 |    1,466 |          0 |   3,581 |  5,047 |
-| code-analysis    |      61 |    2,501 |      8,894 |   3,621 | 15,016 |
-| glossary         |      57 |    2,207 |      1,115 |       0 |  3,322 |
-| package-update   |      59 |    3,903 |      4,886 |   1,864 | 10,653 |
-| task-breakdown   |      64 |    2,749 |      1,865 |       0 |  4,614 |
-| task-create      |      59 |    1,638 |      1,098 |       0 |  2,736 |
-| task-refactor    |     105 |    4,711 |      8,663 |       0 | 13,374 |
-| task-work        |      79 |    3,136 |      2,553 |       0 |  5,689 |
-| unambiguity      |      68 |    1,704 |      1,773 |       0 |  3,477 |
-| **All skills**   |     621 |   24,015 |     30,847 |   9,066 | 63,928 |
+| Skill          | Startup | SKILL.md | References | Scripts |  Total |
+|----------------|--------:|---------:|-----------:|--------:|-------:|
+| agent-docs     |      74 |    1,211 |      1,389 |   3,581 |  6,181 |
+| code-analysis  |      61 |    2,501 |      8,894 |   3,621 | 15,016 |
+| glossary       |      57 |    2,207 |      1,115 |       0 |  3,322 |
+| package-update |      59 |    3,903 |      4,886 |   1,864 | 10,653 |
+| task-breakdown |      64 |    2,749 |      1,865 |       0 |  4,614 |
+| task-create    |      59 |    1,638 |      1,098 |       0 |  2,736 |
+| task-refactor  |     105 |    4,711 |      8,663 |       0 | 13,374 |
+| task-work      |      79 |    3,136 |      2,553 |       0 |  5,689 |
+| unambiguity    |      68 |    1,704 |      1,809 |       0 |  3,513 |
+| **All skills** |     626 |   23,760 |     32,272 |   9,066 | 65,098 |
 
 ## Files per skill
 
 Lines, words, and tokens of every file, grouped by skill.
 
-### agent-docs-audit
+### agent-docs
 
-| File                | Lines | Words | Tokens |
-|---------------------|------:|------:|-------:|
-| `SKILL.md`          |   124 |   981 |  1,466 |
-| `scripts/audit.mjs` |   346 | 1,576 |  3,581 |
-| **Total**           |   470 | 2,557 |  5,047 |
+| File                  | Lines | Words | Tokens |
+|-----------------------|------:|------:|-------:|
+| `SKILL.md`            |   102 |   840 |  1,211 |
+| `references/audit.md` |   117 |   939 |  1,389 |
+| `scripts/audit.mjs`   |   346 | 1,576 |  3,581 |
+| **Total**             |   565 | 3,355 |  6,181 |
 
 ### code-analysis
 
@@ -133,6 +134,6 @@ Lines, words, and tokens of every file, grouped by skill.
 | File                              | Lines | Words | Tokens |
 |-----------------------------------|------:|------:|-------:|
 | `SKILL.md`                        |   153 | 1,199 |  1,704 |
-| `references/clarity-rules.md`     |    70 |   673 |  1,063 |
-| `references/quality-checklist.md` |    74 |   426 |    710 |
-| **Total**                         |   297 | 2,298 |  3,477 |
+| `references/clarity-rules.md`     |    71 |   692 |  1,086 |
+| `references/quality-checklist.md` |    75 |   435 |    723 |
+| **Total**                         |   299 | 2,326 |  3,513 |

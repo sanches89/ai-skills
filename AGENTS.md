@@ -133,7 +133,7 @@ Folders:
   entry as a bullet `- **Term**: definition.`; change that form in both
   skills in the same commit.
 - Each of the two invokes the other by its skill name when the agent has it,
-  and works alone when it does not. `agent-docs-audit` invokes both the same
+  and works alone when it does not. `agent-docs` invokes both the same
   way. An invocation text from a skill starts with `from <skill name>:`, and
   the invoked skill then skips its own hand-off. Change that form in all three
   skills in the same commit.
@@ -153,7 +153,7 @@ Folders:
 
 ## Checks before committing a skill
 
-1. Run `node skills/agent-docs-audit/scripts/audit.mjs` from the repo root when
+1. Run `node skills/agent-docs/scripts/audit.mjs` from the repo root when
    `AGENTS.md`, `CLAUDE.md`, or `docs/refs/` changed, and fix every error it
    reports.
 2. Grep the skill for agent-specific tokens and confirm each one sits

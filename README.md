@@ -22,10 +22,11 @@ coding agent that loads `SKILL.md` files.
   coverage measured. It writes a refactor task with one subtask per
   refactoring, each with its tests and one verification command, and changes
   no code.
-- [agent-docs-audit](skills/agent-docs-audit/SKILL.md): audits and compresses a
-  repo's `AGENTS.md` files and `docs/refs` so they take fewer tokens without
-  losing a rule. With the glossary and unambiguity skills, it also defines
-  every term once and rewrites the wording.
+- [agent-docs](skills/agent-docs/SKILL.md): holds the rules for a repo's
+  `AGENTS.md` files, READMEs, ADRs, `docs/refs`, and glossary, which the
+  agent follows whenever it edits one. On request, it audits and compresses
+  them without losing a rule. With the glossary and unambiguity skills, it
+  also defines every term once and rewrites the wording.
 - [glossary](skills/glossary/SKILL.md): finds the words that a project's
   documents use with two readings and that no other word settles. It writes
   the glossary that defines each of them once and reports where the documents
@@ -100,8 +101,8 @@ to install for the user instead of the project. The skills are also listed on
 Without the CLI, clone this repo into your agent's skills folder (e.g.
 `~/.claude/skills/`).
 
-In Claude Code, three skills run only when you type their command:
-`/agent-docs-audit`, `/code-analysis`, and `/package-update`. Their
+In Claude Code, two skills run only when you type their command:
+`/code-analysis` and `/package-update`. Their
 `disable-model-invocation: true` frontmatter field stops the agent from
 starting them on its own. An agent that does not support that field starts
 them from their descriptions, like the other skills.
