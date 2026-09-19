@@ -2,7 +2,7 @@
 name: code-analysis
 description: Use when the user wants the code measured or analyzed, asks how complex, duplicated, tested, or covered a repository is, or wants the current branch compared with a base branch before a review or a merge. Returns a measurement report with ranked findings and changes no code.
 license: MIT
-compatibility: Requires Node.js 20 or newer with npx and git, run inside a git repository, with network access on the first run. Complexity needs lizard on PATH, or uv, pipx, or a Python that has lizard. Tests and coverage need the project's own test command. A missing tool skips its measurement and never blocks the report.
+compatibility: Requires Node.js 20 or newer with npx and git, run inside a git repository, with network access on the first run. Complexity needs lizard on PATH, or uv, pipx, or a Python that has lizard. Tests and coverage need the project's own test command. Mutation needs the project's own mutation command. A missing tool skips its measurement and never blocks the report.
 argument-hint: "[base]"
 disable-model-invocation: true
 ---
@@ -10,15 +10,15 @@ disable-model-invocation: true
 # Code Analysis
 
 Take one repository and measure its duplication, complexity, hotspots, unit
-tests, and coverage. With a base name, measure the base commit too and
-compare. Return a measurement report.
+tests, coverage, and mutation score. With a base name, measure the base
+commit too and compare. Return a measurement report.
 
 ## Hard rules
 
 1. **The project stays as it is.** Change no project file. Add no
-   dependency, tool, configuration file, JUnit report, or coverage report to
-   the repository. Write every report, summary, diff, and note of the run in
-   the scratch directory.
+   dependency, tool, configuration file, JUnit report, coverage report, or
+   mutation report to the repository. Write every report, summary, diff, and
+   note of the run in the scratch directory.
 2. **Never ask what research can answer.** Consult the code, the docs, the
    git history, and the summaries first.
 3. **Never assume.** When a decision changes the work and research cannot
@@ -108,6 +108,11 @@ changed files, one path per line:
 Record the count of deleted files from
 `git diff --name-status <base-commit> | grep -c '^D'`.
 
+**2e. Mutation command.** Read `references/mutation-reports.md` now.
+Record, as that file says, the mutation command with the report options,
+with `<dir>` in place of the output folder, and `<mutation-report>`. Record
+the reason instead when the file says to skip the mutation run.
+
 ### Step 3: Base run
 
 Skip this step without a base name.
@@ -153,16 +158,33 @@ step that `test-reports.md` gives for .NET, Maven, and Gradle. When the test
 command writes neither report, record the current tests and coverage as
 skipped. The reason is the first line of the error.
 
-**4b. Measure.** Without a base name, run the command of 3c with
+**4b. Mutation.** Skip this sub-step when Step 2e recorded a reason. Run
+the mutation command from the folder that `mutation-reports.md` names, else
+from the repository root, with `<dir>` set to
+`<scratch-dir>/current-reports`. Only the current code gets a mutation run:
+one run often takes longer than all other steps together. Let it finish,
+however long it takes (in Claude Code, run it in the background). Afterwards
+do the step that `mutation-reports.md` gives for the tool. A surviving
+mutant is a result, not a failure of the run. When the mutation command
+fails, or writes no report, record the first line of the error as the
+reason.
+
+**4c. Measure.** Without a base name, run the command of 3c with
 `current-reports` in place of `base-reports` and `current.json` in place of
-`base.json`. With a base name, run:
+`base.json`. Add
+`--mutation-report <scratch-dir>/current-reports/<mutation-report>`. With
+a base name, run:
 
 ```bash
 <measure> . --top 200 \
   --test-report <scratch-dir>/current-reports/<junit-report> \
   --coverage-report <scratch-dir>/current-reports/<coverage-report> \
+  --mutation-report <scratch-dir>/current-reports/<mutation-report> \
   --compare <scratch-dir>/base.json > <scratch-dir>/current.json
 ```
+
+Pass `--mutation-report` once per mutation report. Leave out each report
+option without its report.
 
 Record the exit code. On `2`, fix the arguments and run the command again.
 On `1`, or when the measure command fails to start, go to Step 7. The

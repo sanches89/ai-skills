@@ -11,11 +11,13 @@ Rules for filling:
 - `a | b` on a template line means: write a or b, never both.
 - With a base name, write each value on a *Measurements* line as
   `<before> to <after>`, base summary first. Without one, the value alone.
+  The *Mutation* line holds the current value alone: Step 3 never measures
+  mutation.
 - The single word `None.` in a section with nothing to say. No section
   beyond the ones below.
 
 What each section keeps:
-- **Result**: `done` when Step 4b printed a summary, else `blocked` with the
+- **Result**: `done` when Step 4c printed a summary, else `blocked` with the
   reason.
 - **Scope**: `files` of the current summary, the repository root, and the
   ignore globs.
@@ -24,22 +26,25 @@ What each section keeps:
 - **Limits**: the three limits, the clone floor, and their source: the
   configuration file that sets them, or `defaults`.
 - **Tools**: the `tool` value of `duplication`; the `tool` value of
-  `complexity`, or `no lizard`; the test runner, or `no test command`.
+  `complexity`, or `no lizard`; the test runner, or `no test command`; the
+  mutation tool, or `no mutation command`.
 - **Comparison**: `none` without a base name. `worse` when `worse` of the
   current summary is not empty. `better` when `worse` is empty and `better`
   of `diff.json` is not. `same` in every other case.
 - **Measurements**: one line per measurement. A measurement with a status
   other than `ok` in the current summary gets `skipped` with its reason.
+  The *Mutation* line takes the reason that Step 2e or 4b recorded.
 - **Changes**: only with a base name. Each bullet names the values, clones,
   functions, tests, and files that `diff.json` lists. A bullet with more
-  than three names gives the count and the first three.
+  than three names gives the count and the first three. *Not compared*
+  leaves out `mutation`.
 - **Findings**: the findings of Step 6 in rank order, numbered. The marker
   is `new` for an entry that `diff.json` lists under `added`, `changed` for
   another entry in a changed file, else empty.
 - **Skipped**: every measurement with a status other than `ok` in either
-  summary, with its reason. The base tests and coverage, when Step 3b
-  skipped them, with the reason. Every list cut at 200 entries. The count of
-  findings left out per kind.
+  summary, with its reason, the base `mutation` excepted. The base tests
+  and coverage, when Step 3b skipped them, with the reason. Every list cut
+  at 200 entries. The count of findings left out per kind.
 
 What the report leaves out:
 - the steps taken, and attempts that failed;
@@ -61,7 +66,7 @@ What the report leaves out:
 **Limits:** ccn <n>, length <n>, params <n>, clone <n> tokens and <n>
 lines, from `<configuration file>` | defaults
 **Tools:** <jscpd version>, <lizard version> | no lizard, <test runner> |
-no test command
+no test command, <mutation tool> | no mutation command
 **Comparison:** none | better | same | worse
 
 ## Measurements
@@ -77,6 +82,8 @@ no test command
 - Coverage: lines <percent>, branches <percent> | none, <number> uncovered
   lines, <number> files in no report, <number> untested functions. |
   skipped: <reason>
+- Mutation: score <percent> of <number> mutants, <number> survived,
+  <number> with no coverage. | skipped: <reason>
 
 ## Changes
 
@@ -93,6 +100,8 @@ no test command
   <number> uncovered; `<file>` <percent> of lines, <number> uncovered.
   | None.
 - Changed files in no coverage report: `<file>`, `<file>`. | None.
+- Changed files with surviving mutants: `<file>` <number>, `<file>`
+  <number>. | None.
 - Not compared: <measurement>: <reason>. | None.
 
 ## Findings

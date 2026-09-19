@@ -8,14 +8,15 @@ The measure tool is `code-measure`, from the npm package `code-measure`,
 with its source at `github.com/sanches89/code-measure`. It needs Node.js 20
 or newer. The measure command `<measure>` takes the first form below whose
 condition holds:
-- `code-measure`, when `PATH` has it and `code-measure --version` prints a
-  version that starts with `1.`;
+- `code-measure`, when `PATH` has it, `code-measure --version` prints a
+  version that starts with `1.`, and `code-measure --help` names
+  `--mutation-report`;
 - otherwise `npx --yes code-measure@1`, which fetches the newest release of
   major version 1 into the npx cache. The first run needs network access.
 
 Never install the measure tool into the project. Run it from the root of
 the tree it measures. It changes no file there. It prints one summary with
-`"version": 1` on stdout, with five measurements:
+`"version": 1` on stdout, with six measurements:
 - `duplication`, from jscpd, which ships with the measure tool and reads
   more than 200 languages;
 - `complexity`, from lizard, which reads about 25 languages. The measure
@@ -26,11 +27,15 @@ the tree it measures. It changes no file there. It prints one summary with
   sum of the `ccn` of its functions, or its line count without lizard;
 - `tests`, from the JUnit XML reports passed with `--test-report`;
 - `coverage`, from the LCOV, Cobertura XML, JaCoCo XML, or Go cover profile
-  reports passed with `--coverage-report`.
+  reports passed with `--coverage-report`;
+- `mutation`, from the mutation-testing-report-schema JSON of Stryker, the
+  `mutations.xml` of PIT, the `outcomes.json` of cargo-mutants, or the JSON
+  log of Infection, passed with `--mutation-report`.
 
-The measure tool never runs the tests: it reads the reports the project's
-own test command wrote. It respects `.gitignore` and leaves data and prose
-formats, such as JSON, YAML, and Markdown, out of every measurement.
+The measure tool never runs the tests or the mutation tool: it reads the
+reports that the project's own commands wrote. It respects `.gitignore` and
+leaves data and prose formats, such as JSON, YAML, and Markdown, out of
+every measurement.
 
 ## Options this skill uses
 
@@ -46,6 +51,8 @@ formats, such as JSON, YAML, and Markdown, out of every measurement.
   are all JUnit reports. Pass the option once per JUnit report or folder.
 - `--coverage-report <file>`: one coverage report, format read from the
   content. Pass the option once per coverage report.
+- `--mutation-report <file>`: one mutation report, format read from the
+  content. Pass the option once per mutation report.
 - `--compare <file>`: the base summary. The measure tool reuses its limits,
   ignore globs, and paths; passing a limit or `--ignore` next to
   `--compare` is an error. The summary then also holds `delta`, `worse`,
@@ -59,7 +66,7 @@ Run `<measure> --help` for the other options.
 - `1`: unexpected failure.
 - `2`: invalid arguments:
   - an unknown option;
-  - a path, a JUnit report, or a coverage report that does not exist;
+  - a path or a report that does not exist;
   - an unusable `--compare` file;
   - a limit passed next to `--compare`.
 - `3`: `--compare` found at least one compared value that got worse. The
@@ -124,6 +131,13 @@ values for one limit in one repository, take the lower one.
   `branches` percentages. `crap` is the CRAP score:
   `ccn^2 * (1 - coverage)^3 + ccn`. A complex function without tests scores
   highest.
+- `mutation` holds `format`, `files`, `mutants`, `killed`, `timeout`,
+  `survived`, `noCoverage`, `invalid`, `ignored`, and `score`: `killed` plus
+  `timeout`, as a percentage of `mutants`. `top` lists the files with a
+  mutant that survived or has no coverage, most survived first.
+  `survivors` lists the mutants that survived, each with `file`, `line`,
+  `function`, `mutator`, and `change`. `function` is `null` when neither
+  lizard nor the report names a function.
 - With `--compare`, `delta` holds each compared value with `before` and
   `after`. `worse` names every compared value that got worse. `notCompared`
   names every measurement whose status is not `ok` in the base summary or
@@ -143,6 +157,10 @@ the result.
 - `tests.failed` and `tests.skipped`: worse when they rise;
 - `coverage.lines.uncovered` and `coverage.branches.uncovered`: worse when
   they rise.
+
+`--compare` checks `mutation.survived` and `mutation.noCoverage` only when
+both summaries hold a mutation report. Step 3 never runs the mutation tool,
+so `notCompared` names `mutation` whenever Step 4 passes a mutation report.
 
 `--compare` ignores the sum of `ccn`, because extracting a function raises
 that sum by design. It ignores the coverage percentage, because removing

@@ -15,9 +15,11 @@ Step 6.
 
 - [ ] Both summaries came from the same paths, ignore globs, limits, and
       `--top 200`. Both test runs used the same install and test command.
+      Only the current summary holds a mutation report.
 - [ ] Every measurement with a status other than `ok` in either summary is
-      under *Skipped* with its reason. So is every list cut at 200 entries.
-- [ ] The exit code of Step 4b matches the *Comparison* line: `worse` with
+      under *Skipped* with its reason, the base `mutation` excepted. So is
+      every list cut at 200 entries.
+- [ ] The exit code of Step 4c matches the *Comparison* line: `worse` with
       exit code 3, `better` or `same` with exit code 0.
 
 ## Findings

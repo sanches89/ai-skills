@@ -50,6 +50,8 @@ const LISTS = [
   ["coverage.top", (s) => s.coverage?.top],
   ["coverage.filesNotInReport", (s) => s.coverage?.filesNotInReport],
   ["coverage.functions.top", (s) => s.coverage?.functions?.top],
+  ["mutation.top", (s) => s.mutation?.top],
+  ["mutation.survivors", (s) => s.mutation?.survivors],
 ];
 
 function fail(code, message) {
@@ -387,6 +389,12 @@ function standing(after, file, limit) {
   if (ok(after, "coverage") && after.coverage.functions?.status === "ok") {
     entry.untestedFunctions = cut(
       after.coverage.functions.top.filter((item) => item.file === file),
+      limit,
+    );
+  }
+  if (ok(after, "mutation")) {
+    entry.survivors = cut(
+      after.mutation.survivors.filter((item) => item.file === file),
       limit,
     );
   }

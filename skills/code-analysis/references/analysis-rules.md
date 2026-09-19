@@ -15,7 +15,8 @@ Read the code behind these entries of `current.json`:
   report;
 - the first 10 entries of `coverage.functions.top`;
 - the first 5 entries of `coverage.top`;
-- the first 5 entries of `coverage.filesNotInReport`.
+- the first 5 entries of `coverage.filesNotInReport`;
+- the first 10 entries of `mutation.survivors`.
 
 With a base name, read also every entry of `diff.json` under `added`,
 `changed`, `newFailed`, and `coverage.files.worse`, and every entry of
@@ -61,11 +62,12 @@ finding.
 ## Hotspots
 
 A hotspot is a finding only when its file holds an entry of
-`complexity.top`, `duplication.top`, or `coverage.functions.top` that these
-rules keep. Then the finding is that entry, ranked by the hotspot score of
-the file under *Ranking*, with the commit subjects added to its evidence:
-what kind of change keeps hitting the file. A hotspot with no such entry
-appears only on the *Hotspots* line under *Measurements*.
+`complexity.top`, `duplication.top`, `coverage.functions.top`, or
+`mutation.survivors` that these rules keep. Then the finding is that entry,
+ranked by the hotspot score of the file under *Ranking*, with the commit
+subjects added to its evidence: what kind of change keeps hitting the file.
+A hotspot with no such entry appears only on the *Hotspots* line under
+*Measurements*.
 
 ## Tests
 
@@ -99,6 +101,27 @@ With a base name, when `tests.total` fell, add one finding of kind
   `add tests for the changed lines`. A changed file in
   `coverage.filesNotInReport` is a finding of this kind too.
 
+## Surviving mutants
+
+An entry of `mutation.survivors` is a mutant that every test passed on: no
+assertion checks what its change breaks.
+
+Keep one finding of kind `surviving mutant` per `function`. An entry whose
+`function` is `null` is a finding of its own. The location is the line of
+the first entry. The evidence is the count of entries and the `change` of
+the first one. The action is `assert the behavior the mutant changes`.
+
+Leave an entry whose mutant is equivalent: no input makes the changed code
+return another result or leave another state. Examples:
+- `i < n` to `i != n` in a loop that steps by 1 and starts below `n`;
+- a changed log message, or a changed error text that no caller reads;
+- a removed call whose only effect is a cache or a metric.
+
+When the function is already a finding of another kind, add the count of
+entries to the evidence of that finding instead. An entry of
+`mutation.top` alone is never a finding: its mutants with no coverage are
+lines that the coverage rules read.
+
 ## Actions
 
 The action of a finding is an item of this list, or two items joined by
@@ -108,6 +131,7 @@ The action of a finding is an item of this list, or two items joined by
 - `add tests`;
 - `add tests before changing it`;
 - `add tests for the changed lines`;
+- `assert the behavior the mutant changes`;
 - `extract function`;
 - `replace nested conditionals with guard clauses`;
 - `introduce parameter object`;
@@ -125,7 +149,8 @@ Order the findings:
    that `diff.json` lists under `added` first;
 4. every other finding, by the hotspot score of its file, highest first. A
    file with no score comes after every file with one;
-5. inside one rank, by `crap`, then `ccn`, then clone lines, highest first.
+5. inside one rank, by `crap`, then `ccn`, then clone lines, then surviving
+   mutants, highest first.
 
 Keep at most 12 findings. Count the findings left out, per kind, for the
 *Skipped* section of the measurement report.
