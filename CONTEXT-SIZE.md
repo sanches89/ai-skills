@@ -31,14 +31,14 @@ tier costs 626 tokens per session. Using one skill then adds its
 |----------------|--------:|---------:|-----------:|--------:|-------:|
 | agent-docs     |      74 |    1,211 |      1,389 |   3,581 |  6,181 |
 | code-analysis  |      61 |    2,501 |      8,894 |   3,621 | 15,016 |
-| glossary       |      57 |    2,207 |      1,115 |       0 |  3,322 |
+| glossary       |      57 |    2,753 |      1,138 |       0 |  3,891 |
 | package-update |      59 |    3,903 |      4,886 |   1,864 | 10,653 |
 | task-breakdown |      64 |    2,749 |      1,865 |       0 |  4,614 |
 | task-create    |      59 |    1,638 |      1,098 |       0 |  2,736 |
 | task-refactor  |     105 |    4,711 |      8,663 |       0 | 13,374 |
 | task-work      |      79 |    3,136 |      2,553 |       0 |  5,689 |
-| unambiguity    |      68 |    1,704 |      1,809 |       0 |  3,513 |
-| **All skills** |     626 |   23,760 |     32,272 |   9,066 | 65,098 |
+| unambiguity    |      68 |    1,704 |      1,815 |       0 |  3,519 |
+| **All skills** |     626 |   24,306 |     32,301 |   9,066 | 65,673 |
 
 ## Files per skill
 
@@ -71,10 +71,10 @@ Lines, words, and tokens of every file, grouped by skill.
 
 | File                              | Lines | Words | Tokens |
 |-----------------------------------|------:|------:|-------:|
-| `SKILL.md`                        |   197 | 1,613 |  2,207 |
-| `references/glossary-template.md` |    28 |   134 |    216 |
-| `references/quality-checklist.md` |    89 |   547 |    899 |
-| **Total**                         |   314 | 2,294 |  3,322 |
+| `SKILL.md`                        |   245 | 2,017 |  2,753 |
+| `references/glossary-template.md` |    28 |   140 |    219 |
+| `references/quality-checklist.md` |    91 |   561 |    919 |
+| **Total**                         |   364 | 2,718 |  3,891 |
 
 ### package-update
 
@@ -135,5 +135,5 @@ Lines, words, and tokens of every file, grouped by skill.
 |-----------------------------------|------:|------:|-------:|
 | `SKILL.md`                        |   153 | 1,199 |  1,704 |
 | `references/clarity-rules.md`     |    71 |   692 |  1,086 |
-| `references/quality-checklist.md` |    75 |   435 |    723 |
-| **Total**                         |   299 | 2,326 |  3,513 |
+| `references/quality-checklist.md` |    76 |   441 |    729 |
+| **Total**                         |   300 | 2,332 |  3,519 |

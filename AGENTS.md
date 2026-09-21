@@ -220,7 +220,8 @@ Folders:
    for f in $(git ls-files -co --exclude-standard '*.md'); do
      awk 'FNR == 1 && /^---$/ { fm = 1; next } fm && /^---$/ { fm = 0; next }
           /^```/ { c = !c; next } fm || c || !NF { next }
-          /^#|^ *[-*] |^\|/ { print "." } { print }' "$f" \
+          /^#/ { print "."; next }
+          /^ *[-*] |^\|/ { print "." } { print }' "$f" \
        | tr '\n' ' ' | sed -E 's/`[^`]*`/X/g' | tr '.!?;:' '\n\n\n\n\n' \
        | awk -v f="$f" 'NF > 25 { print f ": " $0 }'
    done

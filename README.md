@@ -28,7 +28,9 @@ coding agent that loads `SKILL.md` files.
   them without losing a rule. With the glossary and unambiguity skills, it
   also defines every term once and rewrites the wording.
 - [glossary](skills/glossary/SKILL.md): finds the words that a project's
-  documents use with two readings and that no other word settles. It writes
+  documents use with two readings that no other word settles. It also finds
+  the words they use in a sense a reader would not take from the word alone.
+  It writes
   the glossary that defines each of them once and reports where the documents
   disagree with it.
 - [unambiguity](skills/unambiguity/SKILL.md): rewrites one text so that every
