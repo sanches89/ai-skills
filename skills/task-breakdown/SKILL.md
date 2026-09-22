@@ -22,7 +22,8 @@ These words have exactly one meaning in this skill.
 
 1. **Read-only on the project.** Write only the task file and the subtask
    files, in Step 8. Write drafts in a scratch directory outside the
-   repository (in Claude Code, the scratchpad directory).
+   repository (in Claude Code, the scratchpad directory), written
+   `<scratch-dir>` in paths.
 2. **Never ask what research can answer.** Consult code, docs, tests, and
    connected tools first.
 3. **Never assume.** When a decision changes a subtask and research cannot
@@ -39,14 +40,36 @@ These words have exactly one meaning in this skill.
 
 ### Step 1: Load the task
 
+**Tracker.** The tracker is the issue tracker the project uses, reached
+through an MCP server or through `gh`, the GitHub CLI. Find it once, in
+this order, and take the first that applies:
+1. the tracker that README, CLAUDE.md, AGENTS.md, CONTRIBUTING, or
+   `docs/README.md` names, when an MCP server or `gh` reaches it. When
+   the docs name one that nothing reaches, no tracker is connected;
+2. the tracker of an MCP server whose tools read and write issues. List
+   the MCP tools of the agent (in Claude Code they are deferred: search
+   them with `ToolSearch` for
+   `issue ticket project linear jira notion asana github`). With several,
+   the first listed;
+3. GitHub Issues through `gh`, when `git remote get-url origin` prints a
+   `github.com` URL and `gh auth status` exits 0. Then
+   `gh issue view <number> --comments` reads an item,
+   `gh api repos/{owner}/{repo}/issues/<number>/sub_issues` lists its
+   children, and `gh issue create`, `gh issue edit`, `gh issue comment`,
+   and `gh issue close` write. A POST with `gh api -X POST` to that
+   `sub_issues` path with `-F sub_issue_id=<id>` links a child, where
+   `<id>` is the `id` that `gh api repos/{owner}/{repo}/issues/<child>`
+   prints. A closed issue is in a completed status, and `gh` has no other
+   status;
+4. else no tracker is connected.
+
 Resolve the invocation text, or the task in the conversation, as one of:
 - **An item identifier or URL** (`PAY-212`, `#128`, an issue link) in the
-  tracker: an issue tracker reached through MCP, such as Linear, Jira, or
-  GitHub Issues. Source: *tracker*. Fetch the item and its children. When no
+  tracker. Source: *tracker*. Fetch the item and its children. When no
   tracker is connected, ask one question: give the task as a task file path
   or as text.
-- **A task file**, `docs/tasks/###-<task-slug>/task.md`. Source: *file*. Read
-  it and every subtask file, `docs/tasks/###-<task-slug>/###-<subtask-slug>.md`,
+- **A task file**, a file named `task.md`. Its folder is the task folder.
+  Source: *file*. Read it and every subtask file, `###-<subtask-slug>.md`,
   in its task folder.
 - **Free text**, or the path of any other file, whose content is then the
   text. Source: *text*.
@@ -77,15 +100,32 @@ Use a read-only subagent for broad sweeps when the agent offers one (in
 Claude Code, the `Explore` subagent).
 
 **2c. Project docs.** Read README, CLAUDE.md, AGENTS.md, CONTRIBUTING,
-`docs/`, ADRs, and other tasks under `docs/tasks/` that touch the same areas.
-Record the conventions and constraints that affect the task.
+`docs/`, and ADRs. Record the conventions and constraints that affect the
+task. Then find `<tasks-dir>` and read the tasks, plans, and specs in it
+that touch the same areas.
 
-**2d. MCP servers.** List the MCP tools available to the agent (in Claude
-Code they are deferred: search them with `ToolSearch` for
-`issue ticket project linear jira notion asana github context7`). Then:
+**Tasks directory.** `<tasks-dir>` is the folder that holds the task
+folders. It is the first of these that exists:
+1. the folder that the request or the conversation names;
+2. the folder that README, CLAUDE.md, AGENTS.md, CONTRIBUTING, or
+   `docs/README.md` names as the place for tasks, plans, or specs;
+3. the parent of a task folder: a folder named `###-<task-slug>`, three
+   digits, a hyphen, and a slug, that holds a `task.md`, anywhere in the
+   repository outside `node_modules`, `.git`, and `vendor`. With several
+   parents, the shortest path, then the first in alphabetical order;
+4. a folder named `tasks`, `plans`, or `specs` that holds a `.md` file at
+   any depth. It sits at most three levels below the repository root,
+   outside `node_modules`, `.git`, and `vendor`. With several, the
+   shortest path, then the first in alphabetical order;
+5. else `<scratch-dir>/tasks/`.
+
+**2d. Tracker and MCP servers.** Use the tracker of Step 1. List the other
+MCP tools of the agent (in Claude Code they are deferred: search them with
+`ToolSearch` for `context7`). Then:
 - **Tracker**: fetch related items and record their identifiers. Record the
   relation the tracker uses for children (sub-issue, child, parent field)
-  and the fields a child item requires.
+  and the fields a child item requires. Record the team, project, or board
+  that the docs name.
 - **Context7**: for every external library the task depends on, fetch the
   documentation of the version pinned in the manifest or lockfile. Record
   the API facts the subtasks rely on.
@@ -221,10 +261,10 @@ Choose the destination by the source:
    link in each child body.
 4. Update the task's Subtasks section with the child links.
 
-**To files**, under the repository root, by the numbering rule below:
-1. Task folder, `docs/tasks/###-<task-slug>/`: for source *file*, the
+**To files**, by the numbering rule below:
+1. Task folder, `<tasks-dir>/###-<task-slug>/`: for source *file*, the
    existing task folder. For source *text*, a new task folder with the next
-   free number.
+   free number, with `<tasks-dir>` from Step 2c.
 2. Task: write the approved task to `task.md` in the task folder. For source
    *file*, overwrite the previous task file.
 3. Subtasks: write one subtask file per subtask, `###-<subtask-slug>.md` in
@@ -234,12 +274,14 @@ Choose the destination by the source:
    task's Subtasks section to each subtask file.
 
 **Numbering rule.** `###` is a zero-padded three-digit sequence from `001`:
-the next free number across all folders in `docs/tasks/` for a task, and the
-next free numbers inside the task folder for subtasks. `<task-slug>` is the
-task title and `<subtask-slug>` the subtask title, in kebab-case: lowercase
-ASCII letters and digits, every other run of characters replaced by one
-hyphen, cut to 60 characters, with no leading or trailing hyphen. The
-`task-create` skill shares this layout and writes the task file.
+for a task, the next free number across every entry of `<tasks-dir>` whose
+name starts with three digits. For subtasks, the next free numbers inside
+the task folder. `<task-slug>` is the task title and `<subtask-slug>` the
+subtask title, in kebab-case: lowercase ASCII letters and digits, every
+other run of characters replaced by one hyphen, cut to 60 characters, with
+no leading or trailing hyphen. The `task-create` skill shares this layout
+and writes the task file.
 
 Finish with a short recap: every item identifier and URL created or updated,
-or every path written, and the number of subtasks. Ask nothing else.
+or every path written, absolute when outside the repository, and the number
+of subtasks. Ask nothing else.

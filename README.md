@@ -57,16 +57,22 @@ coding agent that loads `SKILL.md` files.
   ranked findings and changes no code.
 
 The task-* skills form a pipeline. task-create writes
-`docs/tasks/###-<task-slug>/task.md`. task-breakdown adds
-`docs/tasks/###-<task-slug>/###-<subtask-slug>.md` next to it. task-refactor
-writes both from a code review. task-work implements a task or one subtask
-from those files. task-orchestrate runs task-work on every subtask of a
-task, one at a time, with one commit each. Then it runs task-refactor and
-task-work over the result, up to three rounds. With a project-management MCP
-server connected, the writers create items there instead, unless you ask
-for files, and task-work and task-orchestrate read them. Each skill ends
-with the input of the next, so these sequences work without an edit in
-between:
+`<tasks-dir>/###-<task-slug>/task.md`. task-breakdown adds
+`<tasks-dir>/###-<task-slug>/###-<subtask-slug>.md` next to it.
+task-refactor writes both from a code review. `<tasks-dir>` is the first
+that exists of: the folder you name; the folder README, CLAUDE.md,
+AGENTS.md, or CONTRIBUTING names for tasks, plans, or specs; the folder
+that already holds task folders; a `tasks`, `plans`, or `specs` folder of
+the repository. With none of these, it is a scratch directory outside the
+repository, which in Claude Code lives one session. task-work implements a
+task or one subtask from those files. task-orchestrate runs task-work on
+every subtask of a task, one at a time, with one commit each. Then it runs
+task-refactor and task-work over the result, up to three rounds. The
+tracker is the one the project docs name, else one an MCP server reaches,
+else GitHub Issues through the `gh` CLI. With a tracker connected, the
+writers create items there instead, unless you ask for files, and
+task-work and task-orchestrate read them. Each skill ends with the input
+of the next, so these sequences work without an edit in between:
 
 1. an idea, then task-create, task-breakdown, and task-orchestrate;
 2. an idea, then task-create and task-work, when the task is one commit;

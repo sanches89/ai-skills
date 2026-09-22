@@ -38,19 +38,39 @@ These words have exactly one meaning in this skill.
 
 ### Step 1: Load the target
 
+**Tracker.** The tracker is the issue tracker the project uses, reached
+through an MCP server or through `gh`, the GitHub CLI. Find it once, in
+this order, and take the first that applies:
+1. the tracker that README, CLAUDE.md, AGENTS.md, CONTRIBUTING, or
+   `docs/README.md` names, when an MCP server or `gh` reaches it. When
+   the docs name one that nothing reaches, no tracker is connected;
+2. the tracker of an MCP server whose tools read and write issues. List
+   the MCP tools of the agent (in Claude Code they are deferred: search
+   them with `ToolSearch` for
+   `issue ticket project linear jira notion asana github`). With several,
+   the first listed;
+3. GitHub Issues through `gh`, when `git remote get-url origin` prints a
+   `github.com` URL and `gh auth status` exits 0. Then
+   `gh issue view <number> --comments` reads an item,
+   `gh api repos/{owner}/{repo}/issues/<number>/sub_issues` lists its
+   children, and `gh issue create`, `gh issue edit`, `gh issue comment`,
+   and `gh issue close` write. A POST with `gh api -X POST` to that
+   `sub_issues` path with `-F sub_issue_id=<id>` links a child, where
+   `<id>` is the `id` that `gh api repos/{owner}/{repo}/issues/<child>`
+   prints. A closed issue is in a completed status, and `gh` has no other
+   status;
+4. else no tracker is connected.
+
 The target is the task or subtask this skill implements. Resolve the
 invocation text, or the task given in the conversation, as one source:
 - **An item identifier or URL** (`PAY-212`, `#128`, an issue link) in the
-  tracker, an issue tracker reached through MCP. Source: *tracker*. Fetch
-  the item and its children. To find the tracker, list the MCP tools of
-  the agent (in Claude Code, deferred: search with `ToolSearch` for
-  `issue ticket project linear jira notion asana github`). With no tracker
-  connected, go to Step 9 with the result `blocked`: no tracker holds the
-  item.
-- **A subtask file**, `docs/tasks/###-<task-slug>/###-<subtask-slug>.md`.
-  Source: *file*. Read it.
-- **A task file**, `docs/tasks/###-<task-slug>/task.md`. Source: *file*.
-  Read it and every subtask file in its task folder.
+  tracker. Source: *tracker*. Fetch the item and its children. With no
+  tracker connected, go to Step 9 with the result `blocked`: no tracker
+  holds the item.
+- **A subtask file**, a file named `###-<subtask-slug>.md` next to a
+  `task.md`. Source: *file*. Read it.
+- **A task file**, a file named `task.md`. Its folder is the task folder.
+  Source: *file*. Read it and every subtask file in its task folder.
 - **Free text**, or the path of any other file, whose content is then the
   text. Source: *text*. When the text names no file to change, go to
   Step 9 with the result `blocked`.

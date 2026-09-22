@@ -15,7 +15,7 @@ nothing and stops on a missing fact: put every fact it needs in the task.
 
 1. **Read-only on the project.** Write only the task file, in Step 8. Write
    drafts in a scratch directory outside the repository (in Claude Code, the
-   scratchpad directory).
+   scratchpad directory), written `<scratch-dir>` in paths.
 2. **Never ask what research can answer.** Consult code, docs, tests, and
    connected tools first.
 3. **Never assume.** When a decision changes the task and research cannot
@@ -48,21 +48,60 @@ Use a read-only subagent for broad sweeps when the agent offers one (in
 Claude Code, the `Explore` subagent).
 
 **2b. Project docs.** Read README, CLAUDE.md, AGENTS.md, CONTRIBUTING,
-`docs/`, ADRs, and existing tasks under `docs/tasks/`. Record the
-conventions and constraints that affect the idea.
+`docs/`, and ADRs. Record the conventions and constraints that affect the
+idea. Then find `<tasks-dir>` and read the tasks, plans, and specs in it
+that touch the idea.
 
-**2c. MCP servers.** List the MCP tools available to the agent (in Claude
-Code they are deferred: search them with `ToolSearch` for
-`issue ticket project linear jira notion asana github context7`). Then:
-- **Tracker**, any issue tracker reached through MCP: search for items
-  related to the idea and record their identifiers. Record the teams,
-  projects, or boards, and the fields an item requires. Step 3 decides the
-  destination among them.
+**Tasks directory.** `<tasks-dir>` is the folder that holds the task
+folders. It is the first of these that exists:
+1. the folder that the request or the conversation names;
+2. the folder that README, CLAUDE.md, AGENTS.md, CONTRIBUTING, or
+   `docs/README.md` names as the place for tasks, plans, or specs;
+3. the parent of a task folder: a folder named `###-<task-slug>`, three
+   digits, a hyphen, and a slug, that holds a `task.md`, anywhere in the
+   repository outside `node_modules`, `.git`, and `vendor`. With several
+   parents, the shortest path, then the first in alphabetical order;
+4. a folder named `tasks`, `plans`, or `specs` that holds a `.md` file at
+   any depth. It sits at most three levels below the repository root,
+   outside `node_modules`, `.git`, and `vendor`. With several, the
+   shortest path, then the first in alphabetical order;
+5. else `<scratch-dir>/tasks/`.
+
+**2c. Tracker and MCP servers.** Find the tracker by the rule below. List
+the other MCP tools of the agent (in Claude Code they are deferred: search
+them with `ToolSearch` for `context7`). Then:
+- **Tracker**: search for items related to the idea and record their
+  identifiers. Record the team, project, or board that the docs name, else
+  the ones the tracker offers, and the fields an item requires. Step 3
+  decides the destination among them.
 - **Context7**: for every external library the idea depends on, fetch the
   documentation of the version pinned in the manifest or lockfile. Record
   the API facts the task relies on.
 - **Other MCP servers**: use them when they hold facts the task needs.
 Never ask the user to install or connect anything.
+
+**Tracker.** The tracker is the issue tracker the project uses, reached
+through an MCP server or through `gh`, the GitHub CLI. Find it once, in
+this order, and take the first that applies:
+1. the tracker that README, CLAUDE.md, AGENTS.md, CONTRIBUTING, or
+   `docs/README.md` names, when an MCP server or `gh` reaches it. When
+   the docs name one that nothing reaches, no tracker is connected;
+2. the tracker of an MCP server whose tools read and write issues. List
+   the MCP tools of the agent (in Claude Code they are deferred: search
+   them with `ToolSearch` for
+   `issue ticket project linear jira notion asana github`). With several,
+   the first listed;
+3. GitHub Issues through `gh`, when `git remote get-url origin` prints a
+   `github.com` URL and `gh auth status` exits 0. Then
+   `gh issue view <number> --comments` reads an item,
+   `gh api repos/{owner}/{repo}/issues/<number>/sub_issues` lists its
+   children, and `gh issue create`, `gh issue edit`, `gh issue comment`,
+   and `gh issue close` write. A POST with `gh api -X POST` to that
+   `sub_issues` path with `-F sub_issue_id=<id>` links a child, where
+   `<id>` is the `id` that `gh api repos/{owner}/{repo}/issues/<child>`
+   prints. A closed issue is in a completed status, and `gh` has no other
+   status;
+4. else no tracker is connected.
 
 **2d. Research notes.** Write a private file in the scratch directory with
 two parts:
@@ -149,18 +188,19 @@ file at any point. Otherwise save to the tracker of Step 2c. Never ask which.
 **To the tracker**: create one item at the destination of Step 3, with the
 task title as title and the approved task, unchanged, as body.
 
-**To a file**: `docs/tasks/###-<task-slug>/task.md` under the repository
-root. When `docs/tasks/` already holds a folder with the same `<task-slug>`
-under any number, ask one question: overwrite its `task.md` keeping its
-number, or write a new folder with a new number. Write the approved task,
-unchanged.
+**To a file**: `<tasks-dir>/###-<task-slug>/task.md`, with `<tasks-dir>`
+from Step 2b. When `<tasks-dir>` already holds a folder with the same
+`<task-slug>` under any number, ask one question: overwrite its `task.md`
+keeping its number, or write a new folder with a new number. Write the
+approved task, unchanged.
 
 **Numbering rule.** `###` is a zero-padded three-digit sequence from `001`:
-the next free number across all folders in `docs/tasks/`. `<task-slug>` is
-the task title in kebab-case: lowercase ASCII letters and digits, every
-other run of characters replaced by one hyphen, cut to 60 characters, with
-no leading or trailing hyphen. The `task-breakdown` skill shares this layout
-and adds `###-<subtask-slug>.md` files inside the task folder.
+the next free number across every entry of `<tasks-dir>` whose name starts
+with three digits. `<task-slug>` is the task title in kebab-case: lowercase
+ASCII letters and digits, every other run of characters replaced by one
+hyphen, cut to 60 characters, with no leading or trailing hyphen. The
+`task-breakdown` skill shares this layout and adds `###-<subtask-slug>.md`
+files inside the task folder.
 
 Finish with one line: the item's identifier and URL, or the path of the task
-file. Ask nothing else.
+file, absolute when outside the repository. Ask nothing else.

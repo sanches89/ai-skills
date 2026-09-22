@@ -38,6 +38,29 @@ These words have exactly one meaning in this skill.
 
 ### Step 1: Load the request
 
+**Tracker.** The tracker is the issue tracker the project uses, reached
+through an MCP server or through `gh`, the GitHub CLI. Find it once, in
+this order, and take the first that applies:
+1. the tracker that README, CLAUDE.md, AGENTS.md, CONTRIBUTING, or
+   `docs/README.md` names, when an MCP server or `gh` reaches it. When
+   the docs name one that nothing reaches, no tracker is connected;
+2. the tracker of an MCP server whose tools read and write issues. List
+   the MCP tools of the agent (in Claude Code they are deferred: search
+   them with `ToolSearch` for
+   `issue ticket project linear jira notion asana github`). With several,
+   the first listed;
+3. GitHub Issues through `gh`, when `git remote get-url origin` prints a
+   `github.com` URL and `gh auth status` exits 0. Then
+   `gh issue view <number> --comments` reads an item,
+   `gh api repos/{owner}/{repo}/issues/<number>/sub_issues` lists its
+   children, and `gh issue create`, `gh issue edit`, `gh issue comment`,
+   and `gh issue close` write. A POST with `gh api -X POST` to that
+   `sub_issues` path with `-F sub_issue_id=<id>` links a child, where
+   `<id>` is the `id` that `gh api repos/{owner}/{repo}/issues/<child>`
+   prints. A closed issue is in a completed status, and `gh` has no other
+   status;
+4. else no tracker is connected.
+
 Resolve the invocation text, or the request in the conversation, as exactly
 one kind:
 - **One or more paths** of files or folders that exist. Kind: *path*.
@@ -46,15 +69,12 @@ one kind:
 - **A git range**, such as `main..HEAD`, or words that name the uncommitted
   changes or the current branch. Kind: *range*.
 - **A task or subtask**: an item identifier or URL (`PAY-212`, `#128`, an
-  issue link) in the tracker, a task file
-  `docs/tasks/###-<task-slug>/task.md`, or a subtask file
-  `docs/tasks/###-<task-slug>/###-<subtask-slug>.md`. Kind: *task*. Read it
-  with every subtask file in its task folder, or every child of its item.
-  The tracker is an issue tracker reached through MCP, such as Linear, Jira,
-  or GitHub Issues. Find it by listing the MCP tools available to the agent
-  (in Claude Code they are deferred: search them with `ToolSearch` for
-  `issue ticket project linear jira notion asana github`). With no tracker,
-  the request is kind *text*.
+  issue link) in the tracker, a task file, or a subtask file. A task file
+  is a file named `task.md`, and its folder is the task folder. A subtask
+  file is a file named `###-<subtask-slug>.md` next to a `task.md`. Kind:
+  *task*. Read it with every subtask file in its task folder, or every
+  child of its item. With no tracker connected, an identifier is kind
+  *text*.
 - **Free text**, or the path of any other file, whose content is then the
   text. Kind: *text*.
 - **Nothing**: kind *path* with the repository root.
@@ -101,7 +121,22 @@ under *Out of scope*. Follow every decision.
 
 **3a. Conventions.** Read README, CLAUDE.md, AGENTS.md, CONTRIBUTING, and the
 docs that cover the refactor scope. Record the naming, error handling,
-module layout, and formatting rules.
+module layout, and formatting rules. Then find `<tasks-dir>`.
+
+**Tasks directory.** `<tasks-dir>` is the folder that holds the task
+folders. It is the first of these that exists:
+1. the folder that the request or the conversation names;
+2. the folder that README, CLAUDE.md, AGENTS.md, CONTRIBUTING, or
+   `docs/README.md` names as the place for tasks, plans, or specs;
+3. the parent of a task folder: a folder named `###-<task-slug>`, three
+   digits, a hyphen, and a slug, that holds a `task.md`, anywhere in the
+   repository outside `node_modules`, `.git`, and `vendor`. With several
+   parents, the shortest path, then the first in alphabetical order;
+4. a folder named `tasks`, `plans`, or `specs` that holds a `.md` file at
+   any depth. It sits at most three levels below the repository root,
+   outside `node_modules`, `.git`, and `vendor`. With several, the
+   shortest path, then the first in alphabetical order;
+5. else `<scratch-dir>/tasks/`.
 
 **3b. Commands.** Take the build, lint, type-check, and test commands from
 the project's manifest, Makefile, CI configuration, or docs. For kind
@@ -347,10 +382,10 @@ at any point. Otherwise save to the tracker of 3e. Never ask which.
    child links in the task's body and the task's link in each child body.
 4. Update the task's Subtasks section with the child links.
 
-**To files**, under the repository root, by the numbering rule below:
+**To files**, by the numbering rule below:
 1. A folder with the same `<task-slug>` under any number stays untouched.
-2. Create the task folder `docs/tasks/###-<task-slug>/` with the next free
-   number.
+2. Create the task folder `<tasks-dir>/###-<task-slug>/` with the next free
+   number, with `<tasks-dir>` from 3a.
 3. Write the task to `task.md` in the task folder.
 4. Write one subtask file per subtask, `###-<subtask-slug>.md` in the task
    folder, numbered `001` upward in subtask order. Link the `Task` line to
@@ -358,13 +393,14 @@ at any point. Otherwise save to the tracker of 3e. Never ask which.
    task's Subtasks section to each subtask file.
 
 **Numbering rule.** `###` is a zero-padded three-digit sequence from `001`:
-the next free number across all folders in `docs/tasks/`. Give subtasks the
-next free numbers inside their task folder. A slug is a title in kebab-case:
-lowercase ASCII letters and digits, every other run of characters replaced
-by one hyphen, cut to 60 characters, with no leading or trailing hyphen.
-Build `<task-slug>` from the task title and `<subtask-slug>` from the
-subtask title. The `task-create` and `task-breakdown` skills share this
-layout.
+the next free number across every entry of `<tasks-dir>` whose name starts
+with three digits. Give subtasks the next free numbers inside their task
+folder. A slug is a title in kebab-case: lowercase ASCII letters and digits,
+every other run of characters replaced by one hyphen, cut to 60 characters,
+with no leading or trailing hyphen. Build `<task-slug>` from the task title
+and `<subtask-slug>` from the subtask title. The `task-create` and
+`task-breakdown` skills share this layout.
 
 Finish with a short recap: every item identifier and URL created, or every
-path written, and the number of subtasks. Ask nothing else.
+path written, absolute when outside the repository, and the number of
+subtasks. Ask nothing else.

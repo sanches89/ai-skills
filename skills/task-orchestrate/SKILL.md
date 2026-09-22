@@ -56,18 +56,41 @@ These words have exactly one meaning in this skill.
 
 ### Step 1: Load the target
 
+**Tracker.** The tracker is the issue tracker the project uses, reached
+through an MCP server or through `gh`, the GitHub CLI. Find it once, in
+this order, and take the first that applies:
+1. the tracker that README, CLAUDE.md, AGENTS.md, CONTRIBUTING, or
+   `docs/README.md` names, when an MCP server or `gh` reaches it. When
+   the docs name one that nothing reaches, no tracker is connected;
+2. the tracker of an MCP server whose tools read and write issues. List
+   the MCP tools of the agent (in Claude Code they are deferred: search
+   them with `ToolSearch` for
+   `issue ticket project linear jira notion asana github`). With several,
+   the first listed;
+3. GitHub Issues through `gh`, when `git remote get-url origin` prints a
+   `github.com` URL and `gh auth status` exits 0. Then
+   `gh issue view <number> --comments` reads an item,
+   `gh api repos/{owner}/{repo}/issues/<number>/sub_issues` lists its
+   children, and `gh issue create`, `gh issue edit`, `gh issue comment`,
+   and `gh issue close` write. A POST with `gh api -X POST` to that
+   `sub_issues` path with `-F sub_issue_id=<id>` links a child, where
+   `<id>` is the `id` that `gh api repos/{owner}/{repo}/issues/<child>`
+   prints. A closed issue is in a completed status, and `gh` has no other
+   status;
+4. else no tracker is connected.
+
+By hard rule 6, run the tracker rule in a subagent that returns the
+tracker and the way it is reached, and nothing else.
+
 The target is the task this skill runs. Resolve the invocation text, or the
 task given in the conversation, as one source:
 - **An item identifier or URL** (`PAY-212`, `#128`, an issue link) in the
-  tracker, an issue tracker reached through MCP. Source: *tracker*. To
-  find the tracker, list the MCP tools of the agent (in Claude Code,
-  deferred: search with `ToolSearch` for
-  `issue ticket project linear jira notion asana github`). With no tracker
-  connected, end with one line: no tracker holds the item, give a task
-  file path. Write no report.
-- **A task file**, `docs/tasks/###-<task-slug>/task.md`. Source: *file*.
-- **A subtask file**, `docs/tasks/###-<task-slug>/###-<subtask-slug>.md`.
+  tracker. Source: *tracker*. With no tracker connected, end with one
+  line: no tracker holds the item, give a task file path. Write no report.
+- **A task file**, a file named `task.md`. Its folder is the task folder.
   Source: *file*.
+- **A subtask file**, a file named `###-<subtask-slug>.md` next to a
+  `task.md`. Source: *file*.
 - **Free text**, the path of any other file, or nothing: end with one
   line: no task to run, give a task file path or an item identifier. Write
   no report. The `task-create` skill writes a task from text.
@@ -102,16 +125,18 @@ new: <every path the target's Changes section marks (new)> | none
 The target has subtasks when the `subtasks` line is not `none`.
 
 **Record.** The record is the first of these that applies:
-- source *tracker*, when the tracker's tools can add a comment to an item:
-  the items. The plan, every fact, and the orchestration report are
-  comments on the target's item. Each work report is a comment
-  on its job's item. A job's state is its item's status: in progress when
-  the job starts, completed on `done`, unchanged on `skipped` and
-  `blocked`. The target's item is completed when the result is `done`;
-- source *file*: `docs/tasks/###-<task-slug>/orchestration.md` (new) in
-  the tree the jobs run in. It holds the plan, then each work report under
-  `## Report: <job>`, then the orchestration report. A job's state is its
-  line in the plan;
+- source *tracker*, when the tracker can add a comment to an item: the
+  items. The plan, every fact, and the orchestration report are comments
+  on the target's item. Each work report is a comment on its job's item.
+  A job's state is its item's status: in progress when the job starts,
+  completed on `done`, unchanged on `skipped` and `blocked`. A status the
+  tracker lacks stays unchanged. The target's item is completed when the
+  result is `done`;
+- source *file*: `orchestration.md` (new) in the target's task folder.
+  When the task folder is in the repository, write it in the tree the
+  jobs run in, at the same relative path. It holds the plan, then each
+  work report under `## Report: <job>`, then the orchestration report. A
+  job's state is its line in the plan;
 - else `<scratch-dir>/orchestration.md`, with the same content.
 
 A scratch directory outside the repository (in Claude Code, the scratchpad
@@ -243,9 +268,10 @@ it. For each round:
 2. **Round result.** Add `R<round>: <task file path | identifier | none>`
    under `rounds` in the record. When the recap names no task file path
    and no item identifier, the round is empty: go to Step 6. Otherwise,
-   for source *file* in a git repository, commit the new task files
-   alone on the branch. Use the project's commit convention, with the
-   subject `Add <refactor task title>`.
+   for source *file* in a git repository, when the task file path is
+   inside `<tree>`, commit the new task files alone on the branch. Use
+   the project's commit convention, with the subject
+   `Add <refactor task title>`.
 3. **Load.** Load the refactor task by the summary prompt of Step 1. Add
    one job per subtask under `jobs` in the record, as
    `R<round>.<n> <title>: pending`, in the order of the summary's subtask
@@ -286,9 +312,10 @@ Step 7.
 
    Save the orchestration report in the record, and on `done` mark the
    target's item completed.
-2. **Commit the record.** For source *file* in a git repository, commit
-   `orchestration.md` alone on the branch, by the project's commit
-   convention, with the subject `Record the orchestration of <target title>`.
+2. **Commit the record.** For source *file* in a git repository, when the
+   record is inside `<tree>`, commit `orchestration.md` alone on the
+   branch. Use the project's commit convention, with the subject
+   `Record the orchestration of <target title>`.
 3. **Worktree.** On `done` with a worktree, run
    `git worktree remove <scratch-dir>/worktree` and keep the branch. On
    `blocked`, keep the worktree, so that the change so far stays in it.

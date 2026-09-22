@@ -117,10 +117,14 @@ Folders:
   `skills/task-breakdown/references/task-template.md` and in
   `skills/task-refactor/references/task-template.md` must stay identical.
   Change them together and diff them afterwards.
-- The three share the file layout `docs/tasks/###-<task-slug>/task.md` and
-  `docs/tasks/###-<task-slug>/###-<subtask-slug>.md`, with the numbering rule
-  stated in each `SKILL.md`. A change to the layout is made in the three
-  skills in the same commit.
+- The three share the file layout `<tasks-dir>/###-<task-slug>/task.md` and
+  `<tasks-dir>/###-<task-slug>/###-<subtask-slug>.md`, with the numbering
+  rule stated in each `SKILL.md`. The `**Tasks directory.**` block that
+  finds `<tasks-dir>` must stay identical in the three. A change to the
+  layout or to the block is made in the three skills in the same commit.
+- The five task-* skills find the tracker by the `**Tracker.**` block,
+  which must stay identical in the five. Change it in the five in the same
+  commit and diff the copies afterwards.
 - `task-work` implements a task or subtask and never writes or edits one. It
   reads the section names of the task format and the subtask format, and the
   file layout. Change a section name or the layout in `skills/task-work/` in
@@ -133,7 +137,7 @@ Folders:
   `task-work` and `task-refactor` by their skill names and reads the final
   line of `task-refactor`, the paths or identifiers. Change any of these
   in `skills/task-orchestrate/` in the same commit. It adds one file to the
-  layout, `docs/tasks/###-<task-slug>/orchestration.md`, which no other
+  layout, `<tasks-dir>/###-<task-slug>/orchestration.md`, which no other
   skill reads.
 - End `task-create`, `task-breakdown`, and `task-refactor` with the paths
   written or the identifiers created, and nothing else. The next `task-*`
@@ -246,3 +250,16 @@ Folders:
         <(awk '/^# Node.js test runner/,/^```$/' \
             skills/code-analysis/references/test-reports.md)
    ```
+10. For the `task-*` skills, confirm that every copy of the
+    `**Tasks directory.**` block and of the `**Tracker.**` block is the
+    same. A block runs from its label to the next blank line. Every line
+    printed must be `1`:
+
+    ```bash
+    for b in 'Tasks directory' Tracker; do
+      for f in $(grep -l "^\*\*$b\.\*\*" skills/task-*/SKILL.md); do
+        awk -v b="$b" '$0 ~ "^\\*\\*" b "\\.\\*\\*" { p = 1 }
+                       p && /^$/ { exit } p' "$f" | md5sum
+      done | sort -u | wc -l
+    done
+    ```
