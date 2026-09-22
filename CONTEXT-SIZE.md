@@ -23,22 +23,23 @@ counts one tier.
 
 ## Summary
 
-Tokens per skill and tier. With all 9 skills installed, the startup
-tier costs 626 tokens per session. Using one skill then adds its
+Tokens per skill and tier. With all 10 skills installed, the startup
+tier costs 728 tokens per session. Using one skill then adds its
 `SKILL.md` and the references it reads.
 
-| Skill          | Startup | SKILL.md | References | Scripts |  Total |
-|----------------|--------:|---------:|-----------:|--------:|-------:|
-| agent-docs     |      74 |    1,247 |      2,097 |   3,581 |  6,925 |
-| code-analysis  |      61 |    2,501 |      8,894 |   3,621 | 15,016 |
-| glossary       |      57 |    2,753 |      1,138 |       0 |  3,891 |
-| package-update |      59 |    3,903 |      4,886 |   1,864 | 10,653 |
-| task-breakdown |      64 |    2,749 |      1,865 |       0 |  4,614 |
-| task-create    |      59 |    1,638 |      1,098 |       0 |  2,736 |
-| task-refactor  |     105 |    4,711 |      8,663 |       0 | 13,374 |
-| task-work      |      79 |    3,136 |      2,553 |       0 |  5,689 |
-| unambiguity    |      68 |    1,704 |      1,815 |       0 |  3,519 |
-| **All skills** |     626 |   24,342 |     33,009 |   9,066 | 66,417 |
+| Skill              | Startup | SKILL.md | References | Scripts |  Total |
+|--------------------|--------:|---------:|-----------:|--------:|-------:|
+| agent-docs         |      74 |    1,247 |      2,097 |   3,581 |  6,925 |
+| code-analysis      |      61 |    2,501 |      8,894 |   3,621 | 15,016 |
+| glossary           |      57 |    2,753 |      1,138 |       0 |  3,891 |
+| package-update     |      59 |    3,903 |      4,886 |   1,864 | 10,653 |
+| task-breakdown     |      64 |    2,749 |      1,865 |       0 |  4,614 |
+| task-create        |      59 |    1,638 |      1,098 |       0 |  2,736 |
+| task-orchestration |     102 |    2,642 |      2,011 |       0 |  4,653 |
+| task-refactor      |     105 |    4,711 |      8,663 |       0 | 13,374 |
+| task-work          |      79 |    3,136 |      2,553 |       0 |  5,689 |
+| unambiguity        |      68 |    1,704 |      1,815 |       0 |  3,519 |
+| **All skills**     |     728 |   26,984 |     35,020 |   9,066 | 71,070 |
 
 ## Files per skill
 
@@ -106,6 +107,16 @@ Lines, words, and tokens of every file, grouped by skill.
 | `references/quality-checklist.md` |    54 |   312 |    499 |
 | `references/task-template.md`     |    80 |   357 |    599 |
 | **Total**                         |   286 | 1,790 |  2,736 |
+
+### task-orchestration
+
+| File                                          | Lines | Words | Tokens |
+|-----------------------------------------------|------:|------:|-------:|
+| `SKILL.md`                                    |   206 | 1,694 |  2,642 |
+| `references/job-prompt-template.md`           |    46 |   295 |    389 |
+| `references/orchestration-report-template.md` |    94 |   584 |    934 |
+| `references/quality-checklist.md`             |    74 |   446 |    688 |
+| **Total**                                     |   420 | 3,019 |  4,653 |
 
 ### task-refactor
 

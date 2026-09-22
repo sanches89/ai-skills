@@ -17,6 +17,11 @@ coding agent that loads `SKILL.md` files.
 - [task-work](skills/task-work/SKILL.md): implements a task or subtask within
   the scope set by its parent tasks and proves every acceptance criterion. It
   returns a short work report with only what the rest of the work needs.
+- [task-orchestration](skills/task-orchestration/SKILL.md): runs a whole
+  task from its task file or item: one subtask at a time, each in its own
+  subagent with the task-work skill, each with one commit on a branch. It
+  relays every question, proves the task, and keeps its plan and reports
+  with the task, on its items or in its task folder.
 - [task-refactor](skills/task-refactor/SKILL.md): reviews code in any
   language for refactoring, with duplication, complexity, unit tests, and
   coverage measured. It writes a refactor task with one subtask per
@@ -51,19 +56,24 @@ The task-* skills form a pipeline. task-create writes
 `docs/tasks/###-<task-slug>/task.md`. task-breakdown adds
 `docs/tasks/###-<task-slug>/###-<subtask-slug>.md` next to it. task-refactor
 writes both from a code review. task-work implements a task or one subtask
-from those files. With a project-management MCP server connected, the writers
-create items there instead, unless you ask for files, and task-work reads
-them. Each skill ends with the input of the next, so these sequences work
-without an edit in between:
+from those files. task-orchestration runs task-work on every subtask of a
+task, one at a time, with one commit each. With a project-management MCP
+server connected, the writers create items there instead, unless you ask
+for files, and task-work and task-orchestration read them. Each skill ends
+with the input of the next, so these sequences work without an edit in
+between:
 
-1. an idea, then task-create, task-breakdown, and task-work;
+1. an idea, then task-create, task-breakdown, and task-orchestration;
 2. an idea, then task-create and task-work, when the task is one commit;
-3. code, then task-refactor and task-work;
-4. task-work, then task-refactor on the same task, then task-work on the
-   refactor task, to clean up after a feature;
-5. task-refactor, then task-breakdown, then task-work, for a different split
-   of the refactor task;
+3. code, then task-refactor and task-orchestration;
+4. task-orchestration, then task-refactor on the same task, then
+   task-orchestration on the refactor task, to clean up after a feature;
+5. task-refactor, then task-breakdown, then task-orchestration, for a
+   different split of the refactor task;
 6. code-analysis, then task-refactor or task-create on a finding.
+
+task-work in place of task-orchestration in sequences 1, 3, 4, and 5 runs
+the same subtasks in the current working tree without commits.
 
 glossary and unambiguity form a pair: the first writes the glossary, and the
 second rewrites a document with the glossary's terms.
