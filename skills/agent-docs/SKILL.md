@@ -64,6 +64,8 @@ Apply these rules to every doc below, plus the doc rules the repo's root
   history.
 - When its reason no longer holds, or one of those places now shows it,
   delete the ADR and its citations.
+- Read `references/adr-template.md` before writing or editing an ADR: it
+  holds the file name, the sections, and the steps to amend or retire one.
 
 ## Reference docs
 

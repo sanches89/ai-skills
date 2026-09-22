@@ -29,7 +29,7 @@ tier costs 626 tokens per session. Using one skill then adds its
 
 | Skill          | Startup | SKILL.md | References | Scripts |  Total |
 |----------------|--------:|---------:|-----------:|--------:|-------:|
-| agent-docs     |      74 |    1,211 |      1,389 |   3,581 |  6,181 |
+| agent-docs     |      74 |    1,247 |      2,097 |   3,581 |  6,925 |
 | code-analysis  |      61 |    2,501 |      8,894 |   3,621 | 15,016 |
 | glossary       |      57 |    2,753 |      1,138 |       0 |  3,891 |
 | package-update |      59 |    3,903 |      4,886 |   1,864 | 10,653 |
@@ -38,7 +38,7 @@ tier costs 626 tokens per session. Using one skill then adds its
 | task-refactor  |     105 |    4,711 |      8,663 |       0 | 13,374 |
 | task-work      |      79 |    3,136 |      2,553 |       0 |  5,689 |
 | unambiguity    |      68 |    1,704 |      1,815 |       0 |  3,519 |
-| **All skills** |     626 |   24,306 |     32,301 |   9,066 | 65,673 |
+| **All skills** |     626 |   24,342 |     33,009 |   9,066 | 66,417 |
 
 ## Files per skill
 
@@ -46,12 +46,13 @@ Lines, words, and tokens of every file, grouped by skill.
 
 ### agent-docs
 
-| File                  | Lines | Words | Tokens |
-|-----------------------|------:|------:|-------:|
-| `SKILL.md`            |   102 |   840 |  1,211 |
-| `references/audit.md` |   117 |   939 |  1,389 |
-| `scripts/audit.mjs`   |   346 | 1,576 |  3,581 |
-| **Total**             |   565 | 3,355 |  6,181 |
+| File                         | Lines | Words | Tokens |
+|------------------------------|------:|------:|-------:|
+| `SKILL.md`                   |   104 |   864 |  1,247 |
+| `references/adr-template.md` |    90 |   467 |    708 |
+| `references/audit.md`        |   117 |   939 |  1,389 |
+| `scripts/audit.mjs`          |   346 | 1,576 |  3,581 |
+| **Total**                    |   657 | 3,846 |  6,925 |
 
 ### code-analysis
 
