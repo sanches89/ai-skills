@@ -61,8 +61,8 @@ branch.
       `blocked`.
 - [ ] The counts on the *Jobs* line equal the states in the *Jobs* section,
       and every hash exists on the branch.
-- [ ] At most 50 non-blank lines, 2 lines per bullet, `None.` in every
-      empty section.
+- [ ] At most 50 non-blank lines, 2 lines per bullet, 25 words per
+      sentence, `None.` in every empty section.
 - [ ] No command output, no prompt, no met criterion, no restated target
       text, no offer or next step.
 - [ ] Every path and symbol in the report exists on the branch.

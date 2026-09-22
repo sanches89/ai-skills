@@ -1,6 +1,6 @@
 ---
 name: code-analysis
-description: Use when the user wants the code measured or analyzed, asks how complex, duplicated, tested, or covered a repository is, or wants the current branch compared with a base branch before a review or a merge. Returns a measurement report with ranked findings and changes no code.
+description: Measures a repository's duplication, complexity, tests, coverage, and mutation score, and compares a branch with its base. Use when the user wants code measured or analyzed.
 license: MIT
 compatibility: Requires Node.js 22.13 or newer with npx and git, run inside a git repository, with network access on the first run. Complexity needs lizard on PATH, or uv, pipx, or a Python that has lizard. Tests and coverage need the project's own test command. Mutation needs the project's own mutation command. A missing tool skips its measurement and never blocks the report.
 argument-hint: "[base]"

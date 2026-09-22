@@ -51,11 +51,12 @@ These rules hold in every Markdown file of this repository.
   duplicate it and keep the copies identical.
 - **Frontmatter.** `name` equals the folder name: lowercase letters, digits,
   and single hyphens, at most 64 characters. `description` says what the skill
-  produces and when to use it. It has two or three sentences, fewer than 524
-  characters, and nothing about how the skill works internally. Every skill
-  sets `license: MIT`. The format also allows `compatibility` and
-  `metadata`. Any other field, like `argument-hint`, must be one that agents
-  without it ignore.
+  produces, then when to use it. It has one or two sentences and at most 200
+  characters: every description loads at the start of every session. It says
+  nothing about how the skill works internally. Every skill sets
+  `license: MIT`. The format also allows `compatibility` and `metadata`. Any
+  other field, like `argument-hint`, must be one that agents without it
+  ignore.
 - **Size.** `SKILL.md` stays under 500 lines. Detail goes to `references/`,
   and the instruction that cites a file there says when to read it.
 - **Line width.** Every Markdown line outside frontmatter is at most 80
@@ -262,4 +263,12 @@ Folders:
                        p && /^$/ { exit } p' "$f" | md5sum
       done | sort -u | wc -l
     done
+    ```
+11. Confirm every description has at most two sentences and 200 characters.
+    Every path printed is a failure:
+
+    ```bash
+    awk '/^description:/ { sub(/^description: */, "")
+         if (length > 200 || gsub(/[.!?]( |$)/, "&") > 2) print FILENAME }' \
+      skills/*/SKILL.md
     ```

@@ -1,6 +1,6 @@
 ---
 name: package-update
-description: Use when the user wants the npm packages or dependencies of a package or monorepo updated, upgraded, bumped, or brought to current versions, or says packages are outdated or a lockfile is stale. Not for changing source code to fit a new version.
+description: Updates the npm dependencies of a package or monorepo to current versions. Use when the user wants packages updated, upgraded, or bumped, or says they are outdated.
 license: MIT
 compatibility: Requires Node.js 22 or newer with npx, git, network access to the package registry, and the project's package manager (npm, pnpm, yarn, or bun) on PATH. npx fetches npm-check-updates and semver into its own cache on the first run.
 argument-hint: "[path...] [package name...] [latest | minor | patch] [cooldown <days>]"

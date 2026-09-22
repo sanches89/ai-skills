@@ -1,6 +1,6 @@
 ---
 name: task-breakdown
-description: Use when a task, ticket, issue, or spec already exists and the user wants it broken down, split, or decomposed into subtasks or commit-sized steps, or says it is too big for one change. Not for writing a task from an idea or implementing one.
+description: Splits an existing task into commit-sized subtasks. Use when a task, ticket, issue, or spec is too big for one change and the user wants it broken down.
 license: MIT
 argument-hint: <task id | task file | task text>
 ---
@@ -224,10 +224,12 @@ and for each subtask, in the scratch directory. Writing rules:
 - Make every line serve the original task or an *Out of scope* entry. Write
   no remark or question from the conversation on another topic, and no
   mention of another task to create.
+- Write at most 25 words per sentence, and only lines the implementing agent
+  needs.
 
 ### Step 6: Quality check
 
-Run every check in `references/quality-checklist.md`, grep helper included,
+Run every check in `references/quality-checklist.md`, grep helpers included,
 over the draft. Fix every failure. When a failure needs a decision, return to
 Step 3 for that decision, then run the checks again.
 

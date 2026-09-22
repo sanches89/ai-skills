@@ -6,7 +6,7 @@ every line a fact that changes what the caller does next. Keep the
 headings exactly as written. Replace every `<placeholder>`.
 
 Rules for filling:
-- At most 50 non-blank lines and 2 lines per bullet.
+- At most 50 non-blank lines, 2 lines per bullet, and 25 words per sentence.
 - Present tense. Name real things: paths, symbols, commands, branch names,
   commit hashes, item identifiers.
 - `a | b` on a template line means: write a or b, never both.

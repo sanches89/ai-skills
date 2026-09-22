@@ -1,6 +1,6 @@
 ---
 name: task-work
-description: Use when the user wants a task, subtask, ticket, or issue implemented, worked on, started, finished, or picked up, given as an item identifier, a task file, a subtask file, or text, including a refactor task written by a code review. Not for writing a task from an idea or splitting one into subtasks.
+description: Implements one task or subtask and proves every acceptance criterion. Use when the user wants a task, subtask, ticket, or issue implemented, started, or picked up.
 license: MIT
 argument-hint: <task or subtask id | file | text>
 ---

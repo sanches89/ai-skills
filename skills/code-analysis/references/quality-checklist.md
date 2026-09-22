@@ -38,9 +38,9 @@ Step 6.
 
 ## Report
 
-- [ ] The headings are exactly those of `measurement-report-template.md`,
-      at most 60 non-blank lines, 2 lines per bullet, `None.` in every
-      empty section.
+- [ ] The headings are exactly those of `measurement-report-template.md`.
+      At most 60 non-blank lines, 2 lines per bullet, 25 words per
+      sentence, `None.` in every empty section.
 - [ ] Every number on a *Measurements* line equals the value in its
       summary, and the *Comparison* line follows the template's rule.
 - [ ] Every path, symbol, and test name exists in the working tree or in

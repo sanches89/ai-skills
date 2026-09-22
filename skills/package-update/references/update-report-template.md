@@ -5,7 +5,7 @@ that changes what the user does next. Keep the headings exactly as written.
 Replace every `<placeholder>`.
 
 Rules for filling:
-- At most 60 non-blank lines and 2 lines per bullet.
+- At most 60 non-blank lines, 2 lines per bullet, and 25 words per sentence.
 - Present tense. Name real things: manifest paths, package names, versions,
   check commands, files.
 - `a | b` on a template line means: write a or b, never both.

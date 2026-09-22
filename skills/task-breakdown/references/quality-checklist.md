@@ -59,7 +59,7 @@ whole checklist again.
 - [ ] No subtask contradicts a decision or an *Out of scope* entry of the
       task.
 
-## Grep helper
+## Grep helpers
 
 Run over the draft. Remove every hit outside quoted user-interface text or
 code.
@@ -72,4 +72,15 @@ grep -nEi \
   -e '\betc\b|and so on|or similar|something like|either .* or|one of the' \
   -e 'see task|see parent|as above|same as subtask|as described earlier' \
   <draft-file>
+```
+
+Sentences over 25 words, with a code span counted as one word. Every line
+printed is a failure.
+
+```bash
+awk '/^```/ { c = !c; next } c || !NF { next }
+     /^#/ { print "."; next }
+     /^ *[-*] |^\|/ { print "." } { print }' <draft-file> \
+  | tr '\n' ' ' | sed -E 's/`[^`]*`/X/g' | tr '.!?;:' '\n\n\n\n\n' \
+  | awk 'NF > 25'
 ```

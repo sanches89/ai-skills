@@ -45,8 +45,8 @@ Without a test setup: the diff adds no test and no test framework, and
 
 - [ ] The headings are exactly those of `work-report-template.md`. *Blocked
       by* exists only on `blocked`.
-- [ ] At most 30 non-blank lines, 2 lines per bullet, `None.` in every
-      empty section.
+- [ ] At most 30 non-blank lines, 2 lines per bullet, 25 words per
+      sentence, `None.` in every empty section.
 - [ ] No command output, no met criterion, no restated target text, no
       offer or next step.
 - [ ] Every bullet under *Affects other work* is of a kind the template

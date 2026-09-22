@@ -1,6 +1,6 @@
 ---
 name: task-create
-description: Use when the user wants an idea, feature, change, bug, or refactor explored, planned, scoped, or written up as a task, ticket, issue, or spec before implementation. Not for a task that already exists and needs splitting or implementing.
+description: Writes one task from an idea, feature, bug, or refactor. Use when the user wants work explored, planned, or scoped as a task, ticket, issue, or spec before implementation.
 license: MIT
 argument-hint: <idea>
 ---
@@ -167,10 +167,12 @@ directory. Writing rules:
 - Make every line serve the restated idea or an *Out of scope* entry. Write
   no remark or question from the conversation on another topic, and no
   mention of another task to create.
+- Write at most 25 words per sentence, and only lines the implementing agent
+  needs.
 
 ### Step 6: Quality check
 
-Run every check in `references/quality-checklist.md`, grep helper included,
+Run every check in `references/quality-checklist.md`, grep helpers included,
 over the draft. Fix every failure. When a failure needs a decision, return to
 Step 3 for that decision, then run the checks again.
 

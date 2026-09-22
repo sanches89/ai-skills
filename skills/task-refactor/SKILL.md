@@ -1,6 +1,6 @@
 ---
 name: task-refactor
-description: Use when the user wants code reviewed for refactoring, or wants code refactored, cleaned up, simplified, restructured, deduplicated, or untangled without changing what it does, or only says a file, symbol, diff, or task is messy, complex, or hard to change. Writes a refactor task with one subtask per refactoring, ready for the task-work skill to implement, and changes no code. Not for a feature or a bug fix.
+description: Reviews code and writes a refactor task with one subtask per refactoring, and changes no code. Use when the user wants code refactored, simplified, or cleaned up, or says it is messy.
 license: MIT
 compatibility: Works in any project, with or without git. The measurements need Node.js 22.13 or newer with npx, network access on the first run, and read access to github.com/sanches89/code-measure. Complexity also needs uv, pipx, or a Python that has lizard. A missing tool skips its measurement and never blocks the review.
 argument-hint: <path | symbol | git range | task or subtask id | file | text>
@@ -359,10 +359,12 @@ Writing rules:
   no.
 - Add no sections beyond the template: no Risks, Considerations,
   Alternatives, Future work, Nice to have, or Notes.
+- Write at most 25 words per sentence, and only lines the implementing agent
+  needs.
 
 ### Step 8: Quality check
 
-Run every check in `references/quality-checklist.md`, grep helper included,
+Run every check in `references/quality-checklist.md`, grep helpers included,
 over the draft. Fix every failure.
 
 ### Step 9: Save

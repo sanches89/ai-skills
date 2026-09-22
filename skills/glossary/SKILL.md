@@ -1,6 +1,6 @@
 ---
 name: glossary
-description: Use when the user wants a project's glossary or GLOSSARY.md created, updated, cleaned up, or audited, or says the documents use one word for two things, two words for one thing, or undefined terms. Not for rewriting the documents themselves.
+description: Writes or audits a project's GLOSSARY.md. Use when the user wants a glossary, or says the documents use one word for two things or leave a term undefined.
 license: MIT
 argument-hint: <glossary path | files to read | words to define>
 ---

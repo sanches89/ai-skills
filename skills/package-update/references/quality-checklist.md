@@ -23,7 +23,8 @@ failure blocks delivery. Fix it, then run the whole checklist again.
 ## Report
 
 - [ ] The headings are exactly those of `update-report-template.md`, with
-      `None.` in every empty section, at most 60 lines and 2 per bullet.
+      `None.` in every empty section. At most 60 lines, 2 per bullet, and
+      25 words per sentence.
 - [ ] The result and every dependency's state follow the template's
       definitions, and the *Packages* counts match.
 - [ ] Every updated or lowered dependency is under *Updated*. Every kept or

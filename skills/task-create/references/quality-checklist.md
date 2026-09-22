@@ -45,7 +45,7 @@ run the whole checklist again.
 - [ ] The `task-breakdown` skill can split the task without new research:
       every Approach component has a path.
 
-## Grep helper
+## Grep helpers
 
 Run over the draft. Remove every hit outside quoted user-interface text or
 code.
@@ -57,4 +57,15 @@ grep -nEi \
   -e 'should we|if needed|if necessary|as appropriate|as needed' \
   -e '\betc\b|and so on|or similar|something like|either .* or|one of the' \
   <draft-file>
+```
+
+Sentences over 25 words, with a code span counted as one word. Every line
+printed is a failure.
+
+```bash
+awk '/^```/ { c = !c; next } c || !NF { next }
+     /^#/ { print "."; next }
+     /^ *[-*] |^\|/ { print "." } { print }' <draft-file> \
+  | tr '\n' ' ' | sed -E 's/`[^`]*`/X/g' | tr '.!?;:' '\n\n\n\n\n' \
+  | awk 'NF > 25'
 ```

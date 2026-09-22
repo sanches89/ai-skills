@@ -11,7 +11,8 @@ tasks.
 - Be pushy: list the contexts where it applies, including ones where the user
   does not name the domain.
 - A few sentences. The hard limit is 1024 characters. This repo keeps every
-  description under 524 characters, by the Frontmatter rule in `AGENTS.md`.
+  description to one or two sentences and at most 200 characters, by the
+  Frontmatter rule in `AGENTS.md`.
 - Agents skip skills for one-step requests they can do with basic tools.
   Descriptions matter most for specialized workflows.
 
