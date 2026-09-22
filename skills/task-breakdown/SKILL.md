@@ -29,6 +29,11 @@ These words have exactly one meaning in this skill.
    settle it, ask the user.
 4. **Write nothing before the user approves the full breakdown text**
    (Step 7).
+5. **Only the task goes in.** The breakdown holds what the original task
+   needs and the *Out of scope* entries, nothing else. A question or
+   remark from the user on any other topic gets an answer in chat and no
+   line in the breakdown. When it deserves a task of its own, say so in
+   chat and write nothing about it in the breakdown.
 
 ## Workflow
 
@@ -110,8 +115,13 @@ For each open decision:
 
 After each answer, record the decision as a fact in the research notes and
 add every new decision the answer creates. When the answer introduces an
-adjacent topic, ask one question: in the task, or under *Out of scope*.
-Never expand or drop it in silence.
+adjacent topic, one a reader would expect in this task, ask one question:
+in the task, or under *Out of scope*. Never expand or drop it in silence.
+
+When the user asks a question or makes a remark on any other topic, answer
+it in chat and record nothing from it: not in the research notes, not in
+the breakdown, not under *Out of scope*. When it deserves a task of its
+own, say so in chat once, then go on with the interview.
 
 Never ask about what the original task, the code, the docs, or a project
 convention settles: follow the convention and record it as a decision. Never
@@ -171,6 +181,9 @@ and for each subtask, in the scratch directory. Writing rules:
 - Add no section beyond the template: no Risks, Considerations,
   Alternatives, Future work, Nice to have, or Notes. Add no estimate,
   priority, or timeline unless the user asks for them.
+- Make every line serve the original task or an *Out of scope* entry. Write
+  no remark or question from the conversation on another topic, and no
+  mention of another task to create.
 
 ### Step 6: Quality check
 

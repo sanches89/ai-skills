@@ -21,6 +21,11 @@ nothing and stops on a missing fact: put every fact it needs in the task.
 3. **Never assume.** When a decision changes the task and research cannot
    settle it, ask the user.
 4. **Write nothing before the user approves the full task text** (Step 7).
+5. **Only the idea goes in.** The task holds what the restated idea needs
+   and the *Out of scope* entries of Step 4, nothing else. A question or
+   remark from the user on any other topic gets an answer in chat and no
+   line in the task. When it deserves a task of its own, say so in chat
+   and write nothing about it in the task.
 
 ## Workflow
 
@@ -81,8 +86,13 @@ For each open decision:
 
 After each answer, record the decision as a fact in the research notes and
 add every new decision the answer creates. When the answer introduces an
-adjacent topic, ask one question: in scope, or under *Out of scope*. Never
-expand or drop it in silence.
+adjacent topic, one a reader would expect in this task, ask one question:
+in scope, or under *Out of scope*. Never expand or drop it in silence.
+
+When the user asks a question or makes a remark on any other topic, answer
+it in chat and record nothing from it: not in the research notes, not in
+the task, not under *Out of scope*. When it deserves a task of its own, say
+so in chat once, then go on with the interview.
 
 Never ask about what the code, the docs, or a project convention settles:
 follow the convention and record it as a decision. Never ask about a
@@ -115,6 +125,9 @@ directory. Writing rules:
 - Add no section beyond the template: no Risks, Considerations,
   Alternatives, Future work, Nice to have, or Notes.
 - Add no estimate, priority, or timeline unless the user asked for them.
+- Make every line serve the restated idea or an *Out of scope* entry. Write
+  no remark or question from the conversation on another topic, and no
+  mention of another task to create.
 
 ### Step 6: Quality check
 

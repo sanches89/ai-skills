@@ -30,6 +30,9 @@ run the whole checklist again.
       reader would expect in this task.
 - [ ] No section beyond the template. No estimate, priority, or timeline
       unless the user asked.
+- [ ] Every line serves the restated idea or an *Out of scope* entry: no
+      remark or question from the conversation on another topic, no
+      mention of another task to create.
 
 ## Executability
 
