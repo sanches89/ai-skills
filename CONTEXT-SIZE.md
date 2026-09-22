@@ -33,13 +33,13 @@ tier costs 459 tokens per session. Using one skill then adds its
 | code-analysis    |      41 |    2,481 |      8,907 |   3,621 | 15,009 |
 | glossary         |      40 |    2,736 |      1,138 |       0 |  3,874 |
 | package-update   |      41 |    3,885 |      4,902 |   1,864 | 10,651 |
-| task-breakdown   |      44 |    3,578 |      2,089 |       0 |  5,667 |
+| task-breakdown   |      44 |    3,691 |      2,122 |       0 |  5,813 |
 | task-create      |      47 |    2,514 |      1,306 |       0 |  3,820 |
 | task-orchestrate |      50 |    3,969 |      2,115 |       0 |  6,084 |
 | task-refactor    |      51 |    5,074 |      8,791 |       0 | 13,865 |
 | task-work        |      42 |    3,466 |      2,563 |       0 |  6,029 |
 | unambiguity      |      48 |    1,684 |      1,815 |       0 |  3,499 |
-| **All skills**   |     459 |   30,625 |     35,723 |   9,066 | 75,414 |
+| **All skills**   |     459 |   30,738 |     35,756 |   9,066 | 75,560 |
 
 ## Files per skill
 
@@ -94,10 +94,10 @@ Lines, words, and tokens of every file, grouped by skill.
 
 | File                              | Lines | Words | Tokens |
 |-----------------------------------|------:|------:|-------:|
-| `SKILL.md`                        |   289 | 2,380 |  3,578 |
-| `references/quality-checklist.md` |    86 |   593 |    916 |
+| `SKILL.md`                        |   296 | 2,458 |  3,691 |
+| `references/quality-checklist.md` |    88 |   617 |    949 |
 | `references/task-template.md`     |   143 |   672 |  1,173 |
-| **Total**                         |   518 | 3,645 |  5,667 |
+| **Total**                         |   527 | 3,747 |  5,813 |
 
 ### task-create
 
