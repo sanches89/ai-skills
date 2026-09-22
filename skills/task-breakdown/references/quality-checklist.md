@@ -50,7 +50,11 @@ whole checklist again.
 
 - [ ] An agent with only one subtask and the repository can implement it
       without opening the task or asking anything.
-- [ ] Each acceptance criterion is binary and checkable by someone else.
+- [ ] The task's Context holds the build, lint, and test commands.
+- [ ] Each subtask's Changes names every file to change, and each
+      acceptance criterion is binary and checkable by someone else.
+- [ ] No subtask contradicts a decision or an *Out of scope* entry of the
+      task.
 
 ## Grep helper
 

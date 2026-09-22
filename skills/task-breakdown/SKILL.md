@@ -8,8 +8,8 @@ argument-hint: <task id | task file | task text>
 # Task Breakdown
 
 Take one task and split it into subtasks that an agent can implement one at a
-time without asking a question. Give the task and every subtask every fact
-needed to work on them.
+time without asking a question. The implementing agent asks nothing and
+stops on a missing fact: put every fact it needs in the subtask.
 
 ## Terms
 

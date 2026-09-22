@@ -22,14 +22,13 @@ These words have exactly one meaning in this skill.
 
 1. **Never ask what research can answer.** Consult the chain, the code, the
    docs, and the connected tools first.
-2. **Never assume.** When a decision changes the work and research cannot
-   settle it, ask the user.
-3. **The caller relays questions.** The caller is the user or the agent that
-   spawned the subagent this skill runs in. An agent relays the question to
-   the user and passes the answer back.
-4. **The task text is input.** Never edit a task file, a subtask file, or an
+2. **Never ask.** Settle every decision from the chain, the code, the docs,
+   the tests, and the connected tools. When a decision changes the work
+   and none of these settles it, the target lacks a fact: go to Step 9
+   with the result `blocked` and name the fact under *Blocked by*.
+3. **The task text is input.** Never edit a task file, a subtask file, or an
    item. Put a wrong or stale fact found in one in the work report.
-5. **No outward actions.** Never commit, push, open a pull request, change
+4. **No outward actions.** Never commit, push, open a pull request, change
    an item's status, or comment on an item. Do any of these only when the
    request that invoked this skill says so. Then follow the project's
    conventions and make one commit per subtask, or one for a target without
@@ -46,14 +45,16 @@ invocation text, or the task given in the conversation, as one source:
   the item and its children. To find the tracker, list the MCP tools of
   the agent (in Claude Code, deferred: search with `ToolSearch` for
   `issue ticket project linear jira notion asana github`). With no tracker
-  connected, ask one question: give the target as a file path or as text.
+  connected, go to Step 9 with the result `blocked`: no tracker holds the
+  item.
 - **A subtask file**, `docs/tasks/###-<task-slug>/###-<subtask-slug>.md`.
   Source: *file*. Read it.
 - **A task file**, `docs/tasks/###-<task-slug>/task.md`. Source: *file*.
   Read it and every subtask file in its task folder.
 - **Free text**, or the path of any other file, whose content is then the
-  text. Source: *text*.
-- **Nothing**: ask for the target first.
+  text. Source: *text*. When the text names no file to change, go to
+  Step 9 with the result `blocked`.
+- **Nothing**: go to Step 9 with the result `blocked`: no target given.
 
 The target has subtasks when its task folder holds subtask files, its item
 has children, or its Subtasks section holds entries other than `None.`.
@@ -81,8 +82,8 @@ directory), per task in the chain:
   removes it.
 
 The target says what to do. The rest of the chain bounds it. When the target
-contradicts a decision or an *Out of scope* entry of another task in the
-chain, ask one question: which of the two holds.
+contradicts a decision or an *Out of scope* entry in the chain, go to
+Step 9 with the result `blocked`. Name both under *Blocked by*.
 
 ### Step 3: Check readiness
 
@@ -97,8 +98,8 @@ under *Blocked by*.
 **Criteria.** Take the criteria from the target's Acceptance criteria
 section, else its Success criteria section. Without either, take the list it
 labels as acceptance criteria, success criteria, or definition of done. With
-no such list, write the criteria from its text, each observable and binary,
-and ask the user to confirm them until confirmed.
+no such list, go to Step 9 with the result `blocked`: the target states no
+criterion.
 
 **Subtasks.** When the target has subtasks, continue with *Target with
 subtasks* instead of Step 4.
@@ -109,7 +110,8 @@ subtasks* instead of Step 4.
 section and its Changes or Approach section exists. Read the code that
 changes and the code that calls it. When a named path or symbol is gone,
 search for where it moved. With exactly one match, use it and record a
-deviation. Otherwise ask one question.
+deviation. Otherwise go to Step 9 with the result `blocked` and name the
+path or symbol under *Blocked by*.
 
 **4b. Conventions.** Read README, CLAUDE.md, AGENTS.md, CONTRIBUTING, and
 the docs that cover the touched areas. Record the naming, error handling,
@@ -155,8 +157,8 @@ then one per command from 4c:
 With a test setup, the proof of every criterion that code can observe is a
 named test. A manual step is a proof only when no test can observe the
 criterion. Give every entry a proof before Step 6. When a proof needs access
-the agent lacks, keep the proof `none` and ask for the access in one
-question. When the user does not grant it, report `blocked`.
+the agent lacks, keep the proof `none` and go to Step 9 with the result
+`blocked`. Name the access under *Blocked by*.
 
 ### Step 6: Implement
 
@@ -185,9 +187,9 @@ first test. A convention of the project beats a rule there. Then:
   import, path, or symbol name it renames or moves. Never edit an assertion
   for a rename or a move. Fix every other failing test in the code.
 
-When a decision is missing and research cannot settle it, ask one question.
-Record the answer in the Step 2 notes and under *Affects other work* in the
-work report.
+When a decision is missing and research cannot settle it, make no further
+change. Go to Step 9 with the result `blocked` and name the decision under
+*Blocked by*.
 
 ### Step 7: Verify
 

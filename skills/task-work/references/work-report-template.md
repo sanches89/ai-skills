@@ -36,10 +36,9 @@ What each section keeps:
   - a stale or wrong fact in a task of the chain or in a sibling subtask,
     with the correct fact;
   - a check that already failed in the baseline;
-  - the missing test setup, because no test proves the change;
-  - a decision the user made in answer to a question during this run.
-- **Blocked by**: one bullet per criterion not met and per dependency not
-  done: its cause and what unblocks it.
+  - the missing test setup, because no test proves the change.
+- **Blocked by**: one bullet per criterion not met, per dependency not
+  done, and per fact the target lacks: its cause and what unblocks it.
 
 What the report leaves out:
 - the steps taken, and attempts that failed;
@@ -82,7 +81,7 @@ What the report leaves out:
 
 ## Blocked by
 
-- <Criterion, word for word, or the dependency's title>: <cause in one
-  sentence>. Needs: <what unblocks it>.
+- <Criterion, word for word, the dependency's title, or the fact the
+  target lacks>: <cause in one sentence>. Needs: <what unblocks it>.
 - <...>
 ```

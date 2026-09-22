@@ -20,7 +20,7 @@ Rules for filling:
 - Repeat in a subtask the facts and decisions it needs. Never point at the
   task.
 - In the draft, name titles and numbers on `Task`, `Depends on`, and in the
-  Subtasks list. Step 10 replaces them with file links or item links at save
+  Subtasks list. Step 9 replaces them with file links or item links at save
   time.
 
 ---

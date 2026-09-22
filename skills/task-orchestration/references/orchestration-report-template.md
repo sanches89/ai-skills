@@ -20,13 +20,15 @@ What each section keeps:
 - **Branch**: the branch the commits are on and the commit the run started
   from, or `none: no git repository`.
 - **Worktree**: its path when it still exists, else `removed`, else `none`.
-- **Jobs** line: the number of jobs in each state.
+- **Jobs** line: the number of jobs in each state, refactor jobs included.
+- **Refactor rounds**: the number of rounds that ran, an empty round
+  included. Reaching three is no failure.
 - **Verification**: the target's one verification command, or
   `<number> steps` when its Verification is a list. `pass` only when every
   step passes. `not run` when a job is `blocked`.
 - **Commits**: every commit a job made, in order.
 - **Jobs** section: one line per job in plan order, with its state and its
-  commit.
+  commit. A refactor job keeps its `R<round>.<n>` number.
 - **Changes**: the *Changes* bullets of every work report, merged: one
   bullet per changed file, also on `blocked`. With more than 10 changed
   files, one bullet per folder: its path and what changed in it.
@@ -57,14 +59,15 @@ What the report leaves out:
 **Worktree:** <path> | removed | none
 **Jobs:** <number> done, <number> skipped, <number> blocked, <number> not
 started
+**Refactor rounds:** <number>
 **Verification:** `<verification command>` | <number> steps: pass | fail |
 not run
 **Commits:** none | <short hashes, in commit order>
 
 ## Jobs
 
-- <subtask number or identifier> <title>: done `<hash>` | skipped |
-  blocked | not started
+- <subtask number or identifier | R<round>.<n>> <title>: done `<hash>` |
+  skipped | blocked | not started
 - <...>
 
 ## Changes

@@ -8,7 +8,8 @@ argument-hint: <idea>
 # Task Create
 
 Turn an idea into a task that a person or an agent can execute without asking
-a question. Record decisions, not options.
+a question. Record decisions, not options. The implementing agent asks
+nothing and stops on a missing fact: put every fact it needs in the task.
 
 ## Hard rules
 

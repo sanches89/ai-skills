@@ -129,9 +129,10 @@ Folders:
   at a time. It never writes or edits a task, a subtask, or an item. It
   reads the section names of the task format and the subtask format, and
   the file layout. It also reads the headings of the work report in
-  `skills/task-work/references/work-report-template.md` and invokes
-  `task-work` by its skill name. Change any of these in
-  `skills/task-orchestration/` in the same commit. It adds one file to the
+  `skills/task-work/references/work-report-template.md`. It invokes
+  `task-work` and `task-refactor` by their skill names and reads the final
+  line of `task-refactor`, the paths or identifiers. Change any of these
+  in `skills/task-orchestration/` in the same commit. It adds one file to the
   layout, `docs/tasks/###-<task-slug>/orchestration.md`, which no other
   skill reads.
 - End `task-create`, `task-breakdown`, and `task-refactor` with the paths

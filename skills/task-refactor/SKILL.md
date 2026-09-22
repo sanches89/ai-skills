@@ -28,14 +28,11 @@ These words have exactly one meaning in this skill.
 ## Hard rules
 
 1. **Read-only on the project.** Write only the task file and the subtask
-   files, in Step 10. Write drafts in a scratch directory outside the
+   files, in Step 9. Write drafts in a scratch directory outside the
    repository (in Claude Code, the scratchpad directory).
-2. **Never ask what research can answer.** Consult code, docs, tests, and
-   connected tools first.
-3. **Never assume.** When a decision changes the refactor task and research
-   cannot settle it, ask the user.
-4. **Write nothing before the user approves the full refactor task text**
-   (Step 9).
+2. **Never ask.** Settle every choice from the code, the docs, the tests,
+   the connected tools, and the rules below. Write the task without
+   approval.
 
 ## Workflow
 
@@ -45,7 +42,7 @@ Resolve the invocation text, or the request in the conversation, as exactly
 one kind:
 - **One or more paths** of files or folders that exist. Kind: *path*.
 - **A symbol name**: a function or a module in the code. Kind: *symbol*.
-  Search for its definition. With more than one, ask one question: which.
+  Search for its definition. With more than one, take every definition.
 - **A git range**, such as `main..HEAD`, or words that name the uncommitted
   changes or the current branch. Kind: *range*.
 - **A task or subtask**: an item identifier or URL (`PAY-212`, `#128`, an
@@ -57,10 +54,10 @@ one kind:
   or GitHub Issues. Find it by listing the MCP tools available to the agent
   (in Claude Code they are deferred: search them with `ToolSearch` for
   `issue ticket project linear jira notion asana github`). With no tracker,
-  ask one question: give the request as a file path or as text.
+  the request is kind *text*.
 - **Free text**, or the path of any other file, whose content is then the
   text. Kind: *text*.
-- **Nothing**: ask for the request as the first question.
+- **Nothing**: kind *path* with the repository root.
 
 Write private notes in the scratch directory from this step on, written
 `<scratch-dir>` in commands. Keep in them every list a later step reads.
@@ -69,13 +66,14 @@ Write private notes in the scratch directory from this step on, written
 
 **Refactor scope.** Take the files from the request:
 - *path*: every file under the paths;
-- *symbol*: the file that defines the symbol;
+- *symbol*: the file of every definition of the symbol;
 - *range*: every file that `git diff --name-only <range>` prints and that
   still exists. For uncommitted changes, use `git status --porcelain`;
 - *task*: every file that the Changes or Approach section of the requested
   task names, and every file that its subtasks' Changes sections name;
 - *text*: the files that hold the code the text names, found by search.
-  Then ask the user to confirm the list.
+
+With an empty refactor scope, finish as Step 6 states for no entry.
 
 Remove from the refactor scope:
 - generated code, vendored code, lockfiles, build output, and snapshot files;
@@ -332,39 +330,28 @@ Writing rules:
 Run every check in `references/quality-checklist.md`, grep helper included,
 over the draft. Fix every failure.
 
-### Step 9: Approval
-
-Show the complete refactor task in chat: the task, then every subtask. Ask
-whether the user approves it as written, approves some subtasks by number,
-or wants a change. Apply each change, move every subtask the user left out
-under *Out of scope*, run Step 8 again, and ask again until the user
-approves.
-
-### Step 10: Save
+### Step 9: Save
 
 Save to files when no tracker is connected, or when the user asked for files
 at any point. Otherwise save to the tracker of 3e. Never ask which.
 
 **To the tracker:**
-1. Use the destination and required field values from 3e. Ask one question
-   for the values research did not settle.
-2. Create the task as a new item with the approved title and body.
+1. Use the destination and required field values from 3e. When research
+   did not settle a required value, save to files instead.
+2. Create the task as a new item with the task's title and body.
 3. Create one child item per subtask, in order, so that later children can
-   link to earlier siblings. The subtask title is the title. The approved
-   subtask is the body, with the task's item link on the `Task` line and
+   link to earlier siblings. The subtask title is the title. The subtask
+   is the body, with the task's item link on the `Task` line and
    sibling item links on the `Depends on` line. Link each child to the
    task's item with the tracker's relation. When the tracker has none, put
    child links in the task's body and the task's link in each child body.
 4. Update the task's Subtasks section with the child links.
 
 **To files**, under the repository root, by the numbering rule below:
-1. When `docs/tasks/` already holds a folder with the same `<task-slug>`
-   under any number, ask one question: replace that folder's files keeping
-   its number, or write a new folder with a new number.
+1. A folder with the same `<task-slug>` under any number stays untouched.
 2. Create the task folder `docs/tasks/###-<task-slug>/` with the next free
-   number, or reuse the folder the user chose to replace. When replacing,
-   delete its task file and subtask files first.
-3. Write the approved task to `task.md` in the task folder.
+   number.
+3. Write the task to `task.md` in the task folder.
 4. Write one subtask file per subtask, `###-<subtask-slug>.md` in the task
    folder, numbered `001` upward in subtask order. Link the `Task` line to
    `./task.md` and the `Depends on` line to the sibling files. Link the

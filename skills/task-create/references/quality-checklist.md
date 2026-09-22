@@ -33,11 +33,14 @@ run the whole checklist again.
 
 ## Executability
 
-- [ ] A reader with only the task and the repository can start without
-      asking anything.
+- [ ] An agent with only the task and the repository can implement it
+      without asking anything.
+- [ ] Every decision that changes the implementation is in Approach or
+      Decisions, and Context holds the build, lint, and test commands.
+- [ ] Approach names every file to change, and every success criterion is
+      binary.
 - [ ] The `task-breakdown` skill can split the task without new research:
-      every Approach component has a path, and Context holds the build and
-      test commands.
+      every Approach component has a path.
 
 ## Grep helper
 
