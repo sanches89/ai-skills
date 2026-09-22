@@ -27,19 +27,19 @@ Tokens per skill and tier. With all 10 skills installed, the startup
 tier costs 740 tokens per session. Using one skill then adds its
 `SKILL.md` and the references it reads.
 
-| Skill              | Startup | SKILL.md | References | Scripts |  Total |
-|--------------------|--------:|---------:|-----------:|--------:|-------:|
-| agent-docs         |      74 |    1,247 |      2,097 |   3,581 |  6,925 |
-| code-analysis      |      61 |    2,501 |      8,894 |   3,621 | 15,016 |
-| glossary           |      57 |    2,753 |      1,138 |       0 |  3,891 |
-| package-update     |      59 |    3,903 |      4,886 |   1,864 | 10,653 |
-| task-breakdown     |      64 |    2,757 |      1,920 |       0 |  4,677 |
-| task-create        |      59 |    1,660 |      1,136 |       0 |  2,796 |
-| task-orchestration |     114 |    3,648 |      2,102 |       0 |  5,750 |
-| task-refactor      |     105 |    4,541 |      8,663 |       0 | 13,204 |
-| task-work          |      79 |    3,195 |      2,550 |       0 |  5,745 |
-| unambiguity        |      68 |    1,704 |      1,815 |       0 |  3,519 |
-| **All skills**     |     740 |   27,909 |     35,201 |   9,066 | 72,176 |
+| Skill            | Startup | SKILL.md | References | Scripts |  Total |
+|------------------|--------:|---------:|-----------:|--------:|-------:|
+| agent-docs       |      74 |    1,247 |      2,097 |   3,581 |  6,925 |
+| code-analysis    |      61 |    2,501 |      8,894 |   3,621 | 15,016 |
+| glossary         |      57 |    2,753 |      1,138 |       0 |  3,891 |
+| package-update   |      59 |    3,903 |      4,886 |   1,864 | 10,653 |
+| task-breakdown   |      64 |    2,757 |      1,920 |       0 |  4,677 |
+| task-create      |      59 |    1,660 |      1,136 |       0 |  2,796 |
+| task-orchestrate |     114 |    3,648 |      2,102 |       0 |  5,750 |
+| task-refactor    |     105 |    4,541 |      8,663 |       0 | 13,204 |
+| task-work        |      79 |    3,195 |      2,550 |       0 |  5,745 |
+| unambiguity      |      68 |    1,704 |      1,815 |       0 |  3,519 |
+| **All skills**   |     740 |   27,909 |     35,201 |   9,066 | 72,176 |
 
 ## Files per skill
 
@@ -108,7 +108,7 @@ Lines, words, and tokens of every file, grouped by skill.
 | `references/task-template.md`     |    80 |   357 |    599 |
 | **Total**                         |   290 | 1,840 |  2,796 |
 
-### task-orchestration
+### task-orchestrate
 
 | File                                          | Lines | Words | Tokens |
 |-----------------------------------------------|------:|------:|-------:|

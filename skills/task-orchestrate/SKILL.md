@@ -1,5 +1,5 @@
 ---
-name: task-orchestration
+name: task-orchestrate
 description: Use when the user wants a whole task implemented, run, executed, or orchestrated end to end, subtasks included, given as an item identifier or a task file, including a refactor task written by a code review. Produces one commit per subtask on a branch, up to three rounds of refactoring over the result, and one report over the whole run, kept with the task in the tracker or in its task folder. Not for writing a task, splitting one, or implementing one subtask alone.
 license: MIT
 argument-hint: <task id | task file>

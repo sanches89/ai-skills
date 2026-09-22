@@ -125,14 +125,14 @@ Folders:
   reads the section names of the task format and the subtask format, and the
   file layout. Change a section name or the layout in `skills/task-work/` in
   the same commit.
-- `task-orchestration` runs the subtasks of a task through `task-work`, one
+- `task-orchestrate` runs the subtasks of a task through `task-work`, one
   at a time. It never writes or edits a task, a subtask, or an item. It
   reads the section names of the task format and the subtask format, and
   the file layout. It also reads the headings of the work report in
   `skills/task-work/references/work-report-template.md`. It invokes
   `task-work` and `task-refactor` by their skill names and reads the final
   line of `task-refactor`, the paths or identifiers. Change any of these
-  in `skills/task-orchestration/` in the same commit. It adds one file to the
+  in `skills/task-orchestrate/` in the same commit. It adds one file to the
   layout, `docs/tasks/###-<task-slug>/orchestration.md`, which no other
   skill reads.
 - End `task-create`, `task-breakdown`, and `task-refactor` with the paths
@@ -192,12 +192,12 @@ Folders:
             skills/task-refactor/references/task-template.md)
    ```
 
-   For `task-work`, `task-orchestration`, and `task-refactor`, confirm that
+   For `task-work`, `task-orchestrate`, and `task-refactor`, confirm that
    every section name printed below is a heading in the `## Task` or
    `## Subtask` block of `skills/task-breakdown/references/task-template.md`:
 
    ```bash
-   cat skills/task-work/SKILL.md skills/task-orchestration/SKILL.md \
+   cat skills/task-work/SKILL.md skills/task-orchestrate/SKILL.md \
      skills/task-refactor/SKILL.md | tr '\n' ' ' \
      | grep -oE '\b[A-Z][a-z]+( [a-z]+)? section\b' | sort -u
    ```

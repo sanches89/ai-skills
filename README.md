@@ -17,7 +17,7 @@ coding agent that loads `SKILL.md` files.
 - [task-work](skills/task-work/SKILL.md): implements a task or subtask within
   the scope set by its parent tasks and proves every acceptance criterion. It
   returns a short work report with only what the rest of the work needs.
-- [task-orchestration](skills/task-orchestration/SKILL.md): runs a whole
+- [task-orchestrate](skills/task-orchestrate/SKILL.md): runs a whole
   task from its task file or item: one subtask at a time, each in its own
   subagent with the task-work skill, each with one commit on a branch.
   Then it runs task-refactor over the result and the refactor task the
@@ -60,22 +60,22 @@ The task-* skills form a pipeline. task-create writes
 `docs/tasks/###-<task-slug>/task.md`. task-breakdown adds
 `docs/tasks/###-<task-slug>/###-<subtask-slug>.md` next to it. task-refactor
 writes both from a code review. task-work implements a task or one subtask
-from those files. task-orchestration runs task-work on every subtask of a
+from those files. task-orchestrate runs task-work on every subtask of a
 task, one at a time, with one commit each. Then it runs task-refactor and
 task-work over the result, up to three rounds. With a project-management MCP
 server connected, the writers create items there instead, unless you ask
-for files, and task-work and task-orchestration read them. Each skill ends
+for files, and task-work and task-orchestrate read them. Each skill ends
 with the input of the next, so these sequences work without an edit in
 between:
 
-1. an idea, then task-create, task-breakdown, and task-orchestration;
+1. an idea, then task-create, task-breakdown, and task-orchestrate;
 2. an idea, then task-create and task-work, when the task is one commit;
-3. code, then task-refactor and task-orchestration;
-4. task-refactor, then task-breakdown, then task-orchestration, for a
+3. code, then task-refactor and task-orchestrate;
+4. task-refactor, then task-breakdown, then task-orchestrate, for a
    different split of the refactor task;
 5. code-analysis, then task-refactor or task-create on a finding.
 
-task-work in place of task-orchestration in sequences 1, 3, and 4 runs the
+task-work in place of task-orchestrate in sequences 1, 3, and 4 runs the
 same subtasks in the current working tree. It makes no commit and runs no
 refactor round.
 
