@@ -319,6 +319,7 @@ the task and for each entry, one subtask per entry in the order of Step 6.
   its values, or `skipped` with the reason. The test coverage of every
   function the entries change. For kind *task*, the identifier or path of
   the requested task.
+- *References*: `None.` Never copy the References of a requested task.
 - *Subtasks*: one line per entry, in order, with its dependencies.
 - *Verification*: the commands from 3b, then the test command with the
   report options, then the measure command from Step 4 over the same paths.
@@ -333,6 +334,7 @@ the task and for each entry, one subtask per entry in the order of Step 6.
   contract the change touches, as a statement that it stays. For a rename
   or a move across many files, the rewrite tool from
   `references/measurement-tools.md`.
+- *References*: `None.`
 - *Changes*: first, for an entry marked `characterization tests first`, the
   test file, `(new)` or existing, with every test case from Step 6 named.
   Then every file the refactoring changes, with the symbol and the structure

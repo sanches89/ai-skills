@@ -17,6 +17,9 @@ Rules for filling:
 - `a | b` on a template line means: write a or b, never both.
 - *Approach* says what changes where. *Decisions* holds the rules and values
   the change follows. Put each fact in one section only.
+- *References* lists the sources for reviewers. The implementing agent never
+  opens them: write every fact a source settles in *Decisions* or *Context*
+  too.
 - Repeat in a subtask the facts and decisions it needs. Never point at the
   task.
 - In the draft, name titles and numbers on `Task`, `Depends on`, and in the
@@ -80,6 +83,13 @@ Rules for filling:
   lint `npm run lint`.>
 - <...>
 
+## References
+
+- <Source outside the repository and the tracker: name, URL, and what it
+  settles. Example: Checkout design, frame "Retry banner",
+  https://claude.ai/design/p/checkout. Settles the banner copy and layout.>
+- <... or the single word: None.>
+
 ## Subtasks
 
 1. <Subtask title>, depends on: none
@@ -121,6 +131,12 @@ or items when saved>
   behind the PAYMENT_RETRY flag in src/config/flags.ts:20, default false,
   removed in subtask 4.>
 - <...>
+
+## References
+
+- <A References entry of the task whose facts this subtask restates, in
+  full: name, URL, and what it settles.>
+- <... or the single word: None.>
 
 ## Changes
 

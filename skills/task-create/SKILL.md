@@ -78,6 +78,11 @@ them with `ToolSearch` for `context7`). Then:
   documentation of the version pinned in the manifest or lockfile. Record
   the API facts the task relies on.
 - **Other MCP servers**: use them when they hold facts the task needs.
+- **External sources**: every design, document, or wiki page outside the
+  repository and the tracker that the user gives or research finds. Read
+  each through a connected MCP server, else a web fetch. Record its facts,
+  and its name and URL for *References*. When nothing reads it, ask the
+  user for the facts it settles.
 Never ask the user to install or connect anything.
 
 **Tracker.** The tracker is the issue tracker the project uses, reached
@@ -124,7 +129,8 @@ For each open decision:
 - Name the option you recommend.
 
 After each answer, record the decision as a fact in the research notes and
-add every new decision the answer creates. When the answer introduces an
+add every new decision the answer creates. Read an external source the
+answer gives as Step 2c states. When the answer introduces an
 adjacent topic, one a reader would expect in this task, ask one question:
 in scope, or under *Out of scope*. Never expand or drop it in silence.
 
@@ -158,6 +164,8 @@ directory. Writing rules:
 - Write success criteria that are binary: someone else can answer yes or no.
 - In *Verification*, list the exact commands or manual steps that prove
   every success criterion.
+- In *References*, list every external source of Step 2c with its URL and
+  what it settles, else `None.`
 - Write the single word `None.` in *Subtasks*.
 - Include code only when its exact shape is a decision: a schema, an
   interface, a CLI flag, an endpoint signature. Never implementation code.

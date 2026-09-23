@@ -90,7 +90,9 @@ task, the task with no parent:
   parents until an item has none. Stop when an identifier repeats.
 - Source *text*: the chain is the target alone.
 
-Read every task in the chain in full, root task first. Write private notes
+Read every task in the chain in full, root task first. Skip every
+References section: it serves reviewers, and the other sections restate its
+facts. Never open its links. Write private notes
 in a scratch directory outside the repository (in Claude Code, the scratchpad
 directory), per task in the chain:
 - its Decisions section and the conventions it states;

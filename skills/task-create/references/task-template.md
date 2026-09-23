@@ -13,6 +13,9 @@ Rules for filling:
 - `a | b` on a template line means: write a or b, never both.
 - *Approach* says what changes where. *Decisions* holds the rules and values
   the change follows. Put each fact in one section only.
+- *References* lists the sources for reviewers. The implementing agent never
+  opens them: write every fact a source settles in *Decisions* or *Context*
+  too.
 
 ---
 
@@ -68,6 +71,13 @@ Rules for filling:
 - <Commands. Example: build `npm run build`, tests `npm test -- tests/payments`,
   lint `npm run lint`.>
 - <...>
+
+## References
+
+- <Source outside the repository and the tracker: name, URL, and what it
+  settles. Example: Checkout design, frame "Retry banner",
+  https://claude.ai/design/p/checkout. Settles the banner copy and layout.>
+- <... or the single word: None.>
 
 ## Subtasks
 

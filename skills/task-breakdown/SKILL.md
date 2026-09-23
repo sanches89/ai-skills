@@ -87,6 +87,7 @@ to confirm or correct it before any research.
 
 **2a. The original task.** Read it in full. Treat every decision, success
 criterion, and scope statement in it as a fact. Never ask about it again.
+Record every entry of its References section.
 
 **2b. Codebase.** Read the code the task touches, not only file names.
 Record, with paths and line numbers:
@@ -130,6 +131,11 @@ MCP tools of the agent (in Claude Code they are deferred: search them with
   documentation of the version pinned in the manifest or lockfile. Record
   the API facts the subtasks rely on.
 - **Other MCP servers**: use them when they hold facts the breakdown needs.
+- **External sources**: every design, document, or wiki page outside the
+  repository and the tracker that the user gives or research finds. Read
+  each through a connected MCP server, else a web fetch. Record its facts,
+  and its name and URL for *References*. When nothing reads it, ask the
+  user for the facts it settles.
 Never ask the user to install or connect anything.
 
 **2e. Research notes.** Write a private file in the scratch directory with
@@ -154,7 +160,8 @@ For each open decision:
 - Name the option you recommend.
 
 After each answer, record the decision as a fact in the research notes and
-add every new decision the answer creates. When the answer introduces an
+add every new decision the answer creates. Read an external source the
+answer gives as Step 2d states. When the answer introduces an
 adjacent topic, one a reader would expect in this task, ask one question:
 in the task, or under *Out of scope*. Never expand or drop it in silence.
 
@@ -214,6 +221,10 @@ and for each subtask, in the scratch directory. Writing rules:
 - **Each subtask is self-contained.** An agent given only that subtask and
   the repository can implement it. Restate the decisions and facts it needs.
   Never write `see task`, `as above`, or `same as subtask 2`.
+- In the task's *References*, keep every entry of the original task and add
+  every external source of Step 2d. Write `None.` when there is none.
+- In a subtask's *References*, list only the task's entries whose facts
+  its Context restates, else `None.`
 - Use the paths and symbols verified in Step 2. Mark new files `(new)`.
 - In *Changes*, name the functions to add or change, their inputs and
   outputs, and the behavior on error. Include code only when its exact shape

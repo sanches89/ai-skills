@@ -20,6 +20,11 @@ whole checklist again.
       that covers it.
 - [ ] Every path and symbol in Approach, Context, and Changes exists, as
       verified in research, or carries `(new)`.
+- [ ] The task's References holds every entry of the original task. Every
+      entry has a name, a URL, and what it settles, or the section holds
+      exactly `None.`
+- [ ] Every fact a reference settles is in the task's Decisions or
+      Context, and in the Context of each subtask that lists it.
 - [ ] The Subtasks list matches the subtasks written: same count, order, and
       titles. No dependency on a subtask with a higher number.
 - [ ] Every section of the template is filled, in the task and in each

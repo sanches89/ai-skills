@@ -19,6 +19,9 @@ run the whole checklist again.
       and has a Verification step that proves it.
 - [ ] Every path and symbol in Approach and Context exists, as verified in
       research, or carries `(new)`.
+- [ ] Every References entry has a name, a URL, and what it settles, or
+      References holds exactly `None.`
+- [ ] Every fact a reference settles is also in Decisions or Context.
 - [ ] Verification holds concrete commands or steps, and Subtasks holds
       exactly `None.`
 
