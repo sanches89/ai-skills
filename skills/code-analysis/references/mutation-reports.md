@@ -1,6 +1,6 @@
 # Mutation reports
 
-Read this file in Step 2e.
+Read this file in Step 2d.
 
 ## Sources
 
@@ -21,8 +21,8 @@ the reason `no mutation command`.
 
 ## Tools
 
-Add the report options to the mutation command and nothing else. `<dir>` is
-the output folder that Step 4b sets.
+Add the report options and the option of *Thread options* to the mutation
+command, and nothing else. `<dir>` is the output folder that Step 3 sets.
 
 - **StrykerJS**: `stryker.conf.*`, `stryker.config.*`, `.stryker.conf.*`,
   or `.stryker.config.*`. Command `npx stryker run`. Report option
@@ -67,7 +67,20 @@ the newest `mutations.xml` of each to `<dir>/pit-<n>.xml`, with `<n>`
 counting from 1.
 
 Record `<mutation-report>` as the path of each report relative to `<dir>`.
-Step 4c passes `--mutation-report` once per report.
+Step 5 passes `--mutation-report` once per report.
+
+## Thread options
+
+Add the option below when neither the command nor the configuration sets a
+thread count. `<n>` is the output of `nproc`, or of `sysctl -n hw.ncpu` on
+macOS.
+- **PIT with Maven**: `-Dthreads=<n>`. PIT runs one thread by default.
+- **Infection**: `--threads=<n>`. Infection runs one thread by default.
+- **cargo-mutants**: `--jobs 2`. Its docs warn that a higher count can
+  exhaust memory, because every job runs a parallel build of its own.
+- **StrykerJS, Stryker.NET, and PIT with Gradle**: no option. The Stryker
+  tools run in parallel by default. PIT with Gradle reads its thread count
+  from the `pitest` block alone.
 
 ## When to skip the mutation run
 

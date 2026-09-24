@@ -24,13 +24,13 @@ counts one tier.
 ## Summary
 
 Tokens per skill and tier. With all 10 skills installed, the startup
-tier costs 459 tokens per session. Using one skill then adds its
+tier costs 457 tokens per session. Using one skill then adds its
 `SKILL.md` and the references it reads.
 
 | Skill            | Startup | SKILL.md | References | Scripts |  Total |
 |------------------|--------:|---------:|-----------:|--------:|-------:|
 | agent-docs       |      55 |    1,238 |      2,097 |   3,581 |  6,916 |
-| code-analysis    |      41 |    2,481 |      8,907 |   3,621 | 15,009 |
+| code-analysis    |      39 |    1,892 |      7,620 |       0 |  9,512 |
 | glossary         |      40 |    2,736 |      1,138 |       0 |  3,874 |
 | package-update   |      41 |    3,885 |      4,902 |   1,864 | 10,651 |
 | task-breakdown   |      44 |    3,855 |      2,342 |       0 |  6,197 |
@@ -39,7 +39,7 @@ tier costs 459 tokens per session. Using one skill then adds its
 | task-refactor    |      51 |    5,098 |      8,938 |       0 | 14,036 |
 | task-work        |      42 |    3,491 |      2,563 |       0 |  6,054 |
 | unambiguity      |      48 |    1,684 |      1,815 |       0 |  3,499 |
-| **All skills**   |     459 |   31,070 |     36,268 |   9,066 | 76,404 |
+| **All skills**   |     457 |   30,481 |     34,981 |   5,445 | 70,907 |
 
 ## Files per skill
 
@@ -59,15 +59,14 @@ Lines, words, and tokens of every file, grouped by skill.
 
 | File                                        | Lines | Words | Tokens |
 |---------------------------------------------|------:|------:|-------:|
-| `SKILL.md`                                  |   226 | 1,441 |  2,481 |
-| `references/analysis-rules.md`              |   156 | 1,180 |  1,682 |
-| `references/measure-tool.md`                |   167 | 1,226 |  2,354 |
-| `references/measurement-report-template.md` |   120 |   842 |  1,477 |
-| `references/mutation-reports.md`            |    89 |   600 |  1,189 |
-| `references/quality-checklist.md`           |    64 |   447 |    717 |
-| `references/test-reports.md`                |   131 |   748 |  1,488 |
-| `scripts/diff-summaries.mjs`                |   436 | 1,641 |  3,621 |
-| **Total**                                   | 1,389 | 8,125 | 15,009 |
+| `SKILL.md`                                  |   174 | 1,168 |  1,892 |
+| `references/analysis-rules.md`              |   132 |   959 |  1,343 |
+| `references/measure-tool.md`                |   136 | 1,009 |  1,956 |
+| `references/measurement-report-template.md` |    83 |   530 |    913 |
+| `references/mutation-reports.md`            |   102 |   710 |  1,378 |
+| `references/quality-checklist.md`           |    55 |   341 |    564 |
+| `references/test-reports.md`                |   130 |   734 |  1,466 |
+| **Total**                                   |   812 | 5,451 |  9,512 |
 
 ### glossary
 

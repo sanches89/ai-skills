@@ -50,11 +50,12 @@ coding agent that loads `SKILL.md` files.
   project's install, build, lint, type check, and tests accept. It changes
   only manifests and lockfiles and returns a short update report with what
   moved, what stayed, and why.
-- [code-analysis](skills/code-analysis/SKILL.md): measures a repository's
-  duplication, complexity, hotspots, unit tests, coverage, and mutation
-  score, and reads the code behind every number. With a base branch, it
-  compares the current branch with it. It returns a measurement report with
-  ranked findings and changes no code.
+- [code-analysis](skills/code-analysis/SKILL.md): measures the duplication,
+  complexity, hotspots, unit tests, coverage, and mutation score of the
+  working tree or of one branch. It reads the code behind every number. It
+  never compares two versions. It returns a measurement report with ranked
+  findings and changes no code. A run can take hours: the mutation run
+  runs the tests once per mutant.
 
 The task-* skills form a pipeline. task-create writes
 `<tasks-dir>/###-<task-slug>/task.md`. task-breakdown adds

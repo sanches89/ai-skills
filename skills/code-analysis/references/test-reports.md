@@ -60,7 +60,7 @@ the reason `no install command`.
 ## Report options per runner
 
 Add these options to the test command and nothing else. `<dir>` is the
-output folder that Steps 3b and 4a set.
+output folder that Step 3 sets.
 
 ```bash
 # Node.js test runner
@@ -111,8 +111,7 @@ put them there:
 - Maven and Gradle write into the build output, which the report options do
   not move. After the test run, copy the folder of JUnit files to
   `<dir>/junit` and the JaCoCo XML file to `<dir>/jacoco.xml`. Record
-  `junit` and `jacoco.xml`. Copy from the folder the run wrote in: the
-  worktree in Step 3, the repository root in Step 4.
+  `junit` and `jacoco.xml`. Copy from the build output under `<root>`.
 
 Skip a report that needs a package the project lacks, with the reason
 `<runner> needs <package>`:

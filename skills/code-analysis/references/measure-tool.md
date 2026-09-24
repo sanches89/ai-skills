@@ -39,7 +39,7 @@ every measurement.
 
 ## Options this skill uses
 
-- `<path>...`: `.`, the root of the measured tree.
+- `<path>...`: `.`, run from `<root>`.
 - `--ignore "<glob>,<glob>"`: the ignore globs of Step 2a. A glob supports
   `**`, `*`, and `?`.
 - `--ccn <n>`, `--length <n>`, `--params <n>`: the limits of Step 2b. A
@@ -53,10 +53,6 @@ every measurement.
   content. Pass the option once per coverage report.
 - `--mutation-report <file>`: one mutation report, format read from the
   content. Pass the option once per mutation report.
-- `--compare <file>`: the base summary. The measure tool reuses its limits,
-  ignore globs, and paths; passing a limit or `--ignore` next to
-  `--compare` is an error. The summary then also holds `delta`, `worse`,
-  and `notCompared`.
 
 Run `<measure> --help` for the other options.
 
@@ -66,11 +62,7 @@ Run `<measure> --help` for the other options.
 - `1`: unexpected failure.
 - `2`: invalid arguments:
   - an unknown option;
-  - a path or a report that does not exist;
-  - an unusable `--compare` file;
-  - a limit passed next to `--compare`.
-- `3`: `--compare` found at least one compared value that got worse. The
-  summary is printed.
+  - a path or a report that does not exist.
 
 ## Limits
 
@@ -138,30 +130,7 @@ values for one limit in one repository, take the lower one.
   `survivors` lists the mutants that survived, each with `file`, `line`,
   `function`, `mutator`, and `change`. `function` is `null` when neither
   lizard nor the report names a function.
-- With `--compare`, `delta` holds each compared value with `before` and
-  `after`. `worse` names every compared value that got worse. `notCompared`
-  names every measurement whose status is not `ok` in the base summary or
-  in the current summary.
 
 A coverage report proves that a test runs a line, never that a test asserts
 the result.
 
-## What `--compare` checks
-
-- `duplication.duplicatedLines` and `duplication.clones`: worse when they
-  rise;
-- `complexity.overLimit.ccn`, `complexity.overLimit.length`,
-  `complexity.overLimit.params`, and `complexity.maxCcn`: worse when they
-  rise;
-- `tests.total`: worse when it falls, because a test is gone;
-- `tests.failed` and `tests.skipped`: worse when they rise;
-- `coverage.lines.uncovered` and `coverage.branches.uncovered`: worse when
-  they rise.
-
-`--compare` checks `mutation.survived` and `mutation.noCoverage` only when
-both summaries hold a mutation report. Step 3 never runs the mutation tool,
-so `notCompared` names `mutation` whenever Step 4 passes a mutation report.
-
-`--compare` ignores the sum of `ccn`, because extracting a function raises
-that sum by design. It ignores the coverage percentage, because removing
-covered dead code lowers the percentage with no test lost.
