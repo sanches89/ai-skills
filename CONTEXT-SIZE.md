@@ -30,16 +30,16 @@ tier costs 457 tokens per session. Using one skill then adds its
 | Skill            | Startup | SKILL.md | References | Scripts |  Total |
 |------------------|--------:|---------:|-----------:|--------:|-------:|
 | agent-docs       |      55 |    1,238 |      2,097 |   3,581 |  6,916 |
-| code-analysis    |      39 |    1,892 |      7,620 |       0 |  9,512 |
+| code-analysis    |      39 |    1,895 |      7,603 |       0 |  9,498 |
 | glossary         |      40 |    2,736 |      1,138 |       0 |  3,874 |
 | package-update   |      41 |    3,885 |      4,902 |   1,864 | 10,651 |
 | task-breakdown   |      44 |    3,855 |      2,342 |       0 |  6,197 |
 | task-create      |      47 |    2,633 |      1,451 |       0 |  4,084 |
 | task-orchestrate |      50 |    3,969 |      2,115 |       0 |  6,084 |
-| task-refactor    |      51 |    5,098 |      9,296 |       0 | 14,394 |
+| task-refactor    |      51 |    5,098 |      9,326 |       0 | 14,424 |
 | task-work        |      42 |    3,491 |      2,563 |       0 |  6,054 |
 | unambiguity      |      48 |    1,684 |      1,815 |       0 |  3,499 |
-| **All skills**   |     457 |   30,481 |     35,339 |   5,445 | 71,265 |
+| **All skills**   |     457 |   30,484 |     35,352 |   5,445 | 71,281 |
 
 ## Files per skill
 
@@ -59,14 +59,14 @@ Lines, words, and tokens of every file, grouped by skill.
 
 | File                                        | Lines | Words | Tokens |
 |---------------------------------------------|------:|------:|-------:|
-| `SKILL.md`                                  |   174 | 1,168 |  1,892 |
+| `SKILL.md`                                  |   174 | 1,171 |  1,895 |
 | `references/analysis-rules.md`              |   132 |   959 |  1,343 |
 | `references/measure-tool.md`                |   136 | 1,009 |  1,956 |
 | `references/measurement-report-template.md` |    83 |   530 |    913 |
-| `references/mutation-reports.md`            |   102 |   710 |  1,378 |
+| `references/mutation-reports.md`            |   101 |   704 |  1,361 |
 | `references/quality-checklist.md`           |    55 |   341 |    564 |
 | `references/test-reports.md`                |   130 |   734 |  1,466 |
-| **Total**                                   |   812 | 5,451 |  9,512 |
+| **Total**                                   |   811 | 5,448 |  9,498 |
 
 ### glossary
 
@@ -123,12 +123,12 @@ Lines, words, and tokens of every file, grouped by skill.
 |----------------------------------------|------:|------:|-------:|
 | `SKILL.md`                             |   410 | 3,380 |  5,098 |
 | `references/characterization-tests.md` |    63 |   568 |    761 |
-| `references/measurement-tools.md`      |   249 | 1,761 |  2,951 |
+| `references/measurement-tools.md`      |   251 | 1,781 |  2,981 |
 | `references/quality-checklist.md`      |    98 |   716 |  1,072 |
 | `references/refactoring-rules.md`      |   126 | 1,037 |  1,317 |
 | `references/smell-catalog.md`          |   179 | 1,294 |  1,864 |
 | `references/task-template.md`          |   159 |   765 |  1,331 |
-| **Total**                              | 1,284 | 9,521 | 14,394 |
+| **Total**                              | 1,286 | 9,541 | 14,424 |
 
 ### task-work
 

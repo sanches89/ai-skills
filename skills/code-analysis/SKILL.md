@@ -104,9 +104,9 @@ says to skip the mutation run.
 Set `<dir>` to `<scratch-dir>/reports` in every command of Steps 3 to 5.
 
 With a name, run the install command first, unless it is `none` or
-`unknown`. With the install command `unknown`, record the tests and
-coverage as skipped with the reason `no install command`, and go to
-Step 4.
+`unknown`. With a name and the install command `unknown`, record the
+tests and coverage as skipped with the reason `no install command`, and
+go to Step 4.
 
 Run the test command. Without a name, when it fails to start on a missing
 dependency, run the install command once and the test command again. Skip

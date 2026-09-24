@@ -200,22 +200,24 @@ Run each of these only through the command the project already has.
 ## Mutation scope
 
 A mutation run over the whole project can take hours. Add to the project's
-mutation command the option below that limits it to the files the subtask
-changes. Add the thread option too when neither the command nor the
-configuration sets a thread count. `<n>` is the output of `nproc`, or of
-`sysctl -n hw.ncpu` on macOS.
+mutation command the option below that limits it to the code files the
+subtask changes, never a test file. Add the thread option too when neither
+the command nor the configuration sets a thread count. `<n>` is the output
+of `nproc`, or of `sysctl -n hw.ncpu` on macOS.
 - **StrykerJS**: `--mutate <file>,<file>`.
 - **Stryker.NET**: `--mutate <file>`, once per file.
 - **PIT with Maven**: `-DtargetClasses=<class>,<class> -Dthreads=<n>`.
   `<class>` is the fully qualified name of the class in a changed file.
-- **Infection**: `--threads=<n>`, and the changed files as arguments. Before
-  version 0.34, `--filter=<file>,<file>` in place of the arguments.
+- **Infection**: the changed files as arguments. Before version 0.34,
+  `--filter=<file>,<file>` in place of the arguments.
   `vendor/bin/infection --version` prints the version.
 - **cargo-mutants**: `--jobs 2 --file <file>`, with `--file` once per file.
   Its docs warn that a higher job count can exhaust memory.
+- **mutmut**: `mutmut run "<module>*"`, one run per file. `<module>` is the
+  dotted module path of the changed file.
 
-A tool without an option in this list, such as PIT with Gradle or mutmut,
-never limits its files. For it, the subtask states that the implementer
+A tool without an option in this list, such as PIT with Gradle, never
+limits its files. For it, the subtask states that the implementer
 breaks the asserted behavior by hand once, as without a mutation tool.
 
 ## Structural rewrite tools

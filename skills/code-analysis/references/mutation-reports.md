@@ -75,12 +75,11 @@ Add the option below when neither the command nor the configuration sets a
 thread count. `<n>` is the output of `nproc`, or of `sysctl -n hw.ncpu` on
 macOS.
 - **PIT with Maven**: `-Dthreads=<n>`. PIT runs one thread by default.
-- **Infection**: `--threads=<n>`. Infection runs one thread by default.
 - **cargo-mutants**: `--jobs 2`. Its docs warn that a higher count can
   exhaust memory, because every job runs a parallel build of its own.
-- **StrykerJS, Stryker.NET, and PIT with Gradle**: no option. The Stryker
-  tools run in parallel by default. PIT with Gradle reads its thread count
-  from the `pitest` block alone.
+- **StrykerJS, Stryker.NET, Infection, and PIT with Gradle**: no option.
+  The Stryker tools and Infection run in parallel by default. PIT with
+  Gradle reads its thread count from the `pitest` block alone.
 
 ## When to skip the mutation run
 
