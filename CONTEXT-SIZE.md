@@ -36,10 +36,10 @@ tier costs 457 tokens per session. Using one skill then adds its
 | task-breakdown   |      44 |    3,855 |      2,342 |       0 |  6,197 |
 | task-create      |      47 |    2,633 |      1,451 |       0 |  4,084 |
 | task-orchestrate |      50 |    3,969 |      2,115 |       0 |  6,084 |
-| task-refactor    |      51 |    5,098 |      8,938 |       0 | 14,036 |
+| task-refactor    |      51 |    5,098 |      9,296 |       0 | 14,394 |
 | task-work        |      42 |    3,491 |      2,563 |       0 |  6,054 |
 | unambiguity      |      48 |    1,684 |      1,815 |       0 |  3,499 |
-| **All skills**   |     457 |   30,481 |     34,981 |   5,445 | 70,907 |
+| **All skills**   |     457 |   30,481 |     35,339 |   5,445 | 71,265 |
 
 ## Files per skill
 
@@ -122,13 +122,13 @@ Lines, words, and tokens of every file, grouped by skill.
 | File                                   | Lines | Words | Tokens |
 |----------------------------------------|------:|------:|-------:|
 | `SKILL.md`                             |   410 | 3,380 |  5,098 |
-| `references/characterization-tests.md` |    62 |   554 |    735 |
-| `references/measurement-tools.md`      |   226 | 1,575 |  2,619 |
+| `references/characterization-tests.md` |    63 |   568 |    761 |
+| `references/measurement-tools.md`      |   249 | 1,761 |  2,951 |
 | `references/quality-checklist.md`      |    98 |   716 |  1,072 |
 | `references/refactoring-rules.md`      |   126 | 1,037 |  1,317 |
 | `references/smell-catalog.md`          |   179 | 1,294 |  1,864 |
 | `references/task-template.md`          |   159 |   765 |  1,331 |
-| **Total**                              | 1,260 | 9,321 | 14,036 |
+| **Total**                              | 1,284 | 9,521 | 14,394 |
 
 ### task-work
 

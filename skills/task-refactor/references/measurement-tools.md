@@ -185,15 +185,38 @@ Run each of these only through the command the project already has.
 - **Coverage**, such as `c8`, `coverage.py`, `tarpaulin`, or JaCoCo. Coverage
   built into the toolchain, as in Go and the Node.js test runner, needs no
   configuration. Use it in Step 4 to write the coverage report.
-- **Mutation testing**, such as Stryker, mutmut, PIT, or cargo-mutants. Name
-  it in the Context of a `high` risk subtask as the proof that its tests are
-  able to fail. Without it, the subtask states that the implementer breaks
-  the asserted behavior by hand once, as `characterization-tests.md` states.
+- **Mutation testing**, such as Stryker, PIT, Infection, or cargo-mutants.
+  Name its command in the Context section of a `high` risk subtask. It is
+  the proof that the subtask's tests are able to fail. Limit the command
+  as *Mutation scope* states. Without the tool, the subtask states that the
+  implementer breaks the asserted behavior by hand once, as
+  `characterization-tests.md` states.
 - **Dead-code detection**, such as knip, vulture, `deadcode`, or the unused
   warnings of the compiler. Treat each hit as a signal. Prove it by the search
   that `refactoring-rules.md` requires.
 - **Duplication detection** other than jscpd, such as PMD CPD or SonarQube.
   Use its findings beside the measure tool.
+
+## Mutation scope
+
+A mutation run over the whole project can take hours. Add to the project's
+mutation command the option below that limits it to the files the subtask
+changes. Add the thread option too when neither the command nor the
+configuration sets a thread count. `<n>` is the output of `nproc`, or of
+`sysctl -n hw.ncpu` on macOS.
+- **StrykerJS**: `--mutate <file>,<file>`.
+- **Stryker.NET**: `--mutate <file>`, once per file.
+- **PIT with Maven**: `-DtargetClasses=<class>,<class> -Dthreads=<n>`.
+  `<class>` is the fully qualified name of the class in a changed file.
+- **Infection**: `--threads=<n>`, and the changed files as arguments. Before
+  version 0.34, `--filter=<file>,<file>` in place of the arguments.
+  `vendor/bin/infection --version` prints the version.
+- **cargo-mutants**: `--jobs 2 --file <file>`, with `--file` once per file.
+  Its docs warn that a higher job count can exhaust memory.
+
+A tool without an option in this list, such as PIT with Gradle or mutmut,
+never limits its files. For it, the subtask states that the implementer
+breaks the asserted behavior by hand once, as without a mutation tool.
 
 ## Structural rewrite tools
 

@@ -53,8 +53,9 @@ characterization test:
   sleeping, no files outside a temporary folder.
 - Each test passes on the unchanged code and fails once when the asserted
   behavior is broken. The implementer breaks the behavior by hand and
-  restores it. When the project configures mutation testing, name it here
-  for a `high` risk subtask instead.
+  restores it. When the project configures mutation testing, name its
+  command here for a `high` risk subtask instead. Limit the command to the
+  subtask's files, as *Mutation scope* in `measurement-tools.md` states.
 - Every test holds at least one assertion.
 - The characterization tests stay in the change, as the proof of the
   refactoring and the safety net of the next one.
