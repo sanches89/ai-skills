@@ -2,6 +2,7 @@
 name: task-create
 description: Writes one task from an idea, feature, bug, or refactor. Use when the user wants work explored, planned, or scoped as a task, ticket, issue, or spec before implementation.
 license: MIT
+compatibility: Works in any project, with or without git. The line count needs cloc on PATH, or Node.js with npx, Perl 5, and network access on the first run. A missing tool leaves the count to the agent and never blocks the task.
 argument-hint: <idea>
 ---
 
@@ -218,6 +219,20 @@ ASCII letters and digits, every other run of characters replaced by one
 hyphen, cut to 60 characters, with no leading or trailing hyphen. The
 `task-breakdown` skill shares this layout and adds `###-<subtask-slug>.md`
 files inside the task folder.
+
+### Step 9: Size check
+
+Read `references/line-count.md` now. Estimate the code lines the task adds,
+removes, or modifies, outside the test locations recorded in Step 2a. Count
+the files it deletes or rewrites with the count tool instead of an estimate.
+When the estimate is above 500 code lines, show this warning in chat, with
+the estimate in place of `<n>`:
+
+```text
+Heads up: this task changes about <n> code lines. Reviews go best under
+500. The task-breakdown skill splits it into subtasks that aim at 500 code
+lines each.
+```
 
 Finish with one line: the item's identifier and URL, or the path of the task
 file, absolute when outside the repository. Ask nothing else.

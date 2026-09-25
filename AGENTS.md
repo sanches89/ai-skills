@@ -162,6 +162,11 @@ Folders:
   options in `skills/task-refactor/references/measurement-tools.md` and in
   `skills/code-analysis/references/test-reports.md` must stay identical.
   Change them together and diff them afterwards.
+- `task-create` and `task-breakdown` both count code lines against the
+  same target of 500. `skills/task-create/references/line-count.md` and
+  `skills/task-breakdown/references/line-count.md` must stay identical, and
+  the number 500 appears in both `SKILL.md` files. Change them together and
+  diff the two files afterwards.
 
 ## Workflow in this repo
 
@@ -276,4 +281,11 @@ Folders:
     awk '/^description:/ { sub(/^description: */, "")
          if (length > 200 || gsub(/[.!?]( |$)/, "&") > 2) print FILENAME }' \
       skills/*/SKILL.md
+    ```
+12. For `task-create` and `task-breakdown`, diff the two line-count files.
+    Any output is a failure:
+
+    ```bash
+    diff skills/task-create/references/line-count.md \
+         skills/task-breakdown/references/line-count.md
     ```

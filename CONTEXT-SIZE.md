@@ -33,13 +33,13 @@ tier costs 457 tokens per session. Using one skill then adds its
 | code-analysis    |      39 |    2,064 |      7,603 |       0 |  9,667 |
 | glossary         |      40 |    2,837 |      1,138 |       0 |  3,975 |
 | package-update   |      41 |    4,013 |      4,902 |   1,864 | 10,779 |
-| task-breakdown   |      44 |    3,955 |      2,342 |       0 |  6,297 |
-| task-create      |      47 |    2,733 |      1,451 |       0 |  4,184 |
+| task-breakdown   |      44 |    4,036 |      2,705 |       0 |  6,741 |
+| task-create      |      47 |    2,922 |      1,813 |       0 |  4,735 |
 | task-orchestrate |      50 |    3,969 |      2,115 |       0 |  6,084 |
 | task-refactor    |      51 |    5,309 |      9,326 |       0 | 14,635 |
 | task-work        |      42 |    3,649 |      2,563 |       0 |  6,212 |
 | unambiguity      |      48 |    1,823 |      1,815 |       0 |  3,638 |
-| **All skills**   |     457 |   31,718 |     35,379 |   5,445 | 72,542 |
+| **All skills**   |     457 |   31,988 |     36,104 |   5,445 | 73,537 |
 
 ## Files per skill
 
@@ -93,19 +93,21 @@ Lines, words, and tokens of every file, grouped by skill.
 
 | File                              | Lines | Words | Tokens |
 |-----------------------------------|------:|------:|-------:|
-| `SKILL.md`                        |   314 | 2,650 |  3,955 |
-| `references/quality-checklist.md` |    93 |   672 |  1,022 |
+| `SKILL.md`                        |   317 | 2,708 |  4,036 |
+| `references/line-count.md`        |    37 |   226 |    362 |
+| `references/quality-checklist.md` |    93 |   673 |  1,023 |
 | `references/task-template.md`     |   159 |   761 |  1,320 |
-| **Total**                         |   566 | 4,083 |  6,297 |
+| **Total**                         |   606 | 4,368 |  6,741 |
 
 ### task-create
 
 | File                              | Lines | Words | Tokens |
 |-----------------------------------|------:|------:|-------:|
-| `SKILL.md`                        |   223 | 1,844 |  2,733 |
+| `SKILL.md`                        |   238 | 1,978 |  2,922 |
+| `references/line-count.md`        |    37 |   226 |    362 |
 | `references/quality-checklist.md` |    74 |   480 |    750 |
 | `references/task-template.md`     |    90 |   417 |    701 |
-| **Total**                         |   387 | 2,741 |  4,184 |
+| **Total**                         |   439 | 3,101 |  4,735 |
 
 ### task-orchestrate
 

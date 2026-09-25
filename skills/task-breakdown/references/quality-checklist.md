@@ -34,8 +34,8 @@ whole checklist again.
 
 - [ ] Each subtask has exactly one verification command, or one numbered
       manual sequence, and no ` and ` in its title.
-- [ ] Each subtask above the 1000-line target of Step 4 has no split whose
-      parts meet every other constraint of Step 4.
+- [ ] Each subtask above 500 code lines, as Step 4 counts, has no split
+      whose parts meet every other constraint of Step 4.
 - [ ] Each subtask is mergeable on its own: after it, the project builds and
       every test passes. A guard in its Context hides incomplete behavior.
 - [ ] No subtask is only tests, only documentation, or only wiring. A later

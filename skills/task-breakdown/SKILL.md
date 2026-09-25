@@ -2,6 +2,7 @@
 name: task-breakdown
 description: Splits an existing task into commit-sized subtasks. Use when a task, ticket, issue, or spec is too big for one change and the user wants it broken down.
 license: MIT
+compatibility: Works in any project, with or without git. The line count needs cloc on PATH, or Node.js with npx, Perl 5, and network access on the first run. A missing tool leaves the count to the agent and never blocks the breakdown.
 argument-hint: <task id | task file | task text>
 ---
 
@@ -190,11 +191,13 @@ every test, existing and new, passes. Make every subtask meet these
 constraints too:
 - **One concern.** Split again a subtask that needs two verification
   commands, or whose title needs the word "and".
-- **Size.** Estimate the lines each subtask adds plus the lines it
-  deletes, outside the test locations recorded in Step 2b. Split again
-  a subtask above 1000 lines when the parts meet every other constraint
-  in this list. Otherwise keep it: 1000 is a target for small reviews,
-  not a cap, and never a reason to refuse a task.
+- **Size.** Read `references/line-count.md` now. Estimate the code lines
+  each subtask adds, removes, or modifies, outside the test locations
+  recorded in Step 2b. Count the files it deletes or rewrites with the
+  count tool instead of an estimate. Split again a subtask above 500 code
+  lines when the parts meet every other constraint in this list.
+  Otherwise keep it: 500 is a target for small reviews, not a cap, and
+  never a reason to refuse a task.
 - **Ordered by dependency.** Subtask N depends only on subtasks with lower
   numbers. The order is the implementation order.
 - **Verifiable alone.** When no command can verify two consecutive subtasks
@@ -259,8 +262,8 @@ Step 3 for that decision, then run the checks again.
 ### Step 7: Approval
 
 Show the complete breakdown in chat: the task, then every subtask. Name
-each subtask above the 1000-line target of Step 4 with the constraint that
-every split of it breaks. Ask whether the user approves it as written or
+each subtask above 500 code lines with the constraint that every split of
+it breaks. Ask whether the user approves it as written or
 wants a change. Apply each change, run Step 6 again, and ask again until
 the user approves.
 
