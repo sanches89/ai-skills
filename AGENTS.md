@@ -59,6 +59,11 @@ These rules hold in every Markdown file of this repository.
   ignore.
 - **Size.** `SKILL.md` stays under 500 lines. Detail goes to `references/`,
   and the instruction that cites a file there says when to read it.
+- **Subagents.** Every skill except `task-orchestrate` holds the
+  `**Subagents.**` block at the top of its first step that reads project
+  files or runs commands. `task-orchestrate` states its stricter hard rule
+  instead. Every copy of the block is identical: change it in every skill
+  in the same commit.
 - **Line width.** Every Markdown line outside frontmatter is at most 80
   characters. Wrap prose with a hanging indent under list markers. Write wide
   tables as lists. Split a long command in a code block with `\` line
@@ -178,7 +183,7 @@ Folders:
    ```bash
    grep -n -E \
      -e '\$ARGUMENTS|AskUserQuestion|Explore' \
-     -e 'ToolSearch|scratchpad|CLAUDE_SKILL_DIR|Skill. tool' \
+     -e 'ToolSearch|scratchpad|CLAUDE_SKILL_DIR|Skill. tool|Agent. tool' \
      skills/<name>/SKILL.md
    ```
 3. Run the banned-word grep from the skill's own
@@ -251,14 +256,14 @@ Folders:
         <(awk '/^# Node.js test runner/,/^```$/' \
             skills/code-analysis/references/test-reports.md)
    ```
-10. For the `task-*` skills, confirm that every copy of the
-    `**Tasks directory.**` block and of the `**Tracker.**` block is the
-    same. A block runs from its label to the next blank line. Every line
+10. Confirm that every copy of the `**Tasks directory.**` block, of the
+    `**Tracker.**` block, and of the `**Subagents.**` block is the same.
+    A block runs from its label to the next blank line. Every line
     printed must be `1`:
 
     ```bash
-    for b in 'Tasks directory' Tracker; do
-      for f in $(grep -l "^\*\*$b\.\*\*" skills/task-*/SKILL.md); do
+    for b in 'Tasks directory' Tracker Subagents; do
+      for f in $(grep -l "^\*\*$b\.\*\*" skills/*/SKILL.md); do
         awk -v b="$b" '$0 ~ "^\\*\\*" b "\\.\\*\\*" { p = 1 }
                        p && /^$/ { exit } p' "$f" | md5sum
       done | sort -u | wc -l

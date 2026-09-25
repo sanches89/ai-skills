@@ -85,6 +85,15 @@ to confirm or correct it before any research.
 
 ### Step 2: Research
 
+**Subagents.** When the agent offers subagents, run in one every read whose
+whole product is the facts the step records. In Claude Code, that is the
+`Agent` tool, with the `Explore` subagent for reads. Run in one every
+command whose output the step reduces to a result. Give the subagent the
+question, the paths, and the facts to return. It returns only those facts,
+each with path and line. The context window then holds those returns, not
+the files, and stays small. Without subagents, follow the step yourself and
+keep only what it names.
+
 **2a. The original task.** Read it in full. Treat every decision, success
 criterion, and scope statement in it as a fact. Never ask about it again.
 Record every entry of its References section.
@@ -97,8 +106,6 @@ Record, with paths and line numbers:
 - the test conventions, where tests for the touched areas live, and the
   command that runs them in isolation;
 - the build, lint, type-check, and test commands.
-Use a read-only subagent for broad sweeps when the agent offers one (in
-Claude Code, the `Explore` subagent).
 
 **2c. Project docs.** Read README, CLAUDE.md, AGENTS.md, CONTRIBUTING,
 `docs/`, and ADRs. Record the conventions and constraints that affect the

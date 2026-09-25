@@ -101,6 +101,15 @@ says to skip the mutation run.
 
 ### Step 3: Tests
 
+**Subagents.** When the agent offers subagents, run in one every read whose
+whole product is the facts the step records. In Claude Code, that is the
+`Agent` tool, with the `Explore` subagent for reads. Run in one every
+command whose output the step reduces to a result. Give the subagent the
+question, the paths, and the facts to return. It returns only those facts,
+each with path and line. The context window then holds those returns, not
+the files, and stays small. Without subagents, follow the step yourself and
+keep only what it names.
+
 Set `<dir>` to `<scratch-dir>/reports` in every command of Steps 3 to 5.
 
 With a name, run the install command first, unless it is `none` or
@@ -154,6 +163,10 @@ included. Record per finding:
 - the kind, and the location as `path:line` with the symbol;
 - the evidence: the measured values, or what the code shows;
 - the action, from the *Actions* section of `analysis-rules.md`.
+
+Group the entries by folder and run one subagent per folder. Give it the
+entries of its folder, both locations of each clone, and the path of
+`references/analysis-rules.md`.
 
 Rank the findings as the *Ranking* section of `analysis-rules.md` says.
 

@@ -53,9 +53,18 @@ the input text does not wrap.
 
 ### Step 2: Research
 
+**Subagents.** When the agent offers subagents, run in one every read whose
+whole product is the facts the step records. In Claude Code, that is the
+`Agent` tool, with the `Explore` subagent for reads. Run in one every
+command whose output the step reduces to a result. Give the subagent the
+question, the paths, and the facts to return. It returns only those facts,
+each with path and line. The context window then holds those returns, not
+the files, and stays small. Without subagents, follow the step yourself and
+keep only what it names.
+
 **2a. The input text.** Read `references/clarity-rules.md` now. Then read
-the input text in full. Record every ambiguity with its location, its kind,
-and its readings.
+the input text in full, yourself: Step 4 rewrites it. Record every
+ambiguity with its location, its kind, and its readings.
 
 **2b. The glossary.** Read the glossary, when it exists, and every
 `## Terms`, `## Definitions`, or `## Glossary` section of the input text.

@@ -119,6 +119,15 @@ under *Out of scope*. Follow every decision.
 
 ### Step 3: Research
 
+**Subagents.** When the agent offers subagents, run in one every read whose
+whole product is the facts the step records. In Claude Code, that is the
+`Agent` tool, with the `Explore` subagent for reads. Run in one every
+command whose output the step reduces to a result. Give the subagent the
+question, the paths, and the facts to return. It returns only those facts,
+each with path and line. The context window then holds those returns, not
+the files, and stays small. Without subagents, follow the step yourself and
+keep only what it names.
+
 **3a. Conventions.** Read README, CLAUDE.md, AGENTS.md, CONTRIBUTING, and the
 docs that cover the refactor scope. Record the naming, error handling,
 module layout, and formatting rules. Then find `<tasks-dir>`.
@@ -219,6 +228,12 @@ smell and location:
 
 Findings come from four origins: what the request names, the `top` lists of
 the measurement summary, the project's analysis tools, and reading the code.
+
+Group the files of the refactor scope by folder and run one subagent per
+folder. Give it the files to read in full and the path of
+`references/smell-catalog.md`. Give it the `top` entries and the coverage
+from Step 4 that fall in its folder, and the fields of a finding above. It
+reads code outside its folder when a smell needs it.
 
 Drop a finding when:
 - its refactoring adds a feature, fixes a bug, or tunes performance;

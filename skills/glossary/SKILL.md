@@ -62,14 +62,22 @@ before any research.
 
 ### Step 2: Research
 
+**Subagents.** When the agent offers subagents, run in one every read whose
+whole product is the facts the step records. In Claude Code, that is the
+`Agent` tool, with the `Explore` subagent for reads. Run in one every
+command whose output the step reduces to a result. Give the subagent the
+question, the paths, and the facts to return. It returns only those facts,
+each with path and line. The context window then holds those returns, not
+the files, and stays small. Without subagents, follow the step yourself and
+keep only what it names.
+
 **2a. Existing glossary.** When the glossary exists, read it in full. Record
 every term, its definition, and its section. When it does not exist, record
 that. Record whether the repository root has an `AGENTS.md` or a
 `CLAUDE.md`, and whether that file names the glossary.
 
-**2b. Evidence set.** Read every document in full. Use a read-only subagent
-for broad sweeps when the agent offers one (in Claude Code, the `Explore`
-subagent). Record, with path and line:
+**2b. Evidence set.** Read every document in full. Record, with path and
+line:
 - every candidate:
   - a word whose usages point at two things;
   - a word the project uses in a sense that its ordinary sense and its

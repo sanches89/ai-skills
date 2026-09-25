@@ -80,6 +80,15 @@ directory). Keep in them every list that a later step reads.
 
 ### Step 2: Inventory
 
+**Subagents.** When the agent offers subagents, run in one every read whose
+whole product is the facts the step records. In Claude Code, that is the
+`Agent` tool, with the `Explore` subagent for reads. Run in one every
+command whose output the step reduces to a result. Give the subagent the
+question, the paths, and the facts to return. It returns only those facts,
+each with path and line. The context window then holds those returns, not
+the files, and stays small. Without subagents, follow the step yourself and
+keep only what it names.
+
 **2a. Manifests.** List every `package.json` under the paths. Run from the
 repository root:
 

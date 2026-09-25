@@ -66,7 +66,8 @@ For each folder changed since `<ref>`, or all of them when asked:
 
 - Find what the repo uses: read the `AGENTS.md` line that indexes the folder,
   then `git grep` the code it serves for the APIs, options and flags each
-  section covers.
+  section covers. Run the `git grep` sweep in a subagent, as the Subagents
+  block of `SKILL.md` says.
 - Cut sections and reference docs the repo does not use. Keep a section
   documenting an alternative the repo rejected only when the README says so,
   cut to what that choice needs.

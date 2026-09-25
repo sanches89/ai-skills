@@ -128,12 +128,21 @@ subtasks* instead of Step 4.
 
 ### Step 4: Research
 
+**Subagents.** When the agent offers subagents, run in one every read whose
+whole product is the facts the step records. In Claude Code, that is the
+`Agent` tool, with the `Explore` subagent for reads. Run in one every
+command whose output the step reduces to a result. Give the subagent the
+question, the paths, and the facts to return. It returns only those facts,
+each with path and line. The context window then holds those returns, not
+the files, and stays small. Without subagents, follow the step yourself and
+keep only what it names.
+
 **4a. Code.** Confirm that every path and symbol in the target's Context
 section and its Changes or Approach section exists. Read the code that
-changes and the code that calls it. When a named path or symbol is gone,
-search for where it moved. With exactly one match, use it and record a
-deviation. Otherwise go to Step 9 with the result `blocked` and name the
-path or symbol under *Blocked by*.
+changes yourself, because Step 6 edits it, and the code that calls it.
+When a named path or symbol is gone, search for where it moved. With
+exactly one match, use it and record a deviation. Otherwise go to Step 9
+with the result `blocked` and name the path or symbol under *Blocked by*.
 
 **4b. Conventions.** Read README, CLAUDE.md, AGENTS.md, CONTRIBUTING, and
 the docs that cover the touched areas. Record the naming, error handling,
@@ -222,12 +231,14 @@ Run, in this order:
    from 4e, so that no test depends on another file's state;
 4. every command from 4c.
 
-Fill the evidence line of each entry with the command or step and its
-result, and tick the entry only when it passes. On any failure, fix the
-cause inside the target's scope. Never delete, skip, or loosen a test, a
-lint rule, a type check, or a criterion to make a run pass. Then run this
-whole step again from the start, because a fix can break an earlier check.
-Evidence from a run before the last edit counts for nothing.
+A subagent that runs a command returns its result and the error text of
+each failure. Fill the evidence line of each entry with the command or step
+and its result, and tick the entry only when it passes. On any failure,
+fix the cause inside the target's scope. Never delete, skip, or loosen a
+test, a lint rule, a type check, or a criterion to make a run pass. Then
+run this whole step again from the start, because a fix can break an
+earlier check. Evidence from a run before the last edit counts for
+nothing.
 
 Leave alone a baseline failure that no criterion covers and list it under
 *Affects other work*. Tick its command entry when the run shows no failure
