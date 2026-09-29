@@ -1,0 +1,12 @@
+[
+  {"query": "src/payments/service.ts is a mess, there are three copies of the same retry loop and a 200 line function. tidy it up but i want to review the plan first", "should_trigger": true},
+  {"query": "Review everything on main..HEAD for cleanup before I open the PR. Do not change the code, write up what should change and how to verify each step.", "should_trigger": true},
+  {"query": "The parseRange function in lib/legacy/parser.js is unreadable. Simplify it without changing what callers see.", "should_trigger": true},
+  {"query": "our checkout module has grown organically for 3 years. measure the duplication and complexity and turn the worst spots into a refactor task", "should_trigger": true},
+  {"query": "Clean up the code that tasks/004-add-retry-to-webhooks/ introduced. Same behavior, better structure, one small commit per change.", "should_trigger": true},
+  {"query": "Measure the duplication, complexity, coverage and mutation score of this repo and give me the numbers. No refactor plan needed.", "should_trigger": false},
+  {"query": "Implement the refactor subtask tasks/015-refactor-payments/002-extract-is-business-day.md.", "should_trigger": false},
+  {"query": "Write a task for adding a new payment provider to src/payments/.", "should_trigger": false},
+  {"query": "rewrite the payments module from scratch in a cleaner style, we can throw the old one away", "should_trigger": false},
+  {"query": "Fix the bug in src/payments/service.ts where the retry loop runs one time too many.", "should_trigger": false}
+]

@@ -18,7 +18,7 @@ What each section keeps:
 - **Scope**: `files` of the summary, the repository root, and the ignore
   globs.
 - **Code**: `working tree` without a name, else the name with the short
-  hash of the target commit.
+  hash of the measured commit.
 - **Limits**: the three limits, the clone floor, and their source: the
   configuration file that sets them, or `defaults`.
 - **Tools**: the `tool` value of `duplication`; the `tool` value of

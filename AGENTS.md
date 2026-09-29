@@ -1,8 +1,9 @@
 # AGENTS.md
 
 This repository holds agent skills. Each skill is a folder under `skills/` with
-a `SKILL.md` and, when needed, `references/` for templates, checklists, and
-rules and `scripts/` for executables. The README lists the skills.
+a `SKILL.md` and `evals/` for its test prompts and trigger queries. When
+needed it also holds `references/` for templates, checklists, and rules, and
+`scripts/` for executables. The README lists the skills.
 
 ## Words and sentences
 
@@ -51,17 +52,29 @@ These rules hold in every Markdown file of this repository.
   duplicate it and keep the copies identical.
 - **Frontmatter.** `name` equals the folder name: lowercase letters, digits,
   and single hyphens, at most 64 characters. `description` says what the skill
-  produces, then when to use it. It has one or two sentences and at most 200
-  characters: every description loads at the start of every session. It says
-  nothing about how the skill works internally. Every skill sets
-  `license: MIT`. The format also allows `compatibility` and `metadata`. Any
-  other field, like `argument-hint`, must be one that agents without it
-  ignore.
-- **Size.** `SKILL.md` stays under 500 lines. Detail goes to `references/`,
-  and the instruction that cites a file there says when to read it.
+  produces, then when to use it. It has one or two sentences and at most 350
+  characters: every description loads at the start of every session. It names
+  the requests that call for the skill, including ones that do not name its
+  domain, because agents under-trigger on a bare summary. It says nothing
+  about how the skill works internally. Every skill sets `license: MIT`. The
+  format also allows `compatibility` and `metadata`. `argument-hint` and
+  `disable-model-invocation` are the only other fields: Claude Code, Cursor,
+  and Copilot read them, every other agent ignores them, and claude.ai upload
+  and the Skills API reject them. A skill with `disable-model-invocation`
+  states the same rule in its description, so that every agent behaves
+  alike, and holds `agents/openai.yaml` with
+  `policy.allow_implicit_invocation: false` for Codex.
+- **Size.** `SKILL.md` stays under 500 lines and under 5,000 tokens in
+  `CONTEXT-SIZE.md`. Claude Code keeps only the first 5,000 tokens of a skill
+  when it compacts the context window. Detail goes to `references/`, and the
+  instruction that cites a file there says when to read it. A reference file
+  over 100 lines opens with a `Sections:` line that lists its headings,
+  separated by semicolons. An agent that reads part of the file then finds
+  the rest.
 - **Subagents.** Every skill except `task-orchestrate` holds the
   `**Subagents.**` block at the top of its first step that reads project
-  files or runs commands. `task-orchestrate` states its stricter hard rule
+  files or runs commands. `agent-docs` has no steps and holds it at the top
+  of its Audit section. `task-orchestrate` states its stricter hard rule
   instead. Every copy of the block is identical: change it in every skill
   in the same commit.
 - **Line width.** Every Markdown line outside frontmatter is at most 80
@@ -73,6 +86,15 @@ These rules hold in every Markdown file of this repository.
 - **Scripts.** Instructions invoke a script as `<skill-dir>/scripts/<file>` and
   define `<skill-dir>` as the folder holding the `SKILL.md`. A skill with a
   script names its runtime and tools in the `compatibility` frontmatter field.
+  Every script has the executable bit set.
+- **Hard rules.** Each numbered rule under `## Hard rules` ends with one
+  sentence that says what goes wrong without it. A rule with its reason
+  survives a case the wording did not foresee.
+- **Evals.** Every skill holds `evals/evals.json`: three cases of `prompt`,
+  `expected_output`, and `files`, in the format of the anthropics/skills
+  skill-creator. It also holds `evals/trigger-queries.json`: ten entries of
+  `query` and `should_trigger`, five true and five near misses that are
+  false. Update both with the description or the step they cover.
 
 ## Distribution
 
@@ -141,13 +163,13 @@ Folders:
   the file layout. It also reads the headings of the work report in
   `skills/task-work/references/work-report-template.md`. It invokes
   `task-work` and `task-refactor` by their skill names and reads the final
-  line of `task-refactor`, the paths or identifiers. Change any of these
+  line of `task-refactor`, the task file path or identifier. Change any of these
   in `skills/task-orchestrate/` in the same commit. It adds one file to the
   layout, `<tasks-dir>/###-<task-slug>/orchestration.md`, which no other
   skill reads.
-- End `task-create`, `task-breakdown`, and `task-refactor` with the paths
-  written or the identifiers created, and nothing else. The next `task-*`
-  skill takes that line as its input without an edit.
+- End `task-create`, `task-breakdown`, and `task-refactor` with one line:
+  the task file path or the task item's identifier, and nothing else. The
+  next `task-*` skill takes that line as its input without an edit.
 - `glossary` writes the glossary and never edits another document.
   `unambiguity` reads the glossary and never writes it. Both read a glossary
   entry as a bullet `- **Term**: definition.`; change that form in both
@@ -274,12 +296,12 @@ Folders:
       done | sort -u | wc -l
     done
     ```
-11. Confirm every description has at most two sentences and 200 characters.
+11. Confirm every description has at most two sentences and 350 characters.
     Every path printed is a failure:
 
     ```bash
     awk '/^description:/ { sub(/^description: */, "")
-         if (length > 200 || gsub(/[.!?]( |$)/, "&") > 2) print FILENAME }' \
+         if (length > 350 || gsub(/[.!?]( |$)/, "&") > 2) print FILENAME }' \
       skills/*/SKILL.md
     ```
 12. For `task-create` and `task-breakdown`, diff the two line-count files.
@@ -288,4 +310,45 @@ Folders:
     ```bash
     diff skills/task-create/references/line-count.md \
          skills/task-breakdown/references/line-count.md
+    ```
+13. Confirm every frontmatter key is one the Agent Skills format allows.
+    Every key printed must be `argument-hint` or `disable-model-invocation`:
+
+    ```bash
+    awk 'FNR == 1 && /^---$/ { fm = 1; next } fm && /^---$/ { nextfile }
+         fm && /^[a-z-]+:/ { k = $1; sub(/:$/, "", k)
+           if (k !~ /^(name|description|license|compatibility|metadata)$/ &&
+               k != "allowed-tools") print FILENAME ": " k }' skills/*/SKILL.md
+    ```
+14. Confirm every skill has both eval files in the required shape. Every
+    line printed is a failure:
+
+    ```bash
+    for d in skills/*/; do
+      node -e '
+        const fs = require("fs"), d = process.argv[1], n = d.split("/")[1];
+        const e = JSON.parse(fs.readFileSync(d + "evals/evals.json"));
+        const t = JSON.parse(fs.readFileSync(d + "evals/trigger-queries.json"));
+        const yes = t.filter((q) => q.should_trigger === true).length;
+        if (e.skill_name !== n || e.evals.length !== 3 || t.length !== 10 ||
+            yes !== 5) console.log(d);
+      ' "$d" 2>&1 | sed "s#^#$d: #"
+    done
+    ```
+15. Confirm every reference file over 100 lines opens with a `Sections:`
+    line, and every script has the executable bit. Every path printed is a
+    failure:
+
+    ```bash
+    for f in skills/*/references/*.md; do
+      [ "$(wc -l < "$f")" -gt 100 ] && ! grep -q '^Sections:' "$f" && echo "$f"
+    done
+    find skills -path '*/scripts/*' -type f ! -perm -u+x
+    ```
+16. Run `node scripts/context-size.mjs`, then confirm no `SKILL.md` exceeds
+    5,000 tokens. Every skill printed is a failure:
+
+    ```bash
+    awk -F'|' '/^\| [a-z-]+ +\|/ { gsub(/[ ,]/, "", $4)
+         if ($4 + 0 > 5000) print $2 }' CONTEXT-SIZE.md
     ```

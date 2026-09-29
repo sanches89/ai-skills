@@ -1,5 +1,7 @@
 # Update report template
 
+Sections: Update report.
+
 The update report is all the user keeps from a run. Make every line a fact
 that changes what the user does next. Keep the headings exactly as written.
 Replace every `<placeholder>`.

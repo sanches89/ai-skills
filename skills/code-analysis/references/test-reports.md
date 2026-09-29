@@ -1,5 +1,7 @@
 # Test reports
 
+Sections: Sources; Install commands; Report options per runner.
+
 Read this file in Step 2c.
 
 ## Sources

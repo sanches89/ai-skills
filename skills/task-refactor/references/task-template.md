@@ -1,5 +1,7 @@
 # Task template
 
+Sections: Refactor task sections; Task; Subtask.
+
 Two formats: the **task** and the **subtask**. Fill every section and replace
 every `<placeholder>`. Keep the headings exactly as written: they map onto
 items and files. The task becomes the item body or `task.md`. Each subtask
@@ -25,6 +27,68 @@ Rules for filling:
 - In the draft, name titles and numbers on `Task`, `Depends on`, and in the
   Subtasks list. Step 9 replaces them with file links or item links at save
   time.
+
+## Refactor task sections
+
+Fill each section with what the review settled. Step numbers are those of
+`SKILL.md`.
+
+**The task:**
+- *Title*: `Refactor <refactor scope in a few words>`.
+- *Summary*: the refactor scope, the smells found, and the structure after
+  every subtask.
+- *Success criteria*: one per command from 3b, passing with no failure
+  beyond the baseline, each baseline failure named. One per part of the
+  contract from Step 2: same name, signature, and format, except a change
+  the request names. One per entry: the structure after the change. The
+  test counts: total not below the baseline, failed and skipped not above
+  it. The coverage counts: uncovered lines and branches not above the
+  baseline. The duplication and complexity values the entries change, with
+  the target value.
+- *In scope*: every file of the refactor scope.
+- *Out of scope*: every bug found, with its location and the statement that
+  the code keeps it. Every finding dropped in Step 5 or Step 6, with its
+  reason. Every part removed from the refactor scope in Step 4. Every part
+  of the contract, as a statement that it stays. Every *Out of scope* entry
+  of a requested task, restated.
+- *Approach*: one bullet per entry, in order: path and symbol, then the
+  structure after the change.
+- *Decisions*: the rules every entry follows, as `refactoring-rules.md`
+  states. The conventions from 3a
+  and 3c. The rule that a subtask applies one refactoring and gets one
+  commit.
+- *Context*: the commands from 3b with the report options from 3d, and the
+  single-file test command. The analysis tools with their limits, and the
+  measure command from Step 4. The baseline: one line per measurement with
+  its values, or `skipped` with the reason. The test coverage of every
+  function the entries change. For kind *task*, the identifier or path of
+  the requested task.
+- *References*: `None.` Never copy the References of a requested task.
+- *Subtasks*: one line per entry, in order, with its dependencies.
+- *Verification*: the commands from 3b, then the test command with the
+  report options, then the measure command from Step 4 over the same paths.
+
+**Each subtask:**
+- *Title*: the refactoring and the symbol, imperative, under 80 characters.
+- *Goal*: the structure after the change, in one sentence.
+- *Context*: the smell and its evidence, with every location as `path:line`.
+  The tests that cover the code, or the statement that none does. The
+  single-file test command. The rules from `refactoring-rules.md` and the
+  conventions this refactoring follows, restated. Every part of the
+  contract the change touches, as a statement that it stays. For a rename
+  or a move across many files, the rewrite tool from
+  `measurement-tools.md`.
+- *References*: `None.`
+- *Changes*: first, for an entry marked `characterization tests first`, the
+  test file, `(new)` or existing, with every test case from Step 6 named.
+  Then every file the refactoring changes, with the symbol and the structure
+  after the change. A file it creates, marked `(new)`, with what it holds.
+- *Acceptance criteria*: each named characterization test passes on the
+  unchanged code and after the change. The structure after the change, as a
+  binary check. The tests that cover the code pass. Every part of the
+  contract the change touches keeps its name, signature, and format. No
+  assertion of an existing test changed.
+- *Verification*: the one command from Step 6.
 
 ---
 

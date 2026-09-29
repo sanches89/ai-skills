@@ -1,5 +1,7 @@
 # Mutation reports
 
+Sections: Sources; Tools; Thread options; When to skip the mutation run.
+
 Read this file in Step 2d.
 
 ## Sources

@@ -1,5 +1,8 @@
 # Smell catalog
 
+Sections: Duplication; Size; Names; Conditionals; Data; Coupling; Dead weight;
+Comments.
+
 Every smell this skill reports. A function is a function, a method, or a
 procedure. A module is a class, a file, or a package. Skip an entry that the
 language of the code has no form for. Each entry gives the **Signal** that

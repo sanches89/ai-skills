@@ -1,6 +1,6 @@
 ---
 name: code-analysis
-description: Measures the duplication, complexity, tests, coverage, and mutation score of the working tree or of one branch. Use when the user wants code measured or analyzed.
+description: Measures the duplication, complexity, hotspots, tests, coverage, and mutation score of the working tree or one branch and reports ranked findings, changing no code. Use only when the user asks for it by name or asks for the code measured or analyzed, never for a general code question, because a run can take hours.
 license: MIT
 compatibility: Requires Node.js 22.13 or newer with npx and git, run inside a git repository, with network access on the first run. Complexity needs lizard on PATH, or uv, pipx, or a Python that has lizard. Tests and coverage need the project's own test command. Mutation needs the project's own mutation command. A missing tool skips its measurement and never blocks the report.
 argument-hint: "[branch]"
@@ -23,17 +23,29 @@ the run starts.
 1. **The project stays as it is.** Change no project file. Add no
    dependency, tool, configuration file, JUnit report, coverage report, or
    mutation report to the repository. Write every report, summary, and
-   note of the run in the scratch directory.
+   note of the run in the scratch directory. A measurement of a changed
+   tree describes no version the project has.
 2. **Never ask what research can answer.** Consult the code, the docs, the
-   git history, and the summary first.
+   git history, and the summary first. A question the summary answers
+   costs the user time on top of a run of hours.
 3. **Never assume.** When a decision changes the work and research cannot
-   settle it, ask the user.
+   settle it, ask the user. An assumed name or command measures the wrong
+   code.
 4. **No outward actions.** Never commit, push, open a pull request, or post
-   a comment.
+   a comment. The measurement report is the only output.
 
 ## Workflow
 
 ### Step 1: Load the request
+
+**Subagents.** When the agent offers subagents, run in one every read whose
+whole product is the facts the step records. In Claude Code, that is the
+`Agent` tool, with the `Explore` subagent for reads. Run in one every
+command whose output the step reduces to a result. Give the subagent the
+question, the paths, and the facts to return. It returns only those facts,
+each with path and line. The context window then holds those returns, not
+the files, and stays small. Without subagents, follow the step yourself and
+keep only what it names.
 
 Resolve the invocation text, or the request in the conversation, as one
 kind:
@@ -46,7 +58,7 @@ kind:
 - **Anything else**: ask one question: which one name to measure, or none.
 
 Record the output of `git status --porcelain` and of
-`git rev-parse --short HEAD`. With a name, record the target commit: the
+`git rev-parse --short HEAD`. With a name, record the measured commit: the
 output of `git rev-parse --short "<name>^{commit}"`.
 
 Write private notes in a scratch directory outside the repository, written
@@ -55,8 +67,8 @@ in the notes every list a later step reads.
 
 `<root>` is the folder of the measured code. Without a name, it is the
 output of `git rev-parse --show-toplevel`. With a name, run
-`git worktree add --detach <scratch-dir>/target <name>` from the repository
-root, and `<root>` is `<scratch-dir>/target`. Never check out, stash,
+`git worktree add --detach <scratch-dir>/measured <name>` from the repository
+root, and `<root>` is `<scratch-dir>/measured`. Never check out, stash,
 reset, or switch the working tree.
 
 Run every command of Steps 2 to 6 from `<root>`, unless a step says
@@ -100,15 +112,6 @@ in place of the output folder. Record the reason instead when the file
 says to skip the mutation run.
 
 ### Step 3: Tests
-
-**Subagents.** When the agent offers subagents, run in one every read whose
-whole product is the facts the step records. In Claude Code, that is the
-`Agent` tool, with the `Explore` subagent for reads. Run in one every
-command whose output the step reduces to a result. Give the subagent the
-question, the paths, and the facts to return. It returns only those facts,
-each with path and line. The context window then holds those returns, not
-the files, and stays small. Without subagents, follow the step yourself and
-keep only what it names.
 
 Set `<dir>` to `<scratch-dir>/reports` in every command of Steps 3 to 5.
 
@@ -179,7 +182,7 @@ grep helper included, over the measurement report. Fix every failure.
 ### Step 8: Deliver
 
 With a name, run from the repository root
-`git worktree remove --force <scratch-dir>/target`, then
+`git worktree remove --force <scratch-dir>/measured`, then
 `git worktree prune`. Run both also when an earlier step fails. Confirm
 that `git worktree list` names no folder under `<scratch-dir>`.
 

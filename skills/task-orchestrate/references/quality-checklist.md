@@ -12,7 +12,7 @@ branch.
 
 - [ ] No question went to the user during the run.
 - [ ] Every fact in the record went into the prompt of every job run after
-      it was recorded.
+      it was added.
 - [ ] No two jobs ran at once, and `<tree>` was clean before every job
       started.
 - [ ] Every read of a task, an item, a manifest, or a doc ran in a
@@ -21,7 +21,7 @@ branch.
       a subagent when the agent offered one.
 - [ ] At most three rounds ran, and a round that wrote no task ended
       the loop.
-- [ ] The target's Verification and every command the baseline records
+- [ ] The target's Verification and every command on the `baseline` line
       ran after the last commit.
 - [ ] No push or pull request. No status change or comment beyond the
       record rules, unless the request asked.

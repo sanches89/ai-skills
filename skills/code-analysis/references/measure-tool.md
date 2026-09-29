@@ -1,5 +1,8 @@
 # The measure tool
 
+Sections: Command; Options this skill uses; Exit codes; Limits; Reading a
+summary.
+
 Read this file in Step 2b.
 
 ## Command

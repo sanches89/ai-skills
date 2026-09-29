@@ -1,6 +1,6 @@
 ---
 name: task-orchestrate
-description: Runs a whole task end to end, one commit per subtask, then refactor rounds. Use when the user wants a task with subtasks implemented or orchestrated from an item or a task file.
+description: Runs a whole task end to end on a branch, one commit per subtask through task-work, then refactor rounds, with no questions. Use when the user wants a task with subtasks implemented, orchestrated, run unattended, or shipped as a branch from an item or a task file, or says to run the whole plan.
 license: MIT
 argument-hint: <task id | task file>
 ---
@@ -30,20 +30,23 @@ These words have exactly one meaning in this skill.
 ## Hard rules
 
 1. **Every change comes from a job or a round.** Never edit project code
-   yourself, and
-   never edit a task file, a subtask file, or the body of an item. Put a
-   wrong or stale fact found in one in the record as a fact.
+   yourself, except to restore the tree as Step 4 states. Never edit a task
+   file, a subtask file, or the body of an item. Put a wrong or stale fact
+   found in one in the record as a fact. A change outside a job has no work
+   report and no commit of its own.
 2. **One job at a time.** Never run two jobs at once: they share one working
-   tree.
+   tree, and two edits in one tree corrupt each other's diff.
 3. **Never ask.** Every job works from its target, the code, the docs, and
    the connected tools, and reports `blocked` when its target lacks a
-   fact. Settle every choice of this skill by the rules below.
+   fact. Settle every choice of this skill by the rules below. A run of
+   hours has no user waiting to answer.
 4. **Keep only the result.** Keep from each job its work report, and
-   nothing else.
+   nothing else. Everything else fills the context window over a long run.
 5. **No outward actions beyond the record and the commits.** Never push or
    open a pull request. Change an item's status or comment on an item only
    as the record rules of Step 1 state. Do more only when the request that
-   invoked this skill says so.
+   invoked this skill says so. A push publishes work the user has not
+   reviewed.
 6. **Delegate every read and run.** Run in a subagent (in Claude Code, the
    `Agent` tool) every step that reads a task, an item, a manifest, or a
    doc. Run in a subagent every build, lint, type-check, test, and
@@ -82,8 +85,8 @@ this order, and take the first that applies:
 By hard rule 6, run the tracker rule in a subagent that returns the
 tracker and the way it is reached, and nothing else.
 
-The target is the task this skill runs. Resolve the invocation text, or the
-task given in the conversation, as one source:
+The target is the task or subtask this skill runs. Resolve the invocation
+text, or the task given in the conversation, as one source:
 - **An item identifier or URL** (`PAY-212`, `#128`, an issue link) in the
   tracker. Source: *tracker*. With no tracker connected, end with one
   line: no tracker holds the item, give a task file path. Write no report.
@@ -152,9 +155,9 @@ summary's subtask lines. Without subtasks, one job: the target itself.
 holds:
 - the request asks for a worktree;
 - `git status --porcelain` prints anything;
-- the current branch is the default branch: the one
-  `git symbolic-ref --short refs/remotes/origin/HEAD` prints, else `main`
-  when it exists, else `master`.
+- the current branch is the default branch: the name that
+  `git symbolic-ref --short refs/remotes/origin/HEAD` prints with its
+  `origin/` prefix removed, else `main` when it exists, else `master`.
 
 In every other case the jobs run in the current working tree on the
 current branch. Outside a git repository, they run in the current working
@@ -205,7 +208,7 @@ continue.
    <commands or steps>
    ```
 
-3. **Record the plan.** Write the plan to the record.
+3. **Save the plan.** Write the plan to the record.
 
 ### Step 4: Run the jobs
 
@@ -262,12 +265,12 @@ it. For each round:
    paths under Changes of every work report so far>. Work in <tree>:
    every command runs there and every file is read and written there.
    Save to files.
-   Return your final recap and nothing else.
+   Return your final line and nothing else.
    ```
 
 2. **Round result.** Add `R<round>: <task file path | identifier | none>`
-   under `rounds` in the record. When the recap names no task file path
-   and no item identifier, the round is empty: go to Step 6. Otherwise,
+   under `rounds` in the record. When the final line names no task file
+   path and no item identifier, the round is empty: go to Step 6. Otherwise,
    for source *file* in a git repository, when the task file path is
    inside `<tree>`, commit the new task files alone on the branch. Use
    the project's commit convention, with the subject
@@ -286,7 +289,7 @@ Run one probe of, in this order:
 2. every command on the summary's `commands` line.
 
 The proof passes when the `verification` passes and no command fails
-beyond the failures the baseline records. On a failure, the result is
+beyond the failures on the plan's `baseline` line. On a failure, the result is
 `blocked`, and the failing command and check go into the prompt of
 Step 7.
 

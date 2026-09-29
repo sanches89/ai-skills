@@ -62,10 +62,11 @@ The task-* skills form a pipeline. task-create writes
 `<tasks-dir>/###-<task-slug>/###-<subtask-slug>.md` next to it.
 task-refactor writes both from a code review. `<tasks-dir>` is the first
 that exists of: the folder you name; the folder README, CLAUDE.md,
-AGENTS.md, or CONTRIBUTING names for tasks, plans, or specs; the folder
-that already holds task folders; a `tasks`, `plans`, or `specs` folder of
-the repository. With none of these, it is a scratch directory outside the
-repository, which in Claude Code lives one session. task-work implements a
+AGENTS.md, CONTRIBUTING, or `docs/README.md` names for tasks, plans, or
+specs; the folder that already holds task folders; a `tasks`, `plans`, or
+`specs` folder of the repository. With none of these, it is a scratch
+directory outside the repository, which in Claude Code lives one session.
+task-work implements a
 task or one subtask from those files. task-orchestrate runs task-work on
 every subtask of a task, one at a time, with one commit each. Then it runs
 task-refactor and task-work over the result, up to three rounds. The
@@ -106,6 +107,7 @@ skills/
     SKILL.md          # frontmatter (name, description) + instructions
     references/       # templates, checklists, and rules the skill cites
     scripts/          # executables the instructions run
+    evals/            # test prompts and trigger queries for the skill
 ```
 
 ## Usage
@@ -124,11 +126,11 @@ to install for the user instead of the project. The skills are also listed on
 Without the CLI, clone this repo into your agent's skills folder (e.g.
 `~/.claude/skills/`).
 
-In Claude Code, two skills run only when you type their command:
-`/code-analysis` and `/package-update`. Their
-`disable-model-invocation: true` frontmatter field stops the agent from
-starting them on its own. An agent that does not support that field starts
-them from their descriptions, like the other skills.
+Two skills run only when you ask for them by name: `/code-analysis` and
+`/package-update`. Their `disable-model-invocation: true` frontmatter field
+stops Claude Code, Cursor, and Copilot from starting them on their own.
+Their `agents/openai.yaml` does the same in Codex, and their descriptions
+state the rule for every other agent.
 
 ## Contributing
 

@@ -1,5 +1,9 @@
 # Refactoring rules
 
+Sections: Behavior; Size of a change; Duplication; Names; Functions; Modules;
+Removing code; Contract changes the request names; Tests during a refactoring;
+Never.
+
 Read this file in Step 7. Write the rules of *Behavior*, *Size of a change*,
 *Tests during a refactoring*, and *Never* into the task's Decisions section.
 Write the rules a subtask's refactoring needs into that subtask's Context

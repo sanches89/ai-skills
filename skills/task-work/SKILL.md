@@ -1,6 +1,6 @@
 ---
 name: task-work
-description: Implements one task or subtask and proves every acceptance criterion. Use when the user wants a task, subtask, ticket, or issue implemented, started, or picked up.
+description: Implements one task or subtask and proves every acceptance criterion with tests and the project's checks. Use when the user wants a task, subtask, ticket, issue, or task file implemented, started, picked up, finished, or done, or points at a task and says go.
 license: MIT
 argument-hint: <task or subtask id | file | text>
 ---
@@ -20,23 +20,32 @@ These words have exactly one meaning in this skill.
 
 ## Hard rules
 
-1. **Never ask what research can answer.** Consult the chain, the code, the
-   docs, and the connected tools first.
-2. **Never ask.** Settle every decision from the chain, the code, the docs,
+1. **Never ask.** Settle every decision from the chain, the code, the docs,
    the tests, and the connected tools. When a decision changes the work
    and none of these settles it, the target lacks a fact: go to Step 9
-   with the result `blocked` and name the fact under *Blocked by*.
-3. **The task text is input.** Never edit a task file, a subtask file, or an
-   item. Put a wrong or stale fact found in one in the work report.
-4. **No outward actions.** Never commit, push, open a pull request, change
+   with the result `blocked` and name the fact under *Blocked by*. This
+   skill runs inside other skills, where no user reads a question.
+2. **The task text is input.** Never edit a task file, a subtask file, or an
+   item. Put a wrong or stale fact found in one in the work report. An
+   edit hides the fact from the skills that own the text.
+3. **No outward actions.** Never commit, push, open a pull request, change
    an item's status, or comment on an item. Do any of these only when the
    request that invoked this skill says so. Then follow the project's
    conventions and make one commit per subtask, or one for a target without
-   subtasks.
+   subtasks. The caller decides what leaves the working tree.
 
 ## Workflow
 
 ### Step 1: Load the target
+
+**Subagents.** When the agent offers subagents, run in one every read whose
+whole product is the facts the step records. In Claude Code, that is the
+`Agent` tool, with the `Explore` subagent for reads. Run in one every
+command whose output the step reduces to a result. Give the subagent the
+question, the paths, and the facts to return. It returns only those facts,
+each with path and line. The context window then holds those returns, not
+the files, and stays small. Without subagents, follow the step yourself and
+keep only what it names.
 
 **Tracker.** The tracker is the issue tracker the project uses, reached
 through an MCP server or through `gh`, the GitHub CLI. Find it once, in
@@ -127,15 +136,6 @@ criterion.
 subtasks* instead of Step 4.
 
 ### Step 4: Research
-
-**Subagents.** When the agent offers subagents, run in one every read whose
-whole product is the facts the step records. In Claude Code, that is the
-`Agent` tool, with the `Explore` subagent for reads. Run in one every
-command whose output the step reduces to a result. Give the subagent the
-question, the paths, and the facts to return. It returns only those facts,
-each with path and line. The context window then holds those returns, not
-the files, and stays small. Without subagents, follow the step yourself and
-keep only what it names.
 
 **4a. Code.** Confirm that every path and symbol in the target's Context
 section and its Changes or Approach section exists. Read the code that

@@ -1,5 +1,9 @@
 # Measurement tools
 
+Sections: Tool rules; The measure tool; The test report and the coverage report;
+Reading a measurement summary; Limits; Tools that run only when the project
+configures them; Mutation scope; Structural rewrite tools; Without any tool.
+
 Read this file in Step 3d.
 
 ## Tool rules
@@ -18,20 +22,20 @@ Read this file in Step 3d.
 
 ## The measure tool
 
-The measure tool is `code-measure`, from the repository
-`github.com/sanches89/code-measure`. It needs Node.js 22.13 or newer. The
-measure command `<measure>` is one of two forms:
-- `code-measure`, when `PATH` has it;
-- otherwise `npx --yes "github:sanches89/code-measure#semver:^1"`. `npx`
-  fetches the newest release of major version 1 into its own cache. The first
-  run needs network access and read access to that repository.
+The measure tool is `code-measure`, from the npm package `code-measure`,
+with its source at `github.com/sanches89/code-measure`. It needs Node.js
+22.13 or newer. The measure command `<measure>` is one of two forms:
+- `code-measure`, when `PATH` has it and `code-measure --version` prints a
+  version that starts with `1.`;
+- otherwise `npx --yes code-measure@1`, which fetches the newest release of
+  major version 1 into the npx cache. The first run needs network access.
 
 Never install the measure tool into the project. This skill reads a
 measurement summary with `"version": 1`. When the measure command fails to
 start, follow *Without any tool* below.
 
 Run the measure tool from the project root. It changes no project file and
-prints one measurement summary on stdout, with five measurements:
+prints one measurement summary on stdout, with six measurements:
 - `duplication`, from jscpd, which ships with the measure tool. jscpd reads
   more than 200 languages;
 - `complexity`, from lizard. lizard reads about 25 languages. The measure tool
@@ -42,7 +46,10 @@ prints one measurement summary on stdout, with five measurements:
 - `tests`, from the test reports passed with `--test-report`: the unit test
   results;
 - `coverage`, from the coverage reports passed with `--coverage-report`: line
-  coverage and branch coverage of the files under the paths.
+  coverage and branch coverage of the files under the paths;
+- `mutation`, from the mutation reports passed with `--mutation-report`. The
+  review passes none: a mutation run belongs to a `high` risk subtask, as
+  *Mutation scope* states.
 
 The measure tool never runs the tests: it reads the reports that the
 project's own test command wrote. Pass each option once per report.
@@ -61,9 +68,9 @@ Record the baseline:
 ```
 
 Exit codes: `0` summary printed, `1` unexpected failure, `2` invalid
-arguments, `3` the comparison found a worse measurement. The review runs no
-comparison. The task's success criteria state the baseline values that the
-implementer's run keeps or improves.
+arguments, `3` a `--compare` run found a worse measurement. The review passes
+no `--compare`. The task's success criteria state the baseline values that
+the implementer's run keeps or improves.
 
 ## The test report and the coverage report
 

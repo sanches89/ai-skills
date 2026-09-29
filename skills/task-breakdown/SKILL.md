@@ -1,8 +1,8 @@
 ---
 name: task-breakdown
-description: Splits an existing task into commit-sized subtasks. Use when a task, ticket, issue, or spec is too big for one change and the user wants it broken down.
+description: Splits an existing task into commit-sized subtasks, each self-contained with one verification command. Use when a task, ticket, issue, spec, or plan is too big for one change, when the user wants it broken down, sliced, phased, or split into steps, or before task-orchestrate runs it.
 license: MIT
-compatibility: Works in any project, with or without git. The line count needs cloc on PATH, or Node.js with npx, Perl 5, and network access on the first run. A missing tool leaves the count to the agent and never blocks the breakdown.
+compatibility: The line count needs cloc on PATH, or Node.js with npx, Perl 5, and network access on the first run. A missing tool leaves the count to the agent and never blocks the breakdown.
 argument-hint: <task id | task file | task text>
 ---
 
@@ -24,22 +24,36 @@ These words have exactly one meaning in this skill.
 1. **Read-only on the project.** Write only the task file and the subtask
    files, in Step 8. Write drafts in a scratch directory outside the
    repository (in Claude Code, the scratchpad directory), written
-   `<scratch-dir>` in paths.
+   `<scratch-dir>` in paths. A draft inside the repository ends up
+   committed beside the code.
 2. **Never ask what research can answer.** Consult code, docs, tests, and
-   connected tools first.
+   connected tools first. A question the code answers costs the user time
+   and invites a guess.
 3. **Never assume.** When a decision changes a subtask and research cannot
-   settle it, ask the user.
-4. **Write nothing before the user approves the full breakdown text**
-   (Step 7).
+   settle it, ask the user. An assumed decision becomes a wrong fact that
+   the implementing agent follows without noticing.
+4. **Write nothing outside the scratch directory before the user approves
+   the full breakdown text** (Step 7). The next skill treats a saved
+   subtask as settled.
 5. **Only the task goes in.** The breakdown holds what the original task
    needs and the *Out of scope* entries, nothing else. A question or
    remark from the user on any other topic gets an answer in chat and no
    line in the breakdown. When it deserves a task of its own, say so in
-   chat and write nothing about it in the breakdown.
+   chat and write nothing about it in the breakdown. A stray line in a
+   subtask becomes scope for the implementing agent.
 
 ## Workflow
 
 ### Step 1: Load the task
+
+**Subagents.** When the agent offers subagents, run in one every read whose
+whole product is the facts the step records. In Claude Code, that is the
+`Agent` tool, with the `Explore` subagent for reads. Run in one every
+command whose output the step reduces to a result. Give the subagent the
+question, the paths, and the facts to return. It returns only those facts,
+each with path and line. The context window then holds those returns, not
+the files, and stays small. Without subagents, follow the step yourself and
+keep only what it names.
 
 **Tracker.** The tracker is the issue tracker the project uses, reached
 through an MCP server or through `gh`, the GitHub CLI. Find it once, in
@@ -85,15 +99,6 @@ Write one sentence: *The task is to <change> so that <outcome>.* Ask the user
 to confirm or correct it before any research.
 
 ### Step 2: Research
-
-**Subagents.** When the agent offers subagents, run in one every read whose
-whole product is the facts the step records. In Claude Code, that is the
-`Agent` tool, with the `Explore` subagent for reads. Run in one every
-command whose output the step reduces to a result. Give the subagent the
-question, the paths, and the facts to return. It returns only those facts,
-each with path and line. The context window then holds those returns, not
-the files, and stays small. Without subagents, follow the step yourself and
-keep only what it names.
 
 **2a. The original task.** Read it in full. Treat every decision, success
 criterion, and scope statement in it as a fact. Never ask about it again.
@@ -312,6 +317,5 @@ other run of characters replaced by one hyphen, cut to 60 characters, with
 no leading or trailing hyphen. The `task-create` skill shares this layout
 and writes the task file.
 
-Finish with a short recap: every item identifier and URL created or updated,
-or every path written, absolute when outside the repository, and the number
-of subtasks. Ask nothing else.
+Finish with one line: the task item's identifier and URL, or the path of the
+task file, absolute when outside the repository. Ask nothing else.

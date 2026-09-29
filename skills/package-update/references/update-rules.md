@@ -1,5 +1,8 @@
 # Update rules
 
+Sections: Range style; Reading the Node version; Constraints; Left alone;
+Groups; The ladder; Bisection; Checkpoint; Hold reasons; Release notes.
+
 Read this file in Step 2c. Steps 2 to 7 follow it.
 
 ## Range style
@@ -147,7 +150,7 @@ The first rung of a group moves every package of the group one major line
 down from its candidate version. Each later rung moves every package one
 major line down from the previous rung. A package of the group with no major
 line left keeps the range of Step 6a. Restore the checkpoint before each
-apply of a rung, and again after the last rung fails.
+apply of a rung, and again when the last rung's apply is broken.
 
 ## Bisection
 
@@ -156,17 +159,17 @@ package in Step 6a, a group in Step 6b, and a plan entry in Step 7.
 1. Split the batch into two halves by plan order.
 2. Restore the checkpoint. Apply the first half.
 3. Restore the checkpoint. Apply the second half.
-4. For a half whose apply passed, mark every unit of the half as accepted.
-5. For a half whose apply failed and that holds one unit, that unit is
+4. For a half whose apply is clean, mark every unit of the half as accepted.
+5. For a half whose apply is broken and that holds one unit, that unit is
    breaking. In Step 6a and in Step 7, hold that unit. In Step 6b, walk its
    ladder.
-6. For a half whose apply failed and that holds more than one unit, bisect
-   that half from item 1.
+6. For a half whose apply is broken and that holds more than one unit,
+   bisect that half from rule 1.
 7. In Step 6a, when every unit is settled, restore the checkpoint. Apply
    every accepted unit as one batch. In Step 6b, Step 6c does this instead.
-8. When the apply of item 7 fails, apply the accepted units one at a time in
-   plan order. After a pass, replace the checkpoint. After a fail, restore
-   the checkpoint. Then hold the unit.
+8. When the apply of rule 7 is broken, apply the accepted units one at a
+   time in plan order. After a clean apply, replace the checkpoint. After a
+   broken one, restore the checkpoint. Then hold the unit.
 
 ## Checkpoint
 

@@ -1,5 +1,8 @@
 # Analysis rules
 
+Sections: What to read; Clones; Functions over a limit; Hotspots; Tests;
+Coverage; Surviving mutants; Actions; Ranking.
+
 Read this file in Step 6. A function is a function, a method, or a
 procedure. A module is a class, a file, or a package. A finding is one
 location that these rules keep after its code is read, with its evidence

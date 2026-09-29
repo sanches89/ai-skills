@@ -1,5 +1,7 @@
 # Task template
 
+Sections: Task; Subtask.
+
 Two formats: the **task** and the **subtask**. Fill every section and replace
 every `<placeholder>`. Keep the headings exactly as written: they map onto
 items and files. The task becomes the item body or `task.md`. Each subtask

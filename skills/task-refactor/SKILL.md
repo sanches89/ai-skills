@@ -1,8 +1,8 @@
 ---
 name: task-refactor
-description: Reviews code and writes a refactor task with one subtask per refactoring, and changes no code. Use when the user wants code refactored, simplified, or cleaned up, or says it is messy.
+description: Reviews code with duplication, complexity, and coverage measured and writes a refactor task with one subtask per refactoring, changing no code. Use when the user wants code refactored, simplified, cleaned up, deduplicated, or made testable, calls it messy, legacy, or spaghetti, or asks what to improve in a module.
 license: MIT
-compatibility: Works in any project, with or without git. The measurements need Node.js 22.13 or newer with npx, network access on the first run, and read access to github.com/sanches89/code-measure. Complexity also needs uv, pipx, or a Python that has lizard. A missing tool skips its measurement and never blocks the review.
+compatibility: The measurements need Node.js 22.13 or newer with npx and network access on the first run. Complexity also needs uv, pipx, or a Python that has lizard. A missing tool skips its measurement and never blocks the review.
 argument-hint: <path | symbol | git range | task or subtask id | file | text>
 ---
 
@@ -29,14 +29,25 @@ These words have exactly one meaning in this skill.
 
 1. **Read-only on the project.** Write only the task file and the subtask
    files, in Step 9. Write drafts in a scratch directory outside the
-   repository (in Claude Code, the scratchpad directory).
+   repository (in Claude Code, the scratchpad directory). The `task-work`
+   skill makes every change, with the tests that prove it.
 2. **Never ask.** Settle every choice from the code, the docs, the tests,
    the connected tools, and the rules below. Write the task without
-   approval.
+   approval. The `task-orchestrate` skill runs this skill with no user
+   present.
 
 ## Workflow
 
 ### Step 1: Load the request
+
+**Subagents.** When the agent offers subagents, run in one every read whose
+whole product is the facts the step records. In Claude Code, that is the
+`Agent` tool, with the `Explore` subagent for reads. Run in one every
+command whose output the step reduces to a result. Give the subagent the
+question, the paths, and the facts to return. It returns only those facts,
+each with path and line. The context window then holds those returns, not
+the files, and stays small. Without subagents, follow the step yourself and
+keep only what it names.
 
 **Tracker.** The tracker is the issue tracker the project uses, reached
 through an MCP server or through `gh`, the GitHub CLI. Find it once, in
@@ -118,15 +129,6 @@ under *Out of scope*. Follow every decision.
   configuration key, and name of an event, a log, or a metric.
 
 ### Step 3: Research
-
-**Subagents.** When the agent offers subagents, run in one every read whose
-whole product is the facts the step records. In Claude Code, that is the
-`Agent` tool, with the `Explore` subagent for reads. Run in one every
-command whose output the step reduces to a result. Give the subagent the
-question, the paths, and the facts to return. It returns only those facts,
-each with path and line. The context window then holds those returns, not
-the files, and stays small. Without subagents, follow the step yourself and
-keep only what it names.
 
 **3a. Conventions.** Read README, CLAUDE.md, AGENTS.md, CONTRIBUTING, and the
 docs that cover the refactor scope. Record the naming, error handling,
@@ -212,9 +214,9 @@ scope* with the failing test.
 
 ### Step 5: Find and rank
 
-Read `references/smell-catalog.md` now. Then read every file in the refactor
-scope in full. A number alone is never a finding. Record one finding per
-smell and location:
+Read `references/smell-catalog.md` now. The subagents below read every file
+in the refactor scope in full. A number alone is never a finding. Record one
+finding per smell and location:
 - the smell and its location as `path:line`;
 - the evidence: the clone, the measured value against its limit, or what the
   code shows;
@@ -295,71 +297,17 @@ and confirm that it fails: a command that passes before the refactoring
 proves nothing. Without a test setup, the structural check alone is the
 command.
 
-With no entry, write no task. Finish with a short recap: the refactor scope,
-the baseline measurements, and the statement that no finding met the rules
-of Step 5. Ask nothing else.
+With no entry, write no task. State the refactor scope and the baseline
+measurements in chat. Finish with one line: `No refactor task: no finding
+met the rules of Step 5.` Ask nothing else.
 
 ### Step 7: Write the refactor task
 
 Read `references/task-template.md` now. Fill it in the scratch directory for
 the task and for each entry, one subtask per entry in the order of Step 6.
-
-**The task:**
-- *Title*: `Refactor <refactor scope in a few words>`.
-- *Summary*: the refactor scope, the smells found, and the structure after
-  every subtask.
-- *Success criteria*: one per command from 3b, passing with no failure
-  beyond the baseline, each baseline failure named. One per part of the
-  contract from Step 2: same name, signature, and format, except a change
-  the request names. One per entry: the structure after the change. The
-  test counts: total not below the baseline, failed and skipped not above
-  it. The coverage counts: uncovered lines and branches not above the
-  baseline. The duplication and complexity values the entries change, with
-  the target value.
-- *In scope*: every file of the refactor scope.
-- *Out of scope*: every bug found, with its location and the statement that
-  the code keeps it. Every finding dropped in Step 5 or Step 6, with its
-  reason. Every part removed from the refactor scope in Step 4. Every part
-  of the contract, as a statement that it stays. Every *Out of scope* entry
-  of a requested task, restated.
-- *Approach*: one bullet per entry, in order: path and symbol, then the
-  structure after the change.
-- *Decisions*: read `references/refactoring-rules.md` now and write the
-  rules every entry follows, as that file states. The conventions from 3a
-  and 3c. The rule that a subtask applies one refactoring and gets one
-  commit.
-- *Context*: the commands from 3b with the report options from 3d, and the
-  single-file test command. The analysis tools with their limits, and the
-  measure command from Step 4. The baseline: one line per measurement with
-  its values, or `skipped` with the reason. The test coverage of every
-  function the entries change. For kind *task*, the identifier or path of
-  the requested task.
-- *References*: `None.` Never copy the References of a requested task.
-- *Subtasks*: one line per entry, in order, with its dependencies.
-- *Verification*: the commands from 3b, then the test command with the
-  report options, then the measure command from Step 4 over the same paths.
-
-**Each subtask:**
-- *Title*: the refactoring and the symbol, imperative, under 80 characters.
-- *Goal*: the structure after the change, in one sentence.
-- *Context*: the smell and its evidence, with every location as `path:line`.
-  The tests that cover the code, or the statement that none does. The
-  single-file test command. The rules from `references/refactoring-rules.md`
-  and the conventions this refactoring follows, restated. Every part of the
-  contract the change touches, as a statement that it stays. For a rename
-  or a move across many files, the rewrite tool from
-  `references/measurement-tools.md`.
-- *References*: `None.`
-- *Changes*: first, for an entry marked `characterization tests first`, the
-  test file, `(new)` or existing, with every test case from Step 6 named.
-  Then every file the refactoring changes, with the symbol and the structure
-  after the change. A file it creates, marked `(new)`, with what it holds.
-- *Acceptance criteria*: each named characterization test passes on the
-  unchanged code and after the change. The structure after the change, as a
-  binary check. The tests that cover the code pass. Every part of the
-  contract the change touches keeps its name, signature, and format. No
-  assertion of an existing test changed.
-- *Verification*: the one command from Step 6.
+Its *Refactor task sections* part says what each section of the task and of
+a subtask holds. Read `references/refactoring-rules.md` now, for the task's
+*Decisions* and each subtask's *Context*.
 
 Writing rules:
 - Write decisions as facts:
@@ -420,6 +368,5 @@ with no leading or trailing hyphen. Build `<task-slug>` from the task title
 and `<subtask-slug>` from the subtask title. The `task-create` and
 `task-breakdown` skills share this layout.
 
-Finish with a short recap: every item identifier and URL created, or every
-path written, absolute when outside the repository, and the number of
-subtasks. Ask nothing else.
+Finish with one line: the task item's identifier and URL, or the path of the
+task file, absolute when outside the repository. Ask nothing else.

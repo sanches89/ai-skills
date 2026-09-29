@@ -1,6 +1,6 @@
 ---
 name: package-update
-description: Updates the npm dependencies of a package or monorepo to current versions. Use when the user wants packages updated, upgraded, or bumped, or says they are outdated.
+description: Updates the npm dependencies of a package or monorepo to the highest versions the project's own checks accept, changing only manifests and lockfiles. Use only when the user asks for it by name or asks for packages updated, upgraded, or bumped, never for an install error or a question about one version.
 license: MIT
 compatibility: Requires Node.js 22 or newer with npx, git, network access to the package registry, and the project's package manager (npm, pnpm, yarn, or bun) on PATH. npx fetches npm-check-updates and semver into its own cache on the first run.
 argument-hint: "[path...] [package name...] [latest | minor | patch] [cooldown <days>]"
@@ -24,12 +24,12 @@ These words have exactly one meaning in this skill.
 - **Apply**: set every range of a batch of packages, then run the plain
   install. Then run the check commands in the baseline order up to the first
   failure.
-- **Pass**: the outcome of an apply that meets three conditions. The plain
-  install succeeds. Every failing check command fails in the baseline results
-  too. The peer report shows no problem beyond the baseline peer report.
-  Every other outcome is a fail.
-- **Accepted**: the state of a plan entry, a group, or a rung whose apply
-  passed.
+- **Clean**: an apply that meets three conditions. The plain install
+  succeeds. Every failing check command fails in the baseline results too.
+  The peer report shows no problem beyond the baseline peer report. Every
+  other apply is broken.
+- **Accepted**: the state of a plan entry, a group, or a rung whose apply is
+  clean.
 - **Hold**: leave the range that a package has at that moment, recording a
   hold reason for the package.
 
@@ -37,16 +37,21 @@ These words have exactly one meaning in this skill.
 
 1. **Only manifests and lockfiles change**, from Step 6 on, through the
    script and the package manager. Never edit source code, a configuration
-   file, a CI file, or a lockfile by hand.
+   file, a CI file, or a lockfile by hand. A code change hides a breaking
+   version behind a repair no one reviewed.
 2. **No tool enters the project.** Run npm-check-updates and semver from the
-   npx cache. Never add either to a manifest or write an `.ncurc` file.
+   npx cache. Never add either to a manifest or write an `.ncurc` file. A
+   tool in the manifest is a dependency the project did not ask for.
 3. **Never ask what research can answer.** Consult the manifests, the
-   lockfiles, the docs, and the registry first.
+   lockfiles, the docs, and the registry first. The registry settles a
+   version better than a recollection.
 4. **Never assume.** When a decision changes the work and research cannot
-   settle it, ask the user.
+   settle it, ask the user. An assumed cap or hold leaves a version the
+   user did not choose.
 5. **No outward actions.** Commit, push, or open a pull request only when
    the request says so. Then make one commit per accepted plan entry, in
-   the project's branch and commit conventions.
+   the project's branch and commit conventions. One commit per plan entry
+   keeps a breaking update revertible on its own.
 
 ## Script
 
@@ -134,8 +139,8 @@ this order:
 3. every other `scripts` entry of the root manifest that a workflow file
    under `.github/workflows/` runs.
 
-When a workspace root has no `scripts` entry of item 2, record instead the
-recursive run command of `package-managers.md` for each of the six names.
+When a workspace root has none of the six `scripts` entries, record instead
+the recursive run command of `package-managers.md` for each of the six names.
 An install root with no check command beyond the install commands is an
 install-only root.
 
@@ -282,33 +287,33 @@ then run the loop again: the script leaves a range that already equals its
 new value as it is. Never repair a fail with a code change. The bisection
 and the ladder hold what breaks.
 
-**6a. Minor and patch.** Apply the *minor and patch* plan entry. On a pass,
-mark the plan entry accepted. On a fail, bisect the plan entry as
-`update-rules.md` defines under *Bisection*. The bisection holds each
+**6a. Minor and patch.** Apply the *minor and patch* plan entry. On a clean
+apply, mark the plan entry accepted. On a broken apply, bisect the plan entry
+as `update-rules.md` defines under *Bisection*. The bisection holds each
 breaking package with the reason `check: <name>`. Then replace the
 checkpoint. With commits requested, commit now.
 
 **6b. Major groups.** Without commits requested, apply every approved group
-as one batch. On a pass, mark every group accepted. On a fail, bisect the
-batch with a group as the unit. Walk the ladder of `update-rules.md` for each
-breaking group: apply the group at each rung, highest first. Mark the first
-rung whose apply passes as accepted. Hold a group with no accepted rung, with
-the reason `check: <name>`.
+as one batch. On a clean apply, mark every group accepted. On a broken
+apply, bisect the batch with a group as the unit. Walk the ladder of
+`update-rules.md` for each breaking group: apply the group at each rung,
+highest first. Mark the first rung whose apply is clean as accepted. Hold a
+group with no accepted rung, with the reason `check: <name>`.
 
 With commits requested, apply the groups one at a time in plan order:
 1. apply the group;
-2. on a fail, restore the checkpoint. Then apply the group at the next rung
-   of its ladder. Hold the group when no rung remains;
-3. on a pass, commit. Then replace the checkpoint.
+2. on a broken apply, restore the checkpoint. Then apply the group at the
+   next rung of its ladder. Hold the group when no rung remains;
+3. on a clean apply, commit. Then replace the checkpoint.
 
 **6c. Assemble.** Skip this step with commits requested. Otherwise:
 1. restore the checkpoint;
 2. apply every accepted group as one batch, each at its accepted rung, or
    at its candidate versions when the bisection accepted it without the
    ladder;
-3. on a fail, apply the accepted groups one at a time in plan order. After
-   a pass, replace the checkpoint. After a fail, restore the checkpoint.
-   Then hold the group.
+3. on a broken apply, apply the accepted groups one at a time in plan
+   order. After a clean apply, replace the checkpoint. After a broken one,
+   restore the checkpoint. Then hold the group.
 
 **6d. Orphans.** Set the ranges of each approved *orphan* plan entry with the
 loop above. Run no install and no check command there. With commits

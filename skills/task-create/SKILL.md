@@ -1,8 +1,8 @@
 ---
 name: task-create
-description: Writes one task from an idea, feature, bug, or refactor. Use when the user wants work explored, planned, or scoped as a task, ticket, issue, or spec before implementation.
+description: Writes one task from an idea, feature, bug, or refactor, researched in the code and settled in an interview. Use when the user wants work explored, planned, scoped, or turned into a task, ticket, issue, spec, or plan before implementation, even from a one-line idea or a vague remark that something should change.
 license: MIT
-compatibility: Works in any project, with or without git. The line count needs cloc on PATH, or Node.js with npx, Perl 5, and network access on the first run. A missing tool leaves the count to the agent and never blocks the task.
+compatibility: The line count needs cloc on PATH, or Node.js with npx, Perl 5, and network access on the first run. A missing tool leaves the count to the agent and never blocks the task.
 argument-hint: <idea>
 ---
 
@@ -16,17 +16,23 @@ nothing and stops on a missing fact: put every fact it needs in the task.
 
 1. **Read-only on the project.** Write only the task file, in Step 8. Write
    drafts in a scratch directory outside the repository (in Claude Code, the
-   scratchpad directory), written `<scratch-dir>` in paths.
+   scratchpad directory), written `<scratch-dir>` in paths. A draft inside
+   the repository ends up committed beside the code.
 2. **Never ask what research can answer.** Consult code, docs, tests, and
-   connected tools first.
+   connected tools first. A question the code answers costs the user time
+   and invites a guess.
 3. **Never assume.** When a decision changes the task and research cannot
-   settle it, ask the user.
-4. **Write nothing before the user approves the full task text** (Step 7).
+   settle it, ask the user. An assumed decision becomes a wrong fact that
+   the implementing agent follows without noticing.
+4. **Write nothing outside the scratch directory before the user approves
+   the full task text** (Step 7). The next skill treats a saved task as
+   settled.
 5. **Only the idea goes in.** The task holds what the restated idea needs
    and the *Out of scope* entries of Step 4, nothing else. A question or
    remark from the user on any other topic gets an answer in chat and no
    line in the task. When it deserves a task of its own, say so in chat
-   and write nothing about it in the task.
+   and write nothing about it in the task. A stray line in the task
+   becomes scope for the implementing agent.
 
 ## Workflow
 
