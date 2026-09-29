@@ -1,6 +1,6 @@
 ---
 name: code-analysis
-description: Measures the duplication, complexity, hotspots, tests, coverage, and mutation score of the working tree or one branch and reports ranked findings, changing no code. Use only when the user asks for it by name or asks for the code measured or analyzed, never for a general code question, because a run can take hours.
+description: Measures the duplication, complexity, hotspots, tests, coverage, and mutation score of one version of the code, the working tree or one branch, and reports ranked findings, changing no code. Use only when the user asks for it by name or asks for the code measured or analyzed, never to compare two versions or answer a general code question.
 license: MIT
 compatibility: Requires Node.js 22.13 or newer with npx and git, run inside a git repository, with network access on the first run. Complexity needs lizard on PATH, or uv, pipx, or a Python that has lizard. Tests and coverage need the project's own test command. Mutation needs the project's own mutation command. A missing tool skips its measurement and never blocks the report.
 argument-hint: "[branch]"

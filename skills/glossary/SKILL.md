@@ -1,6 +1,6 @@
 ---
 name: glossary
-description: Writes or audits a project's GLOSSARY.md from the words its documents use with two readings or in a project-only sense. Use when the user wants a glossary, definitions, or terminology settled, says the docs use one word for two things or a term nobody defined, or asks what a word means in this project.
+description: Writes or audits a project's GLOSSARY.md from the words its own documents use with two readings or in a project-only sense, never a glossary of general terms. Use when the user wants the project's terms defined or settled, says the docs use one word for two things or a term nobody defined, or asks what a word means in this project.
 license: MIT
 argument-hint: <glossary path | files to read | words to define>
 ---

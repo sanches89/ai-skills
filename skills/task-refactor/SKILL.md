@@ -1,6 +1,6 @@
 ---
 name: task-refactor
-description: Reviews code with duplication, complexity, and coverage measured and writes a refactor task with one subtask per refactoring, changing no code. Use when the user wants code refactored, simplified, cleaned up, deduplicated, or made testable, calls it messy, legacy, or spaghetti, or asks what to improve in a module.
+description: Reviews code, measures duplication, complexity, and coverage, and writes a refactor task with one tested subtask per refactoring, changing no code. Use it before touching the code when the user wants code refactored, simplified, cleaned up, deduplicated, or made testable, even one function, or calls it messy, but never for a rewrite from scratch.
 license: MIT
 compatibility: The measurements need Node.js 22.13 or newer with npx and network access on the first run. Complexity also needs uv, pipx, or a Python that has lizard. A missing tool skips its measurement and never blocks the review.
 argument-hint: <path | symbol | git range | task or subtask id | file | text>

@@ -3,7 +3,7 @@
   {"query": "Pick up PAY-214 from linear and do it. Do not ask me questions, everything should be in the ticket.", "should_trigger": true},
   {"query": "Start on issue #131. The acceptance criteria are in the issue body, prove each one before you call it done.", "should_trigger": true},
   {"query": "tasks/009-cli-flags/task.md has no subtasks, just build the whole thing in my working tree and give me the report", "should_trigger": true},
-  {"query": "Here is a subtask file from our tasks folder (pasted). Code it up and run the verification command at the bottom.", "should_trigger": true},
+  {"query": "Code up tasks/004-add-retry-to-webhooks/003-wire-retry-into-send.md and run the verification command at the bottom.", "should_trigger": true},
   {"query": "Write a task for adding dark mode to the settings page, I have not decided the details yet.", "should_trigger": false},
   {"query": "tasks/004-add-retry-to-webhooks/task.md is too big, break it into subtasks before we start.", "should_trigger": false},
   {"query": "Run every subtask of tasks/004-add-retry-to-webhooks/ with one commit each on a branch, then refactor what came out.", "should_trigger": false},
