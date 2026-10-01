@@ -33,13 +33,13 @@ tier costs 744 tokens per session. Using one skill then adds its
 | code-analysis    |      76 |    2,158 |      7,680 |       0 | 10,647 |
 | glossary         |      76 |    2,991 |      1,135 |       0 |  5,049 |
 | package-update   |      68 |    4,124 |      4,948 |   1,864 | 11,807 |
-| task-breakdown   |      73 |    4,129 |      2,713 |       0 |  7,767 |
+| task-breakdown   |      73 |    4,196 |      2,713 |       0 |  7,857 |
 | task-create      |      76 |    3,021 |      1,814 |       0 |  5,670 |
 | task-orchestrate |      77 |    4,090 |      2,118 |       0 |  7,120 |
 | task-refactor    |      84 |    4,583 |     10,344 |       0 | 15,787 |
 | task-work        |      64 |    3,681 |      2,563 |       0 |  7,118 |
 | unambiguity      |      71 |    1,947 |      1,819 |       0 |  4,575 |
-| **All skills**   |     744 |   32,154 |     37,293 |   5,445 | 83,644 |
+| **All skills**   |     744 |   32,221 |     37,293 |   5,445 | 83,734 |
 
 ## Files per skill
 
@@ -103,13 +103,13 @@ Lines, words, and tokens of every file, grouped by skill.
 
 | File                              | Lines | Words | Tokens |
 |-----------------------------------|------:|------:|-------:|
-| `SKILL.md`                        |   321 | 2,776 |  4,129 |
-| `evals/evals.json`                |    23 |   327 |    523 |
+| `SKILL.md`                        |   324 | 2,826 |  4,196 |
+| `evals/evals.json`                |    23 |   343 |    546 |
 | `evals/trigger-queries.json`      |    12 |   237 |    402 |
 | `references/line-count.md`        |    37 |   226 |    362 |
 | `references/quality-checklist.md` |    93 |   673 |  1,024 |
 | `references/task-template.md`     |   161 |   764 |  1,327 |
-| **Total**                         |   647 | 5,003 |  7,767 |
+| **Total**                         |   650 | 5,069 |  7,857 |
 
 ### task-create
 

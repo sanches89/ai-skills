@@ -33,8 +33,8 @@ These words have exactly one meaning in this skill.
    settle it, ask the user. An assumed decision becomes a wrong fact that
    the implementing agent follows without noticing.
 4. **Write nothing outside the scratch directory before the user approves
-   the full breakdown text** (Step 7). The next skill treats a saved
-   subtask as settled.
+   the breakdown** (Step 7). The next skill treats a saved subtask as
+   settled.
 5. **Only the task goes in.** The breakdown holds what the original task
    needs and the *Out of scope* entries, nothing else. A question or
    remark from the user on any other topic gets an answer in chat and no
@@ -266,11 +266,14 @@ Step 3 for that decision, then run the checks again.
 
 ### Step 7: Approval
 
-Show the complete breakdown in chat: the task, then every subtask. Name
-each subtask above 500 code lines with the constraint that every split of
-it breaks. Ask whether the user approves it as written or
-wants a change. Apply each change, run Step 6 again, and ask again until
-the user approves.
+Show one summary per subtask in chat, in subtask order, and never the task
+or a full subtask. A summary holds the number, the title, the `Depends on`
+line, the Goal section, the Verification section, and the code-line
+estimate of Step 4. Name each subtask above 500 code lines with the
+constraint that every split of it breaks. Name the `<scratch-dir>` path of
+the full drafts. Show a subtask in full only when the user asks for it.
+Ask whether the user approves the breakdown as written or wants a change.
+Apply each change, run Step 6 again, and ask again until the user approves.
 
 ### Step 8: Save
 
