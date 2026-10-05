@@ -26,7 +26,20 @@
   path.
 - Bound output size; many harnesses truncate tool output past 10 to 30 thousand
   characters.
+- Solve, never defer: a script handles a missing file, a missing tool, and
+  a bad value itself, with a message that names what it expected. A script
+  that fails and leaves the agent to work it out costs a turn each time.
+- Every constant carries its reason in a comment. A value nobody can
+  justify is one the agent cannot adjust.
+- Say in the instruction whether the agent runs the script or reads it:
+  "Run `x.py` to extract the fields" against "See `x.py` for the
+  algorithm". A run costs only the output tokens.
+- Name an MCP tool with its server: `GitHub:create_issue`. A bare tool
+  name fails when several servers are connected.
+- List every package a script needs, and never assume one is installed.
+  The Claude API runs skills without network access or package installs.
 
 ---
 
-Reference: https://agentskills.io/skill-creation/using-scripts
+Reference: https://agentskills.io/skill-creation/using-scripts,
+https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices

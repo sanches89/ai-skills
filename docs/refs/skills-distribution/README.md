@@ -11,11 +11,12 @@ Labs, the skills.sh directory it feeds, and the Agent Skills format both expect.
 - [skill-md-spec.md](skill-md-spec.md): frontmatter fields and limits, skill
   folder layout, progressive disclosure, file references.
 - [best-practices.md](best-practices.md): what to put in a skill and what to
-  leave out, scope, prescriptiveness, naming, patterns.
+  leave out, scope, prescriptiveness, naming, content rules, patterns,
+  evaluations.
 - [descriptions.md](descriptions.md): how to write a description that triggers
   on the right prompts.
 - [scripts.md](scripts.md): how scripts are referenced from a skill and how to
-  design them for agents.
+  design them for agents, with the script rules of the Anthropic guide.
 
 Left at the origin:
 
@@ -30,9 +31,13 @@ Left at the origin:
 - the `allowed-tools` field, the `assets/` folder, and the `skills-ref`
   validator;
 - the trigger-evaluation method for descriptions;
-- inline dependency declarations for Python, Deno, Bun, and Ruby scripts.
+- inline dependency declarations for Python, Deno, Bun, and Ruby scripts;
+- the development loop with two Claude instances, the visual analysis
+  pattern, and the runtime environment beyond network access.
 
 ---
 
 Reference: https://github.com/vercel-labs/skills, https://skills.sh/docs,
-https://agentskills.io/specification
+https://agentskills.io/specification,
+https://code.claude.com/docs/en/skills,
+https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices

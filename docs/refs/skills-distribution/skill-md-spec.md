@@ -15,7 +15,7 @@ skill-name/
 
 - `name`, required: 1 to 64 characters; lowercase `a-z`, `0-9`, hyphens; no
   leading, trailing, or double hyphen; equals the folder name.
-- `description`, required: 1 to 1024 characters by the spec, at most 200 in
+- `description`, required: 1 to 1024 characters by the spec, at most 350 in
   this repo by the Frontmatter rule in `AGENTS.md`; what the skill does and
   when to use it, with the keywords that identify matching tasks.
 - `license`, optional: a license name or the name of a bundled license file.
@@ -32,6 +32,9 @@ skill-name/
    about 5000 tokens.
 3. Files under `scripts/` and `references/` load only when the
    instructions send the agent there.
+4. After it compacts the context window, Claude Code re-attaches only the
+   first 5,000 tokens of each skill, 25,000 in all. A rule that holds for
+   the whole run goes in those first tokens.
 
 Tell the agent when to read each file, not that files exist: "Read
 `references/api-errors.md` if the API returns a non-200 status".
@@ -43,4 +46,5 @@ Use relative paths from the skill root: `references/REFERENCE.md`,
 
 ---
 
-Reference: https://agentskills.io/specification
+Reference: https://agentskills.io/specification,
+https://code.claude.com/docs/en/skills
