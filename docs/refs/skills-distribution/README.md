@@ -11,7 +11,7 @@ Labs, the skills.sh directory it feeds, and the Agent Skills format both expect.
 - [skill-md-spec.md](skill-md-spec.md): frontmatter fields and limits, skill
   folder layout, progressive disclosure, file references.
 - [best-practices.md](best-practices.md): what to put in a skill and what to
-  leave out, scope, prescriptiveness, patterns.
+  leave out, scope, prescriptiveness, naming, patterns.
 - [descriptions.md](descriptions.md): how to write a description that triggers
   on the right prompts.
 - [scripts.md](scripts.md): how scripts are referenced from a skill and how to

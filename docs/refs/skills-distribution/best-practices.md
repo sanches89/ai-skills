@@ -32,6 +32,19 @@
 - Teach the approach to a class of problems, not the answer to one instance.
   Templates, constraints, and tool-specific instructions still belong.
 
+## Naming
+
+- The `name` field holds at most 64 characters: lowercase letters, digits,
+  and hyphens. No XML tag, and never the words `anthropic` or `claude`.
+- Anthropic suggests the gerund form, `processing-pdfs`, and accepts a noun
+  phrase, `pdf-processing`, or an action, `process-pdfs`.
+- Avoid a vague name such as `helper`, `utils`, or `tools`, and a generic
+  one such as `documents`, `data`, or `files`.
+- Keep one pattern across a collection. A mixed collection is harder to
+  reference, to search, and to read at a glance.
+- The name and the description are what the agent reads before it decides
+  to trigger a skill, so both say what the skill does.
+
 ## Patterns
 
 - **Gotchas**: environment facts that defy reasonable assumptions, kept in
@@ -51,4 +64,5 @@
 
 ---
 
-Reference: https://agentskills.io/skill-creation/best-practices
+Reference: https://agentskills.io/skill-creation/best-practices,
+https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices

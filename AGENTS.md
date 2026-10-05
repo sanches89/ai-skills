@@ -51,7 +51,11 @@ These rules hold in every Markdown file of this repository.
   link to another skill's files. When two skills need the same content,
   duplicate it and keep the copies identical.
 - **Frontmatter.** `name` equals the folder name: lowercase letters, digits,
-  and single hyphens, at most 64 characters. `description` says what the skill
+  and single hyphens, at most 64 characters. Name a new skill
+  `<object>-<action>`, object first, as `task-create` and `code-analysis`,
+  so that the collection keeps one pattern. Never a gerund, a vague word
+  such as `helper`, or the words `anthropic` and `claude`.
+  `description` says what the skill
   produces, then when to use it. It has one or two sentences and at most 350
   characters: every description loads at the start of every session. It names
   the requests that call for the skill, including ones that do not name its
@@ -130,6 +134,11 @@ Folders:
   `skill-md-spec.md` before changing folder structure or frontmatter. Read
   `best-practices.md` and `descriptions.md` before writing a new skill. Read
   `scripts.md` before adding a script.
+- `docs/refs/code-improvement/`: the smells, design rules, metrics, and
+  evidence behind the `code-refactor` catalog, and what makes code cheap
+  for a coding agent. Read its `README.md`
+  before changing `skills/code-refactor/references/smell-catalog.md` or
+  `refactoring-rules.md`.
 
 ## Skills that depend on each other
 
