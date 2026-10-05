@@ -1,18 +1,18 @@
 ---
-name: task-refactor
-description: Reviews code, measures duplication, complexity, and coverage, and writes a refactor task with one tested subtask per refactoring, changing no code. Use it before touching the code when the user wants code refactored, simplified, cleaned up, deduplicated, or made testable, even one function, or calls it messy, but never for a rewrite from scratch.
+name: code-refactor
+description: Reviews code for smells, design flaws, and the marks of agent-written code, and writes a refactor task with one tested subtask per refactoring, changing no code. Use when the user wants code refactored, simplified, decoupled, made testable or agent-friendly, cleaned of AI slop, or a codebase improved in batches, never rewritten from scratch.
 license: MIT
-compatibility: The measurements need Node.js 22.13 or newer with npx and network access on the first run. Complexity also needs uv, pipx, or a Python that has lizard. A missing tool skips its measurement and never blocks the review.
+compatibility: The measurements and the scan script need Node.js 22.13 or newer with npx and network access on the first run. Complexity also needs uv, pipx, or a Python that has lizard. A missing tool skips its measurement and never blocks the review.
 argument-hint: <path | symbol | git range | task or subtask id | file | text>
 ---
 
-# Task Refactor
+# Code Refactor
 
 Review the code inside the refactor scope of one request. Find every smell,
 pick the refactoring that removes it, and write the refactor task: one task
-with one subtask per refactoring, in the format the `task-work` skill
-implements. Every fact in it comes from reading, measuring, and running
-commands on the unchanged code.
+with one subtask per refactoring, at most 12 per run, in the format the
+`task-work` skill implements. Every fact in it comes from reading,
+measuring, and running commands on the unchanged code.
 
 ## Terms
 
@@ -108,10 +108,10 @@ With an empty refactor scope, finish as Step 6 states for no entry.
 
 Remove from the refactor scope:
 - generated code, vendored code, lockfiles, build output, and snapshot files;
-- database migrations that already ran;
-- test files, unless the request names them. An existing test still
-  changes only in an import, a path, or a symbol name a refactoring moves
-  or renames, never in an assertion.
+- database migrations that already ran.
+
+A test file stays in the refactor scope. Inside it, only the entries under
+*Tests* in `references/smell-catalog.md` are findings.
 
 **Bounds of a requested task.** For kind *task*, read the requested task and
 every parent above it, in full. The parent of a subtask file is the task
@@ -198,6 +198,19 @@ with `--ccn`, `--length`, and `--params` when 3d found them. `--help` lists
 every option and exit code. When the measure command fails to start, follow
 *Without any tool* in `references/measurement-tools.md`.
 
+**Scan.** Run the scan script, which lists the signals that the entries
+under *Agent-written code*, *Legibility*, and *Tests* in
+`references/smell-catalog.md` name, as `path:line` per kind. `<skill-dir>`
+is the folder holding this `SKILL.md`:
+
+```bash
+node <skill-dir>/scripts/scan.mjs <path>... --ignore "<globs>" \
+  > <scratch-dir>/scan.json
+```
+
+A signal is never a finding on its own. When the script fails to start,
+search for the signals by hand, as *Without any tool* states.
+
 **Coverage of the refactor scope.** Record which functions in the refactor
 scope a test covers:
 - with a coverage report, a function is covered when the tests ran every
@@ -224,18 +237,19 @@ finding per smell and location:
 - the risk. `high` when the change crosses modules or touches the contract.
   Else `low` when the refactoring is in the safe set, the refactorings
   allowed on code that no test covers: Rename, Extract Variable, Inline
-  Variable, Extract Function, Move Function, and Remove Dead Code. Else
-  `medium`;
+  Variable, Extract Function, Move Function, Remove Dead Code, and a seam
+  as `references/characterization-tests.md` states. Else `medium`;
 - whether a test covers the code, from Step 4.
 
-Findings come from four origins: what the request names, the `top` lists of
-the measurement summary, the project's analysis tools, and reading the code.
+Findings come from five origins: what the request names, the `top` lists of
+the measurement summary, the scan signals, the project's analysis tools, and
+reading the code.
 
 Group the files of the refactor scope by folder and run one subagent per
 folder. Give it the files to read in full and the path of
-`references/smell-catalog.md`. Give it the `top` entries and the coverage
-from Step 4 that fall in its folder, and the fields of a finding above. It
-reads code outside its folder when a smell needs it.
+`references/smell-catalog.md`. Give it the `top` entries, scan signals, and
+coverage from Step 4 that fall in its folder, and the fields of a finding
+above. It reads code outside its folder when a smell needs it.
 
 Drop a finding when:
 - its refactoring adds a feature, fixes a bug, or tunes performance;
@@ -254,8 +268,12 @@ the file, then `low` risk before `medium` before `high`.
 
 ### Step 6: Order the refactorings
 
-Turn the ranked findings into entries, one refactoring each. Order the
-entries by kind:
+Turn the ranked findings into entries in rank order, one refactoring each,
+with the entries a finding depends on: its seam, its characterization
+tests, and the three steps of a contract change. Stop at 12 entries. A
+finding whose entries do not fit goes under the task's *Out of scope* as
+`next batch`, with its location and smell. The next run of this skill takes
+it up. Then order the entries by kind:
 1. Remove Dead Code;
 2. Rename;
 3. refactorings inside one function;

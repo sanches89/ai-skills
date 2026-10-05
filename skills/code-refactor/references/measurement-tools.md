@@ -1,8 +1,9 @@
 # Measurement tools
 
-Sections: Tool rules; The measure tool; The test report and the coverage report;
-Reading a measurement summary; Limits; Tools that run only when the project
-configures them; Mutation scope; Structural rewrite tools; Without any tool.
+Sections: Tool rules; The measure tool; The scan script; The test report and
+the coverage report; Reading a measurement summary; Limits; Tools that run
+only when the project configures them; Mutation scope; Structural rewrite
+tools; Without any tool.
 
 Read this file in Step 3d.
 
@@ -71,6 +72,40 @@ Exit codes: `0` summary printed, `1` unexpected failure, `2` invalid
 arguments, `3` a `--compare` run found a worse measurement. The review passes
 no `--compare`. The task's success criteria state the baseline values that
 the implementer's run keeps or improves.
+
+## The scan script
+
+The scan script is `<skill-dir>/scripts/scan.mjs`, where `<skill-dir>` is
+the folder holding `SKILL.md`. It needs the Node.js of the measure tool and
+nothing else. It reads the code files under its paths and prints one JSON
+document. It holds the signals of the *Agent-written code*, *Legibility*,
+and *Tests* entries of `smell-catalog.md`, by kind: `boundary-in-logic`,
+`implicit-wiring`, `masked-error`, `placeholder`, `compat-path`,
+`hard-coded-value`, `credential`, `oversized-file`, `skipped-test`, and
+`weak-assertion`. Each kind holds its `count` and a `top` list of `file`,
+`line`, and `text`: the matched line, cut to 120 characters. A `credential`
+entry hides its text. `files` counts the code files read.
+
+Run it from the project root:
+
+```bash
+node <skill-dir>/scripts/scan.mjs <path>... --ignore "<glob>,<glob>" \
+  > <scratch-dir>/scan.json
+```
+
+Options:
+- `--ignore "<glob>,<glob>"`: the globs of generated and vendored code, as
+  for the measure tool. `node_modules`, `vendor`, `.git`, and build output
+  are left out without an option;
+- `--max-lines <n>`: the length over which a file is an `oversized-file`.
+  Default 400, the limit of the *Oversized file* entry;
+- `--top <n>`: the entries per kind. Default 50;
+- `--kinds <kind>,<kind>`: the kinds to scan. Default all.
+
+Exit codes: `0` signals printed, `1` unexpected failure, `2` invalid
+arguments. The script finds a signal by text. It misses a form it has no
+pattern for, and it lists a form that a string or a comment holds. The
+entry of `smell-catalog.md` says what makes a signal a finding.
 
 ## The test report and the coverage report
 
@@ -253,6 +288,9 @@ When the measure command fails to start, measure by reading:
 - take the change count of a file from
   `git log --since="12 months ago" --oneline -- <file> | wc -l`;
 - take the test counts from the output of the test command, and the coverage
-  from the summary that the coverage command prints.
+  from the summary that the coverage command prints;
+- search for the scan signals with the agent's code search, when the scan
+  script fails to start: catch blocks, skip markers, URLs and numbers of
+  three digits or more, reflection calls, and files over 400 lines.
 Write `skipped` with the reason on the baseline lines of the task's Context
 section.

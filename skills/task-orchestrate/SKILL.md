@@ -9,7 +9,7 @@ argument-hint: <task id | task file>
 
 Take one task and run every subtask through the `task-work` skill, one at a
 time, each in its own subagent and each with one commit. Then clean the
-result up: the `task-refactor` skill writes a refactor task and the same
+result up: the `code-refactor` skill writes a refactor task and the same
 jobs run it, for up to three rounds. Carry every fact from one job to the
 next, and ask nothing. Prove the task and keep the plan and every report
 with the task.
@@ -24,7 +24,7 @@ These words have exactly one meaning in this skill.
   orchestration report.
 - **Probe**: a run of given commands in the tree the plan names, kept to
   one line of pass or fail per command.
-- **Round**: one `task-refactor` run over the code this run changed, and
+- **Round**: one `code-refactor` run over the code this run changed, and
   the jobs of the refactor task it writes.
 
 ## Hard rules
@@ -261,7 +261,7 @@ it. For each round:
    its return:
 
    ```
-   Use the task-refactor skill on <the git range <base>..HEAD | the
+   Use the code-refactor skill on <the git range <base>..HEAD | the
    paths under Changes of every work report so far>. Work in <tree>:
    every command runs there and every file is read and written there.
    Save to files.

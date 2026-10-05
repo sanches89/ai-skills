@@ -35,8 +35,16 @@ second framework or style beside the project's.
   double.
 - Use a seam the code already has: a parameter, a constructor argument, an
   injected dependency, a module the framework lets a test replace.
-- Add a seam only from the safe set, such as Extract Function around the call
-  to a system boundary. Make it a subtask of its own, placed first.
+- Add a seam only from the safe set, and make it a subtask of its own,
+  placed first. Take the first of these that reaches the code:
+  1. Parameterize Function: the collaborator becomes a parameter with a
+     default equal to the current one;
+  2. Parameterize Constructor: the same, as a constructor argument stored
+     in a field;
+  3. Extract Function around the call to the system boundary, so that a
+     test replaces the one function.
+  The seam stays in the code after the tests: it is the injection point
+  that the *Design* entries of `smell-catalog.md` use.
 - Drop the entry when no seam reaches the code. Record the reason under the
   task's *Out of scope*.
 

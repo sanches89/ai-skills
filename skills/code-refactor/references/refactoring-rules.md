@@ -24,6 +24,9 @@ section. A convention of the project, from Step 3a, replaces a rule here.
   contract.
 - Tune no performance. On a path the docs or the request mark as hot, keep the
   same number of loops, allocations, and calls to external systems.
+- Keep a masked error masked and a stub a stub, under the task's *Out of
+  scope*. Letting the error through or filling the stub is a behavior
+  change.
 
 ## Size of a change
 
@@ -52,6 +55,8 @@ section. A convention of the project, from Step 3a, replaces a rule here.
   Keep two functions and extract their shared part.
 - Add a new interface, base type, generic parameter, or option only with
   three users.
+- Replace a helper that repeats a function of the project or of the
+  standard library with a call to that function.
 
 ## Names
 
@@ -83,6 +88,23 @@ section. A convention of the project, from Step 3a, replaces a rule here.
 - Hide a field or a data structure behind the functions that use it, before
   changing its shape.
 - Break a dependency cycle by moving the shared part into a third module.
+- Reach a system boundary through a parameter or a constructor argument.
+  A decision never reads the clock, the environment, or a global on its
+  own.
+- Introduce a seam with a default equal to the current collaborator, so
+  that no caller changes. Move the callers only in a contract change the
+  request names.
+- Keep a decision in a function that returns a value. The caller performs
+  the effect.
+- Reuse through composition. Keep a subclass only where every caller of the
+  parent works with it.
+- Give one design decision, a format, a layout, or a rule, one owner
+  module.
+- Keep a code file under 400 lines, or under the project's own limit. Split
+  by concept, one concept per file.
+- Wire a collaborator by an import and a call that a search for its name
+  finds. Use reflection, a string name, or a patch only where the
+  project's framework requires it.
 - Follow the layout and the layers of the project. Never add a layer.
 - Never replace a working module with a rewrite. Reach the new structure
   through a sequence of refactorings.
@@ -96,6 +118,9 @@ section. A convention of the project, from Step 3a, replaces a rule here.
   no caller.
 - Remove a parameter, a field, or a branch that no caller uses, by the same
   proof.
+- Remove a check on a value that the type system, the signature, or an
+  earlier check guarantees. The proof is that guarantee, named in the
+  subtask.
 - Remove commented-out code.
 - Remove a comment that repeats the code. Keep a comment that says why.
 
@@ -111,7 +136,12 @@ section. A convention of the project, from Step 3a, replaces a rule here.
 
 - Run the tests that cover the changed code after every subtask.
 - Edit an existing test only for an import, a path, or a symbol name that the
-  refactoring moved or renamed.
+  refactoring moved or renamed. An entry under *Tests* in `smell-catalog.md`
+  is the other reason.
+- Change an assertion only by Replace Assertion with Literal, with the
+  value the unchanged code produces. Never weaken one.
+- Replace a test double of a collaborator inside the project with the real
+  one only when the real one is fast and deterministic.
 - Treat a test that fails after a refactoring as proof of a behavior change.
   Revert the change. Never edit the assertion.
 - Treat a test that breaks on every structure change as a finding. It asserts

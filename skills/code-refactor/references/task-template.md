@@ -47,10 +47,12 @@ Fill each section with what the review settled. Step numbers are those of
   the target value.
 - *In scope*: every file of the refactor scope.
 - *Out of scope*: every bug found, with its location and the statement that
-  the code keeps it. Every finding dropped in Step 5 or Step 6, with its
-  reason. Every part removed from the refactor scope in Step 4. Every part
-  of the contract, as a statement that it stays. Every *Out of scope* entry
-  of a requested task, restated.
+  the code keeps it. Every *Report* entry of `smell-catalog.md` found, by
+  its location, with no credential value. Every finding past the cut of
+  Step 6, as `next batch` with its location and smell. Every finding
+  dropped in Step 5 or Step 6, with its reason. Every part removed from the
+  refactor scope in Step 4. Every part of the contract, as a statement that
+  it stays. Every *Out of scope* entry of a requested task, restated.
 - *Approach*: one bullet per entry, in order: path and symbol, then the
   structure after the change.
 - *Decisions*: the rules every entry follows, as `refactoring-rules.md`
@@ -58,9 +60,10 @@ Fill each section with what the review settled. Step numbers are those of
   and 3c. The rule that a subtask applies one refactoring and gets one
   commit.
 - *Context*: the commands from 3b with the report options from 3d, and the
-  single-file test command. The analysis tools with their limits, and the
-  measure command from Step 4. The baseline: one line per measurement with
-  its values, or `skipped` with the reason. The test coverage of every
+  single-file test command. The analysis tools with their limits, the
+  measure command from Step 4, and the scan command with its count per
+  kind. The baseline: one line per measurement with its values, or
+  `skipped` with the reason. The test coverage of every
   function the entries change. For kind *task*, the identifier or path of
   the requested task.
 - *References*: `None.` Never copy the References of a requested task.
@@ -72,8 +75,9 @@ Fill each section with what the review settled. Step numbers are those of
 - *Title*: the refactoring and the symbol, imperative, under 80 characters.
 - *Goal*: the structure after the change, in one sentence.
 - *Context*: the smell and its evidence, with every location as `path:line`.
-  The tests that cover the code, or the statement that none does. The
-  single-file test command. The rules from `refactoring-rules.md` and the
+  For *Convention drift*, the exemplar file. The tests that cover the code,
+  or the statement that none does. The single-file test command. The rules
+  from `refactoring-rules.md` and the
   conventions this refactoring follows, restated. Every part of the
   contract the change touches, as a statement that it stays. For a rename
   or a move across many files, the rewrite tool from

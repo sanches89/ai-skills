@@ -20,17 +20,19 @@ coding agent that loads `SKILL.md` files.
 - [task-orchestrate](skills/task-orchestrate/SKILL.md): runs a whole
   task from its task file or item: one subtask at a time, each in its own
   subagent with the task-work skill, each with one commit on a branch.
-  Then it runs task-refactor over the result and the refactor task the
+  Then it runs code-refactor over the result and the refactor task the
   same way, for up to three rounds. It asks nothing, proves the task, and
   keeps its plan and reports
   with the task, on its items or in its task folder. Every read of the
   task and every project command runs in a subagent, so that its own
   context window stays small.
-- [task-refactor](skills/task-refactor/SKILL.md): reviews code in any
+- [code-refactor](skills/code-refactor/SKILL.md): reviews code in any
   language for refactoring, with duplication, complexity, unit tests, and
-  coverage measured. It writes a refactor task with one subtask per
-  refactoring, each with its tests and one verification command, and changes
-  no code.
+  coverage measured. Its catalog covers smells inside functions, design
+  between modules, the marks of agent-written code, and tests. It writes a
+  refactor task with at most 12 subtasks, one per refactoring, each with
+  its tests and one verification command. It lists the rest as the next
+  batch and changes no code.
 - [agent-docs](skills/agent-docs/SKILL.md): holds the rules for a repo's
   `AGENTS.md` files, READMEs, ADRs, `docs/refs`, and glossary, which the
   agent follows whenever it edits one. On request, it audits and compresses
@@ -57,10 +59,10 @@ coding agent that loads `SKILL.md` files.
   findings and changes no code. A run can take hours: the mutation run
   runs the tests once per mutant.
 
-The task-* skills form a pipeline. task-create writes
+The task-* skills and code-refactor form a pipeline. task-create writes
 `<tasks-dir>/###-<task-slug>/task.md`. task-breakdown adds
 `<tasks-dir>/###-<task-slug>/###-<subtask-slug>.md` next to it.
-task-refactor writes both from a code review. `<tasks-dir>` is the first
+code-refactor writes both from a code review. `<tasks-dir>` is the first
 that exists of: the folder you name; the folder README, CLAUDE.md,
 AGENTS.md, CONTRIBUTING, or `docs/README.md` names for tasks, plans, or
 specs; the folder that already holds task folders; a `tasks`, `plans`, or
@@ -69,7 +71,7 @@ directory outside the repository, which in Claude Code lives one session.
 task-work implements a
 task or one subtask from those files. task-orchestrate runs task-work on
 every subtask of a task, one at a time, with one commit each. Then it runs
-task-refactor and task-work over the result, up to three rounds. The
+code-refactor and task-work over the result, up to three rounds. The
 tracker is the one the project docs name, else one an MCP server reaches,
 else GitHub Issues through the `gh` CLI. With a tracker connected, the
 writers create items there instead, unless you ask for files, and
@@ -78,12 +80,14 @@ of the next, so these sequences work without an edit in between:
 
 1. an idea, then task-create, task-breakdown, and task-orchestrate;
 2. an idea, then task-create and task-work, when the task is one commit;
-3. code, then task-refactor and task-orchestrate;
-4. task-refactor, then task-breakdown, then task-orchestrate, for a
+3. code, then code-refactor and task-orchestrate;
+4. code-refactor, then task-breakdown, then task-orchestrate, for a
    different split of the refactor task;
-5. code-analysis, then task-refactor or task-create on a finding.
+5. code-analysis, then code-refactor or task-create on a finding;
+6. the whole codebase, then code-refactor with no argument and
+   task-orchestrate, repeated until code-refactor writes no task.
 
-task-work in place of task-orchestrate in sequences 1, 3, and 4 runs the
+task-work in place of task-orchestrate in sequences 1, 3, 4, and 6 runs the
 same subtasks in the current working tree. It makes no commit and runs no
 refactor round.
 
@@ -94,7 +98,7 @@ package-update works alone. It leaves a major version that needs a code change
 for task-create to turn into a task.
 
 code-analysis works alone and changes no code. A finding it reports is input
-for task-create or task-refactor.
+for task-create or code-refactor.
 
 ## Structure
 

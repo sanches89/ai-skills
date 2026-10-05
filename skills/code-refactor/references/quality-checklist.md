@@ -1,5 +1,8 @@
 # Quality checklist
 
+Sections: Ambiguity; Behavior and contract; Subtask rule; Measurements;
+Completeness; Executability; Grep helpers.
+
 Run every check over the draft before showing it. One failure blocks
 delivery. Fix it, or return to the step that owns the missing fact, then run
 the whole checklist again.
@@ -17,7 +20,8 @@ the whole checklist again.
       keeps it. The only exception is a change the request names, stated in
       Approach.
 - [ ] No subtask deletes, skips, or loosens a test, lint rule, or type
-      check. No existing assertion changes.
+      check. No assertion gets weaker, and an assertion changes only by
+      Replace Assertion with Literal.
 - [ ] Every file a subtask changes is in the refactor scope, or is a caller
       moved by a contract change the request names.
 - [ ] No subtask touches generated or vendored code, a lockfile, build
@@ -42,6 +46,12 @@ the whole checklist again.
       form, move the callers, remove the old form.
 - [ ] Dependencies form a valid order: no cycle, no higher number. Remove
       Dead Code and Rename come first.
+- [ ] At most 12 subtasks. Every finding past the cut is under *Out of
+      scope* as `next batch`, with its location and smell.
+- [ ] Every subtask in a test file applies an entry under *Tests* in
+      `smell-catalog.md`.
+- [ ] A seam subtask gives the parameter a default equal to the current
+      collaborator, and no caller changes in it.
 
 ## Measurements
 
@@ -50,6 +60,10 @@ the whole checklist again.
 - [ ] Success criteria state the test and coverage counts against the
       baseline, and Verification holds the commands that produce them.
 - [ ] The repository holds no summary and no tool report.
+- [ ] Every `credential` signal is under *Out of scope* by location alone.
+      No task or subtask holds a key, a token, or a password value.
+- [ ] Every scan signal that became a finding was read in Step 5. Every
+      *Report* entry found is under *Out of scope*.
 
 ## Completeness
 

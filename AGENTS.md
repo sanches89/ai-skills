@@ -135,7 +135,7 @@ Folders:
 
 - `task-create` writes one task and never writes subtasks. `task-breakdown`
   writes subtasks for a task and never creates a task from an idea.
-  `task-refactor` reviews code and writes one refactor task with one subtask
+  `code-refactor` reviews code and writes one refactor task with one subtask
   per refactoring. It never changes project code and never edits an existing
   task or subtask.
 - The three use one task format. The code block in
@@ -143,16 +143,17 @@ Folders:
   `skills/task-breakdown/references/task-template.md` must stay identical except
   for the Subtasks section. The `## Task` and `## Subtask` blocks in
   `skills/task-breakdown/references/task-template.md` and in
-  `skills/task-refactor/references/task-template.md` must stay identical.
+  `skills/code-refactor/references/task-template.md` must stay identical.
   Change them together and diff them afterwards.
 - The three share the file layout `<tasks-dir>/###-<task-slug>/task.md` and
   `<tasks-dir>/###-<task-slug>/###-<subtask-slug>.md`, with the numbering
   rule stated in each `SKILL.md`. The `**Tasks directory.**` block that
   finds `<tasks-dir>` must stay identical in the three. A change to the
   layout or to the block is made in the three skills in the same commit.
-- The five task-* skills find the tracker by the `**Tracker.**` block,
-  which must stay identical in the five. Change it in the five in the same
-  commit and diff the copies afterwards.
+- `task-create`, `task-breakdown`, `task-work`, `task-orchestrate`, and
+  `code-refactor` find the tracker by the `**Tracker.**` block, which must
+  stay identical in the five. Change it in the five in the same commit and
+  diff the copies afterwards.
 - `task-work` implements a task or subtask and never writes or edits one. It
   reads the section names of the task format and the subtask format, and the
   file layout. Change a section name or the layout in `skills/task-work/` in
@@ -162,12 +163,12 @@ Folders:
   reads the section names of the task format and the subtask format, and
   the file layout. It also reads the headings of the work report in
   `skills/task-work/references/work-report-template.md`. It invokes
-  `task-work` and `task-refactor` by their skill names and reads the final
-  line of `task-refactor`, the task file path or identifier. Change any of these
+  `task-work` and `code-refactor` by their skill names and reads the final
+  line of `code-refactor`, the task file path or identifier. Change any of these
   in `skills/task-orchestrate/` in the same commit. It adds one file to the
   layout, `<tasks-dir>/###-<task-slug>/orchestration.md`, which no other
   skill reads.
-- End `task-create`, `task-breakdown`, and `task-refactor` with one line:
+- End `task-create`, `task-breakdown`, and `code-refactor` with one line:
   the task file path or the task item's identifier, and nothing else. The
   next `task-*` skill takes that line as its input without an edit.
 - `glossary` writes the glossary and never edits another document.
@@ -179,9 +180,9 @@ Folders:
   way. An invocation text from a skill starts with `from <skill name>:`, and
   the invoked skill then skips its own hand-off. Change that form in all three
   skills in the same commit.
-- `task-refactor` and `code-analysis` both run the measure tool and make the
+- `code-refactor` and `code-analysis` both run the measure tool and make the
   project's test command write its reports. The code block of report
-  options in `skills/task-refactor/references/measurement-tools.md` and in
+  options in `skills/code-refactor/references/measurement-tools.md` and in
   `skills/code-analysis/references/test-reports.md` must stay identical.
   Change them together and diff them afterwards.
 - `task-create` and `task-breakdown` both count code lines against the
@@ -219,23 +220,23 @@ Folders:
    a rule.
 4. Run `node --check` on every file under `scripts/`.
 5. For `task-create` and `task-breakdown`, diff the two task format blocks. For
-   `task-breakdown` and `task-refactor`, diff the `## Task` and `## Subtask`
+   `task-breakdown` and `code-refactor`, diff the `## Task` and `## Subtask`
    blocks. Any output is a failure:
 
    ```bash
    diff <(sed -n '/^## Task$/,$p' \
             skills/task-breakdown/references/task-template.md) \
         <(sed -n '/^## Task$/,$p' \
-            skills/task-refactor/references/task-template.md)
+            skills/code-refactor/references/task-template.md)
    ```
 
-   For `task-work`, `task-orchestrate`, and `task-refactor`, confirm that
+   For `task-work`, `task-orchestrate`, and `code-refactor`, confirm that
    every section name printed below is a heading in the `## Task` or
    `## Subtask` block of `skills/task-breakdown/references/task-template.md`:
 
    ```bash
    cat skills/task-work/SKILL.md skills/task-orchestrate/SKILL.md \
-     skills/task-refactor/SKILL.md | tr '\n' ' ' \
+     skills/code-refactor/SKILL.md | tr '\n' ' ' \
      | grep -oE '\b[A-Z][a-z]+( [a-z]+)? section\b' | sort -u
    ```
 6. List every word with two definition texts across `GLOSSARY.md`, when it
@@ -274,12 +275,12 @@ Folders:
        | awk -v f="$f" 'NF > 25 { print f ": " $0 }'
    done
    ```
-9. For `task-refactor` and `code-analysis`, diff the two code blocks of
+9. For `code-refactor` and `code-analysis`, diff the two code blocks of
    report options. Any output is a failure:
 
    ```bash
    diff <(awk '/^# Node.js test runner/,/^```$/' \
-            skills/task-refactor/references/measurement-tools.md) \
+            skills/code-refactor/references/measurement-tools.md) \
         <(awk '/^# Node.js test runner/,/^```$/' \
             skills/code-analysis/references/test-reports.md)
    ```

@@ -24,22 +24,22 @@ counts one tier.
 ## Summary
 
 Tokens per skill and tier. With all 10 skills installed, the startup
-tier costs 744 tokens per session. Using one skill then adds its
+tier costs 745 tokens per session. Using one skill then adds its
 `SKILL.md` and the references it reads.
 
 | Skill            | Startup | SKILL.md | References | Scripts |  Total |
 |------------------|--------:|---------:|-----------:|--------:|-------:|
 | agent-docs       |      79 |    1,430 |      2,159 |   3,581 |  8,104 |
 | code-analysis    |      76 |    2,158 |      7,680 |       0 | 10,647 |
+| code-refactor    |      85 |    4,816 |     13,557 |   4,962 | 24,432 |
 | glossary         |      76 |    2,991 |      1,135 |       0 |  5,049 |
 | package-update   |      68 |    4,124 |      4,948 |   1,864 | 11,807 |
 | task-breakdown   |      73 |    4,196 |      2,713 |       0 |  7,857 |
 | task-create      |      76 |    3,021 |      1,814 |       0 |  5,670 |
 | task-orchestrate |      77 |    4,090 |      2,118 |       0 |  7,120 |
-| task-refactor    |      84 |    4,583 |     10,344 |       0 | 15,787 |
 | task-work        |      64 |    3,681 |      2,563 |       0 |  7,118 |
 | unambiguity      |      71 |    1,947 |      1,819 |       0 |  4,575 |
-| **All skills**   |     744 |   32,221 |     37,293 |   5,445 | 83,734 |
+| **All skills**   |     745 |   32,454 |     40,506 |  10,407 | 92,379 |
 
 ## Files per skill
 
@@ -72,6 +72,22 @@ Lines, words, and tokens of every file, grouped by skill.
 | `references/quality-checklist.md`           |    55 |   341 |    564 |
 | `references/test-reports.md`                |   132 |   742 |  1,478 |
 | **Total**                                   |   874 | 6,186 | 10,647 |
+
+### code-refactor
+
+| File                                   | Lines |  Words | Tokens |
+|----------------------------------------|------:|-------:|-------:|
+| `SKILL.md`                             |   390 |  3,184 |  4,816 |
+| `evals/evals.json`                     |    23 |    491 |    720 |
+| `evals/trigger-queries.json`           |    12 |    227 |    377 |
+| `references/characterization-tests.md` |    71 |    635 |    864 |
+| `references/measurement-tools.md`      |   296 |  2,126 |  3,583 |
+| `references/quality-checklist.md`      |   112 |    852 |  1,271 |
+| `references/refactoring-rules.md`      |   160 |  1,346 |  1,726 |
+| `references/smell-catalog.md`          |   343 |  2,681 |  3,858 |
+| `references/task-template.md`          |   227 |  1,370 |  2,255 |
+| `scripts/scan.mjs`                     |   387 |  1,403 |  4,962 |
+| **Total**                              | 2,021 | 14,315 | 24,432 |
 
 ### glossary
 
@@ -134,21 +150,6 @@ Lines, words, and tokens of every file, grouped by skill.
 | `references/orchestration-report-template.md` |    97 |   621 |  1,005 |
 | `references/quality-checklist.md`             |    83 |   520 |    787 |
 | **Total**                                     |   581 | 4,549 |  7,120 |
-
-### task-refactor
-
-| File                                   | Lines |  Words | Tokens |
-|----------------------------------------|------:|-------:|-------:|
-| `SKILL.md`                             |   372 |  3,053 |  4,583 |
-| `evals/evals.json`                     |    23 |    311 |    500 |
-| `evals/trigger-queries.json`           |    12 |    208 |    360 |
-| `references/characterization-tests.md` |    63 |    568 |    761 |
-| `references/measurement-tools.md`      |   258 |  1,853 |  3,087 |
-| `references/quality-checklist.md`      |    98 |    716 |  1,073 |
-| `references/refactoring-rules.md`      |   130 |  1,059 |  1,352 |
-| `references/smell-catalog.md`          |   182 |  1,304 |  1,886 |
-| `references/task-template.md`          |   223 |  1,327 |  2,185 |
-| **Total**                              | 1,361 | 10,399 | 15,787 |
 
 ### task-work
 
