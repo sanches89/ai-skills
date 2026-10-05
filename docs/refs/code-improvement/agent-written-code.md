@@ -1,9 +1,9 @@
 # Agent-written code
 
 What agent-written code gets wrong, by the measurements, and what makes a
-codebase cheap for a coding agent to read and change. The *Agent-written
-code*, *Legibility*, and *Tests* entries of the `code-refactor` catalog, and
-the 400-line file limit, come from here.
+codebase cheap for a coding agent to read and change. The *Agent-written code*,
+*Legibility*, and *Tests* entries of the `refactoring-code` catalog, and the
+400-line file limit, come from here.
 
 ## What the measurements show
 

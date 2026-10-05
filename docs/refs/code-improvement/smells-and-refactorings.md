@@ -1,8 +1,8 @@
 # Smells and refactorings
 
 Which refactoring removes which smell, and when duplication stays. The
-`code-refactor` catalog names these refactorings. This file holds the
-sources and the mapping behind the entries inside functions and modules.
+`refactoring-code` catalog names these refactorings. This file holds the sources
+and the mapping behind the entries inside functions and modules.
 
 ## The smell groups
 

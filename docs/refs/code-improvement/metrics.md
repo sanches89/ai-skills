@@ -1,8 +1,8 @@
 # Metrics
 
 Which measurements the tools take, with the limits they use, and which ones
-predict defects. The defaults of the measure tool, the ranking of findings,
-and the batch rule of `code-refactor` come from here.
+predict defects. The defaults of the measure tool, the ranking of findings, and
+the batch rule of `refactoring-code` come from here.
 
 ## Limits in practice
 
@@ -53,9 +53,9 @@ and the batch rule of `code-refactor` come from here.
   Lassenius: developers and metrics disagree on which code smells, so both
   are read.
 
-These results set the ranking of `code-refactor`: hotspot score first, so
-that a batch of 12 lands in the code that changes most. Complexity that
-nothing touches waits.
+These results set the ranking of `refactoring-code`: hotspot score first, so
+that a batch of 12 lands in the code that changes most. Complexity that nothing
+touches waits.
 
 ---
 

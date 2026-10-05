@@ -6,7 +6,7 @@ Runs with `npx skills`. No install step.
 
 ```bash
 npx skills add sanches89/ai-skills
-npx skills add sanches89/ai-skills --skill task-create task-breakdown
+npx skills add sanches89/ai-skills --skill creating-tasks breaking-down-tasks
 npx skills add sanches89/ai-skills --skill '*' -a claude-code codex
 npx skills add . --list
 ```

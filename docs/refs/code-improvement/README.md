@@ -1,8 +1,8 @@
 # Code improvement
 
-What the `code-refactor` skill rests on: the smells and refactorings, the
-design rules, the metrics and their limits, the evidence that ranks
-findings, and what makes code cheap for an agent.
+What the `refactoring-code` skill rests on: the smells and refactorings, the
+design rules, the metrics and their limits, the evidence that ranks findings,
+and what makes code cheap for an agent.
 
 - [smells-and-refactorings.md](smells-and-refactorings.md): which
   refactoring removes which smell, and when duplication stays.
@@ -23,7 +23,7 @@ Left at the origin:
 - the Maintainability Index, the Halstead measures, and the SIG rating
   bands;
 - the installation and the options of each tool beyond its limits;
-- the guidance on instruction files, which `agent-docs` holds;
+- the guidance on instruction files, which `writing-agent-docs` holds;
 - the security findings of the studies on agent-written code.
 
 ---

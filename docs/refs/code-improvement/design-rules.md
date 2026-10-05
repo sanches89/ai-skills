@@ -1,7 +1,7 @@
 # Design rules
 
 Which design rules make code maintainable, reusable, and testable, and how a
-violation shows in code. The *Design* entries of the `code-refactor` catalog
+violation shows in code. The *Design* entries of the `refactoring-code` catalog
 and the *Modules* rules of `refactoring-rules.md` come from here.
 
 ## Coupling and cohesion
