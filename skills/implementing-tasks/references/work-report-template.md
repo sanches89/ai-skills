@@ -22,8 +22,8 @@ What each section keeps:
 - **Verification**: the target's one verification command, or
   `<number> steps` when its Verification is a list. `pass` only when every
   step passes.
-- **Tests**: the test cases this run added and the existing ones it edited,
-  or `none: no test setup`.
+- **Tests**: the test cases this run added, a new case in an existing file
+  included, and the existing cases it edited, or `none: no test setup`.
 - **Changes**: one bullet per changed file, also on `blocked`: path, symbol,
   and behavior after the change. With more than 10 changed files, one
   bullet per folder: its path and what changed in it.

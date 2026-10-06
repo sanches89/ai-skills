@@ -7,9 +7,9 @@ Sections: 1. Meaningful names; 2. Small functions; 3. Single responsibility;
 dependency inversion; 14. KISS and YAGNI.
 
 Each principle holds a rule, an example when one applies, and a **Check**: a
-test that the diff passes or fails. A convention of the project beats a
-principle. Examples are TypeScript. The rule holds in
-every language.
+test that the diff passes or fails. A convention of the project and a
+decision of the chain beat a principle. Examples are TypeScript. The rule
+holds in every language.
 
 ## 1. Meaningful names
 

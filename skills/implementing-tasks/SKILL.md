@@ -33,6 +33,9 @@ These words have exactly one meaning in this skill.
    request that invoked this skill says so. Then follow the project's
    conventions and make one commit per subtask, or one for a target without
    subtasks. The caller decides what leaves the working tree.
+4. **Keep state in files.** Write the private notes, the baseline, and the
+   criteria checklist to files in the scratch directory, also for a short
+   target. State held only in the context window is lost when it compacts.
 
 ## Workflow
 
@@ -202,7 +205,7 @@ lists under *Out of scope*, or what a sibling subtask delivers.
 
 **Code.** Read `references/clean-code-principles.md` before the first edit.
 Apply every principle to the lines you write or change. A convention of the
-project beats a principle.
+project and a decision of the chain beat a principle.
 
 **Tests.** With a test setup, read `references/unit-testing.md` before the
 first test. A convention of the project beats a rule there. Then:
@@ -266,8 +269,8 @@ Compare the working tree with the baseline from 4f and confirm:
   unrelated formatting;
 - the change follows every convention from 4b;
 - the **Check** line of every principle in
-  `references/clean-code-principles.md` passes over the diff, or a convention
-  from 4b overrules the principle;
+  `references/clean-code-principles.md` passes over the diff. A convention
+  from 4b or a decision of the chain overrules a principle that fails;
 - no task file, subtask file, or item changed.
 
 After any edit in this step, run Step 7 again.

@@ -33,13 +33,13 @@ tier costs 755 tokens per session. Using one skill then adds its
 | breaking-down-tasks |      74 |    4,198 |      2,714 |       0 |  7,861 |
 | creating-tasks      |      77 |    3,023 |      1,816 |       0 |  5,676 |
 | disambiguating-text |      72 |    1,955 |      1,819 |       0 |  4,584 |
-| implementing-tasks  |      65 |    3,765 |      4,650 |       0 |  9,336 |
+| implementing-tasks  |      65 |    3,830 |      4,666 |       0 | 11,630 |
 | orchestrating-tasks |      78 |    4,098 |      2,119 |       0 |  7,132 |
 | refactoring-code    |      85 |    4,824 |     13,561 |   4,962 | 24,444 |
 | updating-packages   |      69 |    4,125 |      4,948 |   1,864 | 11,814 |
 | writing-agent-docs  |      80 |    1,434 |      2,164 |   3,582 |  8,121 |
 | writing-glossaries  |      79 |    3,008 |      1,135 |       0 |  5,071 |
-| **All skills**      |     755 |   32,590 |     42,606 |  10,408 | 94,690 |
+| **All skills**      |     755 |   32,655 |     42,622 |  10,408 | 96,984 |
 
 ## Files per skill
 
@@ -98,16 +98,32 @@ Lines, words, and tokens of every file, grouped by skill.
 
 ### implementing-tasks
 
-| File                                  | Lines | Words | Tokens |
-|---------------------------------------|------:|------:|-------:|
-| `SKILL.md`                            |   306 | 2,645 |  3,765 |
-| `evals/evals.json`                    |    23 |   363 |    565 |
-| `evals/trigger-queries.json`          |    12 |   175 |    356 |
-| `references/clean-code-principles.md` |   302 | 1,326 |  2,087 |
-| `references/quality-checklist.md`     |    69 |   492 |    736 |
-| `references/unit-testing.md`          |    96 |   757 |    956 |
-| `references/work-report-template.md`  |    87 |   560 |    871 |
-| **Total**                             |   895 | 6,318 |  9,336 |
+| File                                                                           | Lines | Words | Tokens |
+|--------------------------------------------------------------------------------|------:|------:|-------:|
+| `SKILL.md`                                                                     |   309 | 2,696 |  3,830 |
+| `evals/evals.json`                                                             |    42 |   461 |    912 |
+| `evals/files/audit-log/package.json`                                           |     1 |    13 |     28 |
+| `evals/files/audit-log/src/events/dispatch.js`                                 |     3 |    21 |     32 |
+| `evals/files/audit-log/src/orders/cancel.js`                                   |     3 |    11 |     21 |
+| `evals/files/audit-log/tasks/011-audit-log/003-emit-events.md`                 |    33 |    87 |    162 |
+| `evals/files/audit-log/tasks/011-audit-log/task.md`                            |    47 |   110 |    182 |
+| `evals/files/audit-log/tests/cancel.test.js`                                   |     7 |    30 |     67 |
+| `evals/files/cli-flags/input.txt`                                              |     3 |     3 |      6 |
+| `evals/files/cli-flags/package.json`                                           |     1 |     6 |     14 |
+| `evals/files/cli-flags/src/cli.js`                                             |     5 |    16 |     41 |
+| `evals/files/cli-flags/tasks/009-cli-flags/task.md`                            |    54 |   186 |    320 |
+| `evals/files/webhooks/package.json`                                            |     1 |    13 |     28 |
+| `evals/files/webhooks/src/webhooks/send.js`                                    |     8 |    37 |     62 |
+| `evals/files/webhooks/tasks/004-add-retry-to-webhooks/001-extract-send.md`     |    29 |    65 |    117 |
+| `evals/files/webhooks/tasks/004-add-retry-to-webhooks/002-add-retry-policy.md` |    42 |   182 |    357 |
+| `evals/files/webhooks/tasks/004-add-retry-to-webhooks/task.md`                 |    54 |   191 |    307 |
+| `evals/files/webhooks/tests/send.test.js`                                      |    12 |    68 |    122 |
+| `evals/trigger-queries.json`                                                   |    12 |   175 |    356 |
+| `references/clean-code-principles.md`                                          |   302 | 1,332 |  2,092 |
+| `references/quality-checklist.md`                                              |    69 |   492 |    736 |
+| `references/unit-testing.md`                                                   |    96 |   757 |    956 |
+| `references/work-report-template.md`                                           |    87 |   568 |    882 |
+| **Total**                                                                      | 1,220 | 7,520 | 11,630 |
 
 ### orchestrating-tasks
 
