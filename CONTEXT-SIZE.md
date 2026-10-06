@@ -33,13 +33,13 @@ tier costs 755 tokens per session. Using one skill then adds its
 | breaking-down-tasks |      74 |    4,198 |      2,714 |       0 |  7,861 |
 | creating-tasks      |      77 |    3,023 |      1,816 |       0 |  5,676 |
 | disambiguating-text |      72 |    1,955 |      1,819 |       0 |  4,584 |
-| implementing-tasks  |      65 |    3,683 |      2,563 |       0 |  7,122 |
+| implementing-tasks  |      65 |    3,765 |      4,650 |       0 |  9,336 |
 | orchestrating-tasks |      78 |    4,098 |      2,119 |       0 |  7,132 |
 | refactoring-code    |      85 |    4,824 |     13,561 |   4,962 | 24,444 |
 | updating-packages   |      69 |    4,125 |      4,948 |   1,864 | 11,814 |
 | writing-agent-docs  |      80 |    1,434 |      2,164 |   3,582 |  8,121 |
 | writing-glossaries  |      79 |    3,008 |      1,135 |       0 |  5,071 |
-| **All skills**      |     755 |   32,508 |     40,519 |  10,408 | 92,476 |
+| **All skills**      |     755 |   32,590 |     42,606 |  10,408 | 94,690 |
 
 ## Files per skill
 
@@ -98,15 +98,16 @@ Lines, words, and tokens of every file, grouped by skill.
 
 ### implementing-tasks
 
-| File                                 | Lines | Words | Tokens |
-|--------------------------------------|------:|------:|-------:|
-| `SKILL.md`                           |   299 | 2,599 |  3,683 |
-| `evals/evals.json`                   |    23 |   332 |    520 |
-| `evals/trigger-queries.json`         |    12 |   175 |    356 |
-| `references/quality-checklist.md`    |    69 |   492 |    736 |
-| `references/unit-testing.md`         |    96 |   757 |    956 |
-| `references/work-report-template.md` |    87 |   560 |    871 |
-| **Total**                            |   586 | 4,915 |  7,122 |
+| File                                  | Lines | Words | Tokens |
+|---------------------------------------|------:|------:|-------:|
+| `SKILL.md`                            |   306 | 2,645 |  3,765 |
+| `evals/evals.json`                    |    23 |   363 |    565 |
+| `evals/trigger-queries.json`          |    12 |   175 |    356 |
+| `references/clean-code-principles.md` |   302 | 1,326 |  2,087 |
+| `references/quality-checklist.md`     |    69 |   492 |    736 |
+| `references/unit-testing.md`          |    96 |   757 |    956 |
+| `references/work-report-template.md`  |    87 |   560 |    871 |
+| **Total**                             |   895 | 6,318 |  9,336 |
 
 ### orchestrating-tasks
 

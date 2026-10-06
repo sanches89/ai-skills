@@ -200,6 +200,10 @@ below. Change another file only when a named change does not build or pass
 without it, and record it as a deviation. Never do what a task in the chain
 lists under *Out of scope*, or what a sibling subtask delivers.
 
+**Code.** Read `references/clean-code-principles.md` before the first edit.
+Apply every principle to the lines you write or change. A convention of the
+project beats a principle.
+
 **Tests.** With a test setup, read `references/unit-testing.md` before the
 first test. A convention of the project beats a rule there. Then:
 - write every test the target names, plus one for every behavior the change
@@ -261,6 +265,9 @@ Compare the working tree with the baseline from 4f and confirm:
 - the diff holds no debug output, commented-out code, stray file, or
   unrelated formatting;
 - the change follows every convention from 4b;
+- the **Check** line of every principle in
+  `references/clean-code-principles.md` passes over the diff, or a convention
+  from 4b overrules the principle;
 - no task file, subtask file, or item changed.
 
 After any edit in this step, run Step 7 again.

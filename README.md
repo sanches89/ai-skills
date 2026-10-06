@@ -17,8 +17,9 @@ coding agent that loads `SKILL.md` files.
   command.
 - [implementing-tasks](skills/implementing-tasks/SKILL.md): implements a task or
   subtask within the scope set by its parent tasks and proves every acceptance
-  criterion. It returns a short work report with only what the rest of the work
-  needs.
+  criterion. It writes the code under 14 clean code principles, each with a
+  rule, an example, and a check that the diff passes. It returns a short work
+  report with only what the rest of the work needs.
 - [orchestrating-tasks](skills/orchestrating-tasks/SKILL.md): runs a whole task
   from its task file or item: one subtask at a time, each in its own subagent
   with the implementing-tasks skill, each with one commit on a branch. Then it
