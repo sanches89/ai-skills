@@ -24,14 +24,14 @@ counts one tier.
 ## Summary
 
 Tokens per skill and tier. With all 10 skills installed, the startup
-tier costs 755 tokens per session. Using one skill then adds its
+tier costs 745 tokens per session. Using one skill then adds its
 `SKILL.md` and the references it reads.
 
 | Skill               | Startup | SKILL.md | References | Scripts |  Total |
 |---------------------|--------:|---------:|-----------:|--------:|-------:|
 | analyzing-code      |      76 |    2,160 |      7,680 |       0 | 10,651 |
 | breaking-down-tasks |      74 |    4,198 |      2,714 |       0 |  7,861 |
-| creating-tasks      |      77 |    3,023 |      1,816 |       0 |  5,676 |
+| creating-tasks      |      67 |    3,011 |      1,816 |       0 |  5,664 |
 | disambiguating-text |      72 |    1,955 |      1,819 |       0 |  4,584 |
 | implementing-tasks  |      65 |    3,890 |      4,727 |       0 | 11,751 |
 | orchestrating-tasks |      78 |    4,098 |      2,119 |       0 |  7,132 |
@@ -39,7 +39,7 @@ tier costs 755 tokens per session. Using one skill then adds its
 | updating-packages   |      69 |    4,125 |      4,948 |   1,864 | 11,814 |
 | writing-agent-docs  |      80 |    1,434 |      2,164 |   3,582 |  8,121 |
 | writing-glossaries  |      79 |    3,008 |      1,135 |       0 |  5,071 |
-| **All skills**      |     755 |   32,715 |     42,683 |  10,408 | 97,105 |
+| **All skills**      |     745 |   32,703 |     42,683 |  10,408 | 97,093 |
 
 ## Files per skill
 
@@ -77,13 +77,13 @@ Lines, words, and tokens of every file, grouped by skill.
 
 | File                              | Lines | Words | Tokens |
 |-----------------------------------|------:|------:|-------:|
-| `SKILL.md`                        |   244 | 2,057 |  3,023 |
+| `SKILL.md`                        |   244 | 2,046 |  3,011 |
 | `evals/evals.json`                |    23 |   276 |    433 |
 | `evals/trigger-queries.json`      |    12 |   251 |    404 |
 | `references/line-count.md`        |    37 |   226 |    362 |
 | `references/quality-checklist.md` |    74 |   480 |    752 |
 | `references/task-template.md`     |    90 |   417 |    702 |
-| **Total**                         |   480 | 3,707 |  5,676 |
+| **Total**                         |   480 | 3,696 |  5,664 |
 
 ### disambiguating-text
 

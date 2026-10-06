@@ -1,6 +1,6 @@
 ---
 name: creating-tasks
-description: Writes one task from an idea, feature, bug, or refactor, researched in the code and settled in an interview. Use when the user wants work explored, planned, scoped, or turned into a task, ticket, issue, spec, or plan before implementation, even from a one-line idea or a vague remark that something should change.
+description: Writes one task from an idea, feature, bug, or refactor. Use when the user wants work explored, planned, scoped, or turned into a task, ticket, issue, spec, or plan before implementation, even from a one-line idea or a vague remark that something should change.
 license: MIT
 compatibility: The line count needs cloc on PATH, or Node.js with npx, Perl 5, and network access on the first run. A missing tool leaves the count to the agent and never blocks the task.
 argument-hint: <idea>
@@ -240,5 +240,5 @@ Heads up: this task changes about <n> code lines. Reviews go best under
 lines each.
 ```
 
-Finish with one line: the item's identifier and URL, or the path of the task
+Finish with one line: the item's identifier, or the path of the task
 file, absolute when outside the repository. Ask nothing else.
