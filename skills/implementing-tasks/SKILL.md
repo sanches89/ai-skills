@@ -239,8 +239,10 @@ Run, in this order:
 4. every command from 4c.
 
 A subagent that runs a command returns its result and the error text of
-each failure. Fill the evidence line of each entry with the command or step
-and its result, and tick the entry only when it passes. On any failure,
+each failure. Edit the criteria checklist file after each run: fill the
+evidence line of each entry with the command or step and its result, and
+tick the entry only when it passes. A tick held only in the context window
+does not count. On any failure,
 fix the cause inside the target's scope. Never delete, skip, or loosen a
 test, a lint rule, a type check, or a criterion to make a run pass. Then
 run this whole step again from the start, because a fix can break an

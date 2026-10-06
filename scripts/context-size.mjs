@@ -42,12 +42,30 @@ function sum(items, key) {
   return items.reduce((total, item) => total + item[key], 0);
 }
 
+// Eval fixtures never load into a context window, and their long paths push
+// the table past the 80-column limit of the repository's Markdown.
+function collapseFixtures(files) {
+  const fixtures = files.filter((f) => f.path.startsWith('evals/files/'));
+  if (fixtures.length === 0) return files;
+  const rest = files.filter((f) => !fixtures.includes(f));
+  return [
+    ...rest,
+    {
+      path: `evals/files/ (${fixtures.length} files)`,
+      lines: sum(fixtures, 'lines'),
+      words: sum(fixtures, 'words'),
+      tokens: sum(fixtures, 'tokens'),
+    },
+  ];
+}
+
 function measureSkill(name) {
   const dir = join(skillsDir, name);
-  const files = walk(dir).map((path) => ({
+  const measured = walk(dir).map((path) => ({
     path: relative(dir, path),
     ...measure(readFileSync(path, 'utf8')),
   }));
+  const files = collapseFixtures(measured);
   const skillMd = readFileSync(join(dir, 'SKILL.md'), 'utf8');
   const frontmatter = skillMd.match(/^---\n([\s\S]*?)\n---\n/)?.[1] ?? '';
   const startupLines = frontmatter

@@ -7,7 +7,8 @@ failure blocks delivery. Fix it, then run the whole checklist again.
 
 - [ ] The criteria checklist holds every criterion of the target, word for
       word, plus the target's Verification.
-- [ ] Every ticked entry has evidence from a run made after the last edit.
+- [ ] In the criteria checklist file, every ticked entry has a filled
+      evidence line from a run made after the last edit.
 - [ ] The *Criteria* counts equal the ticked and total criterion entries,
       Verification and command entries excluded.
 - [ ] `done` only when every entry is ticked. Else `blocked`, every unticked
