@@ -33,13 +33,13 @@ tier costs 755 tokens per session. Using one skill then adds its
 | breaking-down-tasks |      74 |    4,198 |      2,714 |       0 |  7,861 |
 | creating-tasks      |      77 |    3,023 |      1,816 |       0 |  5,676 |
 | disambiguating-text |      72 |    1,955 |      1,819 |       0 |  4,584 |
-| implementing-tasks  |      65 |    3,854 |      4,677 |       0 | 11,665 |
+| implementing-tasks  |      65 |    3,890 |      4,727 |       0 | 11,751 |
 | orchestrating-tasks |      78 |    4,098 |      2,119 |       0 |  7,132 |
 | refactoring-code    |      85 |    4,824 |     13,561 |   4,962 | 24,444 |
 | updating-packages   |      69 |    4,125 |      4,948 |   1,864 | 11,814 |
 | writing-agent-docs  |      80 |    1,434 |      2,164 |   3,582 |  8,121 |
 | writing-glossaries  |      79 |    3,008 |      1,135 |       0 |  5,071 |
-| **All skills**      |     755 |   32,679 |     42,633 |  10,408 | 97,019 |
+| **All skills**      |     755 |   32,715 |     42,683 |  10,408 | 97,105 |
 
 ## Files per skill
 
@@ -100,15 +100,15 @@ Lines, words, and tokens of every file, grouped by skill.
 
 | File                                  | Lines | Words | Tokens |
 |---------------------------------------|------:|------:|-------:|
-| `SKILL.md`                            |   311 | 2,715 |  3,854 |
+| `SKILL.md`                            |   314 | 2,736 |  3,890 |
 | `evals/evals.json`                    |    42 |   461 |    912 |
 | `evals/trigger-queries.json`          |    12 |   175 |    356 |
 | `references/clean-code-principles.md` |   302 | 1,332 |  2,092 |
 | `references/quality-checklist.md`     |    70 |   500 |    747 |
-| `references/unit-testing.md`          |    96 |   757 |    956 |
-| `references/work-report-template.md`  |    87 |   568 |    882 |
+| `references/unit-testing.md`          |    98 |   785 |    992 |
+| `references/work-report-template.md`  |    88 |   579 |    896 |
 | `evals/files/ (16 files)`             |   303 | 1,039 |  1,866 |
-| **Total**                             | 1,223 | 7,547 | 11,665 |
+| **Total**                             | 1,229 | 7,607 | 11,751 |
 
 ### orchestrating-tasks
 

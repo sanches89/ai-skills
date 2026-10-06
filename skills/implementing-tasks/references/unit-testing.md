@@ -32,7 +32,9 @@ add a second framework or style beside the project's.
   project's naming style:
   `RetryPolicy.next returns null after the fifth attempt`.
 - Write no loops and no conditionals inside a test. Use the framework's table
-  or parameterized form for many inputs of one behavior.
+  or parameterized form for many inputs of one behavior. A framework with
+  none gets one `for` loop over a list of cases. The loop calls one test per
+  case and puts the case in the test name.
 - Write expected values as literals. Never compute the expected value with the
   same logic as the code under test.
 - Use the project's fixtures and factories for shared setup. Show in the test

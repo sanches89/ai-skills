@@ -24,6 +24,7 @@ What each section keeps:
   step passes.
 - **Tests**: the test cases this run added, a new case in an existing file
   included, and the existing cases it edited, or `none: no test setup`.
+  Count each case the test runner reports, a generated case included.
 - **Changes**: one bullet per changed file, also on `blocked`: path, symbol,
   and behavior after the change. With more than 10 changed files, one
   bullet per folder: its path and what changed in it.

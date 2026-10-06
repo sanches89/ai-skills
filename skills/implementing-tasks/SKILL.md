@@ -194,6 +194,9 @@ criterion. Give every entry a proof before Step 6. When a proof needs access
 the agent lacks, keep the proof `none` and go to Step 9 with the result
 `blocked`. Name the access under *Blocked by*.
 
+Read `references/quality-checklist.md` now. Step 9 runs it, and a check that
+fails there costs a rerun of Steps 7 and 8.
+
 ### Step 6: Implement
 
 Make the change the target's Changes or Approach section describes, by the
