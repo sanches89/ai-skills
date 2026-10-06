@@ -122,10 +122,12 @@ other agents:
 
 ```bash
 npx skills add sanches89/ai-skills
+npx skills add sanches89/ai-skills --skill creating-tasks breaking-down-tasks
 ```
 
-Add `--skill <name>` to pick one skill, `-a <agent>` to pick an agent, and `-g`
-to install for the user instead of the project. The skills are also listed on
+The first command installs every skill and the second picks skills by name.
+Add `-a <agent>` to pick an agent and `-g` to install for the user instead of
+the project. The skills are also listed on
 [skills.sh](https://skills.sh/sanches89/ai-skills).
 
 Without the CLI, clone this repo into your agent's skills folder (e.g.
