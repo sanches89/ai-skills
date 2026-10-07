@@ -84,7 +84,7 @@ the input text does not wrap.
 
 **2a. The input text.** Read `references/clarity-rules.md` now. Then read
 the input text in full, yourself: Step 4 rewrites it. Record every
-ambiguity with its location, its kind, and its readings.
+ambiguity with its location, its ambiguity kind, and its readings.
 
 **2b. The glossary.** Read the glossary, when it exists, and every
 `## Terms`, `## Definitions`, or `## Glossary` section of the input text.
@@ -180,7 +180,8 @@ each change, run Step 5 again, and ask again until the user approves.
 For a file path, write the approved rewrite to that file, unchanged. For
 pasted text, the rewrite shown in Step 6 is the output. Finish with the
 clarity report:
-- *Resolved*: one bullet per ambiguity, at most 2 lines: its kind, the
+- *Resolved*: one bullet per ambiguity, at most 2 lines: its ambiguity
+  kind, the
   passage before and after, and what settled it: the path and line,
   identifier, or URL, or the user's answer.
 - *Undefined words*: every undefined word, with its readings and the reading the

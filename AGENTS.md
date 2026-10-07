@@ -196,7 +196,7 @@ Folders:
   that starts with `No refactor task:`. `breaking-down-tasks` without a task
   to split ends with a line that starts with `No task to break down:`, and on
   an abort with a line that starts with `Aborted:`.
-- Two sets of limits exist. `writing-clean-code` holds the targets for the
+- Two sets of limits exist. `writing-clean-code` holds the budgets for the
   lines a change writes, and for every line of the paths a review names: 20
   lines per function, 2 parameters, no repeated block of 3 lines. The
   flagging limits mark existing code. Change each one in every file that
@@ -207,14 +207,14 @@ Folders:
   - nesting from 3 levels: `measuring-code`, `finding-code-smells`, the
     smell catalog, `refactoring-rules.md`, and `analysis-rules.md`;
   - a message chain of 2 method calls: the smell catalog, and the same
-    number as a target in `writing-clean-code`;
+    number as a budget in `writing-clean-code`;
   - the rule of three for clones: the smell catalog, `refactoring-rules.md`,
     and `analysis-rules.md`;
   - 400 lines per code file: the smell catalog, `finding-code-smells` with
     its scan script, and `refactoring-rules.md`;
-  - a parameter object from 3 places: the smell catalog and
-    `refactoring-rules.md`.
-- The size target is 500 code lines. It appears in `formatting-tasks`,
+  - a parameter object from 3 places: the smell catalog,
+    `refactoring-rules.md`, and `analysis-rules.md`.
+- The size budget is 500 code lines. It appears in `formatting-tasks`,
   `creating-tasks`, and `breaking-down-tasks`. Change it in the three in the
   same commit.
 - `writing-glossaries` writes the glossary, and its reference line in the root

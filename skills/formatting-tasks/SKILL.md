@@ -153,8 +153,8 @@ section, and the change of a subtask is its Changes section. Count the
 files the change deletes or rewrites with the count tool instead of an
 estimate.
 
-The size target is 500 code lines per task without subtasks and per
-subtask. 500 is a target for small reviews, not a cap: the caller decides
+The size budget is 500 code lines per task without subtasks and per
+subtask. 500 is a budget for small reviews, not a cap: the caller decides
 what a count above it changes.
 
 ### Step 5: Return

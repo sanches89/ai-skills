@@ -16,8 +16,8 @@ stops on a missing fact: put every fact it needs in the subtask.
 
 These words have exactly one meaning in this skill.
 
-- **Guard**: what hides behavior that later subtasks complete: a feature flag,
-  a disabled route, an unexported symbol.
+- **Rollout guard**: what hides behavior that later subtasks complete: a
+  feature flag, a disabled route, an unexported symbol.
 
 ## Hard rules
 
@@ -90,7 +90,7 @@ entry of its References section.
 Record, with paths and line numbers:
 - the entry points, modules, and symbols the change touches or calls;
 - how the project builds similar changes: patterns, naming, error handling,
-  configuration, guards;
+  configuration, rollout guards;
 - the test conventions and where tests for the touched areas live.
 
 Invoke the `finding-dev-commands` skill (in Claude Code, with the `Skill`
@@ -116,7 +116,7 @@ Claude Code they are deferred: search them with `ToolSearch` for
   documentation of the version pinned in the manifest or lockfile. Record
   the API facts the subtasks rely on.
 - **Other MCP servers**: use them when they hold facts the breakdown needs.
-- **External sources**: every design, document, or wiki page outside the
+- **External documents**: every design, document, or wiki page outside the
   repository and the tracker that the user gives or research finds. Read
   each through a connected MCP server, else a web fetch. Record its facts,
   and its name and URL for *References*. When nothing reads it, ask the
@@ -132,7 +132,7 @@ two parts:
 ### Step 3: Interview
 
 Order the open decisions: task scope first, then behavior, then technical
-choices, then split choices (guards, ordering). Never ask for the team,
+choices, then split choices (rollout guards, ordering). Never ask for the team,
 project, board, or required fields of a tracker item: the `saving-tasks`
 skill asks them in Step 8.
 
@@ -144,8 +144,8 @@ For each open decision:
 - Name the option you recommend.
 
 After each answer, record the decision as a fact in the research notes and
-add every new decision the answer creates. Read an external source the
-answer gives as Step 2d states. When the answer introduces an
+add every new decision the answer creates. Read an external document
+the answer gives as Step 2d states. When the answer introduces an
 adjacent topic, one a reader would expect in this task, ask one question:
 in the task, or under *Out of scope*. Never expand or drop it in silence.
 
@@ -173,7 +173,7 @@ constraints too:
   invocation text `from breaking-down-tasks: size <paths>, tests <tests>`.
   `<paths>` is those files, and `<tests>` the test locations of Step 2b.
   Split again a subtask above 500 code lines when the parts meet every other
-  constraint in this list. Otherwise keep it: 500 is a target for small
+  constraint in this list. Otherwise keep it: 500 is a budget for small
   reviews, not a cap, and never a reason to refuse a task.
 - **Ordered by dependency.** Subtask N depends only on subtasks with lower
   numbers. The order is the implementation order.
@@ -185,9 +185,10 @@ constraints too:
 - **Tests ship with the change they verify.** Write no subtask of only
   tests, only documentation, or only "integration" or "wiring".
 - **Incomplete behavior stays hidden.** When a subtask would expose behavior
-  that later subtasks complete, give it a guard that follows the project's
-  convention. Remove the guard in the subtask that completes the behavior.
-  Without a guard convention, ask about the guard in Step 3.
+  that later subtasks complete, give it a rollout guard that follows the
+  project's convention. Remove the rollout guard in the subtask that
+  completes the behavior. Without a rollout guard convention, ask about the
+  rollout guard in Step 3.
 - **Coverage.** Map every success criterion of the task to at least one
   subtask. Make the union of the subtasks' Changes sections equal the task's
   Approach section, nothing more.
@@ -203,7 +204,7 @@ Add these rules to the research notes, under *Writing rules*:
   success criterion of the original task in the matching section. Add what
   research and the interview settled, and the ordered subtask list.
 - In the task's *References*, keep every entry of the original task and add
-  every external source of Step 2d.
+  every external document of Step 2d.
 - In a subtask's *References*, list only the task's entries whose facts
   its Context restates, else `None.`
 - In *Changes*, name the functions to add or change, their inputs and
@@ -249,9 +250,9 @@ the invocation text
 `<subs>` is the subtask draft paths in subtask order. Append to it by the
 `source` and `kind` lines of Step 1:
 - `tracker`: `, replace <identifier>`, with the identifier of the target.
-- `file` and kind *task*: `, replace <task folder>, files`, with the folder
+- `file` and `kind` *task*: `, replace <task folder>, files`, with the folder
   of the target `task.md`.
-- `file` and kind *subtask*: `, files`. The subtask becomes a new task
+- `file` and `kind` *subtask*: `, files`. The subtask becomes a new task
   folder. Append `, dir <folder>` when the user named a folder for tasks.
 
 Never ask where to save: the `saving-tasks` skill settles the store.

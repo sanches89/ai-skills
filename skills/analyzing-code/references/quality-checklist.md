@@ -22,11 +22,11 @@ failed check on a run sends you back to Step 2, on a finding to Step 3.
 
 - [ ] Every finding names a location that exists under `<root>`, and the
       run read its code.
-- [ ] Every finding has a kind and an action from `analysis-rules.md`, and
-      none is an entry that file says to leave.
+- [ ] Every finding has a finding kind and an action from `analysis-rules.md`,
+      and none is an entry that file says to leave.
 - [ ] Every failed test of the summary is a finding.
 - [ ] The findings are in the rank order of `analysis-rules.md`, at most
-      12, with the count left out per kind under *Skipped*.
+      12, with the count left out per finding kind under *Skipped*.
 
 ## Report
 

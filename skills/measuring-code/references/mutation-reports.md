@@ -1,24 +1,24 @@
 # Mutation reports
 
-Sections: Sources; Tools; Thread options; Scope options; When to skip the
+Sections: Command files; Tools; Thread options; Scope options; When to skip the
 mutation run.
 
 Read this file in Step 2d.
 
-## Sources
+## Command files
 
-Take the mutation command from the first source that has one, in this
-order:
+Take the mutation command from the first command file that has one, in
+this order:
 1. the CI workflow: a file under `.github/workflows/`, `.gitlab-ci.yml`,
    `.circleci/config.yml`, `bitbucket-pipelines.yml`,
    `azure-pipelines.yml`, or `Jenkinsfile`. Take the step that runs a tool
    of *Tools* below;
 2. a script of `package.json` that runs `stryker run`;
-3. a target of `Makefile`, `justfile`, or `Taskfile.yml` that runs a tool
-   of *Tools* below;
+3. a named command of `Makefile`, `justfile`, or `Taskfile.yml` that runs a
+   tool of *Tools* below;
 4. the README file, then the CONTRIBUTING file.
 
-Without a mutation command in any source, take the command of the first
+Without a mutation command in any command file, take the command of the first
 tool below whose configuration file the repository has. Without one, record
 the reason `no mutation command`.
 
@@ -80,7 +80,7 @@ thread count. `<n>` is the output of `nproc`, or of `sysctl -n hw.ncpu` on
 macOS.
 - **PIT with Maven**: `-Dthreads=<n>`. PIT runs one thread by default.
 - **cargo-mutants**: `--jobs 2`. Its docs warn that a higher count can
-  exhaust memory, because every job runs a parallel build of its own.
+  exhaust memory, because every worker runs a parallel build of its own.
 - **StrykerJS, Stryker.NET, Infection, and PIT with Gradle**: no option.
   The Stryker tools and Infection run in parallel by default. PIT with
   Gradle reads its thread count from the `pitest` block alone.
@@ -110,10 +110,10 @@ one of these holds:
   `vendor/bin/infection` file, or `dotnet stryker --help` or
   `cargo mutants --help` fails. Maven and Gradle fetch PIT themselves. The
   reason is `<tool> is not installed`;
-- the tool mutates the source files in place: StrykerJS with `inPlace` in
+- the tool mutates the code files in place: StrykerJS with `inPlace` in
   its configuration, or cargo-mutants with `--in-place` in the command. An
   interrupted run leaves a mutated file behind. The reason is
-  `<tool> mutates the source in place`;
+  `<tool> mutates the code in place`;
 - the configuration uploads a report: a `dashboard` reporter in the
   Stryker.NET configuration, or `logs.stryker` in the Infection
   configuration. The StrykerJS report option replaces its configured

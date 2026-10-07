@@ -45,7 +45,7 @@ Without a test setup: the diff adds no test and no test framework, and
       *Deviations* lists it with its reason.
 - [ ] The diff does nothing under any *Out of scope* of the chain, and
       nothing a sibling subtask delivers. It removes or loosens no check.
-- [ ] The diff adds or removes every guard the target names.
+- [ ] The diff adds or removes every rollout guard the target names.
 - [ ] No task file, subtask file, or item changed. No commit, push, pull
       request, status change, or comment, unless the request asked.
 
@@ -57,8 +57,8 @@ Without a test setup: the diff adds no test and no test framework, and
       sentence, `None.` in every empty section.
 - [ ] No command output, no met criterion, no restated target text, no
       offer or next step.
-- [ ] Every bullet under *Affects other work* is of a kind the template
-      lists.
+- [ ] Every bullet under *Affects other work* is one of the facts the
+      template lists.
 - [ ] Every path and symbol in the report exists in the working tree, or
       the report marks it `(deleted)`.
 

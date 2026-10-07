@@ -22,7 +22,7 @@ Left at the origin:
 
 - the full list of supported agents and their install folders;
 - the other locations the CLI scans, and the canonical-copy layout it uses
-  for several target agents;
+  for several agents;
 - the CLI's `find`, `use`, `init`, `list`, `remove`, and `update` commands
   and its `--copy`, `--all`, and `-y` flags;
 - the telemetry switches;

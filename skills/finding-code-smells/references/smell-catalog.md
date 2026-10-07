@@ -15,7 +15,7 @@ form for. Each entry gives the **Signal** that shows the smell, the
 the refactoring `report`. The limits named here are the defaults. The limits
 that Step 3 of `SKILL.md` takes replace them. A value over a limit is
 a finding only when no *Leave it when* case of its entry holds. The scan script
-lists the signals that name a kind, as `path:line`. A signal is a line to read,
+lists the signals of each scan kind, as `path:line`. A signal is a line to read,
 never a finding.
 
 ## Proof of dead code
@@ -145,7 +145,7 @@ into the evidence of the finding:
   - Leave it when: the function is a mapper or a serializer between the two
     modules by design.
 - **Shotgun surgery**
-  - Signal: one kind of change that touches many modules, shown by files that
+  - Signal: one reason to change that touches many modules, shown by files that
     change together in the git history.
   - Refactoring: Move Function and Move Field until one module holds the
     rule.
@@ -212,7 +212,7 @@ into the evidence of the finding:
 - **Hidden dependency**
   - Signal: a decision that reads a system boundary on its own: the clock,
     randomness, the process environment, the filesystem, the network, a
-    database, or a global singleton. Kind `boundary-in-logic`.
+    database, or a global singleton. Scan kind `boundary-in-logic`.
   - Refactoring: Parameterize Function or Parameterize Constructor, with a
     default equal to the current collaborator, so that no caller changes.
   - Leave it when: the function is the shell that performs the effect, or
@@ -287,18 +287,18 @@ that nothing can fail, and errors caught and dropped.
     entry point.
 - **Leftover compatibility path**
   - Signal: an alias that re-exports a renamed symbol, a branch named
-    legacy or fallback, or a flag that one place reads with one value. Kind
-    `compat-path`.
+    legacy or fallback, or a flag that one place reads with one value. Scan
+    kind `compat-path`.
   - Refactoring: Remove Dead Code, with the *Proof of dead code*.
   - Leave it when: a caller outside the repository uses the old form.
 - **Magic literal**
   - Signal: a URL, a path, or a number other than 0, 1, and -1 inside a
-    decision. Kind `hard-coded-value`.
+    decision. Scan kind `hard-coded-value`.
   - Refactoring: Replace Magic Literal with a named constant, or move the
     value into the configuration the project reads at its entry point.
   - Leave it when: the literal appears once and the line names it.
 - **Credential in code**
-  - Signal: a key, a token, or a password as a literal. Kind `credential`,
+  - Signal: a key, a token, or a password as a literal. Scan kind `credential`,
     with the value hidden.
   - Report: the location alone. Never copy the value into a finding or a
     note.
@@ -308,14 +308,14 @@ that nothing can fail, and errors caught and dropped.
     key header, always counts.
 - **Masked error**
   - Signal: a catch that logs and continues, an empty catch, or a default
-    returned in place of an error. Kind `masked-error`.
+    returned in place of an error. Scan kind `masked-error`.
   - Report: the location and the statement that the code keeps the
     behavior. Letting the error through is a behavior change.
   - Leave it when: the catch sits at a system boundary and the project's
     docs name that behavior.
 - **Placeholder**
   - Signal: a marker comment for unfinished work, a not-implemented error,
-    or a stub that returns nothing. Kind `placeholder`.
+    or a stub that returns nothing. Scan kind `placeholder`.
   - Report: the location, as a feature gap. When no code reaches the stub,
     Remove Dead Code instead, with the *Proof of dead code*.
 
@@ -326,14 +326,14 @@ by searching for names. These entries keep both cheap.
 
 - **Oversized file**
   - Signal: a code file over 400 lines, or over the project's own file
-    length limit. Kind `oversized-file`.
+    length limit. Scan kind `oversized-file`.
   - Refactoring: Extract Module, one concept per file, named by the concept.
   - Leave it when: the file is a flat list, such as a route table, a
     configuration table, or generated code.
 - **Implicit wiring**
   - Signal: a collaborator reached by reflection, a string name, a global
     registration, or a patch at import time, so that no import names it.
-    Kind `implicit-wiring`.
+    Scan kind `implicit-wiring`.
   - Refactoring: Replace Implicit Wiring with an import and a call that a
     search for the name finds.
   - Leave it when: the project's framework requires the form, such as its
@@ -348,10 +348,10 @@ credential in a test file leaks as much as one in code.
 - **Weak test**
   - Signal: an assertion that proves nothing, such as not null, not
     throwing, or truthy. Also an expected value computed with the logic of
-    the code under test. Kind `weak-assertion` for the first form.
+    the code under test. Scan kind `weak-assertion` for the first form.
   - Refactoring: Replace Assertion with Literal: the value, the state, or
     the error that the unchanged code produces, written as a literal.
-  - Leave it when: the test guards a type at a system boundary and the
+  - Leave it when: the test checks a type at a system boundary and the
     project's docs say so.
 - **Over-mocked test**
   - Signal: a test double for a collaborator inside the project that is
@@ -367,5 +367,5 @@ credential in a test file leaks as much as one in code.
   - Refactoring: Rename, to the project's test naming for that unit.
   - Leave it when: the project's framework fixes the test file names.
 - **Skipped test**
-  - Signal: a skip marker or a focus marker. Kind `skipped-test`.
+  - Signal: a skip marker or a focus marker. Scan kind `skipped-test`.
   - Report: the test name and the reason the marker or its commit gives.

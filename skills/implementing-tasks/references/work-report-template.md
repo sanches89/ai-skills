@@ -31,10 +31,10 @@ What each section keeps:
   or symbol `(deleted)`.
 - **Deviations**: each difference between the target's text and the
   implementation: what the target says, what was done, and why.
-- **Affects other work**: only these kinds of fact:
+- **Affects other work**: only these facts:
   - a symbol, file, endpoint, flag, or command this work added or renamed
     that the parent or a sibling subtask names or calls;
-  - a guard added or removed;
+  - a rollout guard added or removed;
   - a stale or wrong fact in a task of the chain or in a sibling subtask,
     with the correct fact;
   - a check that already failed in the baseline;

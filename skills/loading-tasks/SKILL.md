@@ -86,7 +86,7 @@ task, the task with no parent:
   an item has none. Stop when an identifier repeats.
 - Source *text*: the chain is the target alone.
 
-The kind is *subtask* when the target has a parent, else *task*.
+The `kind` line reads *subtask* when the target has a parent, else *task*.
 
 Read every task in the chain only as far as the task map needs. Never open
 the links of a References section.
@@ -96,7 +96,7 @@ the links of a References section.
 A subtask of a task is one of three things: a subtask file in its task
 folder, a child of its item, or an entry of its Subtasks section other than
 `None.`. Count each subtask once. List the children of an item with the
-map's `list children` line. List the subtasks of the target. For kind
+map's `list children` line. List the subtasks of the target. For `kind`
 *subtask*, list the subtasks of its parent as the siblings.
 
 Order each list by the Subtasks section of the task it belongs to. Without

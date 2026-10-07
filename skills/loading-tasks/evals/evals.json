@@ -4,13 +4,13 @@
     {
       "id": 1,
       "prompt": "What are the subtasks of tasks/004-add-retry-to-webhooks/task.md, and in which order do they run?",
-      "expected_output": "Resolves a task file, source file, and never invokes finding-trackers. Reads task.md and every subtask file in its task folder, and never opens the links of a References section. Orders the subtasks by the task's Subtasks section. Shows the task map in chat: source file, kind task, a chain of task.md alone, one subtasks line per subtask with number, title, at path, depends on, Verification word for word, new paths, and state unknown, siblings none, tracker none. Edits no file and asks nothing.",
+      "expected_output": "Resolves a task file, 'source: file', and never invokes finding-trackers. Reads task.md and every subtask file in its task folder, and never opens the links of a References section. Orders the subtasks by the task's Subtasks section. Shows the task map in chat: 'source: file', 'kind: task', a chain of task.md alone, one subtasks line per subtask with number, title, at path, depends on, Verification word for word, new paths, and state unknown, siblings none, tracker none. Edits no file and asks nothing.",
       "files": []
     },
     {
       "id": 2,
       "prompt": "from implementing-tasks: tasks/004-add-retry-to-webhooks/002-add-retry-policy.md",
-      "expected_output": "Resolves a subtask file, source file. The chain is tasks/004-add-retry-to-webhooks/task.md, then the subtask, the target last, and the kind is subtask. The final message is the task map and nothing else: depends on lists 001, verification holds the subtask's Verification section word for word, new lists the paths its Changes section marks (new), commands come from the subtask's Context first and the task's Context next, subtasks reads none, and siblings lists every subtask of task.md in order with 002 marked (target). Asks nothing and edits no file.",
+      "expected_output": "Resolves a subtask file, 'source: file'. The chain is tasks/004-add-retry-to-webhooks/task.md, then the subtask, the target last, and the 'kind' line reads subtask. The final message is the task map and nothing else: depends on lists 001, verification holds the subtask's Verification section word for word, new lists the paths its Changes section marks (new), commands come from the subtask's Context first and the task's Context next, subtasks reads none, and siblings lists every subtask of task.md in order with 002 marked (target). Asks nothing and edits no file.",
       "files": []
     },
     {

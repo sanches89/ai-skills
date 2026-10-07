@@ -20,8 +20,8 @@ another path.
 
 These words have exactly one meaning in this skill.
 
-- **Candidate**: a word research found in the evidence set that has no
-  glossary entry yet.
+- **Candidate word**: a word research found in the evidence set that has
+  no glossary entry yet.
 - **Evidence set**: the files research reads for usages.
 - **Restatement**: a glossary entry copied into another document, such as a
   `## Terms` section.
@@ -88,7 +88,7 @@ that. Record whether the repository root has an `AGENTS.md` or a
 
 **2b. Evidence set.** Read every document in full. Record, with path and
 line:
-- every candidate:
+- every candidate word:
   - a word whose usages point at two things;
   - a word the project uses in a sense that its ordinary sense and its
     common sense in the project's field do not give;
@@ -96,21 +96,21 @@ line:
     a document defines;
   - every word named in the invocation text or by the user;
 - every synonym pair: two words whose usages point at one thing;
-- every usage of every candidate and of every existing term;
+- every usage of every candidate word and of every existing term;
 - every restatement: a bullet `- **X**: ...` outside the glossary, where
-  `X` is a term of the existing glossary or a candidate. A candidate's
-  restatement matches the entry Step 4 drafts for it;
+  `X` is a term of the existing glossary or a candidate word. A candidate
+  word's restatement matches the entry Step 4 drafts for it;
 - every verbatim third-party excerpt, such as a quoted vendor page.
 
 A usage inside a verbatim third-party excerpt is evidence of a conflict and
 never a rewrite. A rewritten quotation stops being a quotation.
 
-**2c. Code.** Search the project's code for each candidate. Record the
-identifier that carries the word and what the code does with it, so that
+**2c. Code.** Search the project's code for each candidate word. Record
+the identifier that carries the word and what the code does with it, so that
 the definition matches the code, not the prose.
 
-**2d. Findings.** Run the entry test on every candidate and every existing
-entry. A word passes the entry test when Gate A or Gate B holds.
+**2d. Findings.** Run the entry test on every candidate word and every
+existing entry. A word passes the entry test when Gate A or Gate B holds.
 
 Gate A, the conflict test. All three hold:
 - at one usage at least, a reader can take the word in two ways that lead
@@ -131,7 +131,7 @@ nothing.
 Write each finding with its usages:
 - a conflict: one word used for two things;
 - a synonym pair;
-- a candidate that passes a gate, with the gate;
+- a candidate word that passes a gate, with the gate;
 - an entry, in the glossary or a restatement, that passes neither gate,
   with the gate it comes closest to and the condition it fails;
 - a fact of an instruction inside a definition: a path, a placeholder, a
@@ -143,7 +143,8 @@ Write each finding with its usages:
 
 **2e. Research notes.** Write a private file in the scratch directory with
 two parts:
-1. *Facts*: every candidate and every finding, with its path and line.
+1. *Facts*: every candidate word and every finding, with its path and
+   line.
 2. *Open decisions*: every decision research did not settle, with the
    entries it affects.
 
@@ -167,7 +168,7 @@ After each answer, record the decision as a fact in the research notes and
 add every new decision the answer creates.
 
 Never ask about:
-- a candidate that passes neither gate;
+- a candidate word that passes neither gate;
 - a meaning the documents or the code settle;
 - a word with one reading and one name;
 - the wording of a settled meaning.
@@ -177,7 +178,7 @@ Continue until no open decision remains.
 
 Read `references/glossary-template.md` now and fill it, in the scratch
 directory, with the words that pass a gate. Writing rules:
-- Start a definition with a noun phrase that names the kind of thing:
+- Start a definition with a noun phrase that says what the thing is:
   `a user assigned the patient role in the app`, never `handles patients`.
 - Say what the term is, never how it works, never with its own term, and
   never with a banned word. The grep helper of

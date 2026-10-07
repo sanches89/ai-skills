@@ -197,7 +197,7 @@ A test gives the same result on every run, on every machine, in any order:
 - When the caller names a mutation command, run it instead of breaking the
   behavior by hand. Limit the command to the changed files.
 
-## Kind of test
+## Test kind
 
 - Write unit tests by default.
 - Write an integration test only in two cases: the request names one, or an

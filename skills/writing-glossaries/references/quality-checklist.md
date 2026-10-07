@@ -18,8 +18,8 @@ whole checklist again.
 
 ## Definitions
 
-- [ ] Every definition starts with a noun phrase that names the kind of
-      thing. It says what the thing is, not how it works.
+- [ ] Every definition starts with a noun phrase that says what the thing
+      is, not how it works.
 - [ ] Every definition has at most two sentences and never uses its own
       term.
 
@@ -66,7 +66,8 @@ grep -nE -e '`[^`]*/[^`]*`|<[a-z-]+>|sections? of|in order:' \
 
 Terms with two definition texts across the draft and every restating
 document. `<restating-files>` is every document that holds a restatement
-from Step 2b, of a term or of a candidate. Every word printed is a failure.
+from Step 2b, of a term or of a candidate word. Every word printed is a
+failure.
 
 ```bash
 awk 'FNR == 1 { t = (FILENAME == "<draft-file>") }

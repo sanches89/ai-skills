@@ -15,8 +15,8 @@ states is met. Return the change in the working tree plus a work report.
 
 These words have exactly one meaning in this skill.
 
-- **Guard**: what hides behavior that later subtasks complete: a feature flag,
-  a disabled route, an unexported symbol.
+- **Rollout guard**: what hides behavior that later subtasks complete: a
+  feature flag, a disabled route, an unexported symbol.
 - **Criterion**: one observable, binary check that defines the target as done.
 
 ## Hard rules
@@ -87,8 +87,8 @@ chain:
 - the success criteria the target contributes to;
 - its Subtasks section, the target's position in it, and the title and Goal
   section of every sibling subtask;
-- every guard it names, with the subtask that adds it and the one that
-  removes it.
+- every rollout guard it names, with the subtask that adds it and the one
+  that removes it.
 
 The target says what to do. The rest of the chain bounds it. A caller's fact
 beats a fact of the chain. When the target contradicts a decision or an *Out
@@ -179,9 +179,9 @@ fails there costs a rerun of Steps 7 and 8.
 ### Step 6: Implement
 
 Make the change the target's Changes or Approach section describes, by the
-decisions of Step 2 and the conventions of 4b. Add or remove a guard exactly
-as the target states. Change only what that section names, plus the tests
-below. Change another file only when a named change does not build or pass
+decisions of Step 2 and the conventions of 4b. Add or remove a rollout guard
+exactly as the target states. Change only what that section names, plus the
+tests below. Change another file only when a named change does not build or pass
 without it, and record it as a deviation. Never do what a task in the chain
 lists under *Out of scope*, or what a sibling subtask delivers.
 

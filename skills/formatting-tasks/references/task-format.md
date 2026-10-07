@@ -18,9 +18,9 @@ Rules for filling:
 - `a | b` on a line of a block below means: write a or b, never both.
 - *Approach* says what changes where. *Decisions* holds the rules and values
   the change follows. Put each fact in one section only.
-- *References* lists the sources for reviewers. The implementing agent never
-  opens them: write every fact a source settles in *Decisions* or *Context*
-  too.
+- *References* lists the outside documents for reviewers. The implementing
+  agent never opens them: write every fact a document settles in
+  *Decisions* or *Context* too.
 - Repeat in a subtask the facts and decisions it needs. Never point at the
   task.
 - *Subtasks* holds exactly `None.` for a task without subtasks, and the
@@ -88,7 +88,7 @@ Rules for filling:
 
 ## References
 
-- <Source outside the repository and the tracker: name, URL, and what it
+- <Document outside the repository and the tracker: name, URL, and what it
   settles. Example: Checkout design, frame "Retry banner",
   https://claude.ai/design/p/checkout. Settles the banner copy and layout.>
 - <... or the single word: None.>
@@ -130,9 +130,9 @@ or items when saved>
   stops after 5 attempts.>
 - <Convention, restated. Example: New tests go in tests/payments/ and use the
   WebhookFactory fixture from tests/factories.ts:12.>
-- <Guard, when the subtask hides incomplete behavior. Example: The new path is
-  behind the PAYMENT_RETRY flag in src/config/flags.ts:20, default false,
-  removed in subtask 4.>
+- <Rollout guard, when the subtask hides incomplete behavior. Example: The new
+  path is behind the PAYMENT_RETRY flag in src/config/flags.ts:20, default
+  false, removed in subtask 4.>
 - <...>
 
 ## References

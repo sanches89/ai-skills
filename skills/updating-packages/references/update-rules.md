@@ -15,7 +15,7 @@ This skill rewrites four range forms and keeps the form with the new version:
   range.
 
 A range in any other form stays as it is and goes under *Left alone* with the
-kind `range form`. The other forms are:
+label `range form`. The other forms are:
 - `workspace:`, `file:`, `link:`, and `catalog:` ranges;
 - git and URL ranges;
 - `*`, `x`, and `latest`;
@@ -23,7 +23,7 @@ kind `range form`. The other forms are:
 
 ## Reading the Node version
 
-Read each Node version source of Step 2c as follows:
+Read each place that Step 2c lists as follows:
 - `.nvmrc` and `.node-version`: the version in the file. `20` reads as
   `20.0.0`, and `v20.11.0` as `20.11.0`. A value that starts with a letter,
   like `lts/*`, means: take the version from `node -v`;
@@ -98,7 +98,7 @@ that constraint.
 ## Left alone
 
 Every range and field below stays as it is. The update report lists it under
-*Left alone* with its kind:
+*Left alone* with its label:
 - `range form`: a range that *Range style* above does not rewrite;
 - `workspace member`: the range of a dependency whose name is a workspace
   member of the same install root, in any range form;

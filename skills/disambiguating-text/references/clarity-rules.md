@@ -1,6 +1,7 @@
 # Clarity rules
 
-One rule per kind of ambiguity: the kind, how to find it, and the fix. A rule
+One rule per ambiguity kind: the ambiguity kind, how to find it, and the
+fix. A rule
 of the project, recorded in Step 2d, wins over a rule here.
 
 ## Words

@@ -10,7 +10,7 @@
     {
       "id": 2,
       "prompt": "from refactoring-code: paths src/billing, summary /tmp/r/summary.json, ignore **/generated/**, out /tmp/r, limits ccn 10, length 50, params 4, clone 5 lines and 50 tokens, each default",
-      "expected_output": "Does not invoke measuring-code: reads /tmp/r/summary.json. Takes the limits from the limits option, which comes last and runs to the end of the text, commas included, and the ignore globs from the ignore option. Writes /tmp/r/contract.md, /tmp/r/findings.md, and /tmp/r/scan.json. A function over 50 lines, over 4 parameters, over ccn 10, or nested 3 levels or deeper is a candidate. A clone is a finding with Extract Function from three copies, or from two copies that state one rule. Leaves a message chain through a fluent builder, and a clone of imports. Asks nothing. The final message is exactly four lines: findings, contract, scan, and counts per smell.",
+      "expected_output": "Does not invoke measuring-code: reads /tmp/r/summary.json. Takes the limits from the limits option, which comes last and runs to the end of the text, commas included, and the ignore globs from the ignore option. Writes /tmp/r/contract.md, /tmp/r/findings.md, and /tmp/r/scan.json. A function over 50 lines, over 4 parameters, over ccn 10, or nested 3 levels or deeper is a candidate finding. A clone is a finding with Extract Function from three copies, or from two copies that state one rule. Leaves a message chain through a fluent builder, and a clone of imports. Asks nothing. The final message is exactly four lines: findings, contract, scan, and counts per smell.",
       "files": []
     },
     {

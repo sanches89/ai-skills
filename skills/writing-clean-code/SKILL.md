@@ -11,7 +11,7 @@ argument-hint: <code to write | paths or git range to review>
 Write and review code by 14 principles. Each principle holds a rule, an
 example when one applies, and a **Check**: a test that the diff passes or
 fails. A convention of the project and a decision of the task the caller
-works on beat a principle. The numbers in the principles are targets for
+works on beat a principle. The numbers in the principles are budgets for
 the lines a change writes or edits. Review mode with paths applies them to
 every line under those paths. Examples are TypeScript. The rule holds in
 every language.

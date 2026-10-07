@@ -33,21 +33,22 @@ the request, else the repository root. Show the command map in chat.
 The command map:
 
 ```text
-build: <command> (<source path:line>) | none
-lint: <command> (<source>) | none
-type-check: <command> (<source>) | none
-format: <command that checks formatting and writes nothing> (<source>) | none
-test: <command> (<source>) | none
+build: <command> (<path:line>) | none
+lint: <command> (<path:line>) | none
+type-check: <command> (<path:line>) | none
+format: <command that checks formatting and writes nothing> (<path:line>) | none
+test: <command> (<path:line>) | none
 test one file: <command with <file> in place of the test file> | none
-install: <command> (<source>) | none: <reason> | unknown: <reason>
+install: <command> (<path:line>) | none: <reason> | unknown: <reason>
 ```
 
-Write `<source>` as `path:line`, with the path relative to the repository
-root. For a marker file or a lockfile, write its path alone.
+Write `<path:line>` with the path relative to the repository root, at the
+line that names the command. For a marker file or a lockfile, write its
+path alone.
 
 ## Workflow
 
-### Step 1: List the sources
+### Step 1: List the command files
 
 **Subagents.** When the agent offers subagents, run in one every read whose
 whole product is the facts the step records. In Claude Code, that is the
@@ -58,7 +59,7 @@ each with path and line. The context window then holds those returns, not
 the files, and stays small. Without subagents, follow the step yourself and
 keep only what it names.
 
-Look for each source in the project folder, then in each parent folder up
+Look for each command file in the project folder, then in each parent folder up
 to the repository root, and take the nearest. Record each that exists:
 - the CI workflow: a file under `.github/workflows/`, `.gitlab-ci.yml`,
   `.circleci/config.yml`, `bitbucket-pipelines.yml`,
@@ -100,22 +101,22 @@ ecosystem, take the install command of the CI workflow. Without one, write
 ### Step 3: Take each command
 
 Take each of build, lint, type-check, format, and test from the first
-source that has it, in this order:
+command file that has it, in this order:
 1. the CI workflow: the step that runs the command. For test, the CI step
    that runs the unit tests;
 2. the scripts of the manifest, such as the `scripts` field of
    `package.json`;
-3. the target of the task runner: `Makefile`, then `justfile`, then
+3. a named command of the task runner: `Makefile`, then `justfile`, then
    `Taskfile.yml`;
 4. the README file, then the CONTRIBUTING file.
 
-A step, a script, or a target matches a command by its name or by the tool
-it runs. Write a script of `package.json` with the package manager of Step
-2, else npm: `npm run <script>`, `pnpm run <script>`, `yarn run <script>`,
-or `bun run <script>`.
+A step, a script, or a named command matches a command by its name or by the
+tool it runs. Write a script of `package.json` with the package manager of Step
+2, else npm: `npm run <script>`, `pnpm run <script>`, `yarn run <script>`, or
+`bun run <script>`.
 
-**Test without a source.** Take the runner from the first line below whose
-file the project has:
+**Test that no command file names.** Take the runner from the first line below
+whose file the project has:
 - `pytest.ini`, or `pytest` in `pyproject.toml`: `pytest`;
 - `go.mod`: `go test ./...`;
 - `Cargo.toml`: `cargo test`;
@@ -133,13 +134,13 @@ as `uv run <test command>`, `poetry run <test command>`, or
 with it.
 
 **Format.** The format command writes nothing and fails on a file that the
-formatter would change. When the source runs the formatter in a form that
-writes, write the formatter's check form instead: `prettier --check`,
+formatter would change. When the command file runs the formatter in a
+form that writes, write the formatter's check form instead: `prettier --check`,
 `black --check`, `ruff format --check`, `cargo fmt --check`, or
 `dotnet format --verify-no-changes`. Without a check form, write
 `format: none`.
 
-**Test one file.** Take it from the sources in the order above. Else build
+**Test one file.** Take it from the command files in the order above. Else build
 it from the test command. Jest, Vitest, Mocha, the Node.js test runner,
 pytest, PHPUnit, and RSpec take a test file as an argument: append `<file>`.
 For `npm test` and `npm run`, append it after `--`, and only when the script

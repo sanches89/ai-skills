@@ -36,7 +36,8 @@ What each section keeps:
   `install only` when every install root is install-only. Otherwise `fail:`
   with each check command that fails in Step 7 and passes in the baseline
   results.
-- **Node version**: `<node-version>` and its Node version source.
+- **Node version**: `<node-version>` and the file or the command it came
+  from.
 - **Updated**: one bullet per manifest with an updated or lowered
   dependency, naming each with its current range and its new range. With
   more than 12 in one manifest, name those with bump kind `major` and count
@@ -51,7 +52,7 @@ What each section keeps:
   `latest` dist-tag version, carries a deprecation message, quoted in one
   line.
 - **Left alone**: one bullet per manifest, naming each range or field with
-  its kind from `update-rules.md`.
+  its label from `update-rules.md`.
 - **Unverified**: one bullet per orphan manifest, with the count of ranges
   set there.
 
@@ -75,7 +76,7 @@ cooldown <days> days
 **Packages:** <number> updated (<number> patch, <number> minor, <number>
 major), <number> lowered, <number> kept, <number> up to date
 **Checks:** pass | install only | fail: <name of each check command>
-**Node version:** <version> from <Node version source>
+**Node version:** <version> from <file or command>
 **Commits:** none | <short hashes, in commit order>
 
 ## Updated
@@ -87,13 +88,13 @@ major), <number> lowered, <number> kept, <number> up to date
 ## Constrained
 
 - <name> in `<manifest path>`: kept <range> | set <range>, candidate
-  <version>. <park reason>
+  version <version>. <park reason>
 - <... or the single word: None.>
 
 ## Needs migration
 
 - <name> in `<manifest path>`: kept <range> | set <range>, candidate
-  <version>. <park reason>. <release notes link>
+  version <version>. <park reason>. <release notes link>
 - <... or the single word: None.>
 
 ## Deprecated
@@ -103,7 +104,7 @@ major), <number> lowered, <number> kept, <number> up to date
 
 ## Left alone
 
-- `<manifest path>`: <name> (<kind>), <name> (<kind>)
+- `<manifest path>`: <name> (<label>), <name> (<label>)
 - <... or the single word: None.>
 
 ## Unverified

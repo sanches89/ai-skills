@@ -47,7 +47,7 @@ the files, and stays small. Without subagents, follow the step yourself and
 keep only what it names.
 
 Resolve the invocation text, or the request in the conversation, as one
-kind:
+request kind:
 - **Nothing**: the run measures the working tree, uncommitted and
   untracked files included.
 - **One name**: a branch, a tag, or a commit. Confirm it with
@@ -93,7 +93,7 @@ is then `blocked`. The reason is the reason on the `summary` line, else
 Read `references/analysis-rules.md` now. A number alone is never a finding:
 read the code behind each entry that file names, both locations of a clone
 included. Record per finding:
-- the kind, and the location as `path:line` with the symbol;
+- the finding kind, and the location as `path:line` with the symbol;
 - the evidence: the measured values, or what the code shows;
 - the action, from the *Actions* section of `analysis-rules.md`.
 

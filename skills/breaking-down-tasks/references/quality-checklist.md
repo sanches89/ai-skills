@@ -20,13 +20,13 @@ again.
 - [ ] No subtask title holds ` and `.
 - [ ] Each subtask above 500 code lines, as Step 4 counts, has no split
       whose parts meet every other constraint of Step 4.
-- [ ] A subtask that exposes incomplete behavior holds a guard in its
-      Context.
+- [ ] A subtask that exposes incomplete behavior holds a rollout guard in
+      its Context.
 - [ ] No subtask is only tests, only documentation, or only wiring. A later
       subtask depends on every behavior-free subtask.
 - [ ] Two consecutive subtasks have separate verification.
-- [ ] The subtask that completes a guarded behavior removes the guard, and
-      no later subtask depends on that guard.
+- [ ] The subtask that completes a behavior behind a rollout guard removes
+      the rollout guard, and no later subtask depends on it.
 
 ## Executability
 

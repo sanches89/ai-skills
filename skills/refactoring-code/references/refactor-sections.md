@@ -15,14 +15,14 @@ what the review settled. Step numbers are those of `SKILL.md`.
 - *Success criteria*: one per command from 3b, passing with no failure
   beyond the baseline, each baseline failure named. One per part of the
   contract in `contract.md` from Step 5: same name, signature, and format,
-  except a change the request names. One per entry: the structure after
-  the change. The test counts: total not below the baseline, failed and
-  skipped not above it. The coverage counts: uncovered lines and branches
-  not above the baseline. The duplication and complexity values the
-  entries change, with the target value: duplicated lines, clone count,
-  functions over each limit, and the highest `ccn`. Never the sum of
-  `ccn`: Extract Function raises it by design. Never the coverage
-  percentage: removing covered dead code lowers it with no test lost.
+  except a change the request names. One per entry: the structure after the
+  change. The test counts: total not below the baseline, failed and skipped not
+  above it. The coverage counts: uncovered lines and branches not above the
+  baseline. The duplication and complexity values the entries change, with the
+  value after the change: duplicated lines, clone count, functions over each
+  limit, and the highest `ccn`. Never the sum of `ccn`: Extract Function raises
+  it by design. Never the coverage percentage: removing covered dead code lowers
+  it with no test lost.
 - *In scope*: every file of the refactor scope.
 - *Out of scope*: every bug found, with its location and the statement that
   the code keeps it. Every finding with refactoring `report`, by its

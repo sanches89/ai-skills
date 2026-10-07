@@ -37,7 +37,7 @@ Date: YYYY-MM-DD
 ## An example
 
 ```markdown
-# 0002 — Background jobs run in the queue package
+# 0002 — Email sends run in the queue package
 
 Date: 2026-03-04
 
@@ -48,18 +48,18 @@ was lost in two of them. Turned down:
 
 - A cron task per app: three retry policies, and no shared view of the
   sends that failed.
-- The hosting provider's job runner: no local run, so a failure showed up
+- The hosting provider's scheduler: no local run, so a failure showed up
   first in staging.
 
 ## Decision
 
-`packages/queue` owns every job: the apps enqueue, and the worker in
-`apps/worker` runs the handlers. Scheduling a job from a request handler
+`packages/queue` owns every email send: the apps enqueue, and the worker in
+`apps/worker` runs the handlers. Scheduling a send from a request handler
 stays out of scope.
 
 ## Consequences
 
-A job payload crosses a package boundary, so its type lives in
+A send payload crosses a package boundary, so its type lives in
 `packages/queue` and both sides import it.
 ```
 

@@ -33,7 +33,7 @@ What each section keeps:
   line.
 - **Findings**: the findings of Step 3 in rank order, numbered.
 - **Skipped**: every measurement whose line in the measurement record is
-  not `ok`, with its reason. The count of findings left out per kind.
+  not `ok`, with its reason. The count of findings left out per finding kind.
 
 What the report leaves out:
 - the steps taken, and attempts that failed;
@@ -74,7 +74,7 @@ no test command, <mutation tool> | no mutation command
 
 ## Findings
 
-1. <kind> at `<path:line>` (<symbol>): <evidence>. Action:
+1. <finding kind> at `<path:line>` (<symbol>): <evidence>. Action:
    <action>.
 2. <...>
 <... or the single word: None.>
@@ -82,5 +82,5 @@ no test command, <mutation tool> | no mutation command
 ## Skipped
 
 - <measurement>: <reason>. | None.
-- <number> findings of kind <kind> left out after the 12th.
+- <number> findings of <finding kind> left out after the 12th.
 ```

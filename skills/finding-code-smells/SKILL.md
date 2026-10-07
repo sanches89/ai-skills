@@ -114,7 +114,7 @@ List every part of the contract that the refactor scope holds:
 Write the list to `<out>/contract.md`, one line per part, or `None.`:
 
 ```
-- <kind>: <name or signature> `<path:line>`
+- <contract part>: <name or signature> `<path:line>`
 ```
 
 ### Step 3: Measure and scan
@@ -145,9 +145,9 @@ that import or call each function the cut list leaves out.
 
 **Scan.** Run the scan script. It lists the signals that the entries under
 *Design*, *Agent-written code*, *Legibility*, and *Tests* in
-`references/smell-catalog.md` name, as `path:line` per kind. In a test
-file it lists only the kinds of *Tests* and `credential`. `<skill-dir>` is
-the folder holding this `SKILL.md`:
+`references/smell-catalog.md` name, as `path:line` per scan kind. In a test file
+it lists only the scan kinds of *Tests* and `credential`. `<skill-dir>` is the
+folder holding this `SKILL.md`:
 
 ```bash
 node <skill-dir>/scripts/scan.mjs <path>... --ignore "<globs>" \
@@ -156,7 +156,7 @@ node <skill-dir>/scripts/scan.mjs <path>... --ignore "<globs>" \
 
 Leave out `--ignore` with no glob. Pass `--max-lines <n>` when the project
 configures its own file length limit, such as the `max-lines` rule of
-ESLint. `--help` lists the other options. Each kind holds its `count` and
+ESLint. `--help` lists the other options. Each scan kind holds its `count` and
 a `top` list of `file`, `line`, and `text`: the matched line, cut to 120
 characters. A `credential` entry hides its text. An `oversized-file` entry
 holds the line count and the estimated tokens as its text, and its `top`

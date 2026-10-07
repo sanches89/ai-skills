@@ -12,8 +12,8 @@ npx skills add . --list
 ```
 
 - `-s, --skill <names...>`: install these skills; `'*'` means all.
-- `-a, --agent <agents...>`: target these agents, for example `claude-code`,
-  `codex`, `cursor`.
+- `-a, --agent <agents...>`: install for these agents, for example
+  `claude-code`, `codex`, `cursor`.
 - `-g, --global`: install to the user directory instead of the project.
 - `-l, --list`: list the skills the repository offers without installing.
 

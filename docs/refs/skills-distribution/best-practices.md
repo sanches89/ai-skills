@@ -90,8 +90,8 @@
   representative tasks without the skill, record each failure, and write
   the evaluation that tests it.
 - Measure the baseline without the skill, write the least content that
-  passes, then iterate against the baseline. The evaluations are the
-  source of truth for whether the skill works.
+  passes, then iterate against the baseline. The evaluations decide
+  whether the skill works.
 - Watch how the agent moves through the skill: a file read in an
   unexpected order, a reference it never follows, a file it reads on every
   run, or a file it never opens. Each one names a change: a clearer link,

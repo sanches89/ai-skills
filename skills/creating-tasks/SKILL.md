@@ -82,7 +82,7 @@ Claude Code they are deferred: search them with `ToolSearch` for
   documentation of the version pinned in the manifest or lockfile. Record
   the API facts the task relies on.
 - **Other MCP servers**: use them when they hold facts the task needs.
-- **External sources**: every design, document, or wiki page outside the
+- **External documents**: every design, document, or wiki page outside the
   repository and the tracker that the user gives or research finds. Read
   each through a connected MCP server, else a web fetch. Record its facts,
   and its name and URL for *References*. When nothing reads it, ask the
@@ -109,8 +109,8 @@ For each open decision:
 - Name the option you recommend.
 
 After each answer, record the decision as a fact in the research notes and
-add every new decision the answer creates. Read an external source the
-answer gives as Step 2c states. When the answer introduces an
+add every new decision the answer creates. Read an external document
+the answer gives as Step 2c states. When the answer introduces an
 adjacent topic, one a reader would expect in this task, ask one question:
 in scope, or under *Out of scope*. Never expand or drop it in silence.
 
@@ -137,7 +137,7 @@ until the user confirms:
 Add these rules to the research notes, under *Writing rules*:
 - In *Approach*, name every component that changes, with the path and symbol
   verified in Step 2, and its behavior after the change.
-- In *References*, list every external source of Step 2c.
+- In *References*, list every external document of Step 2c.
 - Write the single word `None.` in *Subtasks*.
 - Make every line serve the restated idea or an *Out of scope* entry. Write
   no remark or question from the conversation on another topic, and no

@@ -37,7 +37,7 @@ These words have exactly one meaning in this skill.
 ## Hard rules
 
 1. **Only manifests and lockfiles change**, from Step 6 on, through the
-   script and the package manager. Never edit source code, a configuration
+   script and the package manager. Never edit project code, a configuration
    file, a CI file, or a lockfile by hand. A code change hides a breaking
    version behind a repair no one reviewed.
 2. **No tool enters the project.** Run npm-check-updates and semver from the
@@ -106,7 +106,7 @@ git ls-files -co --exclude-standard -- '*package.json' \
 ```
 
 **2b. Install roots.** Read `references/package-managers.md` now. Assign
-each manifest one kind:
+each manifest one role:
 - a manifest with a `workspaces` field, or with a `pnpm-workspace.yaml`
   beside it, is a workspace root. Its members are the manifests its
   workspace globs match. Its folder is the install root of itself and of
@@ -124,8 +124,8 @@ its version, and the frozen install by the *Package manager* section of
 major, follow its *Version* section. Every later install of that install
 root runs with that package manager, never another.
 
-**2c. Node version.** Read `references/update-rules.md` now. Take the first
-Node version source that exists, in this order:
+**2c. Node version.** Read `references/update-rules.md` now. Take the Node
+version from the first of these that exists:
 1. `.nvmrc`;
 2. `.node-version`;
 3. the `volta.node` field of the root manifest;
@@ -133,7 +133,8 @@ Node version source that exists, in this order:
 5. the `engines.node` field of the root manifest;
 6. `node -v`.
 
-Record the version as `<node-version>`, with its Node version source.
+Record the version as `<node-version>`, with the file or the command it
+came from.
 
 **2d. Check commands.** Record the check commands of each install root, in
 this order:
@@ -197,7 +198,7 @@ request names no package. `<parked package names>` are the parked packages
 of Step 2e. The output maps each manifest path to the dependencies with a
 higher version, each with its new range in the manifest's own style. Remove
 from it every range that *Left alone* of `update-rules.md` names. Record
-each range and field under *Left alone*, with its kind, for the update
+each range and field under *Left alone*, with its label, for the update
 report.
 
 With level `latest`, run the command a second time with `--target minor`
