@@ -22,16 +22,17 @@ These words have exactly one meaning in this skill.
   one install root.
 - **Root manifest**: the `package.json` in the folder of an install root.
 - **Trial**: set every range of a batch of packages, then run the plain
-  install. Then run the check commands in the baseline order up to the first
-  failure.
+  install. Then run the check commands that pass in the baseline results, in
+  the baseline order, up to the first failure.
 - **Sound**: a trial that meets three conditions. The plain install
-  succeeds. Every failing check command fails in the baseline results too.
-  The peer report shows no problem beyond the baseline peer report. Every
-  other trial is broken.
-- **Accepted**: the state of a plan entry, a group, or a rung whose trial is
-  sound.
+  succeeds. No check command of the trial fails. The peer report shows no
+  problem beyond the baseline peer report. Every other trial is broken.
+- **Accepted**: the state of a package, a plan entry, a group, or a rung
+  whose trial is sound.
 - **Park**: leave the range that a package has at that moment, recording a
   park reason for the package.
+- **Lower**: set a package to a version below its candidate version,
+  recording a park reason for the package.
 
 ## Hard rules
 
@@ -151,8 +152,8 @@ install-only root.
 **2e. Pins.** Read these files: `renovate.json`, `.renovaterc`,
 `.renovaterc.json`, `.github/renovate.json`, and `.github/dependabot.yml`.
 Read the `overrides`, `resolutions`, and `pnpm.overrides` fields of every
-root manifest. Record two lists, as `update-rules.md` says under *Pins* and
-*Overrides*:
+root manifest. Record two lists, as constraints 4 and 5 under *Constraints*
+of `update-rules.md` say:
 - the parked packages, each with its park reason;
 - the capped packages, each with its cap: a version range or a level.
 
@@ -219,8 +220,8 @@ done < <scratch-dir>/<root>-specs.txt > <scratch-dir>/<root>-facts.tsv
 ```
 
 Check each candidate version against the constraints of `update-rules.md`,
-in its order. Lower a refused candidate version, or park its package, as
-the *Constraints* section says. Then add
+in its order. Lower or park a package whose candidate version a constraint
+refuses, as the *Constraints* section says. Then add
 `@types/node` as a candidate package in every manifest that has it, with the
 version that constraint 3 of `update-rules.md` gives. Record per candidate
 package:
@@ -229,7 +230,7 @@ package:
 - the current range and the candidate range;
 - the bump kind: `major`, `minor`, or `patch`, from the first number that
   differs between the current range and the candidate range;
-- the constraint that lowered the candidate version, or `none`;
+- the park reason of a lowered package, or `none`;
 - the peer ties, as `update-rules.md` defines under *Groups*.
 
 ### Step 5: Write the update plan
@@ -255,7 +256,7 @@ Write each plan entry in this form:
 ```
 <number>. <install root or manifest>: minor and patch | major group <name>
    packages: <name> <current range> to <candidate range>, ...
-   lowered: <name> to <candidate range> by <constraint>, ... | none
+   lowered: <name> to <range> by <park reason>, ... | none
 ```
 
 Show in chat:
@@ -302,14 +303,16 @@ approved group as one batch. On a sound trial, mark every group accepted.
 On a broken trial, bisect the batch with a group as the unit. Walk the
 ladder of `update-rules.md` for each breaking group: run a trial of the
 group at each rung, highest first. Mark the first rung whose trial is sound
-as accepted. Park a group with no accepted rung, with the reason
-`check: <name>`.
+as accepted: its packages are lowered. Park a group with no accepted rung.
+Both record the park reason `check: <name>`.
 
 With commits requested, take the groups one at a time in plan order:
 1. run a trial of the group;
 2. on a broken trial, restore the checkpoint. Then run a trial of the group
    at the next rung of its ladder. Park the group when no rung remains;
-3. on a sound trial, commit. Then replace the checkpoint.
+3. on a sound trial, commit. Then replace the checkpoint. A sound trial
+   below the candidate versions lowers the group's packages, with the park
+   reason `check: <name>` of the first broken trial.
 
 **6c. Assemble.** Skip this step with commits requested. Otherwise:
 1. restore the checkpoint;

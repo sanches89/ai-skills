@@ -108,6 +108,10 @@ Gate B, the sense test. All three hold:
   files <the edited doc>, words <the words>`.
 - Without that skill, add each word to the glossary as one bullet in the
   form `- **Term**: definition.`, in alphabetical order inside its section.
+  A word that holds every condition of Gate A but the second is renamed,
+  never defined. A definition holds no path, placeholder, format, list of
+  allowed values, section list, or condition: such a fact goes in the
+  instruction that uses it.
 
 ## After editing
 

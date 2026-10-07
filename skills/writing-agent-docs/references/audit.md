@@ -28,7 +28,8 @@ per `AGENTS.md` and per refs folder against the base ref. It fails on:
 - a refs folder with no `README.md` index, or a README that misses a file;
 - a missing footer;
 - a broken relative link or heading;
-- a cited `docs/refs` path that is gone;
+- a cited `docs/refs` path that is gone. A path cited inside an `evals/`
+  folder is an eval fixture, and the script skips it;
 - inline URLs and padded tables.
 Run `--fix` to rewrite the last two; fix the rest by hand. The script lists
 each reference doc over 1000 words as a note. Run `--help` for the flags and

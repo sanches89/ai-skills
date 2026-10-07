@@ -12,9 +12,9 @@ coding agent that loads `SKILL.md` files.
   researching code, docs, and MCP servers, then interviews you. It writes one
   precise task with no assumptions or open questions.
 - [breaking-down-tasks](skills/breaking-down-tasks/SKILL.md): takes a task from
-  a project-management item, a task file, or text and splits it into
-  commit-sized subtasks. Each subtask is self-contained and has one verification
-  command.
+  a project-management item or a task file and splits it into commit-sized
+  subtasks. Each subtask is self-contained and has one verification command.
+  It sends a task given as text to creating-tasks first.
 - [implementing-tasks](skills/implementing-tasks/SKILL.md): implements a task or
   subtask within the scope set by its parent tasks and proves every acceptance
   criterion. It writes the code by writing-clean-code and the tests by
@@ -24,8 +24,9 @@ coding agent that loads `SKILL.md` files.
   from its task file or item: one subtask at a time, each in its own subagent
   with the implementing-tasks skill, each with one commit on a branch. Then it
   runs refactoring-code over the result and the refactor task the same way, for
-  up to three rounds. It asks nothing, proves the task, and keeps its plan and
-  reports with the task, on its items or in its task folder. Every read of the
+  up to three rounds. It asks at most where to run, before the first subtask.
+  It proves the task and keeps its plan and reports with the task, on its
+  items or in its task folder. Every read of the
   task and every project command runs in a subagent, so that its own context
   window stays small.
 - [refactoring-code](skills/refactoring-code/SKILL.md): reviews code in any
@@ -34,11 +35,11 @@ coding agent that loads `SKILL.md` files.
   subtasks, one per refactoring, each with its tests and one verification
   command. It lists the rest as the next batch and changes no code.
 - [writing-agent-docs](skills/writing-agent-docs/SKILL.md): holds the rules for
-  a repo's `AGENTS.md` files, READMEs, ADRs, `docs/refs`, and glossary, which
-  the agent follows whenever it edits one. On request, it audits and compresses
-  them without losing a rule. With the writing-glossaries and
-  disambiguating-text skills, it also defines every term once and rewrites the
-  wording.
+  a repo's `AGENTS.md` files, READMEs, ADRs, `docs/refs`, and glossary entries,
+  which the agent follows whenever it edits one. On request, it audits and
+  compresses the `AGENTS.md` files, the `CLAUDE.md` files, and `docs/refs`
+  without losing a rule. With the writing-glossaries and disambiguating-text
+  skills, it also defines every term once and rewrites the wording.
 - [writing-glossaries](skills/writing-glossaries/SKILL.md): finds the words that
   a project's documents use with two readings that no other word settles. It
   also finds the words they use in a sense a reader would not take from the word
@@ -62,7 +63,7 @@ coding agent that loads `SKILL.md` files.
 ### Building blocks
 
 The skills above invoke these by name. Each holds one piece of content that
-used to be copied between skills. Each also works alone.
+used to be copied between skills. You can also invoke each one directly.
 
 - [finding-trackers](skills/finding-trackers/SKILL.md): finds the issue
   tracker a project uses and the commands that reach its items.
@@ -74,15 +75,16 @@ used to be copied between skills. Each also works alone.
   to the tracker or to numbered task folders.
 - [finding-dev-commands](skills/finding-dev-commands/SKILL.md): finds
   a project's build, lint, type-check, format, test, and install commands.
-- [writing-clean-code](skills/writing-clean-code/SKILL.md): writes and reviews
-  code by 14 clean code principles, each with a check that a diff passes.
+- [writing-clean-code](skills/writing-clean-code/SKILL.md): writes code, or
+  reviews code against 14 clean code principles, each with a check that a
+  diff passes.
 - [writing-unit-tests](skills/writing-unit-tests/SKILL.md): writes and
   reviews unit tests, characterization tests included.
 - [measuring-code](skills/measuring-code/SKILL.md): measures duplication,
   complexity, hotspots, tests, coverage, and mutation score of given paths.
-- [finding-code-smells](skills/finding-code-smells/SKILL.md): lists the
-  smells, design flaws, and marks of agent-written code, each with the
-  refactoring that removes it.
+- [finding-code-smells](skills/finding-code-smells/SKILL.md): finds the
+  smells, design flaws, and marks of agent-written code in existing code,
+  each with the refactoring that removes it.
 
 ### Pipeline
 
@@ -91,14 +93,15 @@ and refactoring-code form a pipeline. creating-tasks writes
 `<tasks-dir>/###-<task-slug>/task.md`. breaking-down-tasks adds
 `<tasks-dir>/###-<task-slug>/###-<subtask-slug>.md` next to it. refactoring-code
 writes both from a code review. saving-tasks writes every one of these files.
-`<tasks-dir>` is the first that exists of: the folder you name; the folder
-README, CLAUDE.md, AGENTS.md, CONTRIBUTING, or `docs/README.md` names for
-tasks, plans, or specs; the folder that already holds task folders; a `tasks`,
-`plans`, or `specs` folder of the repository. With none of these, it is a
-scratch directory outside the repository, which in Claude Code lives one
-session. implementing-tasks implements a task or one subtask from
-those files. orchestrating-tasks runs implementing-tasks on every subtask of a
-task, one at a time, with one commit each. Then it runs refactoring-code and
+`<tasks-dir>` is the folder you name, created when it does not exist. Without
+one, it is the first that exists of: the folder README, CLAUDE.md, AGENTS.md,
+CONTRIBUTING, or `docs/README.md` names for tasks, plans, or specs; the folder
+that already holds task folders; a `tasks`, `plans`, or `specs` folder of the
+repository. With none of these, it is a scratch directory outside the
+repository, which in Claude Code lives one session. implementing-tasks
+implements a task or one subtask from those files. orchestrating-tasks runs
+implementing-tasks on every subtask of a task, one at a time, with one commit
+each. Then it runs refactoring-code and
 implementing-tasks over the result, up to three rounds. The tracker is the one
 the project docs name, else one an MCP server reaches, else GitHub Issues
 through the `gh` CLI. With a tracker connected, the writers create items there
@@ -123,11 +126,13 @@ no refactor round.
 writing-glossaries and disambiguating-text form a pair: the first writes the
 glossary, and the second rewrites a document with the glossary's terms.
 
-updating-packages works alone. It leaves a major version that needs a code
-change for creating-tasks to turn into a task.
+updating-packages stands outside the pipeline and requires
+finding-dev-commands. It leaves a major version that needs a code change for
+creating-tasks to turn into a task.
 
-analyzing-code works alone and changes no code. A finding it reports is input
-for creating-tasks or refactoring-code.
+analyzing-code stands outside the pipeline and changes no code. It measures
+one whole version, where measuring-code measures given paths. A finding it
+reports is input for creating-tasks or refactoring-code.
 
 ## Structure
 

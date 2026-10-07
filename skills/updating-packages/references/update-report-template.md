@@ -16,7 +16,8 @@ Rules for filling:
 
 Every dependency with a rewritable range has exactly one state:
 - **updated**: its range now names its candidate version;
-- **lowered**: its range changed, to a rung below its candidate version;
+- **lowered**: its range changed, to a rung below its candidate version, and
+  the run recorded a park reason for it;
 - **kept**: its range is the current range, and the run recorded a park
   reason for it;
 - **up to date**: it has no candidate version.

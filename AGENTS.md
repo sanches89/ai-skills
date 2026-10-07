@@ -172,9 +172,10 @@ Folders:
 - The file layout is `<tasks-dir>/###-<task-slug>/task.md` and
   `<tasks-dir>/###-<task-slug>/###-<subtask-slug>.md`. `saving-tasks` writes it
   and `loading-tasks` reads it. Change the layout in both in the same commit.
-- `loading-tasks`, `saving-tasks`, `implementing-tasks`, and `refactoring-code`
-  read the section names of `skills/formatting-tasks/references/task-format.md`.
-  Rename a section there and in the four in the same commit.
+- `loading-tasks`, `saving-tasks`, `creating-tasks`, `breaking-down-tasks`,
+  `implementing-tasks`, `orchestrating-tasks`, and `refactoring-code` read the
+  section names of `skills/formatting-tasks/references/task-format.md`. Rename
+  a section there and in the seven in the same commit.
 - `implementing-tasks` implements a task or subtask and never writes or edits
   one.
 - `orchestrating-tasks` runs the subtasks of a task through
@@ -192,7 +193,9 @@ Folders:
   and names no path and no identifier. `breaking-down-tasks`,
   `implementing-tasks`, and `orchestrating-tasks` take that line as their input
   without an edit. `refactoring-code` with no finding ends instead with a line
-  that starts with `No refactor task:`.
+  that starts with `No refactor task:`. `breaking-down-tasks` without a task
+  to split ends with a line that starts with `No task to break down:`, and on
+  an abort with a line that starts with `Aborted:`.
 - Two sets of limits exist. `writing-clean-code` holds the targets for the
   lines a change writes, and for every line of the paths a review names: 20
   lines per function, 2 parameters, no repeated block of 3 lines. The
@@ -201,8 +204,10 @@ Folders:
   - cyclomatic complexity 10, 50 lines, 4 parameters: `measuring-code` and
     the smell catalog;
   - clones of 5 lines and 50 tokens: `measuring-code`;
-  - nesting from 3 levels: `measuring-code`, the smell catalog,
-    `refactoring-rules.md`, and `analysis-rules.md`;
+  - nesting from 3 levels: `measuring-code`, `finding-code-smells`, the
+    smell catalog, `refactoring-rules.md`, and `analysis-rules.md`;
+  - a message chain of 2 method calls: the smell catalog, and the same
+    number as a target in `writing-clean-code`;
   - the rule of three for clones: the smell catalog, `refactoring-rules.md`,
     and `analysis-rules.md`;
   - 400 lines per code file: the smell catalog, `finding-code-smells` with
@@ -219,8 +224,8 @@ Folders:
   glossary entry in the form `- **Term**: definition.`, one bullet per term.
   Each states the entry test in the words of the Entry test rule above.
   Change the form or the test in the three skills and here in the same commit.
-- Each of the two invokes the other as an optional skill.
-  `writing-agent-docs` invokes `writing-glossaries` the same way.
+- `writing-glossaries` and `disambiguating-text` invoke each other as optional
+  skills. `writing-agent-docs` invokes `writing-glossaries` the same way.
 
 ## Workflow in this repo
 
@@ -249,14 +254,15 @@ Folders:
    `references/`. Hits are allowed only in lines that quote the banned words as
    a rule.
 4. Run `node --check` on every file under `scripts/`.
-5. For `loading-tasks`, `saving-tasks`, `implementing-tasks`, and
-   `refactoring-code`, confirm that every section name printed below is a
-   heading in `skills/formatting-tasks/references/task-format.md`:
+5. For the seven skills that read section names, confirm that every section
+   name printed below is a heading in
+   `skills/formatting-tasks/references/task-format.md`:
 
    ```bash
-   cat skills/loading-tasks/SKILL.md skills/saving-tasks/SKILL.md \
-     skills/implementing-tasks/SKILL.md skills/refactoring-code/SKILL.md \
-     | tr '\n' ' ' \
+   for s in loading-tasks saving-tasks creating-tasks breaking-down-tasks \
+     implementing-tasks orchestrating-tasks refactoring-code; do
+     cat "skills/$s/SKILL.md"
+   done | tr '\n' ' ' \
      | grep -oE '\b[A-Z][a-z]+( [a-z]+)? section\b' | sort -u
    ```
 6. List every word with two definition texts across `GLOSSARY.md`, when it

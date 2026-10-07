@@ -65,7 +65,8 @@ grep -nE -e '`[^`]*/[^`]*`|<[a-z-]+>|sections? of|in order:' \
 ```
 
 Terms with two definition texts across the draft and every restating
-document. Every word printed is a failure.
+document. `<restating-files>` is every document that holds a restatement
+from Step 2b, of a term or of a candidate. Every word printed is a failure.
 
 ```bash
 awk 'FNR == 1 { t = (FILENAME == "<draft-file>") }

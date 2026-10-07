@@ -38,9 +38,10 @@ Read each Node version source of Step 2c as follows:
 ## Constraints
 
 Check every candidate version against the constraints in this order. When a
-constraint refuses a candidate version, replace it with the highest rung of
-the ladder, defined below, that every constraint allows. When no rung is
-allowed, park the package.
+constraint refuses a candidate version, lower the package to the highest
+rung of the ladder, defined below, that every constraint allows. When no
+rung is allowed, park the package. Either one records the park reason of
+that constraint.
 
 1. **Node version.** The `engines.node` field of the candidate version, from
    the facts file, must allow `<node-version>`. Run:
@@ -83,7 +84,7 @@ allowed, park the package.
      of the file. Park a package that the file rejects with the
      reason `pinned by <file>`.
    Lower a capped package to the highest candidate version that its cap
-   allows.
+   allows, with the reason `pinned by <file>`.
 6. **Cooldown.** `--cooldown <days>` makes npm-check-updates take the highest
    version published at least `<days>` days before today. npm-check-updates
    also reads `minimumReleaseAge` from `pnpm-workspace.yaml`. A version
@@ -186,7 +187,8 @@ package in Step 6a, a group in Step 6b, and a plan entry in Step 7.
 
 ## Park reasons
 
-Write a park reason as exactly the phrase below that fits, in the plan and
+A park reason says why a package stays below its candidate version: parked
+or lowered. Write it as exactly the phrase below that fits, in the plan and
 in the report:
 - `engines.node <range>`: the range that refuses `<node-version>`;
 - `peer of <name>`: the package whose peer range caps the candidate version;
@@ -195,8 +197,8 @@ in the report:
 - `pinned by <file>`;
 - `cooldown`: no version of the major line satisfies the cooldown;
 - `deprecated`: every version of the major line is deprecated;
-- `check: <name>`: the first check command that fails with the candidate
-  version;
+- `check: <name>`: the check command that fails in the broken trial of the
+  candidate version;
 - `verify: <condition>`: the first Step 7 condition that fails, quoted.
 
 ## Release notes

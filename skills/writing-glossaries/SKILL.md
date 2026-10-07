@@ -98,7 +98,8 @@ line:
 - every synonym pair: two words whose usages point at one thing;
 - every usage of every candidate and of every existing term;
 - every restatement: a bullet `- **X**: ...` outside the glossary, where
-  `X` is a term of the existing glossary;
+  `X` is a term of the existing glossary or a candidate. A candidate's
+  restatement matches the entry Step 4 drafts for it;
 - every verbatim third-party excerpt, such as a quoted vendor page.
 
 A usage inside a verbatim third-party excerpt is evidence of a conflict and

@@ -14,10 +14,13 @@ const HELP = `Usage: node <skill-dir>/scripts/audit.mjs [--base <ref>] [--fix]
 
 Audit the AGENTS.md files and docs/refs of the git repository that contains
 the current directory. Prints word counts against a base ref and reports the
-checks a script can decide: a missing CLAUDE.md pair, a pointer to a parent
-file, a refs folder no AGENTS.md indexes, a README that misses a file, a
+checks a script can decide: an AGENTS.md with no CLAUDE.md beside it, a
+CLAUDE.md that holds anything but @AGENTS.md, a CLAUDE.md with no AGENTS.md
+beside it, a pointer to a parent file, a refs folder no AGENTS.md indexes, a
+refs folder with no README.md index or a README that misses a file, a
 missing "Reference:" footer, a broken relative link or heading, a cited
-docs/refs path that is gone, inline URLs, and padded tables.
+docs/refs path that is gone (eval fixtures under evals/ are skipped), inline
+URLs, and padded tables.
 
 Options:
   --base <ref>  Git ref the word counts are compared to (default: HEAD)
