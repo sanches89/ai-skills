@@ -1,7 +1,5 @@
 # Writing an ADR
 
-Read this before writing or editing an ADR under `docs/adrs/`.
-
 ## The file
 
 - Name it `docs/adrs/NNNN-<kebab-title>.md`, with `NNNN` the next free
@@ -34,47 +32,14 @@ Date: YYYY-MM-DD
 - **Consequences**: the trade-offs and couplings no other place states.
   Leave the section out when there are none.
 
-## An example
-
-```markdown
-# 0002 — Email sends run in the queue package
-
-Date: 2026-03-04
-
-## Context
-
-Three apps send email, and each retried in its own way, so a failed send
-was lost in two of them. Turned down:
-
-- A cron task per app: three retry policies, and no shared view of the
-  sends that failed.
-- The hosting provider's scheduler: no local run, so a failure showed up
-  first in staging.
-
-## Decision
-
-`packages/queue` owns every email send: the apps enqueue, and the worker in
-`apps/worker` runs the handlers. Scheduling a send from a request handler
-stays out of scope.
-
-## Consequences
-
-A send payload crosses a package boundary, so its type lives in
-`packages/queue` and both sides import it.
-```
-
 ## Citing it
 
 - Cite an ADR only from the rule it explains, at the end of that rule's
   bullet, as `(ADR 0002)`.
-- Put the citation in the deepest `AGENTS.md` that holds the rule.
-- State a short reason inline instead, with no ADR, when one clause carries
-  it.
 
 ## Amending it
 
-- Edit the ADR in place. Keep its number and its file name, and set `Date:`
-  to the day of the change.
+- Edit the ADR in place, keeping its file name.
 - Git keeps the history, so write no superseded-by line and add no status
   field.
 - Rewrite the title and the `docs/adrs/README.md` row when the subject of
@@ -82,9 +47,6 @@ A send payload crosses a package boundary, so its type lives in
 
 ## Retiring it
 
-- Delete the ADR when its reason no longer holds, or when code, a code
-  comment, an `AGENTS.md`, a README or `docs/refs/` now shows it.
-- Delete its row in `docs/adrs/README.md`.
+- Delete the ADR and its row in `docs/adrs/README.md`.
 - List every citation with `git grep -n 'ADR NNNN'`. Delete each one, and
   give the rule a short inline reason when its reason still holds.
-- Leave the numbers of the other ADRs untouched.

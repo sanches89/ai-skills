@@ -2,23 +2,20 @@
 
 Sections: Behavior and contract; Subtask rule; Measurements; Completeness.
 
-Run every check over the drafts before saving them. One failure blocks
-delivery. Fix it, or return to the step that owns the missing fact, then run
-the whole checklist again. The `formatting-tasks` skill checks the format,
-and this list checks the review.
+One failure blocks delivery. Fix it, or return to the step that owns the
+missing fact, then run the whole checklist again.
 
 ## Behavior and contract
 
 - [ ] No subtask adds a feature, fixes a bug, or tunes performance. Every
       wrong-looking behavior is under *Out of scope* with its location.
 - [ ] Every part of the contract in `contract.md` has a success criterion
-      that keeps it. The only exception is a change the request names,
+      that keeps it. The one exception is a change the request names,
       stated in Approach.
 - [ ] No subtask deletes, skips, or loosens a test, lint rule, or type
       check. No assertion gets weaker. An assertion changes only by Replace
       Assertion with Literal, or by Replace Test Double with Real
-      Collaborator. The latter swaps an assertion on a call to the removed
-      double for one on the real result.
+      Collaborator.
 - [ ] Every Remove Dead Code subtask names the proof from the evidence of
       its finding.
 - [ ] Every file a subtask changes is in the refactor scope, or is a caller
@@ -32,7 +29,7 @@ and this list checks the review.
 ## Subtask rule
 
 - [ ] Each subtask applies one refactoring its finding names, in the order
-      of the finding's `refactoring` line. Its Context names the smell with
+      of the finding's `refactoring` line. Its Context names the smell and
       its evidence.
 - [ ] Each subtask's verification command ran on the current code and
       failed.
@@ -60,10 +57,10 @@ and this list checks the review.
       baseline, and Verification holds the commands that produce them.
 - [ ] The repository holds no summary and no tool report.
 - [ ] No command in the task or a subtask names the scratch directory. It
-      reads `<scratch-dir>` instead, and the Context section beside it says
-      what `<scratch-dir>` is.
+      reads `<scratch-dir>`, and the Context section beside it says what
+      `<scratch-dir>` is.
 - [ ] Every credential found is under *Out of scope* by location alone. No
-      task or subtask holds a key, a token, or a password value.
+      key, token, or password value appears in the task or a subtask.
 - [ ] Every finding with refactoring `report` is under *Out of scope*.
 
 ## Completeness

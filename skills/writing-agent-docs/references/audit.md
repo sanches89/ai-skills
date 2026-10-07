@@ -1,55 +1,35 @@
 # Agent docs audit
 
-Sections: 1. Measure; 2. AGENTS.md; 3. docs/refs; 4. Words and sentences; 5.
-Verify and report.
-
-Hold every `AGENTS.md` and reference doc to the rules in `SKILL.md` and to
-the doc rules the repo's root `AGENTS.md` adds. Add no rule here: a finding
-that needs a new rule becomes an edit to the root `AGENTS.md`.
+Hold every `AGENTS.md` and reference doc to the rules of `SKILL.md` and the
+doc rules of the repo's root `AGENTS.md`. Add no rule here: a finding that
+needs a new rule becomes an edit to the root `AGENTS.md`.
 
 ## 1. Measure
 
-Run from the repo root, with `<skill-dir>` the folder holding
-`SKILL.md` (in Claude Code, `${CLAUDE_SKILL_DIR}` expands to it):
+Run from the repo root, with `<skill-dir>` as `SKILL.md` defines it:
 
 ```bash
 node <skill-dir>/scripts/audit.mjs --base <ref>
 ```
 
-`<ref>` is the base ref the audit compares sizes against: the commit where
-the last audit landed, when the request names it. Otherwise omit `--base`:
-the default `HEAD` measures this audit's own edits. The script prints words
-per `AGENTS.md` and per refs folder against the base ref. It fails on:
-- an `AGENTS.md` with no `CLAUDE.md` beside it;
-- a `CLAUDE.md` that holds anything but `@AGENTS.md`;
-- a `CLAUDE.md` with no `AGENTS.md` beside it;
-- a pointer to a parent file;
-- a refs folder no `AGENTS.md` indexes;
-- a refs folder with no `README.md` index, or a README that misses a file;
-- a missing footer;
-- a broken relative link or heading;
-- a cited `docs/refs` path that is gone. A path cited inside an `evals/`
-  folder is an eval fixture, and the script skips it;
-- inline URLs and padded tables.
-Run `--fix` to rewrite the last two; fix the rest by hand. The script lists
-each reference doc over 1000 words as a note. Run `--help` for the flags and
-exit codes.
+`<ref>` is the commit where the last audit landed, when the request names
+it. Without one, omit `--base` to compare against `HEAD`. The script prints
+words per `AGENTS.md` and per refs folder against the base ref. Run `--fix`
+to rewrite inline URLs and padded tables. Fix every other failure by hand.
+Run `--help` for the flags and exit codes.
 
 ## 2. AGENTS.md
 
-Read every `AGENTS.md` before editing any: redundancy is only visible across
-files. Then, for each rule:
+Read every `AGENTS.md` before editing any. Then, for each rule:
 
 - **Placement.** Move the rule to the deepest folder covering every folder it
-  applies to: a rule for two sibling folders goes in their parent. Move a
-  rule about another package's code to that package.
+  applies to. Move a rule about another package's code to that package.
 - **Redundancy.** Delete the rule when:
   - a parent or sibling `AGENTS.md` states it;
   - the same file states it twice, as a tree comment and a bullet;
   - a header comment, a lint message, or the types already say it;
   - it describes how something works rather than what to do.
-- **Lists.** Join a list of short items, such as words, names or paths,
-  into its parent line, separated by commas.
+- **Lists.** Join a list of short items into its parent line, comma-separated.
 - **Ambiguity.** Check every claim against the code, never the wording:
   - confirm every path, script, flag, command, export and builder named
     exists (`git ls-files`, `git grep`);
@@ -73,8 +53,7 @@ For each folder changed since `<ref>`, or all of them when asked:
 
 - Find what the repo uses: read the `AGENTS.md` line that indexes the folder,
   then `git grep` the code it serves for the APIs, options and flags each
-  section covers. Run the `git grep` sweep in a subagent, as the Subagents
-  block of `SKILL.md` says.
+  section covers.
 - Cut sections and reference docs the repo does not use. Keep a section
   documenting an alternative the repo rejected only when the README says so,
   cut to what that choice needs.
@@ -84,30 +63,24 @@ For each folder changed since `<ref>`, or all of them when asked:
   drop that page's URL from the footer.
 - Rewrite the folder's `README.md` lines for what each reference doc now
   answers, and name what was left at the origin.
-- To add a page from an origin, copy only the sections the repo needs. Write
-  one reference doc per section, each with its footer, then run `--fix`.
+- After adding a page from an origin, run `--fix`.
 
 ## 4. Words and sentences
 
-Run this section after every cut and move of sections 2 and 3, so that both
-skills see the final text.
+Run this section after every cut and move of sections 2 and 3.
 
 - **Glossary.** When the agent has the skill, invoke the `writing-glossaries`
-  skill (in Claude Code, with the `Skill` tool) with the invocation text
+  skill (in Claude Code, with the `Skill` tool) with
   `from writing-agent-docs: glossary <path>, files <every AGENTS.md and every
   reference doc>`. Take `<path>` from the request when it names one, else
-  `GLOSSARY.md`. Wait for it to finish: it asks its own questions, writes
-  after its own approval, and prints its glossary report. Without that skill,
-  follow the Glossary section of `SKILL.md` for each doc this audit edited.
-  State in the audit report that the other docs were not checked against the
-  glossary.
+  `GLOSSARY.md`. Wait for it to finish. Without that skill, follow the
+  Glossary section of `SKILL.md` for each doc this audit edited. State in the
+  audit report that the other docs were not checked against the glossary.
 - **Wording.** When the agent has the skill, invoke the `disambiguating-text`
-  skill (in Claude Code, with the `Skill` tool) with the invocation text
-  `from writing-agent-docs: <file path>`. Run it one file at a time. Cover
-  every `AGENTS.md` and every reference doc changed since `<ref>`. Wait for
-  each run to finish: it shows its rewrite, asks its own approval, and prints
-  its clarity report. Without that skill, change no wording, and state in the
-  audit report that the wording was not rewritten.
+  skill with `from writing-agent-docs: <file path>`. Run it one file at a
+  time. Cover every `AGENTS.md` and every reference doc changed since
+  `<ref>`. Wait for each run to finish. Without that skill, change no
+  wording, and state in the audit report that the wording was not rewritten.
 
 ## 5. Verify and report
 

@@ -4,55 +4,48 @@ Sections: Behavior; Size of a change; Duplication; Names; Functions; Modules;
 Removing code; Contract changes the request names; Tests during a refactoring;
 Never.
 
-Read this file in Step 7. Write the rules of *Behavior*, *Size of a change*,
-*Tests during a refactoring*, and *Never* into the task's Decisions section.
-Write the rules a subtask's refactoring needs into that subtask's Context
-section. A convention of the project, from Step 3a, replaces a rule here. A
-limit the project configures replaces a value here.
+Write the rules of *Behavior*, *Size of a change*, *Tests during a
+refactoring*, and *Never* into the task's Decisions section. Write the rules
+a subtask's refactoring needs into that subtask's Context section. A
+convention of the project, from Step 3a, replaces a rule here. A limit the
+project configures replaces a value here.
 
 ## Behavior
 
 - Change structure only. Keep every returned value, state change, raised
   error, written output, and call to an external system the same.
-- Keep odd behavior too, under the task's *Out of scope*. A caller depends
-  on it until a test or the user says otherwise.
+- Keep odd behavior too, and list it under the task's *Out of scope*.
 - Keep the order of side effects. Two writes, two calls, or a write and a
-  read stay in the order they had.
-- Keep the evaluation rules of the language in mind. Extracting a
-  short-circuit operand, a lazy value, or a default argument changes when it
-  runs.
-- Keep error messages, log text, and metric names. They are part of the
-  contract.
-- Tune no performance. On a path the docs or the request mark as hot, keep the
-  same number of loops, allocations, and calls to external systems.
-- Keep a masked error masked and a stub that code reaches a stub, under
-  the task's *Out of scope*. Letting the error through or filling the stub
-  is a behavior change.
+  read keep their order.
+- Keep when each expression runs. Extracting a short-circuit operand, a
+  lazy value, or a default argument changes when it runs.
+- Keep error messages, log text, and metric names, as parts of the contract.
+- Tune no performance. On a path the docs or the request mark as hot, keep
+  the same number of loops, allocations, and calls to external systems.
+- Keep a masked error masked and a stub that code reaches a stub, and list
+  each under the task's *Out of scope*.
 
 ## Size of a change
 
-- Apply one refactoring per subtask. A finding whose `refactoring` line
-  names several gets one subtask per refactoring, in the order of the line.
-  Give each subtask the name of its refactoring on that line.
+- Apply one refactoring per subtask, named as on its finding's
+  `refactoring` line. A finding with several gets one subtask per
+  refactoring, in the order of that line.
 - Keep the code able to build and pass after every subtask.
 - Revert the change of a subtask when a check fails. Then apply the
   refactoring another way. Never stack a repair on a failing change.
-- Keep a mechanical change apart from a structural one. A rename, a move, and
-  a format change each get their own subtask.
-- Reformat only the lines a refactoring touches. Leave every other line as it
-  is.
+- Give a rename, a move, and a format change each their own subtask, apart
+  from a structural change.
+- Reformat only the lines a refactoring touches.
 - Use a tool for a mechanical edit across many files: the agent's
   language-server rename, or the structural rewrite tool that the subtask's
   Context names. Review the full diff it produces.
 - Leave a failure of a `writing-clean-code` budget that the subtask's
-  refactoring does not remove. A fix adds a second refactoring to the
-  subtask, and the next `refactoring-code` run reviews the result.
+  refactoring does not remove. The next `refactoring-code` run reviews it.
 
 ## Duplication
 
-- Merge two copies only when they state the same rule and change together.
-- Leave two copies alone when they only look alike today and change for
-  different reasons.
+- Merge two copies only when they state the same rule and change together,
+  never when they only look alike today.
 - Extract shared code from three copies, or from two copies of one rule.
 - Give the extracted function the name of the rule, never the name of its
   callers.
@@ -68,10 +61,10 @@ limit the project configures replaces a value here.
 ## Names
 
 - Name a symbol by what it means to its callers, never by how it works.
-- Use the words of the project's domain and glossary. Use one word per
-  concept across the refactor scope.
-- Rename with a tool that updates every reference. Then search the old name as
-  text, to find strings, docs, and configuration that the tool missed.
+- Use the words of the project's domain and glossary, one word per concept
+  across the refactor scope.
+- Rename with a tool that updates every reference. Then search the old name
+  as text in strings, docs, and configuration.
 - Never rename a part of the contract, unless the request names the rename.
 
 ## Functions
@@ -142,8 +135,8 @@ limit the project configures replaces a value here.
   change an assertion.
 - Treat a test that fails after a refactoring as proof of a behavior change.
   Revert the change. Never edit the assertion.
-- Treat a test that breaks on every structure change as a finding. It asserts
-  on how the code works. List it under the task's *Out of scope*.
+- List a test that breaks on every structure change under the task's *Out
+  of scope*, as a finding: it asserts on how the code works.
 - Keep the characterization tests that a subtask names in the change.
 
 ## Never

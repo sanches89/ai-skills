@@ -1,8 +1,6 @@
 # Job prompt template
 
-The prompt is everything a job receives besides the repository. Replace
-every `<placeholder>` and keep every other line. A job that misses one
-commits in the wrong place or returns more than the work report.
+Replace every `<placeholder>` and keep every other line.
 
 Rules for filling:
 - `a | b` on a template line means: write a or b, never both.
@@ -16,8 +14,9 @@ Rules for filling:
 
 ```
 Invoke the `implementing-tasks` skill (in Claude Code, with the `Skill`
-tool) with the invocation text `from orchestrating-tasks: <task file path |
-subtask file path | item identifier or URL>`. Return its work report.
+tool) with `from orchestrating-tasks: <task file path | subtask file path
+| item identifier or URL>`. Return its work report as the final message
+and nothing else.
 
 Working tree: <absolute path of the tree>
 Branch: <branch name> | none: no git repository
@@ -34,9 +33,5 @@ Facts from earlier subtasks of this task. Each holds over the task text:
   identifier>: done
 - <... | None.>
 
-Ask nothing. When a decision changes the work and research cannot settle
-it, make no further change and return the work report with the result
-blocked and the decision under Blocked by.
-
-Return the work report as the final message and nothing else.
+Ask nothing.
 ```

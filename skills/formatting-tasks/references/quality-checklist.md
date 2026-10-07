@@ -3,10 +3,6 @@
 Sections: Ambiguity; Completeness; Subtasks; Scope; Executability; Grep
 helpers.
 
-Run every check and both grep helpers over each draft. One failure blocks
-the drafts. Fix it, or record the decision it needs, then run every check
-again.
-
 ## Ambiguity
 
 - [ ] No alternative in Approach or Decisions: no `option A / option B`.
@@ -26,20 +22,18 @@ again.
 - [ ] Every fact a reference settles is in the task's Decisions or Context,
       and in the Context of each subtask that lists it.
 - [ ] Every section of the format is filled, in the task and in each
-      subtask, and no other section exists.
-- [ ] The task's Verification holds concrete commands or manual steps.
-- [ ] Every success criterion of the task has a Verification step that
-      proves it.
+      subtask.
+- [ ] The task's Verification holds only concrete commands or manual
+      steps, and each success criterion has one that proves it.
 - [ ] The task's Subtasks section holds exactly `None.` for a task without
-      subtasks. Otherwise it matches the subtasks written: same count,
-      order, and titles.
+      subtasks, else the subtasks written: same count, order, and titles.
 
 ## Subtasks
 
 - [ ] Each subtask has exactly one verification command, on one line. It
       chains at most a test run and one structural check with `&&`.
-- [ ] Each subtask's verification command fails on the code before the
-      subtask's change and passes after it.
+- [ ] Each subtask's verification command fails before the subtask's
+      change and passes after it.
 - [ ] No subtask depends on a subtask with a higher number.
 - [ ] Each subtask is mergeable on its own: after it, the project builds,
       and every test passes except a baseline failure that the task names.

@@ -9,21 +9,16 @@ argument-hint: "[path...] [mutation all | <files>]"
 # Measuring code
 
 Measure the duplication, complexity, hotspots, unit tests, coverage, and
-mutation score of the code under given paths. The project's own test and
-mutation commands write the reports, and the measure tool reads them into
-one measurement summary. Return the measurement record: where the summary
-and the reports are, the commands as run, and the status of each
-measurement.
+mutation score of the code under given paths, and return the measurement
+record.
 
 ## Hard rules
 
 1. **The project stays as it is.** Change no project file. Add no
    dependency, tool, configuration file, or report to the repository. Write
-   every report, summary, and note under `<out>`. A measurement of a
-   changed tree describes no version the project has.
+   every report, summary, and note under `<out>`.
 2. **Never ask.** Settle every choice from the invocation text, the code,
-   the docs, and the reference files. A caller runs this skill with no user
-   present.
+   the docs, and the reference files.
 
 ## Invocation
 
@@ -38,21 +33,19 @@ on failure | no][, top <n>]
 
 - `paths`: the paths to measure, relative to `<root>`. Default `.`.
 - `root`: the folder of the measured code. Default the repository root.
-- `out`: the folder of the reports and the summary. Default
-  `<scratch-dir>/measure`.
+- `out`: the output folder. Default `<scratch-dir>/measure`.
 - `ignore`: the ignore globs, joined by commas with no space. Default the
   globs that Step 2a finds.
-- `mutation`: `all` runs the mutation command over every file, `<files>`
-  over those files, and `no` never runs it. Default `no`.
-- `install`: `first` runs the install command before the test command,
-  `on failure` runs it when the test command fails to start, and `no` never
-  runs it. Default `no`.
+- `mutation`: run the mutation command over `all` files, over `<files>`,
+  or `no` run. Default `no`.
+- `install`: run the install command `first`, `on failure` of the test
+  command, or `no` run. Default `no`.
 - `top`: the entries per list of the summary. Default 50.
 
-Without that prefix, a user invoked this run. Take the same options from
-the request, with the same defaults.
+Without that prefix, a user invoked this run. Take the options from the
+request, with the defaults above.
 
-The final message is the measurement record, and nothing else:
+The measurement record:
 
 ```
 summary: <path of the measurement summary> | none: <reason>
@@ -78,23 +71,16 @@ mutation: <same>
 
 ### Step 1: Load the invocation
 
-**Subagents.** When the agent offers subagents, run in one every read whose
-whole product is the facts the step records. In Claude Code, that is the
-`Agent` tool, with the `Explore` subagent for reads. Run in one every
-command whose output the step reduces to a result. Give the subagent the
-question, the paths, and the facts to return. It returns only those facts,
-each with path and line. The context window then holds those returns, not
-the files, and stays small. Without subagents, follow the step yourself and
-keep only what it names.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in
+one each read or command that yields only facts, returned with path and
+line.
 
-Read the options as *Invocation* states. `<scratch-dir>` is a scratch
-directory outside the repository (in Claude Code, the scratchpad
-directory). Set:
+`<scratch-dir>` is a scratch directory outside the repository (in Claude
+Code, the scratchpad directory). Set:
 - `<root>`: the `root` option, else the output of
   `git rev-parse --show-toplevel`;
-- `<out>`: the `out` option, else `<scratch-dir>/measure`, as an absolute
-  path. Create `<out>/reports`, and write every note under `<out>`;
-- `<dir>`: `<out>/reports`, the folder of every report.
+- `<out>`: the `out` option, as an absolute path;
+- `<dir>`: `<out>/reports`, the folder of every report. Create it.
 
 Record the output of `git status --porcelain`, run in `<root>`. Run every
 command of Steps 2 to 5 from `<root>`, unless a step says otherwise.
@@ -111,20 +97,20 @@ git ls-files | grep -iE \
 ```
 
 Record one glob per folder or extension found, such as `**/generated/**` or
-`**/*.pb.go`. Add one glob per folder that the project's lint or coverage
-configuration lists as generated. Record the globs as `<globs>`, joined by
-commas with no space.
+`**/*.pb.go`. Add one per folder that the project's lint or coverage
+configuration lists as generated. Join them by commas with no space as
+`<globs>`.
 
-**2b. Limits.** Read `references/measure-tool.md` now. Record `<ccn>`,
+**2b. Limits.** Read `references/measure-tool.md`. Record `<ccn>`,
 `<length>`, `<params>`, `<min-lines>`, and `<min-tokens>`: the project's
 own limits when it configures them, else 10, 50, 4, 5, and 50. Record the
 configuration file that set each limit, or `default`.
 
 **2c. Install and test commands.** Invoke the `finding-dev-commands`
-skill (in Claude Code, with the `Skill` tool) with the invocation text
+skill (in Claude Code, with the `Skill` tool) with
 `from measuring-code: find in <root>`. Take the `test` and `install` lines
-of the command map it returns. Read `references/test-reports.md` now.
-Record, as that file says:
+of the command map it returns. Read `references/test-reports.md`. Record,
+as that file says:
 - the install command, `none`, or `unknown`, from the `install` line;
 - the test command with the report options, with `<dir>` in place of the
   output folder. With `test: none`, record the reason `no test command`;
@@ -134,16 +120,13 @@ Record, as that file says:
 
 Skip Step 3 with `test: none`, or when the runner writes neither report.
 
-**2d. Mutation command.** Read `references/mutation-reports.md` now.
-Record, as that file says, the mutation command and `<mutation-report>`.
-The command holds the report options, the thread option, and the scope
-option with `<files>`, with `<dir>` in place of the output folder. Record
-the command whenever the project configures a mutation tool, whatever the
-`mutation` option says. Run the checks of *When to skip the mutation run*
-on it, whatever the `mutation` option says, because a caller runs the
-recorded command later. When a check holds, record its reason in place of
-the command, as the file says. Otherwise, with `mutation no`, the
-`mutation` line reads `skipped: not requested`.
+**2d. Mutation command.** Read `references/mutation-reports.md`. Record,
+as that file says, the mutation command and `<mutation-report>`, with
+`<dir>` in place of the output folder. Whatever the `mutation` option says,
+record the command when the project configures a mutation tool. Run the
+checks of *When to skip the mutation run* on it too: a caller runs the
+recorded command later. When no check holds and the option is
+`mutation no`, the `mutation` line reads `skipped: not requested`.
 
 ### Step 3: Tests
 
@@ -154,7 +137,7 @@ record the tests and coverage as skipped with the reason
 
 Run the test command. With `install on failure`, when it fails to start on
 a missing dependency, run the install command once and the test command
-again. Skip both when the install command is `none` or `unknown`.
+again. Skip that retry when the install command is `none` or `unknown`.
 Afterwards do the step that `test-reports.md` gives for .NET, Maven, and
 Gradle. A failing test is a result, not a failure of the run. When the
 install command fails, or the test command writes neither report, record
@@ -163,18 +146,18 @@ error.
 
 ### Step 4: Mutation
 
-Skip this step when Step 2d recorded a reason. With `mutation all`, run the
-mutation command without the scope option. With `mutation <files>`, put
-the code files among `<files>` in place of `<files>`, never a test file.
+Skip this step with `mutation no` or when Step 2d recorded a reason. With
+`mutation all`, run the mutation command without the scope option. With
+`mutation <files>`, put the code files among `<files>` in place of
+`<files>`, never a test file.
 
 Run the mutation command from the folder that `mutation-reports.md` names,
 else from `<root>`. Let it finish, however long it takes (in Claude Code,
 run it in the background). Without the `from` prefix, tell the user when
-the run starts that it can take hours: it runs the tests once per mutant.
-Afterwards do the step that `mutation-reports.md` gives for the tool. A
-surviving mutant is a result, not a failure of the run. When the mutation
-command fails, or writes no report, record the first line of the error as
-the reason.
+the run starts that it can take hours. Afterwards do the step that
+`mutation-reports.md` gives for the tool. A surviving mutant is a result,
+not a failure of the run. When the mutation command fails, or writes no
+report, record the first line of the error as the reason.
 
 ### Step 5: Measure
 
@@ -210,12 +193,10 @@ Fill the measurement record:
 - `summary`: `<out>/summary.json`, `<out>/summary.md` after *Without any
   tool*, or `none` with the reason of Step 5;
 - the commands as run, with the real `<dir>`. The mutation command keeps
-  `<files>` and each report option that names no path, such as
-  `--reporters json`. It leaves out each option that names a path under
-  `<dir>`, so that a caller can write it into a task;
+  `<files>`, and leaves out each option that names a path under `<dir>`;
 - `reports`: the absolute path of every report under `<dir>`;
 - one line per measurement: `ok`, or the status with the reason this run
   recorded, else the reason the summary gives.
 
-Send the measurement record as the final message. Ask nothing and offer
-nothing after it.
+Send the measurement record alone as the final message. Offer nothing
+after it.

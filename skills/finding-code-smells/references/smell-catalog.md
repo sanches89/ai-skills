@@ -4,26 +4,24 @@ Sections: Proof of dead code; Duplication; Size; Names; Conditionals; Data;
 Coupling; Dead weight; Comments; Design; Agent-written code; Legibility;
 Tests.
 
-Every smell this skill reports. A function is a function, a method, or a
-procedure. A module is a class, a file, or a package. A system boundary is the
-network, files, a database, the clock, randomness, the process environment,
-or third-party code. Third-party code includes a framework, a driver, an HTTP
-client, and a UI toolkit. Skip an entry that the language of the code has no
-form for. Each entry gives the **Signal** that shows the smell, the
-**Refactoring** that removes it, and the case to **Leave it**. A
-**Refactoring** line with a list offers a choice, and *then* marks the next
-step of a sequence. A finding names each refactoring its location needs, in
-the order of the line. An entry with **Report** in place of a refactoring
-names a behavior change: its finding has the refactoring `report`. The limits
-named here are the defaults. The limits that Step 3 of `SKILL.md` takes
-replace them. A value over a limit is a finding only when no *Leave it when*
-case of its entry holds. The scan script lists the signals of each scan kind,
-as `path:line`. A signal is a line to read, never a finding.
+A function is a function, a method, or a procedure. A module is a class, a
+file, or a package. A system boundary is the network, files, a database, the
+clock, randomness, the process environment, or third-party code. Third-party
+code includes a framework, a driver, an HTTP client, and a UI toolkit.
+
+- Skip an entry that the language of the code has no form for.
+- A **Refactoring** line with a list offers a choice. *Then* marks the next
+  step of a sequence.
+- The limits named here are defaults. The limits of Step 3 of `SKILL.md`
+  replace them.
+- A value over a limit is a finding only when no *Leave it when* case of
+  its entry holds.
+- A scan signal is a line to read, never a finding.
 
 ## Proof of dead code
 
-Remove Dead Code needs proof that nothing reaches the code. Write the proof
-into the evidence of the finding:
+Remove Dead Code needs proof that nothing reaches the code, written into
+the evidence of the finding:
 - Search every reference as a symbol and as text, including reflection,
   dependency injection, configuration, templates, and build scripts.
 - A part of the contract is never dead on the grounds that the repository has
@@ -39,10 +37,10 @@ into the evidence of the finding:
     places. Read both locations of a clone.
   - Refactoring: Extract Function. Then Move Function to a shared module
     when the copies live in two modules.
-  - Leave it when: the copies change for different reasons, or fewer than
-    three copies exist and they state no single rule. Also when the clone
-    holds only imports, declarations, or type definitions. Also when it is
-    test data, a fixture, a table of literals, or generated code.
+  - Leave it when: the copies change for different reasons; fewer than
+    three copies exist and state no single rule; the clone holds only
+    imports, declarations, or type definitions; or it is test data, a
+    fixture, a table of literals, or generated code.
 - **Repeated condition**
   - Signal: the same `switch` or `if` chain over one value in three places.
   - Refactoring: Replace Conditional with Lookup Table, or Replace Conditional
@@ -88,7 +86,7 @@ into the evidence of the finding:
     name with a type in it, or two names for one concept.
   - Refactoring: Rename.
   - Leave it when: the name is part of the contract, or the domain uses that
-    exact word.
+    word.
 - **Misleading name**
   - Signal: a name that says less or more than the code does, such as a
     `get` that writes.
@@ -145,7 +143,7 @@ into the evidence of the finding:
     own.
   - Refactoring: Move Function, or Extract Function and move the part.
   - Leave it when: the function is a mapper or a serializer between the two
-    modules by design.
+    modules.
 - **Shotgun surgery**
   - Signal: one reason to change that touches many modules, shown by files that
     change together in the git history.
@@ -181,7 +179,7 @@ into the evidence of the finding:
   - Signal: a symbol with no reference, a branch that no input reaches, a
     parameter that no caller sets, or a finding of the project's dead-code
     tool.
-  - Refactoring: Remove Dead Code, with the *Proof of dead code*.
+  - Refactoring: Remove Dead Code.
   - Leave it when: the symbol is part of the contract, or reflection or
     configuration reaches it.
 - **Speculative generality**
@@ -216,7 +214,7 @@ into the evidence of the finding:
     randomness, the process environment, the filesystem, the network, a
     database, or a global singleton. Scan kind `boundary-in-logic`.
   - Refactoring: Parameterize Function or Parameterize Constructor, with a
-    default equal to the current collaborator, so that no caller changes.
+    default equal to the current collaborator.
   - Leave it when: the function is the shell that performs the effect, or
     the entry point that wires the program.
 - **Constructor that does work**
@@ -262,10 +260,6 @@ into the evidence of the finding:
 
 ## Agent-written code
 
-Code that an agent wrote shows these smells more often than code a person
-wrote: copies in place of calls, a second idiom beside the project's, checks
-that nothing can fail, and errors caught and dropped.
-
 - **Reinvented function**
   - Signal: a function with the same result as one the project or the
     standard library already has, often under a synonym, such as
@@ -284,14 +278,14 @@ that nothing can fail, and errors caught and dropped.
 - **Impossible-state check**
   - Signal: a null check or a type check on a value that the type system,
     the signature, or a check a few lines earlier already guarantees.
-  - Refactoring: Remove Dead Code, with the *Proof of dead code*.
+  - Refactoring: Remove Dead Code.
   - Leave it when: the value enters from a system boundary or a public
     entry point.
 - **Leftover compatibility path**
   - Signal: an alias that re-exports a renamed symbol, a branch named
     legacy or fallback, or a flag that one place reads with one value. Scan
     kind `compat-path`.
-  - Refactoring: Remove Dead Code, with the *Proof of dead code*.
+  - Refactoring: Remove Dead Code.
   - Leave it when: a caller outside the repository uses the old form.
 - **Magic literal**
   - Signal: a URL, a path, or a number other than 0, 1, and -1 inside a
@@ -312,19 +306,16 @@ that nothing can fail, and errors caught and dropped.
   - Signal: a catch that logs and continues, an empty catch, or a default
     returned in place of an error. Scan kind `masked-error`.
   - Report: the location and the statement that the code keeps the
-    behavior. Letting the error through is a behavior change.
+    behavior.
   - Leave it when: the catch sits at a system boundary and the project's
     docs name that behavior.
 - **Placeholder**
   - Signal: a marker comment for unfinished work, a not-implemented error,
     or a stub that returns nothing. Scan kind `placeholder`.
   - Report: the location, as a feature gap. When no code reaches the stub,
-    Remove Dead Code instead, with the *Proof of dead code*.
+    Remove Dead Code instead.
 
 ## Legibility
-
-An agent reads code through a context window of limited size and finds code
-by searching for names. These entries keep both cheap.
 
 - **Oversized file**
   - Signal: a code file over 400 lines, or over the project's own file
@@ -343,9 +334,7 @@ by searching for names. These entries keep both cheap.
 
 ## Tests
 
-A test file is in the refactor scope. Inside it, only these entries and
-Credential in code are findings, and a smell of another section is none. A
-credential in a test file leaks as much as one in code.
+In a test file, only these entries and Credential in code are findings.
 
 - **Weak test**
   - Signal: an assertion that proves nothing, such as not null, not

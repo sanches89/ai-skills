@@ -1,8 +1,7 @@
 # Work report template
 
-The work report is all the caller keeps from a run, to continue the parent
-task and the sibling subtasks. Make every line a fact that changes what the
-caller does next. Keep the headings exactly as written. Replace every
+Make every line a fact the caller needs to continue the parent task and
+the sibling subtasks. Keep every heading as written. Replace every
 `<placeholder>`.
 
 Rules for filling:
@@ -17,8 +16,7 @@ Rules for filling:
 What each section keeps:
 - **Result**: `done` when every entry of the criteria checklist is ticked,
   with evidence from a run made after the last edit, else `blocked`.
-- **Criteria**: the counts only. Every criterion not met goes under
-  *Blocked by*.
+- **Criteria**: the counts only.
 - **Verification**: the target's one verification command, or
   `<number> steps` when its Verification is a list. `pass` only when every
   step passes.
@@ -38,7 +36,7 @@ What each section keeps:
   - a stale or wrong fact in a task of the chain or in a sibling subtask,
     with the correct fact;
   - a check that already failed in the baseline;
-  - the missing test setup, because no test proves the change;
+  - the missing test setup;
   - a `writing-clean-code` failure on a line this run did not write.
 - **Blocked by**: one bullet per criterion not met, per unticked
   Verification or command entry, per dependency not done, and per fact the
@@ -66,8 +64,7 @@ What the report leaves out:
 
 ## Changes
 
-- `<path/to/file.ext>` (<symbol>): <behavior after the change. Example:
-  PaymentService.send retries according to RetryPolicy.>
+- `<path/to/file.ext>` (<symbol>): <behavior after the change.>
 - `<path/to/new-file.ext>` (new): <what it holds.>
 - `<path/to/old-file.ext>` (deleted): <what it held.>
 - <...>

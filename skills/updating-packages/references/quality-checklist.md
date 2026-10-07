@@ -1,7 +1,7 @@
 # Quality checklist
 
-Run every check and the grep helper before returning the update report. One
-failure blocks delivery. Fix it, then run the whole checklist again.
+Run every check and the grep helper over the update report. One failure
+blocks delivery: fix it, then run the whole checklist again.
 
 ## Files
 
@@ -14,8 +14,8 @@ failure blocks delivery. Fix it, then run the whole checklist again.
 
 ## Versions
 
-- [ ] No range names a prerelease version, unless its current range names
-      one, a deprecated version, or a version inside the cooldown.
+- [ ] No range names a deprecated version or a version inside the cooldown.
+      No range names a prerelease version unless its current range names one.
 - [ ] The `engines.node` field of every new version allows `<node-version>`.
       The `@types/node` major equals its major, or the package is parked.
 - [ ] Every package that Step 2e records keeps its pin or its cap.

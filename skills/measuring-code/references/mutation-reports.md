@@ -3,12 +3,10 @@
 Sections: Command files; Tools; Thread options; Scope options; When to skip the
 mutation run.
 
-Read this file in Step 2d.
-
 ## Command files
 
-Take the mutation command from the first command file that has one, in
-this order:
+Take the mutation command from the first of these command files that has
+one:
 1. the CI workflow: a file under `.github/workflows/`, `.gitlab-ci.yml`,
    `.circleci/config.yml`, `bitbucket-pipelines.yml`,
    `azure-pipelines.yml`, or `Jenkinsfile`. Take the step that runs a tool
@@ -18,22 +16,19 @@ this order:
    tool of *Tools* below;
 4. the README file, then the CONTRIBUTING file.
 
-Without a mutation command in any command file, take the command of the first
-tool below whose configuration file the repository has. Without one, record
-the reason `no mutation command`.
+Else take the command of the first tool below whose configuration file the
+repository has. Else record the reason `no mutation command`.
 
 ## Tools
 
 Add the report options, the option of *Thread options*, and the option of
-*Scope options* to the mutation command, and nothing else. `<dir>` is
-`<out>/reports`, as Step 1 sets.
+*Scope options* to the mutation command, and nothing else.
 
 - **StrykerJS**: `stryker.conf.*`, `stryker.config.*`, `.stryker.conf.*`,
   or `.stryker.config.*`. Command `npx stryker run`. Report option
-  `--reporters json`. It replaces the configured reporters, so no dashboard
-  reporter uploads. The report lands at the `jsonReporter.fileName` of the
-  configuration, default `reports/mutation/mutation.json`. After the run,
-  copy it to `<dir>/mutation.json`.
+  `--reporters json`. The report lands at the `jsonReporter.fileName` of
+  the configuration, default `reports/mutation/mutation.json`. After the
+  run, copy it to `<dir>/mutation.json`.
 - **Stryker.NET**: `stryker-config.json`, `stryker-config.yml`, or
   `stryker-config.yaml`. Command `dotnet stryker`, run from the folder that
   holds the configuration file. Report options
@@ -71,25 +66,20 @@ the newest `mutations.xml` of each to `<dir>/pit-<n>.xml`, with `<n>`
 counting from 1.
 
 Record `<mutation-report>` as the path of each report relative to `<dir>`.
-Step 5 passes `--mutation-report` once per report.
 
 ## Thread options
 
 Add the option below when neither the command nor the configuration sets a
 thread count. `<n>` is the output of `nproc`, or of `sysctl -n hw.ncpu` on
 macOS.
-- **PIT with Maven**: `-Dthreads=<n>`. PIT runs one thread by default.
-- **cargo-mutants**: `--jobs 2`. Its docs warn that a higher count can
-  exhaust memory, because every worker runs a parallel build of its own.
+- **PIT with Maven**: `-Dthreads=<n>`.
+- **cargo-mutants**: `--jobs 2`.
 - **StrykerJS, Stryker.NET, Infection, and PIT with Gradle**: no option.
-  The Stryker tools and Infection run in parallel by default. PIT with
-  Gradle reads its thread count from the `pitest` block alone.
 
 ## Scope options
 
-A mutation run over the whole project can take hours. The scope option
-limits it to given code files, never a test file. Record the mutation
-command with the scope option below, with `<files>` in place of the files:
+Record the mutation command with the scope option below, `<files>` in
+place of the code files, never a test file:
 - **StrykerJS**: `--mutate <files>`, the files joined by commas.
 - **Stryker.NET**: `--mutate <files>`, with `--mutate` once per file.
 - **PIT with Maven**: `-DtargetClasses=<files>`, each file written as the
@@ -99,8 +89,8 @@ command with the scope option below, with `<files>` in place of the files:
   `vendor/bin/infection --version` prints the version.
 - **cargo-mutants**: `--file <files>`, with `--file` once per file.
 
-A tool without an option in this list, such as PIT with Gradle, never
-limits its files. Record its command without `<files>`.
+A tool without an option in this list, such as PIT with Gradle, has no
+scope option. Record its command without `<files>`.
 
 ## When to skip the mutation run
 
@@ -111,9 +101,8 @@ one of these holds:
   `cargo mutants --help` fails. Maven and Gradle fetch PIT themselves. The
   reason is `<tool> is not installed`;
 - the tool mutates the code files in place: StrykerJS with `inPlace` in
-  its configuration, or cargo-mutants with `--in-place` in the command. An
-  interrupted run leaves a mutated file behind. The reason is
-  `<tool> mutates the code in place`;
+  its configuration, or cargo-mutants with `--in-place` in the command. The
+  reason is `<tool> mutates the code in place`;
 - the configuration uploads a report: a `dashboard` reporter in the
   Stryker.NET configuration, or `logs.stryker` in the Infection
   configuration. The StrykerJS report option replaces its configured

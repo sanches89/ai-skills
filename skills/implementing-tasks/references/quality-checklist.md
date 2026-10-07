@@ -1,14 +1,14 @@
 # Quality checklist
 
-Run every check and the grep helper before returning the work report. One
-failure blocks delivery. Fix it, then run the whole checklist again.
+Run every check and the grep helper before returning the work report. Fix
+every failure, then run the whole checklist again.
 
 ## Criteria
 
 - [ ] The criteria checklist holds every criterion of the target, word for
       word, plus the target's Verification.
-- [ ] In the criteria checklist file, every ticked entry has a filled
-      evidence line from a run made after the last edit.
+- [ ] Every ticked entry in the criteria checklist file has evidence from
+      a run made after the last edit.
 - [ ] The *Criteria* counts equal the ticked and total criterion entries,
       Verification and command entries excluded.
 - [ ] `done` only when every entry is ticked. Else `blocked`, every unticked

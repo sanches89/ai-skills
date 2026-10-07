@@ -2,10 +2,8 @@
 
 Sections: The task; Each subtask; Characterization tests.
 
-Read *Characterization tests* in Step 6 and the whole file in Step 7. It
-says what each section of the refactor task and of each subtask holds. The
-`formatting-tasks` skill holds the format itself. Fill each section with
-what the review settled. Step numbers are those of `SKILL.md`.
+What each section of the refactor task and of each subtask holds. Step
+numbers are those of `SKILL.md`.
 
 ## The task
 
@@ -16,13 +14,12 @@ what the review settled. Step numbers are those of `SKILL.md`.
   beyond the baseline, each baseline failure named. One per part of the
   contract in `contract.md` from Step 5: same name, signature, and format,
   except a change the request names. One per entry: the structure after the
-  change. The test counts: total not below the baseline, failed and skipped not
-  above it. The coverage counts: uncovered lines and branches not above the
-  baseline. The duplication and complexity values the entries change, with the
-  value after the change: duplicated lines, clone count, functions over each
-  limit, and the highest `ccn`. Never the sum of `ccn`: Extract Function raises
-  it by design. Never the coverage percentage: removing covered dead code lowers
-  it with no test lost.
+  change. The test counts: total not below the baseline, failed and skipped
+  not above it. The coverage counts: uncovered lines and branches not above
+  the baseline. The duplication and complexity values the entries change,
+  each with its value after the change: duplicated lines, clone count,
+  functions over each limit, and the highest `ccn`. Never the sum of `ccn`
+  or the coverage percentage.
 - *In scope*: every file of the refactor scope.
 - *Out of scope*: every bug found, with its location and the statement that
   the code keeps it. Every finding with refactoring `report`, by its
@@ -40,8 +37,8 @@ what the review settled. Step numbers are those of `SKILL.md`.
 - *Context*: the commands from 3b, with the test command of the measurement
   record in place of the plain test command, and the `test one file`
   command. The analysis tools from 3d with their limits. The measure
-  command of the measurement record, as `analysis-tools.md` states. In
-  each command, `<scratch-dir>` in place of the scratch directory, with the
+  command of the measurement record, with its paths and options. In each
+  command, `<scratch-dir>` in place of the scratch directory, with the
   statement that `<scratch-dir>` is a scratch directory outside the
   repository. The `counts` line from Step 5. The baseline: one line per
   measurement with its values, or `skipped` with the reason. The test
@@ -52,9 +49,8 @@ what the review settled. Step numbers are those of `SKILL.md`.
 - *Verification*: the commands from 3b, then the test command of the
   measurement record, then its measure command over the same paths. Both
   read `<scratch-dir>` as in Context. Then the structural check of every
-  entry, which proves its structure after the change. Then one search per
-  part of the contract that an entry touches, which finds its name and
-  signature unchanged.
+  entry. Then one search per part of the contract that an entry touches,
+  which finds its name and signature unchanged.
 
 ## Each subtask
 
@@ -88,12 +84,11 @@ what the review settled. Step numbers are those of `SKILL.md`.
 
 ## Characterization tests
 
-The review names the test cases and the seam in the subtask. The
-implementer writes the tests.
+The subtask names the test cases and the seam. The implementer writes the
+tests.
 
 - Put a new seam in a subtask of its own, placed before every entry it
-  serves. Its refactoring is one of the seams of Step 5. A Parameterize
-  seam takes a default equal to the current collaborator. The seam stays in
+  serves. Its refactoring is one of the seams of Step 5. The seam stays in
   the code after the tests.
 - Put a result of the unchanged code that looks wrong under the task's
   *Out of scope*, and keep its test case.
@@ -103,8 +98,6 @@ characterization test:
 - The tests follow the rules of the `writing-unit-tests` skill, which the
   implementer loads before the first test.
 - For a `high` risk subtask, the mutation command when it holds `<files>`,
-  as `analysis-tools.md` states. The implementer runs it instead of
-  breaking the behavior by hand. Else the statement that the implementer
-  breaks the asserted behavior by hand once.
-- The characterization tests stay in the change, as the proof of the
-  refactoring and the safety net of the next one.
+  as `analysis-tools.md` states, which the implementer runs. Else the
+  statement that the implementer breaks the asserted behavior by hand once.
+- The characterization tests stay in the change.

@@ -7,8 +7,8 @@ compatibility: The audit script requires Node.js 18 or newer and git, run inside
 
 # Writing agent docs
 
-Apply these rules to every doc below, plus the doc rules the repo's root
-`AGENTS.md` adds. Where the two disagree, the repo's rule wins.
+Apply these rules, and the doc rules of the repo's root `AGENTS.md`, to
+every doc below. Where the two disagree, the repo's rule wins.
 
 ## Which file holds what
 
@@ -16,7 +16,7 @@ Apply these rules to every doc below, plus the doc rules the repo's root
   `@AGENTS.md`.
 - `README.md`: a short runbook for people, at the root and in every app and
   package. It covers setup, how to run, test and ship, and the context a new
-  developer needs first. Leave out how things work: the code shows it.
+  developer needs first. Leave out how things work.
 - `GLOSSARY.md`: one meaning for each word a reader can take two ways, or
   that the docs give a meaning its ordinary sense does not give.
 - `docs/adrs/`: the reasons behind architecture decisions.
@@ -25,11 +25,10 @@ Apply these rules to every doc below, plus the doc rules the repo's root
 
 ## AGENTS.md
 
-- The root `AGENTS.md` loads in every session. A folder's `AGENTS.md` loads
-  later, and not in every agent. (Claude Code loads a folder's `CLAUDE.md`
-  once the agent reads a file there with its file-read tool, not through a
-  shell. Codex loads each `AGENTS.md` from the repo root down to its working
-  directory.) Put a rule that must hold before any file is read in the root.
+- Put in the root `AGENTS.md` every rule that must hold before any file is
+  read. A folder's `AGENTS.md` loads later, and not in every agent.
+  (Claude Code loads a folder's `CLAUDE.md` only when its file-read tool,
+  not a shell, reads a file there.)
 - Pair a folder's `AGENTS.md` with a `CLAUDE.md` only when the folder has
   conventions of its own. One pair may cover packages whose conventions are
   about how they relate.
@@ -49,7 +48,7 @@ Apply these rules to every doc below, plus the doc rules the repo's root
 - Give a short reason inline when it stops a wrong shortcut. Cite an ADR for
   a long one, as in `(ADR 0003)`.
 - Name the exact command for every step. Write "ask the user to" before a
-  step the agent cannot take alone, like approving in a browser.
+  step the agent cannot take alone.
 - Keep the rules for writing docs out of `AGENTS.md`: they live here. In the
   root `AGENTS.md`, one line sends the agent here before it edits a doc.
 
@@ -59,15 +58,13 @@ Apply these rules to every doc below, plus the doc rules the repo's root
   reverse. Add it only when no other place shows its reason, rejected
   alternative or coupling: code, a code comment, an `AGENTS.md`, a README or
   `docs/refs/`.
-- Write in it only what those places do not show. Never write in it the
-  convention, the code, or what a README says. Applying a convention needs
-  no ADR.
-- When the decision changes, edit the ADR to match it. Git keeps the
-  history.
+- Write in it only what those places do not show. Applying a convention
+  needs no ADR.
+- When the decision changes, amend the ADR.
 - When its reason no longer holds, or one of those places now shows it,
-  delete the ADR and its citations.
-- Read `references/adr-template.md` before writing or editing an ADR: it
-  holds the file name, the sections, and the steps to amend or retire one.
+  retire the ADR.
+- Read `references/adr-template.md` before writing, amending, or retiring
+  an ADR.
 
 ## Reference docs
 
@@ -104,7 +101,7 @@ Gate B, the sense test. All three hold:
 - Define each word of an edited doc that passes the entry test and has no
   entry. When the agent has a skill named `writing-glossaries`, invoke the
   `writing-glossaries` skill (in Claude Code, with the `Skill` tool) with
-  the invocation text `from writing-agent-docs: glossary <glossary path>,
+  `from writing-agent-docs: glossary <glossary path>,
   files <the edited doc>, words <the words>`.
 - Without that skill, add each word to the glossary as one bullet in the
   form `- **Term**: definition.`, in alphabetical order inside its section.
@@ -125,14 +122,9 @@ node <skill-dir>/scripts/audit.mjs
 
 ## Audit
 
-**Subagents.** When the agent offers subagents, run in one every read whose
-whole product is the facts the step records. In Claude Code, that is the
-`Agent` tool, with the `Explore` subagent for reads. Run in one every
-command whose output the step reduces to a result. Give the subagent the
-question, the paths, and the facts to return. It returns only those facts,
-each with path and line. The context window then holds those returns, not
-the files, and stays small. Without subagents, follow the step yourself and
-keep only what it names.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in
+one each read or command that yields only facts, returned with path and
+line.
 
 When the user asks to audit, shrink, tidy or dedupe the docs, follow
 `references/audit.md`.

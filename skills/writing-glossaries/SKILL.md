@@ -7,18 +7,13 @@ argument-hint: <glossary path | files to read | words to define>
 
 # Writing glossaries
 
-Find the words a project uses with two readings that no other word settles. Find
-the words it uses in a sense a reader would not take from the word alone. Write
-the glossary that defines each once. Write only the glossary and the reference
-line of Step 4. Report where other documents disagree with the glossary, and
-rewrite them with the `disambiguating-text` skill when it is available.
-
-The glossary is `GLOSSARY.md` at the repository root, unless the user names
-another path.
+Write the glossary that defines, once each, the words a project's documents
+use with two readings or in a project-only sense. Report where other
+documents disagree with it.
 
 ## Terms
 
-These words have exactly one meaning in this skill.
+These words have one meaning in this skill.
 
 - **Candidate word**: a word research found in the evidence set that has
   no glossary entry yet.
@@ -30,62 +25,49 @@ These words have exactly one meaning in this skill.
 
 ## Hard rules
 
-1. **Read-only on the project.** Write, or delete, only the glossary, in
-   Step 7. The one exception is the reference line of Step 4, which Step 7
-   adds to or removes from the project's agent instructions. Write drafts in
-   a scratch directory outside the repository (in Claude Code, the
-   scratchpad directory). A definition binds every document, so it lands in
-   one place.
+1. **Read-only on the project.** Write or delete only the glossary, in
+   Step 7. The one exception is the Step 4 reference line, which Step 7
+   adds to or removes from the project's agent instructions. Write drafts
+   in a scratch directory outside the repository (in Claude Code, the
+   scratchpad directory).
 2. **Never ask what research can answer.** Consult the evidence set, the
-   code, and the existing glossary first. The code settles what a word
-   means better than a recollection.
+   code, and the existing glossary first.
 3. **Never assume.** When a definition changes the glossary and research
-   cannot settle it, ask the user. An assumed meaning misleads every reader
-   of the glossary.
-4. **Never edit another document yourself.** A usage that disagrees with the
-   glossary goes in the glossary report. Only the `disambiguating-text` skill
-   rewrites a document, when Step 7 invokes it. The reference line of Step 4 is
-   the one exception: Step 7 adds or removes that line and changes nothing else
-   in that file. A rewrite without that skill's checks changes meaning.
+   cannot settle it, ask the user.
+4. **Never edit another document yourself**, beyond the Step 4 reference
+   line. A usage that disagrees with the glossary goes in the glossary
+   report. Only the `disambiguating-text` skill rewrites a document, when
+   Step 7 invokes it.
 5. **Write nothing outside the scratch directory before the user approves
-   the full glossary text and that reference line** (Step 6). An
-   unapproved entry binds every document from the moment it is saved.
+   the full glossary text and that reference line** (Step 6).
 
 ## Workflow
 
 ### Step 1: State the evidence
 
-Take the glossary path, the evidence set, and the words to define from the
-invocation text or the conversation. Without a path, use `GLOSSARY.md` at
-the repository root. Without named files, read every Markdown file tracked
-by git, minus the files the user excludes.
-
 When the invocation text starts with `from <skill name>:`, that skill
 invoked this run. Take the glossary path after `glossary`, the files after
 `files`, and the words after `words`. The evidence set is those files, plus
-every tracked Markdown file that uses a term of the existing glossary. Step
-7 then invokes no skill.
+every tracked Markdown file that uses a term of the existing glossary.
 
-Write one sentence: *Research reads <the files> for usages of the project's
-words.* Name the files, or the rule that selects them. Ask one question:
-whether that evidence is complete, and which files to add or drop. Ask it
-before any research.
+Without that prefix, a user invoked this run: read `references/user-run.md`
+first.
+
+Before any research, write one sentence: *Research reads <the files> for
+usages of the project's words.* Name the files, or the rule that selects
+them. Ask one question: whether that evidence is complete, and which files
+to add or drop.
 
 ### Step 2: Research
 
-**Subagents.** When the agent offers subagents, run in one every read whose
-whole product is the facts the step records. In Claude Code, that is the
-`Agent` tool, with the `Explore` subagent for reads. Run in one every
-command whose output the step reduces to a result. Give the subagent the
-question, the paths, and the facts to return. It returns only those facts,
-each with path and line. The context window then holds those returns, not
-the files, and stays small. Without subagents, follow the step yourself and
-keep only what it names.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in
+one each read or command that yields only facts, returned with path and
+line.
 
-**2a. Existing glossary.** When the glossary exists, read it in full. Record
-every term, its definition, and its section. When it does not exist, record
-that. Record whether the repository root has an `AGENTS.md` or a
-`CLAUDE.md`. Record the reference line of that file, the line that names the
+**2a. Existing glossary.** Read the glossary in full, when it exists.
+Record every term, its definition, and its section, or that no glossary
+exists. Record whether the repository root has an `AGENTS.md` or a
+`CLAUDE.md`. Record that file's reference line, the line that names the
 glossary's path, when it has one.
 
 **2b. Evidence set.** Read every document in full. Record, with path and
@@ -102,14 +84,14 @@ line:
 - every restatement: a bullet `- **X**: ...` outside the glossary, where
   `X` is a term of the existing glossary or a candidate word. A candidate
   word's restatement matches the entry Step 4 drafts for it;
-- every verbatim third-party excerpt, such as a quoted vendor page.
+- every verbatim third-party excerpt.
 
 A usage inside a verbatim third-party excerpt is evidence of a conflict and
-never a rewrite. A rewritten quotation stops being a quotation.
+never a rewrite.
 
 **2c. Code.** Search the project's code for each candidate word. Record
-the identifier that carries the word and what the code does with it, so that
-the definition matches the code, not the prose.
+the identifier that carries the word and what the code does with it. The
+definition matches the code, not the prose.
 
 **2d. Findings.** Run the entry test on every candidate word and every
 existing entry. A word passes the entry test when Gate A or Gate B holds.
@@ -143,8 +125,7 @@ Write each finding with its usages:
 - a mismatch: a restatement whose text differs from the glossary;
 - a weak definition: one that breaks a writing rule of Step 4.
 
-**2e. Research notes.** Write a private file in the scratch directory with
-two parts:
+**2e. Research notes.** Write a private file in the scratch directory:
 1. *Facts*: every candidate word and every finding, with its path and
    line.
 2. *Open decisions*: every decision research did not settle, with the
@@ -152,18 +133,17 @@ two parts:
 
 ### Step 3: Interview
 
-Order the open decisions: conflicts first, then synonym pairs, then entries
-to remove, then meanings research did not settle, then sections.
+Order the open decisions: conflicts, synonym pairs, entries to remove,
+meanings research did not settle, then sections.
 
 For each open decision:
 - State it in one sentence, with the usages that depend on it.
 - Give 2 to 4 options grounded in research. For a conflict, offer a
-  qualifier per thing and a new word per thing: `backend component` and
-  `frontend component`, never `component`. For a synonym pair, offer each
-  word as the one name. For the entries to remove, the entries of 2d that
-  pass no gate or are unused, ask one question. It lists each with its
-  gate and condition, or the word `unused`: remove all, some by name, or
-  none.
+  qualifier per thing and a new word per thing, never the bare word. For a
+  synonym pair, offer each word as the one name. For the entries to
+  remove, the entries of 2d that pass no gate or are unused, ask one
+  question. It lists each with its gate and condition, or the word
+  `unused`: remove all, some by name, or none.
 - Name the option you recommend.
 
 After each answer, record the decision as a fact in the research notes and
@@ -178,13 +158,12 @@ Continue until no open decision remains.
 
 ### Step 4: Write the glossary
 
-Read `references/glossary-template.md` now and fill it, in the scratch
+Read `references/glossary-template.md` and fill it, in the scratch
 directory, with the words that pass a gate. Writing rules:
-- Start a definition with a noun phrase that says what the thing is:
-  `a user assigned the patient role in the app`, never `handles patients`.
-- Say what the term is, never how it works, never with its own term, and
-  never with a banned word. The grep helper of
-  `references/quality-checklist.md` lists the banned words.
+- Start a definition with a noun phrase that says what the thing is.
+- Never say how it works, never use its own term, and never use a banned
+  word. The grep helper of `references/quality-checklist.md` lists the
+  banned words.
 - Write at most two sentences of at most 25 words: what the term is, then a
   boundary or an example.
 - Put no fact of an instruction, as 2d lists them, in a definition.
@@ -202,19 +181,15 @@ repository root:
 - Read `<glossary path>` first. Use every word it defines with that meaning.
 ```
 
-Place it as the first bullet under that file's first heading, above every
-other rule and every other section. A root instructions file loads at the
-start of a session and a folder's file loads later, so the reference belongs
-in the root file. Write no line when that file already names the glossary's
-path, and write none when the root has no `AGENTS.md` and no `CLAUDE.md`.
+Its place is the first bullet under that file's first heading, above every
+other rule and section. Write no line when that file already names the
+glossary's path, or when the root has no `AGENTS.md` and no `CLAUDE.md`.
 Name either case in the glossary report.
 
-When no word passes a gate, write no draft and no reference line. Go
-to Step 6 with the glossary report alone and ask whether the user confirms
-an empty glossary. On confirmation, Step 7 deletes an existing glossary and
-writes no new one. Step 7 also removes the reference line that 2a recorded.
-Show that line and its file under *Instructions* in the glossary report, so
-that the confirmation covers its removal.
+When no word passes a gate, write no draft and no reference line. Show the
+reference line 2a recorded, with its file, under *Instructions* in the
+glossary report. Go to Step 6 with the glossary report alone and ask
+whether the user confirms an empty glossary.
 
 ### Step 5: Quality check
 
@@ -224,7 +199,7 @@ decision, return to Step 3 for that decision, then run the checks again.
 
 ### Step 6: Approval
 
-Show the complete glossary in chat. Show the reference line of Step 4 with
+Show the complete glossary in chat. Show the Step 4 reference line with
 its file and its place in that file. Then show the glossary report as it
 stands. Ask whether the user approves the glossary and that line as written
 or wants a change. Apply each change, run Step 5 again, and ask again until
@@ -233,22 +208,10 @@ the user approves.
 ### Step 7: Save
 
 Write the approved glossary to its path, unchanged. When Step 4 found no
-term, delete the existing glossary instead. In that case, also remove the
-reference line that 2a recorded, and change nothing else in its file. When
-Step 4 wrote a reference line, add the approved line at the place Step 4
-names, and change nothing else in that file.
-
-Then rewrite the documents that disagree with the `disambiguating-text` skill
-when all of these hold:
-- the glossary report holds at least one disagreement;
-- a skill named `disambiguating-text` is available to the agent;
-- no other skill invoked this run. Ask one question: which documents with
-disagreements to rewrite now. Offer every listed document that is not a verbatim
-third-party excerpt, the documents the user names, and none. For each chosen
-document, in the order listed, invoke the `disambiguating-text` skill (in Claude
-Code, with the `Skill` tool) with the invocation text `from writing-glossaries:
-<file path>`. Wait for it to finish: it shows its rewrite, asks its own
-approval, and prints its clarity report.
+term, delete the existing glossary instead, and remove the reference line
+that 2a recorded. When Step 4 wrote a reference line, add the approved line
+at the place Step 4 names. Change nothing else in the file of a reference
+line.
 
 Finish with the glossary report:
 - *Added*: each new term.
@@ -258,14 +221,15 @@ Finish with the glossary report:
 - *Renamed*: each word replaced by a word with one reading. Give the new
   word, every usage in the evidence set, and a count of the usages
   elsewhere.
-- *Facts to place*: each fact taken out of a definition, with the document and
-  line that use it. The user places these: the `disambiguating-text` skill adds
-  no fact.
+- *Facts to place*: each fact taken out of a definition, with the document
+  and line that use it. The user places these.
 - *Instructions*: the file the reference line was added to, or the reason
   no line was added. For a deleted glossary, the removed reference line and
   its file.
 - *Disagreements*: every usage in another document that disagrees with the
-  glossary, with its path and line and the change that settles it. Add the word
-  `rewritten` when the `disambiguating-text` skill rewrote that document. Add
-  the word `quoted` when the usage sits in a verbatim third-party excerpt, which
-  stays as written. Ask nothing else.
+  glossary, with its path and line and the change that settles it. Add the
+  word `rewritten` when the `disambiguating-text` skill rewrote that
+  document. Add the word `quoted` when the usage sits in a verbatim
+  third-party excerpt.
+
+Ask nothing else.

@@ -8,28 +8,19 @@ argument-hint: "[branch]"
 
 # Analyzing code
 
-Take one version of a repository's code and measure its duplication,
-complexity, hotspots, unit tests, coverage, and mutation score. Return a
-measurement report. The skill never compares two versions: every number
-describes the one version it measures.
-
-A run can take hours. The mutation run runs the tests once per mutant, so
-its time grows with the number of tests and mutants. Tell the user so when
-the run starts.
+Measure one version of a repository's code and return a measurement report
+with ranked findings. Never compare two versions.
 
 ## Hard rules
 
 1. **The project stays as it is.** Change no project file. Add no
    dependency, tool, configuration file, JUnit report, coverage report, or
-   mutation report to the repository. Write every report, summary, and
-   note of the run in the scratch directory. A measurement of a changed
-   tree describes no version the project has.
+   mutation report to the repository. Write every report, summary, and note
+   of the run in the scratch directory.
 2. **Never ask what research can answer.** Consult the code, the docs, the
-   git history, and the summary first. A question the summary answers
-   costs the user time on top of a run of hours.
+   git history, and the summary first.
 3. **Never assume.** When a decision changes the work and research cannot
-   settle it, ask the user. An assumed name or command measures the wrong
-   code.
+   settle it, ask the user.
 4. **No outward actions.** Never commit, push, open a pull request, or post
    a comment. The measurement report is the only output.
 
@@ -37,14 +28,9 @@ the run starts.
 
 ### Step 1: Load the request
 
-**Subagents.** When the agent offers subagents, run in one every read whose
-whole product is the facts the step records. In Claude Code, that is the
-`Agent` tool, with the `Explore` subagent for reads. Run in one every
-command whose output the step reduces to a result. Give the subagent the
-question, the paths, and the facts to return. It returns only those facts,
-each with path and line. The context window then holds those returns, not
-the files, and stays small. Without subagents, follow the step yourself and
-keep only what it names.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in
+one each read or command that yields only facts, returned with path and
+line.
 
 Resolve the invocation text, or the request in the conversation, as one
 request kind:
@@ -74,9 +60,12 @@ Run every command of Step 3 from `<root>`.
 
 ### Step 2: Measure
 
+Tell the user that the run can take hours: the mutation run runs the tests
+once per mutant.
+
 Invoke the `measuring-code` skill (in Claude Code, with the `Skill` tool)
-with the invocation text below. Without a name, write `install on failure`
-in place of `install first`:
+with the text below. Without a name, write `install on failure` in place of
+`install first`:
 
 ```
 from analyzing-code: paths ., root <root>, out <scratch-dir>, mutation all,
@@ -84,15 +73,14 @@ install first, top 200
 ```
 
 Keep the measurement record it returns. When its `summary` line reads
-`none`, or names a file other than `summary.json`, go to Step 4. The result
-is then `blocked`. The reason is the reason on the `summary` line, else
+`none` or names a file other than `summary.json`, go to Step 4 with the
+result `blocked`. Its reason is the one on the `summary` line, else
 `the measure command failed to start`.
 
 ### Step 3: Read the code
 
-Read `references/analysis-rules.md` now. A number alone is never a finding:
-read the code behind each entry that file names, both locations of a clone
-included. Record per finding:
+Read `references/analysis-rules.md`. A number alone is never a finding:
+read the code behind each entry that file names. Record per finding:
 - the finding kind, and the location as `path:line` with the symbol;
 - the evidence: the measured values, or what the code shows;
 - the action, from the *Actions* section of `analysis-rules.md`.
@@ -105,9 +93,9 @@ Rank the findings as the *Ranking* section of `analysis-rules.md` says.
 
 ### Step 4: Measurement report
 
-Read `references/measurement-report-template.md` now and fill it in the
-scratch directory. Run every check in `references/quality-checklist.md`,
-grep helper included, over the measurement report. Fix every failure.
+Fill `references/measurement-report-template.md` in the scratch directory.
+Run every check in `references/quality-checklist.md`, grep helper included,
+over the measurement report. Fix every failure.
 
 ### Step 5: Deliver
 

@@ -1,9 +1,5 @@
 # Quality checklist
 
-Run every check and every grep helper over the draft. One failure blocks
-delivery. Fix it, or return to the interview for the open decision, then run
-the whole checklist again.
-
 ## Meaning
 
 - [ ] Every fact and instruction of the input text is in the rewrite. The

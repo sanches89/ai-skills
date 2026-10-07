@@ -1,12 +1,11 @@
 # Quality checklist
 
 Run every check and the grep helper before returning the orchestration
-report. This skill answers the checks under *Run* from the run itself,
-before the report is written. The subagent that writes the report answers
-every other check from the orchestration record, the target, git, and the
-report. One failure blocks delivery. Fix it, then run the whole checklist again.
-Outside a git repository, skip every check that names a commit or a
-branch.
+report. This skill answers the checks under *Run* from the run, before the
+report exists. The subagent that writes the report answers every other
+check from the orchestration record, the target, git, and the report. Fix
+every failure, then run the whole checklist again. Outside a git
+repository, skip every check that names a commit or a branch.
 
 ## Run
 

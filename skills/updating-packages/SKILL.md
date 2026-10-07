@@ -9,93 +9,76 @@ disable-model-invocation: true
 
 # Updating packages
 
-Move every dependency in every `package.json` of one repository to the
-highest version that the project's own check commands accept. Return the
-change in the working tree plus an update report.
+Move every dependency of every `package.json` in one repository to the
+highest version the project's check commands accept. Return the
+working-tree change and an update report.
 
 ## Terms
 
-These words have exactly one meaning in this skill.
-
-- **Install root**: a folder that owns a lockfile and the `node_modules` that
-  one install of that lockfile fills. A workspace root and its members share
-  one install root.
+- **Install root**: a folder that owns a lockfile and the `node_modules` its
+  install fills. A workspace root and its members share one install root.
 - **Root manifest**: the `package.json` in the folder of an install root.
-- **Trial**: set every range of a batch of packages, then run the plain
-  install. Then run the check commands that pass in the baseline results, in
-  the baseline order, up to the first failure.
-- **Sound**: a trial that meets three conditions. The plain install
-  succeeds. No check command of the trial fails. The peer report shows no
-  problem beyond the baseline peer report. Every other trial is broken.
-- **Accepted**: the state of a package, a plan entry, a group, or a rung
-  whose trial is sound.
-- **Park**: leave the range that a package has at that moment, recording a
-  park reason for the package.
-- **Lower**: set a package to a version below its candidate version,
-  recording a park reason for the package.
+- **Trial**: set every range of a batch, then run the plain install. Then run
+  the check commands that pass in the baseline results, in the baseline
+  order, up to the first failure.
+- **Sound**: a trial whose plain install succeeds, whose check commands all
+  pass, and whose peer report shows no problem beyond the baseline peer
+  report. Every other trial is broken.
+- **Accepted**: the state of a package, plan entry, group, or rung whose
+  trial is sound.
+- **Park**: keep the range a package has at that moment, and record its park
+  reason.
+- **Lower**: set a package to a version below its candidate version, and
+  record its park reason.
 
 ## Hard rules
 
 1. **Only manifests and lockfiles change**, from Step 6 on, through the
    script and the package manager. Never edit project code, a configuration
-   file, a CI file, or a lockfile by hand. A code change hides a breaking
-   version behind a repair no one reviewed.
+   file, a CI file, or a lockfile by hand.
 2. **No tool enters the project.** Run npm-check-updates and semver from the
-   npx cache. Never add either to a manifest or write an `.ncurc` file. A
-   tool in the manifest is a dependency the project did not ask for.
+   npx cache. Never add either to a manifest or write an `.ncurc` file.
 3. **Never ask what research can answer.** Consult the manifests, the
-   lockfiles, the docs, and the registry first. The registry settles a
-   version better than a recollection.
+   lockfiles, the docs, and the registry first.
 4. **Never assume.** When a decision changes the work and research cannot
-   settle it, ask the user. An assumed cap or parked package leaves a
-   version the user did not choose.
+   settle it, ask the user.
 5. **No outward actions.** Commit, push, or open a pull request only when
    the request says so. Then make one commit per accepted plan entry, in
-   the project's branch and commit conventions. One commit per plan entry
-   keeps a breaking update revertible on its own.
+   the project's branch and commit conventions.
 
 ## Script
 
-`scripts/set-range.mjs` rewrites the range of one dependency in one
-`package.json` and keeps every other byte. Run it as
-`node <skill-dir>/scripts/set-range.mjs`, where `<skill-dir>` is the folder
-holding this `SKILL.md` (in Claude Code, `${CLAUDE_SKILL_DIR}`). Run it with
-`--help` for the options and the exit codes. Step 6 writes every range with
-it.
+`scripts/set-range.mjs` sets one dependency range in one `package.json`.
+Run it as `node <skill-dir>/scripts/set-range.mjs`, where `<skill-dir>` is
+the folder holding this `SKILL.md` (in Claude Code, `${CLAUDE_SKILL_DIR}`).
+`--help` prints its options and exit codes.
 
 ## Workflow
 
 ### Step 1: Load the request
 
-Resolve the invocation text, or the request in the conversation, into four
-values:
+Resolve the invocation text, or the request, into four values:
 - **Paths**: files or folders that limit the manifests. Default: the whole
   repository.
-- **Package names**: names that limit the dependencies. Default: every
-  dependency.
+- **Package names**: names that limit the dependencies. Default: all.
 - **Level**: `latest`, `minor`, or `patch`. Default: `latest`. `minor` never
   bumps a major. `patch` never bumps a minor.
-- **Cooldown**: the number of days since a version's publish date below
-  which the run never takes it. Default: 7.
+- **Cooldown**: the minimum age in days, from its publish date, of a version
+  the run takes. Default: 7.
 
-Record whether the request asks for commits, for hard rule 5.
+Record whether the request asks for commits.
 
-Write private notes in a scratch directory outside the repository from this
-step on, written `<scratch-dir>` in commands (in Claude Code, the scratchpad
-directory). Keep in them every list that a later step reads.
+From this step on, write private notes in `<scratch-dir>`, a scratch
+directory outside the repository (in Claude Code, the scratchpad directory).
+Keep in them every list a later step reads.
 
 ### Step 2: Inventory
 
-**Subagents.** When the agent offers subagents, run in one every read whose
-whole product is the facts the step records. In Claude Code, that is the
-`Agent` tool, with the `Explore` subagent for reads. Run in one every
-command whose output the step reduces to a result. Give the subagent the
-question, the paths, and the facts to return. It returns only those facts,
-each with path and line. The context window then holds those returns, not
-the files, and stays small. Without subagents, follow the step yourself and
-keep only what it names.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in
+one each read or command that yields only facts, returned with path and
+line.
 
-**2a. Manifests.** List every `package.json` under the paths. Run from the
+**2a. Manifests.** List every `package.json` under the paths, from the
 repository root:
 
 ```bash
@@ -105,26 +88,24 @@ git ls-files -co --exclude-standard -- '*package.json' \
   | grep -vE '(^|/)(dist|build|out|coverage)/'
 ```
 
-**2b. Install roots.** Read `references/package-managers.md` now. Assign
-each manifest one role:
-- a manifest with a `workspaces` field, or with a `pnpm-workspace.yaml`
-  beside it, is a workspace root. Its members are the manifests its
-  workspace globs match. Its folder is the install root of itself and of
-  its members;
+**2b. Install roots.** Read `references/package-managers.md`. Assign each
+manifest one role:
+- a manifest with a `workspaces` field, or a `pnpm-workspace.yaml` beside
+  it, is a workspace root. Its members are the manifests its workspace globs
+  match. Its folder is the install root of all of them;
 - a manifest beside a lockfile, and not a member, is the root manifest of a
   standalone install root: its own folder;
-- every other manifest is an orphan manifest. Step 6 sets its ranges without
-  an install. The update report lists it under *Unverified*.
+- every other manifest is an orphan manifest.
 
 For each install root, invoke the `finding-dev-commands` skill (in Claude
-Code, with the `Skill` tool) with the invocation text
+Code, with the `Skill` tool) with
 `from updating-packages: find in <install root>`. Record the package manager,
 its version, and the frozen install by the *Package manager* section of
 `package-managers.md`. When the package manager on PATH has a different
-major, follow its *Version* section. Every later install of that install
-root runs with that package manager, never another.
+major, follow its *Version* section. Run every later install of that install
+root with that package manager.
 
-**2c. Node version.** Read `references/update-rules.md` now. Take the Node
+**2c. Node version.** Read `references/update-rules.md`. Take the Node
 version from the first of these that exists:
 1. `.nvmrc`;
 2. `.node-version`;
@@ -133,8 +114,7 @@ version from the first of these that exists:
 5. the `engines.node` field of the root manifest;
 6. `node -v`.
 
-Record the version as `<node-version>`, with the file or the command it
-came from.
+Record it as `<node-version>`, with the file or the command it came from.
 
 **2d. Check commands.** Record the check commands of each install root, in
 this order:
@@ -150,11 +130,10 @@ the recursive run command of `package-managers.md` for each of the six names.
 An install root with no check command beyond the install commands is an
 install-only root.
 
-**2e. Pins.** Read these files: `renovate.json`, `.renovaterc`,
-`.renovaterc.json`, `.github/renovate.json`, and `.github/dependabot.yml`.
-Read the `overrides`, `resolutions`, and `pnpm.overrides` fields of every
-root manifest. Record two lists, as constraints 4 and 5 under *Constraints*
-of `update-rules.md` say:
+**2e. Pins.** Read `renovate.json`, `.renovaterc`, `.renovaterc.json`,
+`.github/renovate.json`, `.github/dependabot.yml`, and the `overrides`,
+`resolutions`, and `pnpm.overrides` fields of every root manifest. Record
+two lists by constraints 4 and 5 of `update-rules.md`:
 - the parked packages, each with its park reason;
 - the capped packages, each with its cap: a version range or a level.
 
@@ -164,22 +143,20 @@ Record in the scratch directory, before changing anything:
 - the output of `git status --porcelain`. When the request asks for commits
   and a manifest or a lockfile has uncommitted changes, ask one question:
   commit or stash them first;
-- the baseline results, per install root: the result of the frozen install,
-  then of each check command, with pass or fail and the duration. When the
-  frozen install fails, run the plain install instead and record
-  `install (frozen)` as a baseline failure;
-- the baseline order: the check commands sorted by duration, shortest
-  first. Keep that order for every later run of the check commands;
+- the baseline results, per install root: pass or fail and the duration of
+  the frozen install, then of each check command. When the frozen install
+  fails, run the plain install instead and record `install (frozen)` as a
+  baseline failure;
+- the baseline order: the check commands sorted by duration, shortest first;
 - the baseline peer report, per install root, from `package-managers.md`;
 - the baseline copy and the checkpoint, as `update-rules.md` defines under
   *Checkpoint*.
 
 ### Step 4: Candidate versions
 
-`<root>` in a file name below is the path of the install root, with `/`
-replaced by `-`. For an orphan manifest, it is the path of the manifest's
-folder, written the same way. The current range of a dependency is its range
-in the baseline copy.
+`<root>` in a file name is the path of the install root, or of an orphan
+manifest's folder, with `/` replaced by `-`. The current range of a
+dependency is its range in the baseline copy.
 
 Run in each install root, and in the folder of each orphan manifest:
 
@@ -192,24 +169,21 @@ npx --yes npm-check-updates@23 --workspaces --root \
   > <scratch-dir>/<root>-latest.json
 ```
 
-Drop `--workspaces --root` for a standalone install root and for an orphan
-manifest. Drop `--peer` for an orphan manifest. Drop `--filter` when the
-request names no package. `<parked package names>` are the parked packages
-of Step 2e. The output maps each manifest path to the dependencies with a
-higher version, each with its new range in the manifest's own style. Remove
-from it every range that *Left alone* of `update-rules.md` names. Record
-each range and field under *Left alone*, with its label, for the update
-report.
+Drop `--workspaces --root` for a standalone install root and an orphan
+manifest, `--peer` for an orphan manifest, and `--filter` when the request
+names no package. `<parked package names>` are the parked packages of
+Step 2e. Remove from the output every range that *Left alone* of
+`update-rules.md` names. Record every range and field under *Left alone*,
+with its label.
 
-With level `latest`, run the command a second time with `--target minor`
-into `<scratch-dir>/<root>-minor.json`: the highest minor of every current
-major. With level `minor` or `patch`, copy `<root>-latest.json` to
-`<root>-minor.json`.
+With level `latest`, run the command again with `--target minor` into
+`<scratch-dir>/<root>-minor.json`. With level `minor` or `patch`, copy
+`<root>-latest.json` to `<root>-minor.json`.
 
 Write one `<name>@<version>` line per dependency of `<root>-latest.json`
-into `<scratch-dir>/<root>-specs.txt`, with the version written without its
-range prefix. For an alias `npm:<name>@<range>`, write the aliased name and
-version. Then gather the registry facts in one loop:
+into `<scratch-dir>/<root>-specs.txt`, the version without its range prefix.
+For an alias `npm:<name>@<range>`, write the aliased name and version.
+Gather the registry facts:
 
 ```bash
 while IFS= read -r spec; do
@@ -220,31 +194,25 @@ while IFS= read -r spec; do
 done < <scratch-dir>/<root>-specs.txt > <scratch-dir>/<root>-facts.tsv
 ```
 
-Check each candidate version against the constraints of `update-rules.md`,
-in its order. Lower or park a package whose candidate version a constraint
-refuses, as the *Constraints* section says. Then add
-`@types/node` as a candidate package in every manifest that has it, with the
-version that constraint 3 of `update-rules.md` gives. Record per candidate
-package:
-- the manifest and the section;
-- the name;
-- the current range and the candidate range;
-- the bump kind: `major`, `minor`, or `patch`, from the first number that
-  differs between the current range and the candidate range;
-- the park reason of a lowered package, or `none`;
-- the peer ties, as `update-rules.md` defines under *Groups*.
+Check each candidate version against the *Constraints* of
+`update-rules.md`. Add `@types/node` as a candidate package in every
+manifest that has it, at the version constraint 3 gives. Record per
+candidate package: manifest, section, name, current range, candidate range,
+bump kind, park reason of a lowered package or `none`, and peer ties. The
+bump kind is `major`, `minor`, or `patch`, from the first number that
+differs between the two ranges. *Groups* of `update-rules.md` defines peer ties.
 
 ### Step 5: Write the update plan
 
 Build the plan entries of each install root:
-1. one plan entry *minor and patch*, with every candidate package of
+1. one plan entry *minor and patch*: every candidate package of
    `<root>-minor.json` that Step 4 did not park;
-2. one plan entry per group, from the candidate packages of
-   `<root>-latest.json` with bump kind `major`. `update-rules.md` defines a
-   group under *Groups*.
+2. one plan entry per group of the candidate packages of
+   `<root>-latest.json` with bump kind `major`, by *Groups* of
+   `update-rules.md`.
 
-Then build one plan entry *orphan* per orphan manifest, with every candidate
-package of its `<root>-latest.json` that Step 4 did not park.
+Build one plan entry *orphan* per orphan manifest: every candidate package
+of its `<root>-latest.json` that Step 4 did not park.
 
 Order the plan entries:
 1. the *minor and patch* plan entry of each install root;
@@ -261,28 +229,27 @@ Write each plan entry in this form:
 ```
 
 Show in chat:
-- the manifests of each install root, with its package manager and
+- the manifests of each install root, its package manager, and
   `<node-version>`;
 - the check commands;
 - the plan entries;
 - the packages a constraint parked, each with its park reason;
 - the *Left alone* list.
 
-Then ask one question with three options: approve every plan entry, approve
-some plan entries by number, or change the plan. A change names a package to
-exclude, a manifest to exclude, or a package to cap at a version. Repeat the
-question until the user approves.
+Ask one question with three options: approve every plan entry, approve some
+by number, or change the plan. A change names a package to exclude, a
+manifest to exclude, or a package to cap at a version. Repeat the question
+until the user approves.
 
 With no candidate package, go to Step 8 with the result `done` and zero plan
 entries.
 
 ### Step 6: Run the update plan
 
-Work one install root at a time, in plan order. A batch is the list of
-packages that one trial sets: a plan entry, a half of one, or a group at one
-rung. Write each batch to `<scratch-dir>/<root>-<batch>.tsv`, one line per
-package: the manifest, the section, the name, and the range, separated by
-tabs. Set the ranges of a batch with one loop:
+Work one install root at a time, in plan order. A batch is the packages one
+trial sets: a plan entry, a half of one, or a group at one rung. Write each
+batch to `<scratch-dir>/<root>-<batch>.tsv`, one tab-separated line per
+package: manifest, section, name, range. Set its ranges with one loop:
 
 ```bash
 while IFS=$'\t' read -r manifest section name range; do
@@ -291,29 +258,26 @@ while IFS=$'\t' read -r manifest section name range; do
 done < <scratch-dir>/<root>-<batch>.tsv
 ```
 
-A non-zero exit of the script stops the loop. Fix the TSV line that failed,
-then run the loop again: the script leaves a range that already equals its
-new value as it is. Never repair a fail with a code change. The bisection
-and the ladder park what breaks.
+When the script exits non-zero, fix the failed TSV line and run the loop
+again.
 
 **6a. Minor and patch.** Run a trial of the *minor and patch* plan entry. On
-a sound trial, mark the plan entry accepted. On a broken trial, bisect the
-plan entry as `update-rules.md` defines under *Bisection*. The bisection
-parks each breaking package with the reason `check: <name>`. Then replace
-the checkpoint. With commits requested, commit now.
+a sound trial, mark the plan entry accepted. On a broken trial, bisect it by
+*Bisection* of `update-rules.md`. The bisection parks each breaking package
+with the reason `check: <name>`. Then replace the checkpoint. With commits
+requested, commit.
 
 **6b. Major groups.** Without commits requested, run one trial of every
 approved group as one batch. On a sound trial, mark every group accepted.
-On a broken trial, bisect the batch with a group as the unit. Walk the
-ladder of `update-rules.md` for each breaking group: run a trial of the
-group at each rung, highest first. Mark the first rung whose trial is sound
-as accepted: its packages are lowered. Park a group with no accepted rung.
-Both record the park reason `check: <name>`.
+On a broken trial, bisect the batch with a group as the unit. For each
+breaking group, mark the first rung whose trial is sound as accepted: its
+packages are lowered. Park a breaking group with no accepted rung. Both
+record the park reason `check: <name>`.
 
 With commits requested, take the groups one at a time in plan order:
 1. run a trial of the group;
-2. on a broken trial, restore the checkpoint. Then run a trial of the group
-   at the next rung of its ladder. Park the group when no rung remains;
+2. on a broken trial, restore the checkpoint. Run a trial of the group at
+   the next rung of its ladder. Park the group when no rung remains;
 3. on a sound trial, commit. Then replace the checkpoint. A sound trial
    below the candidate versions lowers the group's packages, with the park
    reason `check: <name>` of the first broken trial.
@@ -323,9 +287,8 @@ With commits requested, take the groups one at a time in plan order:
 2. run one trial of every accepted group as one batch, each at its accepted
    rung. A group that the bisection accepted without the ladder takes its
    candidate versions;
-3. on a broken trial, take the accepted groups one at a time in plan order
-   and run a trial of each. After a sound trial, replace the checkpoint.
-   After a broken one, restore the checkpoint. Then park the group.
+3. on a broken trial, follow rule 8 of *Bisection* with a group as the
+   unit.
 
 **6d. Orphans.** Set the ranges of each approved *orphan* plan entry with the
 loop above. Run no install and no check command there. With commits
@@ -333,13 +296,13 @@ requested, commit after each *orphan* plan entry.
 
 ### Step 7: Verify
 
-Run for each install root, in this order:
+Run per install root, in this order:
 1. the frozen install from the new lockfile;
 2. every check command, in the baseline order;
 3. the peer report of `package-managers.md`;
 4. the diff review: compare every manifest with the baseline copy.
 
-Step 7 passes for an install root when all of these are true:
+Step 7 passes for an install root when all of these hold:
 - the frozen install succeeds;
 - every failing check command fails in the baseline results too;
 - the peer report shows no problem beyond the baseline peer report;
@@ -352,12 +315,11 @@ Step 7 passes for an install root when all of these are true:
 - every `overrides`, `resolutions`, and `pnpm.overrides` field is unchanged;
 - no file outside the install root changed.
 
-On a fail, act on the first condition above that fails, then run this step
-again:
+On a fail, act on the first failing condition, then run this step again:
 - the frozen install: run the plain install;
-- a check command or the peer report: find the accepted plan entry that
-  causes the fail by bisection, with a plan entry as the unit. Park every
-  package of that plan entry with the reason `verify: <condition>`;
+- a check command or the peer report: bisect the accepted plan entries.
+  Park every package of the breaking plan entry with the reason
+  `verify: <condition>`;
 - a condition on a manifest: restore that manifest from the checkpoint. Set
   its accepted ranges again with the script. Run the plain install;
 - a condition on a file that is not a manifest or a lockfile: revert a
@@ -368,9 +330,8 @@ baseline copy. Then park every package of that install root.
 
 ### Step 8: Update report
 
-Read `references/update-report-template.md` now and fill it in the scratch
-directory. Run every check in `references/quality-checklist.md` over the
-report, grep helper included, and fix every failure.
+Fill `references/update-report-template.md` in the scratch directory. Run
+every check of `references/quality-checklist.md` over the report.
 
 Send the update report as the final message, unchanged. Ask nothing and
 offer nothing after it.

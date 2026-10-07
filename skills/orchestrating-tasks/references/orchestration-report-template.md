@@ -2,10 +2,9 @@
 
 Sections: Orchestration report.
 
-The orchestration report is all the caller keeps from a run: what landed
-on the branch, what stayed open, and what the rest of the work needs. Make
-every line a fact that changes what the caller does next. Keep the
-headings exactly as written. Replace every `<placeholder>`.
+Make every line a fact the caller needs: what landed on the branch, what
+stayed open, and what the rest of the work needs. Keep every heading as
+written. Replace every `<placeholder>`.
 
 Rules for filling:
 - At most 50 non-blank lines, 2 lines per bullet, and 25 words per sentence.
@@ -78,8 +77,7 @@ not run
 
 ## Changes
 
-- `<path/to/file.ext>` (<symbol>): <behavior after the change. Example:
-  PaymentService.send retries according to RetryPolicy.>
+- `<path/to/file.ext>` (<symbol>): <behavior after the change.>
 - `<path/to/new-file.ext>` (new): <what it holds.>
 - `<path/to/old-file.ext>` (deleted): <what it held.>
 - <...>

@@ -9,13 +9,13 @@ argument-hint: <code paths to test | test files to review>
 # Writing unit tests
 
 Write and review unit tests that each prove one behavior and fail when that
-behavior breaks. The rules hold in any language and framework. A convention
-of the project, as the test setup records it, beats a rule here. The request
-is the task the caller works on, or what the user asked for.
+behavior breaks. A convention of the project, as the test setup records it,
+beats a rule here. The request is the task the caller works on, or what the
+user asked for.
 
 ## Terms
 
-These words have exactly one meaning in this skill.
+These words have one meaning in this skill.
 
 - **System boundary**: the network, files, a database, the clock,
   randomness, the process environment, or third-party code. Third-party
@@ -24,29 +24,25 @@ These words have exactly one meaning in this skill.
 ## Hard rules
 
 1. **No test setup, no test.** Without a test setup, write no test and
-   install no test framework. A framework the project never chose binds
-   every later change to it.
+   install no test framework.
 2. **One framework, the project's.** Never add a second test framework or
-   style beside the project's. Two styles split every fixture and helper in
-   two.
+   style beside the project's.
 3. **Never weaken a test.** Never delete, skip, or loosen a test to make a
-   run pass. A loosened test hides the defect it was written to catch.
+   run pass.
 
 ## Invocation
 
-When the invocation text starts with `from <skill name>:`, another skill
-invoked this run. Ask nothing. Follow the form the text names, and end with
-its return block and nothing else. Without that prefix, a user invoked this
-skill: run the standalone workflow.
+An invocation text that starts with `from <skill name>:` comes from another
+skill. Ask nothing. Follow the form it names. End with its return block and
+nothing else. Without that prefix, a user invoked this run: read
+`references/user-run.md` first.
 
 - `from <caller>: setup for <paths>[, test <command>][, test one file
-  <command>]`: record the test setup for the paths, separated by spaces.
-  Return the **test setup** block below. This form runs Step 1 only.
-- `from <caller>: write`: load the rules; the caller writes its tests by
-  them and by the test-first loop. Return `rules loaded`.
-- `from <caller>: characterization`: load the Characterization tests
-  section; the caller names test cases and the seam by it. Return
-  `rules loaded`.
+  <command>]`: run Step 1 for the paths, separated by spaces. Return the
+  **test setup** block below.
+- `from <caller>: write`: load the rules. Return `rules loaded`.
+- `from <caller>: characterization`: load the *Characterization tests*
+  section. Return `rules loaded`.
 - `from <caller>: check <test file>...`: run the Checks over the tests the
   caller added or edited in those files. Return one line per failure,
   `<path:line> <check>`, or `pass`.
@@ -67,57 +63,35 @@ covering tests: <test files that cover the paths> | none
 
 ### Step 1: Test setup
 
-**Subagents.** When the agent offers subagents, run in one every read whose
-whole product is the facts the step records. In Claude Code, that is the
-`Agent` tool, with the `Explore` subagent for reads. Run in one every
-command whose output the step reduces to a result. Give the subagent the
-question, the paths, and the facts to return. It returns only those facts,
-each with path and line. The context window then holds those returns, not
-the files, and stays small. Without subagents, follow the step yourself and
-keep only what it names.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in
+one each read or command that yields only facts, returned with path and
+line.
 
-Take the paths from the invocation text, or from the user's request: the
-code to test, or the test files to review. Take the test command and the
-`test one file` command from the invocation text, after `test` and
-`test one file`. When either is missing, invoke the
-`finding-dev-commands` skill (in Claude Code, with the `Skill` tool)
-with the invocation text `from writing-unit-tests: find`. Take its `test`
-and `test one file` lines. When the `test one file` command is still
-missing or reads `none`, take the test command in its place.
+Take the paths from the invocation text, else from the user's request.
+Take the test command and the `test one file` command from the invocation
+text. When either is missing, invoke the `finding-dev-commands` skill (in
+Claude Code, with the `Skill` tool) with `from writing-unit-tests: find`.
+Take its `test` and `test one file` lines. When the `test one file` command
+is still missing or reads `none`, take the test command in its place.
 
 The project has a test setup when it has a test command and the repository
-holds at least one test file. Then record:
-- the test framework and its version, from the manifest or lockfile;
-- where tests for the paths live, and how test files and cases are named;
-- the fixtures, factories, fakes, and helpers the existing tests use;
-- the `test one file` command;
-- the existing tests that cover the paths.
+holds at least one test file. Then fill the **test setup** block. Take the
+framework and its version from the manifest or lockfile, and the helpers
+from the existing tests.
 
-Without a test setup, record the reason. A standalone run then tells the
-user the reason and stops.
+Without a test setup, record the reason.
 
 ### Step 2: Write or review
 
-Pick the mode from the user's request:
-- **Write mode**: the user asks for tests written or fixed, for a
-  regression test, or for tests that pin down code before a change. Write
-  the tests by the rules and the *Test-first loop*.
-- **Review mode**: the user asks for tests reviewed. Run the *Checks* over
-  the test files. Fix a failure only when the user asked for changes.
+Run this step only in a user run, by `references/user-run.md`.
 
 ### Step 3: Verify
 
-Skip this step in review mode without changes. Run each test file this run
-added or edited alone, with the `test one file` command, so that no test
-depends on another file's state. Then run the test command. Fix every
-failure, then run the *Checks* over every test file this run added or
-edited, and fix every check that fails. After any fix, run this step again.
+Run this step only in a user run, by `references/user-run.md`.
 
 ### Step 4: Report
 
-End with the test files this run added or edited, each with the behaviors
-its tests prove. Add every result or test a rule says to report. In review
-mode, end with one line per failure, `<path:line> <check>`, or `pass`.
+Run this step only in a user run, by `references/user-run.md`.
 
 ## What to test
 
@@ -133,21 +107,21 @@ mode, end with one line per failure, `<path:line> <check>`, or `pass`.
 
 ## What not to test
 
-- A private function, directly. Reach it through the public interface.
-- The behavior of a third-party library, the framework, or the language.
-- Generated code.
-- The same behavior twice at the same level.
-- A change that adds or alters no behavior: documentation, comments,
-  configuration values, renames. Write no new test for it.
+Write no test for:
+- a private function, directly. Reach it through the public interface;
+- the behavior of a third-party library, the framework, or the language;
+- generated code;
+- the same behavior twice at the same level;
+- a change that adds or alters no behavior: documentation, comments,
+  configuration values, renames.
 
 ## Structure
 
-- Test one behavior per test, so that a test has one reason to fail.
+- Test one behavior per test.
 - Write three parts, in this order: arrange the inputs, act by calling the
   unit once, assert the outcome.
 - Name the test by the unit, the condition, and the expected result, in the
-  project's naming style:
-  `RetryPolicy.next returns 8000 ms for the fifth attempt`.
+  project's naming style.
 - Write no loops and no conditionals inside a test. Use the framework's table
   or parameterized form for many inputs of one behavior. A framework with
   none gets one `for` loop over a list of cases. The loop calls one test per
@@ -190,8 +164,6 @@ A test gives the same result on every run, on every machine, in any order:
 ## A test must be able to fail
 
 - Give every test at least one assertion.
-- Run each new test before the code exists and confirm it fails for the
-  expected reason, as the *Test-first loop* states.
 - Make a test for a refactor pass before and after the refactor. Break the
   asserted behavior by hand once, see the failure, and restore the code.
 - When the caller names a mutation command, run it instead of breaking the
@@ -235,19 +207,13 @@ A test gives the same result on every run, on every machine, in any order:
 
 ## Characterization tests
 
-A characterization test records what the code does today, so that a
-refactoring that changes behavior fails a test. The project's framework,
-test location, naming, fixtures, and helpers replace a rule here.
-
 **What to record.**
 - Record the behavior of the code the change touches, and nothing beyond it.
-- Test through the public interface that reaches the code: what it returns,
-  what it changes, what it raises. Never test how it does it.
-- Name one test case per branch the refactoring touches:
-  - the normal path;
-  - the boundaries of each input: empty, zero, one, many, the minimum, the
-    maximum, a missing value;
-  - every error the code raises, one test per error.
+- Test through the public interface that reaches the code, as *What to
+  test* states.
+- Name one test case per branch the refactoring touches: the normal path,
+  the input boundaries that *What to test* lists, and one test per error the
+  code raises.
 - Name each test case by the unit, the condition, and the result it records,
   in the project's naming style. Example:
   `parseRange returns an empty list for "5-1"`.
@@ -259,9 +225,7 @@ test location, naming, fixtures, and helpers replace a rule here.
 
 **Reaching the code.**
 - Reach a private function through the public function that calls it.
-- Replace only a system boundary with a test double.
-- Use the project's own fakes, factories, and helpers before a new test
-  double.
+- Use a test double only as *Test doubles* allows.
 - Use a seam the code already has: a parameter, a constructor argument, an
   injected dependency, a module the framework lets a test replace.
 - Add a seam only by one of these refactorings, as a change of its own made
@@ -272,16 +236,14 @@ test location, naming, fixtures, and helpers replace a rule here.
      in a field;
   3. Extract Function around the call to the system boundary, so that a
      test replaces the one function.
-- Keep the seam in the code after the tests: later refactorings inject
-  through it.
+- Keep the seam in the code after the tests.
 - When no seam reaches the code, write no characterization test for it and
   change none of that code. Report the reason.
 
 ## Checks
 
-Run each check over every test this run added or edited in the files. An
-existing test the run left alone is no failure. A failure line names the
-check by its bold name.
+Run each check over every test this run added or edited in the files. A
+failure line names the check by its bold name.
 
 - **one behavior**: the test acts once and asserts one behavior.
 - **name**: the name states the unit, the condition, and the expected
@@ -291,10 +253,7 @@ check by its bold name.
 - **literal**: every expected value is a literal, never computed with the
   logic under test.
 - **visible values**: the test shows every value its assertion depends on.
-- **deterministic**: the test uses no shared state, real network, real
-  clock, unseeded random value, or sleep. It touches no file outside a
-  temporary folder. It sets every environment variable, locale, and time
-  zone it reads.
+- **deterministic**: the test keeps every rule of *Determinism*.
 - **boundary doubles**: every test double replaces a system boundary, never
   the unit under test. An assertion on a call to a double exists only where
   the call is the behavior.

@@ -9,22 +9,17 @@ argument-hint: <task or subtask id | file | task folder | text>
 # Loading tasks
 
 Load one task or subtask, the target, with its parent chain and its
-subtasks. Return the task map, which a skill that implements or runs the
-target reads instead of the task text. Change nothing.
+subtasks, and return the task map.
 
 ## Hard rules
 
-1. **Read-only.** Never edit a task file, a subtask file, or an item. The
-   skills that write tasks own that text, and an edit here hides a change
-   from them.
+1. **Read-only.** Never edit a task file, a subtask file, or an item.
 2. **Never ask.** Settle every line of the task map from the target, its
-   chain, its subtasks, and the tracker map. Report a target that does not
-   load as `source: none` with its reason. A calling skill runs unattended,
-   where no user reads a question.
+   chain, its subtasks, and the tracker map.
 
 ## Invocation
 
-Another skill invokes this one in one of two forms:
+Forms for a calling skill:
 
 ```
 from <caller>: <item identifier or URL | task file path |
@@ -32,90 +27,78 @@ from <caller>: <item identifier or URL | task file path |
 from <caller>:
 ```
 
-The text after `from <caller>:` is the target, and nothing after it means
-no target. Run the workflow and send the task map as the final message,
-with nothing else.
+The text after `from <caller>:` is the target.
 
-Any invocation text without the `from <skill name>:` prefix means a user
-invoked this skill. Take the target from that text or the conversation, run
-the workflow, then show the task map in chat.
+Invocation text without the `from <skill name>:` prefix comes from a user.
+Take the target from that text or the conversation.
 
 ## Workflow
 
 ### Step 1: Resolve the target
 
-**Subagents.** When the agent offers subagents, run in one every read whose
-whole product is the facts the step records. In Claude Code, that is the
-`Agent` tool, with the `Explore` subagent for reads. Run in one every
-command whose output the step reduces to a result. Give the subagent the
-question, the paths, and the facts to return. It returns only those facts,
-each with path and line. The context window then holds those returns, not
-the files, and stays small. Without subagents, follow the step yourself and
-keep only what it names.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in
+one each read or command that yields only facts, returned with path and
+line.
 
-Resolve the target as one source:
-- **An item identifier or URL** (`PAY-212`, `#128`, an issue link). Source:
+Resolve the target to one source:
+- **An item identifier or URL** (`PAY-212`, `#128`, an issue link):
   *tracker*. Invoke the `finding-trackers` skill (in Claude Code, with the
-  `Skill` tool) with the invocation text `from loading-tasks: find`. Read
-  the item with the map's `read item` line. When the map's first line
-  starts with `tracker: none`, or the tracker holds no such item, the
-  source is `none: no tracker holds <identifier>`.
-- **A subtask file**, a file named `###-<subtask-slug>.md` next to a
-  `task.md`. Source: *file*.
-- **A task file**, a file named `task.md`. Its folder is the task folder.
-  Source: *file*.
-- **A task folder**, a folder that holds a `task.md`. That `task.md` is the
-  target. Source: *file*.
-- **Any other folder.** Source: `none: <path> holds no task.md`.
-- **A path that does not exist.** Source: `none: <path> does not exist`.
-- **A failed save**, a line that starts with `not saved:`. Source:
+  `Skill` tool) with `from loading-tasks: find`. Read the item with the
+  map's `read item` line. When the map's first line starts with
+  `tracker: none`, or the tracker holds no such item, the source is
+  `none: no tracker holds <identifier>`.
+- **A subtask file**, named `###-<subtask-slug>.md` next to a `task.md`:
+  *file*.
+- **A task file**, named `task.md`: *file*. Its folder is the task folder.
+- **A task folder**, a folder that holds a `task.md`: *file*. That
+  `task.md` is the target.
+- **Any other folder**: `none: <path> holds no task.md`.
+- **A path that does not exist**: `none: <path> does not exist`.
+- **A failed save**, a line that starts with `not saved:`:
   `none: <that line>`.
 - **Free text**, or the path of any other file, whose content is then the
-  text. Source: *text*.
-- **Nothing.** Source: `none: no target given`.
+  text: *text*.
+- **Nothing**: `none: no target given`.
 
 With source `none`, the task map is its first line alone. Go to Step 4.
 
 ### Step 2: Build the chain
 
-The chain is the target, its parent, and every parent above, up to the root
-task, the task with no parent:
-- Source *file*: the parent of a subtask file is the `task.md` of its task
+The chain is the target and every parent above it, up to the root task,
+which has no parent:
+- Source *file*: a subtask file's parent is the `task.md` of its task
   folder. A task file has no parent.
-- Source *tracker*: the parent of an item is the item that the map's
-  `read parent` line returns. When that line reads `none` or returns no
-  item, the parent is the item its `Task` line links. Read parents until
-  an item has none. Stop when an identifier repeats.
+- Source *tracker*: an item's parent is the item the map's `read parent`
+  line returns. When that line reads `none` or returns no item, it is the
+  item its `Task` line links. Read parents until an item has none or an
+  identifier repeats.
 - Source *text*: the chain is the target alone.
 
 The `kind` line reads *subtask* when the target has a parent, else *task*.
 
-Read every task in the chain only as far as the task map needs. Never open
-the links of a References section.
+Read each chain task only as far as the task map needs. Never open the
+links of a References section.
 
 ### Step 3: List the subtasks
 
-A subtask of a task is one of three things: a subtask file in its task
-folder, a child of its item, or an entry of its Subtasks section other than
-`None.`. Count each subtask once. List the children of an item with the
-map's `list children` line. List the subtasks of the target. For `kind`
-*subtask*, list the subtasks of its parent as the siblings.
+A task's subtask is a subtask file in its task folder, a child of its
+item, or a Subtasks section entry other than `None.`. Count each subtask
+once. List an item's children with the map's `list children` line. List
+the subtasks of the target and, for `kind` *subtask*, of its parent as the
+siblings.
 
-Order each list by the Subtasks section of the task it belongs to. Without
-one, place each subtask after every subtask on its `Depends on` line, ties
-by number or identifier, lowest first.
+Order each list by its task's Subtasks section. Without one, place each
+subtask after every subtask on its `Depends on` line, ties by lowest number
+or identifier first.
 
-For each subtask, read its file or its item and record:
-- its number or identifier, and its title;
-- `at`: its file path or its item URL. An entry of the Subtasks section
-  with no file and no item reads `at: none`;
-- its `Depends on` entries as numbers or identifiers, else `none`;
-- its Verification section, word for word;
-- every path its Changes section marks `(new)`, else `none`;
-- `state`: for source *tracker*, `completed` when its item's status is
-  on the map's `completed status` line, or that line reads `unsettled` and
-  the item is closed. Else `open`. For source *file* and *text*,
-  `unknown`.
+For each subtask, read its file or its item to fill its line of the task
+map. A Subtasks section entry with no file and no item reads `at: none`.
+Its `new` paths are the ones its Changes section marks `(new)`. Its
+`state`:
+- source *tracker*: `completed` when its item's status is on the map's
+  `completed status` line, or that line reads `unsettled` and the item is
+  closed, else `open`;
+- source *file* or *text*: `unknown`.
 
 ### Step 4: Send the task map
 
@@ -145,15 +128,15 @@ siblings: none | the subtasks of the target's parent, same form, the target
 tracker: none | <the tracker map, each line indented two spaces>
 ```
 
-Fill these lines by these rules:
+Line rules:
 - `title`: the target's `#` heading, else the first line of the text.
 - `verification`: `none` when the target has no Verification section.
-- `new`: the paths that the target's Changes section marks `(new)`. A task
-  has no Changes section: take them from its Approach section.
+- `new`: from the target's Changes section, or its Approach section for a
+  task.
 - `state`: the target's state, by the rule for a subtask's `state`.
 - `commands`: one entry per command, from the nearest task in the chain
   whose Context section names it.
 - `tracker`: the tracker map for source *tracker*, else `none`.
 
-For a calling skill, send the task map as the final message, unchanged. Ask
-nothing and offer nothing after it. For a user, show the task map in chat.
+For a calling skill, send the task map unchanged as the final message,
+with nothing after it. For a user, show it in chat.

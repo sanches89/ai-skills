@@ -7,10 +7,8 @@ argument-hint: <file path | text>
 
 # Disambiguating text
 
-Take one text, the input text, and rewrite it so that every sentence has exactly
-one reading. Keep the meaning. Write only the file the text came from. When the
-`writing-glossaries` skill is available, use it to define the terms the text
-needs before the rewrite.
+Rewrite one text, the input text, so that every sentence has one reading
+and the meaning stays.
 
 The glossary is `GLOSSARY.md` at the repository root, unless the user names
 another path. A word passes the entry test when Gate A or Gate B holds.
@@ -29,7 +27,7 @@ Gate B, the sense test. All three hold:
 
 ## Terms
 
-These words have exactly one meaning in this skill.
+These words have one meaning in this skill.
 
 - **Ambiguity**: a passage of the input text with more than one reading, or
   one that breaks a clarity rule.
@@ -40,51 +38,40 @@ These words have exactly one meaning in this skill.
 ## Hard rules
 
 1. **The meaning stays.** Never add, drop, or change a fact or an
-   instruction. A rewrite that changes meaning is an edit no one approved.
+   instruction.
 2. **Read-only on the project.** Write only the input file, in Step 7. Write
    drafts in a scratch directory outside the repository (in Claude Code,
-   the scratchpad directory). A draft inside the repository reads as the
-   text that holds.
+   the scratchpad directory).
 3. **Never ask what research can answer.** Consult the input text, the
-   glossary, the code, and the docs the text names first. The code settles
-   a referent better than a guess.
+   glossary, the code, and the docs the text names first.
 4. **Never assume.** When a reading changes the rewrite and research cannot
-   settle it, ask the user. An assumed reading writes the author's intent
-   for them.
+   settle it, ask the user.
 5. **Write nothing outside the scratch directory before the user approves
-   the full rewrite** (Step 6). The author owns the text until then.
+   the full rewrite** (Step 6).
 
 ## Workflow
 
 ### Step 1: Load the input text
 
-**Subagents.** When the agent offers subagents, run in one every read whose
-whole product is the facts the step records. In Claude Code, that is the
-`Agent` tool, with the `Explore` subagent for reads. Run in one every
-command whose output the step reduces to a result. Give the subagent the
-question, the paths, and the facts to return. It returns only those facts,
-each with path and line. The context window then holds those returns, not
-the files, and stays small. Without subagents, follow the step yourself and
-keep only what it names.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in
+one each read or command that yields only facts, returned with path and
+line.
 
-Resolve the invocation text, or the text in the conversation, as one of:
-- **`from <skill name>: <file path>`**: that skill invoked this run. The
-  file's content is the input text. Step 7 writes the rewrite to the file.
-  Step 2b invokes no skill.
-- **A file path**: the file's content is the input text. Step 7 writes the
-  rewrite to the file.
-- **Pasted text**: the text itself is the input text. Step 7 writes no file.
-- **Nothing**: ask for the text first.
+When the invocation text starts with `from <skill name>:`, that skill
+invoked this run, and a file path follows the prefix. The file's content is
+the input text. Step 7 writes the rewrite to the file.
 
-Record the width the input text wraps prose at: the length of its longest
-prose line, when lines end before the end of a sentence. Record `none` when
-the input text does not wrap.
+Without that prefix, a user invoked this run: read `references/user-run.md`
+first.
+
+Record the prose wrap width of the input text: the length of its longest
+prose line when lines end before the end of a sentence, else `none`.
 
 ### Step 2: Research
 
-**2a. The input text.** Read `references/clarity-rules.md` now. Then read
-the input text in full, yourself: Step 4 rewrites it. Record every
-ambiguity with its location, its ambiguity kind, and its readings.
+**2a. The input text.** Read `references/clarity-rules.md`, then the input
+text in full, yourself. Record every ambiguity with its location, its
+ambiguity kind, and its readings.
 
 **2b. The glossary.** Read the glossary, when it exists, and every
 `## Terms`, `## Definitions`, or `## Glossary` section of the input text.
@@ -94,35 +81,16 @@ Gate A on every word a reader can take in two ways. Run Gate B on every word
 whose sense in the text differs from its common sense. Record every
 undefined word with the readings a reader can take.
 
-Then define the undefined words with the `writing-glossaries` skill when all of
-these hold:
-- there is at least one undefined word;
-- the input text is a file inside a git repository;
-- a skill named `writing-glossaries` is available to the agent;
-- no other skill invoked this run.
-
-Invoke the `writing-glossaries` skill (in Claude Code, with the `Skill` tool)
-with the invocation text `from disambiguating-text: glossary <glossary path>,
-files <input file path>, words <the undefined words>`. Wait for it to
-finish: it asks its own questions and writes the glossary after its own
-approval. Then read the glossary again and record each undefined word it
-defined as a term. Read the input file again. When it changed, run 2a again
-on the new content. That skill can add or remove its reference line in the
-input file, and the rewrite keeps that change. When a condition fails, keep
-the undefined words for the clarity report.
-
 **2c. Referents.** For every referent without a name, search the input text,
 the code, and the docs the text names for the thing it points at. Record the
-name and where it was found: `the service` is `PaymentService` at
-`src/payments/service.ts:12`.
+name and where it was found.
 
 **2d. Conventions.** When the input text belongs to a project, read its rules
 for documents: AGENTS.md, CLAUDE.md, CONTRIBUTING, a style guide. Record the
 rules that bind the rewrite: line width, headings, section names, required
 words.
 
-**2e. Research notes.** Write a private file in the scratch directory with
-two parts:
+**2e. Research notes.** Write a private file in the scratch directory:
 1. *Facts*: every ambiguity with its readings and, when settled, the reading
    that holds with the path and line, identifier, or URL that settled it.
 2. *Open decisions*: every ambiguity research did not settle, with the
@@ -130,14 +98,13 @@ two parts:
 
 ### Step 3: Interview
 
-Order the open decisions: passages with two readings first, then referents,
-then quantities, then terms and names, then wording.
+Order the open decisions: passages with two readings, referents,
+quantities, terms and names, then wording.
 
 For each open decision:
 - State it in one sentence. Quote the passage and its readings.
 - Give each reading as an option, worded as the sentence that replaces the
-  passage: `Retry the call at most 5 times, then raise the last error.`,
-  never `keep the retry behavior`.
+  passage.
 - Name the option you recommend.
 
 After each answer, record the decision as a fact in the research notes and
@@ -160,8 +127,8 @@ the fix of every rule in `references/clarity-rules.md`, with:
   or a passage with two readings.
 Use every term as the glossary defines it. Keep every code block, code span,
 URL, and quoted string byte-identical. Keep every heading, its level, and
-its order: split a sentence or turn it into a list, but never move content
-between sections. Wrap prose at the width recorded in Step 1.
+its order, and never move content between sections. Wrap prose at the width
+recorded in Step 1.
 
 ### Step 5: Quality check
 
@@ -177,13 +144,13 @@ each change, run Step 5 again, and ask again until the user approves.
 
 ### Step 7: Save
 
-For a file path, write the approved rewrite to that file, unchanged. For
-pasted text, the rewrite shown in Step 6 is the output. Finish with the
-clarity report:
+For a file path, write the approved rewrite to that file, unchanged.
+Finish with the clarity report:
 - *Resolved*: one bullet per ambiguity, at most 2 lines: its ambiguity
-  kind, the
-  passage before and after, and what settled it: the path and line,
-  identifier, or URL, or the user's answer.
-- *Undefined words*: every undefined word, with its readings and the reading the
-  rewrite uses, or `None.` when the `writing-glossaries` skill defined them all.
-  Ask nothing else.
+  kind, the passage before and after, and what settled it: the path and
+  line, identifier, or URL, or the user's answer.
+- *Undefined words*: every undefined word, with its readings and the
+  reading the rewrite uses, or `None.` when the `writing-glossaries` skill
+  defined them all.
+
+Ask nothing else.

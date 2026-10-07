@@ -1,9 +1,5 @@
 # Quality checklist
 
-Run every check and the grep helpers over the draft. One failure blocks
-delivery. Fix it, or return to Step 3 for the open decision, then run the
-whole checklist again.
-
 ## Form
 
 - [ ] Every entry is one bullet `- **Term**: definition.` under a `##`
@@ -65,9 +61,8 @@ grep -nE -e '`[^`]*/[^`]*`|<[a-z-]+>|sections? of|in order:' \
 ```
 
 Terms with two definition texts across the draft and every restating
-document. `<restating-files>` is every document that holds a restatement
-from Step 2b, of a term or of a candidate word. Every word printed is a
-failure.
+document. `<restating-files>`: every document that holds a restatement
+from Step 2b. Every word printed is a failure.
 
 ```bash
 awk 'FNR == 1 { t = (FILENAME == "<draft-file>") }

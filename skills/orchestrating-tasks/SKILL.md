@@ -8,16 +8,13 @@ argument-hint: <task id | task file>
 
 # Orchestrating tasks
 
-Take one task and run every subtask through the `implementing-tasks` skill, one
-at a time, each in its own subagent and each with one commit. Then clean the
-result up: the `refactoring-code` skill writes a refactor task and the same jobs
-run it, for up to three rounds. Carry every fact from one job to the next. Ask
-at most where the jobs run, before the first job. Prove the task and keep the
-plan and every report with the task.
+Run every subtask of one task through the `implementing-tasks` skill, one job
+and one commit each, then up to three `refactoring-code` rounds. Prove the task
+and keep the plan and every report with the task.
 
 ## Terms
 
-These words have exactly one meaning in this skill.
+These words have one meaning in this skill.
 
 - **Job**: one task or subtask together with the `implementing-tasks` run that
   implements it.
@@ -33,29 +30,24 @@ These words have exactly one meaning in this skill.
 1. **Every change comes from a job or a round.** Never edit project code
    yourself, except to restore the tree as Step 4 states. Never edit a task
    file, a subtask file, or the title or body of an item. Put a wrong or
-   stale fact found in one in the orchestration record as a fact. A change
-   outside a job has no work report and no commit of its own.
-2. **One job at a time.** Never run two jobs at once: they share one working
-   tree, and two edits in one tree corrupt each other's diff.
+   stale fact found in one in the orchestration record as a fact.
+2. **One job at a time.** Never run two jobs at once.
 3. **Ask only where the jobs run.** Ask only the tree question of Steps 2
-   and 3, before the first job. Every job works from its target, the code,
-   the docs, and the connected tools, and reports `blocked` when its target
-   lacks a fact. Settle every other choice of this skill by the rules below.
-   A run of hours has no user waiting to answer once the jobs start.
+   and 3, before the first job. Settle every other choice by the rules of
+   this skill.
 4. **Keep only the result.** Keep from each job its work report, and
-   nothing else. Everything else fills the context window over a long run.
+   nothing else.
 5. **No outward actions beyond the orchestration record and the commits.**
    Never push or open a pull request. Change an item's status or comment on
-   an item only as Step 1 states. Do more only when the request that
-   invoked this skill says so. A push publishes work the user has not
-   reviewed.
-6. **Delegate every read and run.** Run in a subagent (in Claude Code, the
-   `Agent` tool) every step that reads a task, an item, a manifest, or a
-   doc. Run in a subagent every build, lint, type-check, test, and
-   Verification command. The subagent returns only what the step names.
-   The context window then holds the plan, the orchestration record, and
-   those returns, and stays small over a long run. Without subagents,
-   follow the step yourself and keep only what it names.
+   an item only as Step 1 states. Do more only when the invoking request
+   says so.
+6. **Delegate every read and run.** Run every fenced prompt of this skill
+   and the job prompt in a new subagent (in Claude Code, the `Agent` tool).
+   Fill every placeholder and add nothing. Run in a subagent every other
+   step that reads a task, an item, a manifest, or a doc. Run in one every
+   build, lint, type-check, test, and Verification command. The subagent
+   returns only what the prompt or step names. Without subagents, follow
+   the prompt or step yourself and keep only that return.
 
 ## Workflow
 
@@ -65,42 +57,39 @@ The target is the task or subtask this skill runs. `<target>` is the
 invocation text, else the task given in the conversation. With neither,
 `<target>` is empty.
 
-**Task map.** Never open the target yourself. Run a subagent with this
-prompt, the placeholders filled, and nothing else. `<folder>` is the
-current working directory. Without subagents, follow the prompt yourself
-and keep only its return:
+**Task map.** Never open the target yourself. Run this prompt by hard rule 6,
+with the current working directory as `<folder>`:
 
 ```
 Work in <folder>. Invoke the `loading-tasks` skill (in Claude Code, with
-the `Skill` tool) with the invocation text
-`from orchestrating-tasks: <target>`. When the `commands` line of the
-task map it returns lacks a build, lint, type-check, or test command,
-invoke the `finding-dev-commands` skill (in Claude Code, with the
-`Skill` tool) with the invocation text `from orchestrating-tasks: find`.
+the `Skill` tool) with `from orchestrating-tasks: <target>`. When the
+`commands` line of the task map it returns lacks a build, lint,
+type-check, or test command, invoke the `finding-dev-commands` skill (in
+Claude Code, with the `Skill` tool) with `from orchestrating-tasks: find`.
 Add each missing command from the command map it returns to the
 `commands` line. Return the task map and nothing else.
 ```
 
-Act on the map's `source` line:
-- `none: no tracker holds <identifier>`: end with one line: no tracker
-  holds the item, give a task file path. Write no report.
-- any other `none`: end with one line: no task to run: <its reason>.
-  Write no report.
-- `text`: end with one line: no task to run, give a task file path or an
-  item identifier. Write no report. The `creating-tasks` skill writes a
-  task from text.
-- `tracker` or `file`: continue.
+Act on the map's `source` line. On each `none` and on `text`, end with the
+one line below and write no report:
+- `none: no tracker holds <identifier>`: no tracker holds the item, give a
+  task file path;
+- any other `none`: no task to run: <its reason>;
+- `text`: no task to run, give a task file path or an item identifier. The
+  `creating-tasks` skill writes a task from text.
 
-The target has subtasks when the map's `subtasks` line is not `none`.
+On `tracker` or `file`, continue. The target has subtasks when the map's
+`subtasks` line is not `none`.
 
 **Orchestration record.** It is the first of these that applies:
-- source *tracker*, when the tracker map on the task map's `tracker` line names
-  a tool or command on its `comment on item` line: the items. The plan, every
-  fact, and the orchestration report are comments on the target's item. Each
-  work report is a comment on its job's item. A job's state is its item's
-  status: in progress when the job starts, completed on `done`, unchanged on
-  `skipped` and `blocked`. A status the tracker lacks stays unchanged. The
-  target's item is completed when the result is `done`;
+- source *tracker*, when the tracker map on the task map's `tracker` line
+  names a tool or command on its `comment on item` line: the items. The
+  plan, every fact, and the orchestration report are comments on the
+  target's item. Each work report is a comment on its job's item. A job's
+  state is its item's status: in progress when the job starts, completed on
+  `done`, unchanged on `skipped` and `blocked`. A status the tracker lacks
+  stays unchanged. The target's item is completed when the result is
+  `done`;
 - source *file*: `orchestration.md` (new) in the target's task folder.
   When the task folder is in the repository, write it in the tree the
   jobs run in, at the same relative path. It holds the plan, then each
@@ -110,12 +99,12 @@ The target has subtasks when the map's `subtasks` line is not `none`.
 
 Comment on an item with the `comment on item` line of that tracker map.
 Complete an item with its `close item` line. Set the in-progress status
-only through a status field of the `edit item` tool. Never change an item's
-title or body for it. A tracker without such a field keeps the status.
+only through a status field of the `edit item` tool, never through the
+item's title or body. A tracker without such a field keeps the status.
 
-A scratch directory outside the repository (in Claude Code, the scratchpad
-directory) is written `<scratch-dir>` in commands. When the orchestration
-record holds a plan from an earlier run, copy its facts into the new plan.
+`<scratch-dir>` is a scratch directory outside the repository (in Claude
+Code, the scratchpad directory). When the orchestration record holds a plan
+from an earlier run, copy its facts into the new plan.
 
 ### Step 2: Plan the jobs
 
@@ -138,12 +127,12 @@ applies:
 Outside a git repository, the jobs run in the current working tree without
 commits.
 
-**Branch.** A new worktree gets a new branch from `HEAD`. It goes to the
-path the request or the answer names, else to `<scratch-dir>/worktree`.
-Name the branch by the project's branch convention when the docs state
-one, else `task/<task folder name>` for source *file* and
-`task/<identifier>` in lowercase for source *tracker*. In an existing tree,
-the jobs run on its current branch.
+**Branch.** A new worktree goes to the path the request or the answer
+names, else to `<scratch-dir>/worktree`, and gets a new branch from `HEAD`.
+Name the branch by the project's branch convention when the docs state one,
+else `task/<task folder name>` for source *file* and `task/<identifier>` in
+lowercase for source *tracker*. In an existing tree, the jobs run on its
+current branch.
 
 Draft the plan:
 
@@ -177,10 +166,8 @@ continue.
    again and name the missing file. Put the answer in the plan's `tree`
    line, then run this step again from number 1.
 3. **Baseline.** Fill `base` with `git rev-parse --short HEAD` in
-   `<tree>`. Fill `baseline` with a probe of the task map's `commands`. A
-   probe runs in a subagent given this prompt, the placeholders filled,
-   and nothing else. Without subagents, follow the prompt yourself and
-   keep only its return:
+   `<tree>`. Fill `baseline` with a probe of the task map's `commands`.
+   Run every probe with this prompt by hard rule 6:
 
    ```
    Run each command or step below in <tree>, in order. Return one line
@@ -193,41 +180,39 @@ continue.
 
 ### Step 4: Run the jobs
 
-Run the jobs in plan order, one at a time. Read
-`references/job-prompt-template.md` once, before the first job. The entry
-of a job is its line under the `subtasks` line of its task map. A job that
-is the target itself has no such line. Its entry takes the path or the URL
-on the map's `target` line as its `at`, and the map's `verification`,
-`new`, and `state` lines. For each job:
+Run the jobs in plan order. Read `references/job-prompt-template.md` once,
+before the first job. The entry of a job is its line under the `subtasks`
+line of its task map. A job that is the target itself has no such line: its
+entry takes the path or the URL on the map's `target` line as its `at`, and
+the map's `verification`, `new`, and `state` lines. For each job:
 
-1. **Skip a done job.** The job's target is done when, for source
-   *tracker*, its entry holds `state: completed`. For source *file*, it is
-   done when a probe passes on every line. The probe runs the entry's
-   `verification` and `test -e <path>` for each of its `new` paths. Mark
-   the job `skipped` in the orchestration record and continue with the
-   next job.
+1. **Skip a done job.** The job's target is done when:
+   - source *tracker*: its entry holds `state: completed`;
+   - source *file*: a probe passes on every line. The probe runs the
+     entry's `verification` and `test -e <path>` for each of its `new`
+     paths.
+
+   Mark a done job `skipped` in the orchestration record and continue with
+   the next job.
 2. **No target.** When the entry's `at` reads `none`, the subtask has no
    file and no item. Mark the job `blocked` with that cause in the
    orchestration record, and go to Step 7 with the result `blocked`.
 3. **Start.** Mark the job `running` in the orchestration record. Note the
    output of `git status --porcelain` in `<tree>` as the job's start.
-4. **Write the prompt.** Fill the template: the job's target, `<tree>`,
-   the branch, and every fact in the orchestration record. The job's
-   target is the `at` of its entry.
-5. **Run the job.** When the agent offers subagents, run the job in a new
-   subagent. Give it the prompt and nothing else. Without subagents, follow the
-   prompt yourself with the `implementing-tasks` skill and continue here with
-   its result.
+4. **Write the prompt.** Fill the template with the `at` of the job's entry
+   as the job's target, `<tree>`, the branch, and every fact in the
+   orchestration record.
+5. **Run the job.** Run the prompt by hard rule 6.
 6. **Read the result.** The result is one of:
    - **A work report**, which starts with `# Work report:`. Save it in the
      orchestration record.
-   - **Anything else**: an empty result, an error, or a message that is
-     no work report. In a git repository, restore `<tree>` to the job's
-     start: for every path that `git status --porcelain` lists now and
-     the job's start does not, run `git checkout -- <path>` when git
-     tracks it, else delete it. Run the job once more with the same
-     prompt. On a second one, mark the job `blocked` in the orchestration
-     record with the cause and go to Step 7 with the result `blocked`.
+   - **Anything else**: an empty result, an error, or another message.
+     In a git repository, restore `<tree>` to the job's start: for every
+     path that `git status --porcelain` lists now and the job's start does
+     not, run `git checkout -- <path>` when git tracks it, else delete it.
+     Run the job once more with the same prompt. On a second one, mark the
+     job `blocked` in the orchestration record with the cause and go to
+     Step 7 with the result `blocked`.
 7. **On `done`.** When `git status --porcelain` in `<tree>` lists a path
    that the job's start does not, commit it as the job's commit. Use the
    project's commit convention, with the job's title as the subject. Add
@@ -243,30 +228,27 @@ on the map's `target` line as its `at`, and the map's `verification`,
 
 ### Step 5: Refactor rounds
 
-Run up to three rounds after the last job. The limit only stops an endless
-loop: a third round is no failure, and the run continues to Step 6 after
-it. For each round:
+Run up to three rounds after the last job. A third round is no failure:
+continue to Step 6 after it. For each round:
 
-1. **Review.** Run a subagent with this prompt, the placeholders filled,
-   and nothing else. Keep `, files` only for source *file*. Without
-   subagents, follow the prompt yourself and keep only its return:
+1. **Review.** Run this prompt by hard rule 6. Keep `, files` only for
+   source *file*:
 
    ```
-   Work in <tree>: every command runs there and every file is read and
-   written there.
+   Work in <tree>: run every command and read and write every file there.
    Invoke the `refactoring-code` skill (in Claude Code, with the `Skill`
-   tool) with the invocation text `from orchestrating-tasks: <the git
-   range <base>..HEAD | the paths under Changes of every work report so
-   far, except those marked (deleted)>, bounds <the target's identifier,
-   URL, or path>, files`. Return its final line and nothing else.
+   tool) with `from orchestrating-tasks: <the git range <base>..HEAD | the
+   paths under Changes of every work report so far, except those marked
+   (deleted)>, bounds <the target's identifier, URL, or path>, files`.
+   Return its final line and nothing else.
    ```
 
 2. **Round result.** Add `R<round>: <final line>` under `rounds` in the
    orchestration record. Write `none` for a final line that names no task
    file path, no item identifier, and no `not saved:`. Act on the final
    line:
-   - it starts with `not saved:`: the refactor task was not saved. Go to
-     Step 7 with the result `blocked` and the line as its cause;
+   - it starts with `not saved:`: go to Step 7 with the result `blocked`
+     and the line as its cause;
    - it names no task file path and no item identifier: the round is
      empty. Go to Step 6;
    - else continue.
@@ -296,11 +278,9 @@ Step 7.
 
 ### Step 7: Finish
 
-1. **Report.** Read `references/quality-checklist.md` now and confirm
-   every check under *Run* from this run. Then run a subagent with this
-   prompt, the placeholders filled, and nothing else. `<skill-dir>` is
-   the folder holding this `SKILL.md`. Without subagents, follow the
-   prompt yourself and keep only its return:
+1. **Report.** Read `references/quality-checklist.md` and confirm every
+   check under *Run* from this run. Run this prompt by hard rule 6, with
+   the folder holding this `SKILL.md` as `<skill-dir>`:
 
    ```
    Read the orchestration record: <path of orchestration.md | the
@@ -325,6 +305,6 @@ Step 7.
    `Record the orchestration of <target title>`.
 3. **Worktree.** On `done` with a worktree this run created, run
    `git worktree remove <tree>` and keep the branch. On `blocked`, keep
-   that worktree, so that the change so far stays in it.
+   that worktree with the change so far.
 4. **Send.** Send the orchestration report as the final message, unchanged.
    Ask nothing and offer nothing after it.

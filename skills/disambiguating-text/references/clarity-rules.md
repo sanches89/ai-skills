@@ -1,19 +1,17 @@
 # Clarity rules
 
-One rule per ambiguity kind: the ambiguity kind, how to find it, and the
-fix. A rule
+One rule per ambiguity kind: its name, how to find it, and the fix. A rule
 of the project, recorded in Step 2d, wins over a rule here.
 
 ## Words
 
 - **Two meanings for one word.** Find: a word whose usages point at two
-  things, such as `context` for a section and for a context window. Fix:
-  give each meaning its own term, with a qualifier or a new word, and never
-  write the bare word again.
+  things. Fix: give each meaning its own term, with a qualifier or a new
+  word, and never write the bare word again.
 - **Two names for one thing.** Find: two words whose usages point at one
-  thing, such as `server` and `tracker`, or one thing written two ways, such
-  as `task file`, `task.md`, and `the task's file`. Fix: keep one name
-  everywhere, the glossary's term when it has one.
+  thing, or one thing written two ways, such as `task.md` and
+  `the task's file`. Fix: keep one name everywhere, the glossary's term
+  when it has one.
 - **Undefined word.** Find: a word that passes the entry test and has no
   glossary entry. Fix: use it the same way everywhere, and put it in the
   clarity report under *Undefined words*. Never define it in the text.
@@ -34,10 +32,8 @@ of the project, recorded in Step 2d, wins over a rule here.
 
 ## Sentences
 
-- **Two readings.** Find: a sentence that parses two ways, such as `the agent
-  reads the task and the subtasks it names`, where `it` points at the task or
-  at the agent. Fix: write the reading that holds, settled by research or by
-  the user.
+- **Two readings.** Find: a sentence that parses two ways. Fix: write the
+  reading that holds, settled by research or by the user.
 - **Alternative left to the reader.** Find: `either ... or`, `one of`,
   `A or B`, `option A / option B`, or `and/or` without grouping. Fix: write
   the one that holds. When each holds under its own condition, write each
@@ -47,15 +43,14 @@ of the project, recorded in Step 2d, wins over a rule here.
   fact, or ask the user.
 - **Long sentence.** Find: more than 25 words, with a code span counted as
   one word. Fix: split it at a clause boundary, one idea per sentence.
-- **Instruction not a command.** Find: an instruction in the passive voice
-  (`the file is written`), with `should`, `must be`, or `is to be`, or as a
-  statement of fact (`drafts go in the scratch directory`). Fix: write one
-  command in the active voice with one action: `Write drafts in the scratch
-  directory.`
+- **Instruction not a command.** Find: an instruction in the passive voice,
+  with `should`, `must be`, or `is to be`, or as a statement of fact
+  (`drafts go in the scratch directory`). Fix: write one command in the
+  active voice with one action.
 - **Two actions in one sentence.** Find: an instruction with `and` or `then`
   joining two actions. Fix: one sentence per action, in order.
 - **Mixed condition.** Find: `A and B or C` without grouping. Fix: write each
-  condition as its own clause or list item, so that the grouping is explicit.
+  condition as its own clause or list item, with the grouping explicit.
 - **Double negative.** Find: `not un...`, `never fail to`, `do not forget
   to`. Fix: state the positive.
 

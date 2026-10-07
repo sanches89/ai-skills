@@ -1,8 +1,7 @@
 # Measurement report template
 
-The measurement report is all the user keeps from a run: make every line a
-fact that changes what the user does next. Keep the headings exactly as
-written. Replace every `<placeholder>`.
+Make every line a fact that changes what the user does next. Keep every
+heading as written. Replace every `<placeholder>`.
 
 Rules for filling:
 - At most 60 non-blank lines, 2 lines per bullet, and 25 words per sentence.
@@ -25,9 +24,8 @@ What each section keeps:
 - **Tools**: the `tool` value of `duplication`; the `tool` value of
   `complexity`, or `no lizard`; the test runner of the measurement
   record's `test command` line, or `no test command` when that line reads
-  `none`;
-  the mutation tool of its `mutation command` line, or `no mutation
-  command` when that line reads `none`.
+  `none`; the mutation tool of its `mutation command` line, or
+  `no mutation command` when that line reads `none`.
 - **Measurements**: one line per measurement. A measurement whose line in
   the measurement record is not `ok` gets `skipped` with the reason on that
   line.

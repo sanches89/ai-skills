@@ -2,9 +2,8 @@
 
 Sections: Update report.
 
-The update report is all the user keeps from a run. Make every line a fact
-that changes what the user does next. Keep the headings exactly as written.
-Replace every `<placeholder>`.
+Make every line a fact that changes what the user does next. Keep the
+headings as written. Replace every `<placeholder>`.
 
 Rules for filling:
 - At most 60 non-blank lines, 2 lines per bullet, and 25 words per sentence.
@@ -16,10 +15,9 @@ Rules for filling:
 
 Every dependency with a rewritable range has exactly one state:
 - **updated**: its range now names its candidate version;
-- **lowered**: its range changed, to a rung below its candidate version, and
-  the run recorded a park reason for it;
-- **kept**: its range is the current range, and the run recorded a park
-  reason for it;
+- **lowered**: its range changed to a rung below its candidate version, with
+  a park reason;
+- **kept**: its range is the current range, with a park reason;
 - **up to date**: it has no candidate version.
 
 What each section keeps:
@@ -56,11 +54,9 @@ What each section keeps:
 - **Unverified**: one bullet per orphan manifest, with the count of ranges
   set there.
 
-What the report leaves out:
-- the steps taken, and attempts that failed;
-- command output, logs, stack traces, and the JSON files of Step 4;
-- the request restated;
-- praise, apologies, offers, questions, and next-step suggestions.
+Leave out the steps taken, failed attempts, command output, logs, stack
+traces, the JSON files of Step 4, and a restated request. Leave out praise,
+apologies, offers, questions, and next-step suggestions.
 
 ---
 

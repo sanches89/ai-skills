@@ -24,31 +24,31 @@ counts one tier.
 ## Summary
 
 Tokens per skill and tier. With all 19 skills installed, the startup
-tier costs 1,420 tokens per session. Using one skill then adds its
+tier costs 1,416 tokens per session. Using one skill then adds its
 `SKILL.md` and the references it reads.
 
 | Skill                | Startup | SKILL.md | References | Scripts |   Total |
 |----------------------|--------:|---------:|-----------:|--------:|--------:|
-| analyzing-code       |      77 |    1,304 |      3,019 |       0 |   5,108 |
-| breaking-down-tasks  |      70 |    3,306 |        347 |       0 |   4,733 |
-| creating-tasks       |      67 |    2,223 |        143 |       0 |   3,332 |
-| disambiguating-text  |      72 |    2,116 |      1,820 |       0 |   4,747 |
-| finding-code-smells  |      79 |    2,609 |      4,277 |   5,137 |  12,981 |
-| finding-dev-commands |      72 |    1,919 |          0 |       0 |   2,717 |
-| finding-trackers     |      70 |    1,829 |          0 |       0 |   2,664 |
-| formatting-tasks     |      63 |    2,013 |      2,795 |       0 |   5,751 |
-| implementing-tasks   |      65 |    3,724 |      1,818 |       0 |   8,866 |
-| loading-tasks        |      88 |    1,871 |          0 |       0 |   2,680 |
-| measuring-code       |      74 |    2,623 |      5,268 |       0 |   8,929 |
-| orchestrating-tasks  |      81 |    4,331 |      2,333 |       0 |  11,782 |
-| refactoring-code     |      85 |    3,808 |      4,871 |       0 |   9,982 |
-| saving-tasks         |      69 |    2,549 |          0 |       0 |   3,547 |
-| updating-packages    |      65 |    4,347 |      4,992 |   1,864 |  12,145 |
-| writing-agent-docs   |      96 |    1,700 |      2,265 |   3,658 |   8,605 |
-| writing-clean-code   |      83 |    3,224 |          0 |       0 |   4,006 |
-| writing-glossaries   |      79 |    3,143 |      1,164 |       0 |   5,283 |
-| writing-unit-tests   |      65 |    3,473 |          0 |       0 |   4,241 |
-| **All skills**       |   1,420 |   52,112 |     35,112 |  10,659 | 122,099 |
+| analyzing-code       |      77 |    1,106 |      2,894 |       0 |   4,785 |
+| breaking-down-tasks  |      70 |    2,810 |        292 |       0 |   4,182 |
+| creating-tasks       |      67 |    1,786 |         69 |       0 |   2,821 |
+| disambiguating-text  |      72 |    1,554 |      2,013 |       0 |   4,378 |
+| finding-code-smells  |      79 |    2,061 |      4,015 |   5,137 |  12,171 |
+| finding-dev-commands |      72 |    1,689 |          0 |       0 |   2,487 |
+| finding-trackers     |      70 |    1,507 |          0 |       0 |   2,342 |
+| formatting-tasks     |      63 |    1,391 |      2,640 |       0 |   4,974 |
+| implementing-tasks   |      65 |    3,219 |      1,759 |       0 |   8,302 |
+| loading-tasks        |      88 |    1,532 |          0 |       0 |   2,341 |
+| measuring-code       |      74 |    2,306 |      4,588 |       0 |   7,932 |
+| orchestrating-tasks  |      81 |    3,954 |      2,224 |       0 |  11,296 |
+| refactoring-code     |      85 |    3,305 |      4,411 |       0 |   9,019 |
+| saving-tasks         |      69 |    2,091 |          0 |       0 |   3,089 |
+| updating-packages    |      65 |    3,771 |      4,672 |   1,864 |  11,249 |
+| writing-agent-docs   |      96 |    1,521 |      1,578 |   3,658 |   7,739 |
+| writing-clean-code   |      79 |    2,109 |        254 |       0 |   3,145 |
+| writing-glossaries   |      79 |    2,515 |      1,368 |       0 |   4,859 |
+| writing-unit-tests   |      65 |    2,828 |        305 |       0 |   3,901 |
+| **All skills**       |   1,416 |   43,055 |     33,082 |  10,659 | 111,012 |
 
 ## Files per skill
 
@@ -58,206 +58,211 @@ Lines, words, and tokens of every file, grouped by skill.
 
 | File                                        | Lines | Words | Tokens |
 |---------------------------------------------|------:|------:|-------:|
-| `SKILL.md`                                  |   120 |   864 |  1,304 |
+| `SKILL.md`                                  |   108 |   712 |  1,106 |
 | `evals/evals.json`                          |    23 |   313 |    501 |
 | `evals/trigger-queries.json`                |    12 |   160 |    284 |
-| `references/analysis-rules.md`              |   142 | 1,062 |  1,489 |
-| `references/measurement-report-template.md` |    86 |   560 |    955 |
-| `references/quality-checklist.md`           |    56 |   343 |    575 |
-| **Total**                                   |   439 | 3,302 |  5,108 |
+| `references/analysis-rules.md`              |   134 |   989 |  1,391 |
+| `references/measurement-report-template.md` |    84 |   548 |    940 |
+| `references/quality-checklist.md`           |    55 |   331 |    563 |
+| **Total**                                   |   416 | 3,053 |  4,785 |
 
 ### breaking-down-tasks
 
 | File                              | Lines | Words | Tokens |
 |-----------------------------------|------:|------:|-------:|
-| `SKILL.md`                        |   267 | 2,201 |  3,306 |
+| `SKILL.md`                        |   235 | 1,823 |  2,810 |
 | `evals/evals.json`                |    23 |   420 |    680 |
 | `evals/trigger-queries.json`      |    12 |   236 |    400 |
-| `references/quality-checklist.md` |    36 |   261 |    347 |
-| **Total**                         |   338 | 3,118 |  4,733 |
+| `references/quality-checklist.md` |    31 |   216 |    292 |
+| **Total**                         |   301 | 2,695 |  4,182 |
 
 ### creating-tasks
 
 | File                              | Lines | Words | Tokens |
 |-----------------------------------|------:|------:|-------:|
-| `SKILL.md`                        |   192 | 1,505 |  2,223 |
+| `SKILL.md`                        |   167 | 1,173 |  1,786 |
 | `evals/evals.json`                |    23 |   363 |    562 |
 | `evals/trigger-queries.json`      |    12 |   251 |    404 |
-| `references/quality-checklist.md` |    21 |   108 |    143 |
-| **Total**                         |   248 | 2,227 |  3,332 |
+| `references/quality-checklist.md` |    15 |    51 |     69 |
+| **Total**                         |   217 | 1,838 |  2,821 |
 
 ### disambiguating-text
 
 | File                              | Lines | Words | Tokens |
 |-----------------------------------|------:|------:|-------:|
-| `SKILL.md`                        |   189 | 1,507 |  2,116 |
+| `SKILL.md`                        |   156 | 1,102 |  1,554 |
 | `evals/evals.json`                |    23 |   299 |    452 |
 | `evals/trigger-queries.json`      |    12 |   204 |    359 |
-| `references/clarity-rules.md`     |    72 |   692 |  1,088 |
-| `references/quality-checklist.md` |    76 |   443 |    732 |
-| **Total**                         |   372 | 3,145 |  4,747 |
+| `references/clarity-rules.md`     |    67 |   639 |  1,006 |
+| `references/quality-checklist.md` |    72 |   412 |    694 |
+| `references/user-run.md`          |    29 |   216 |    313 |
+| **Total**                         |   359 | 2,872 |  4,378 |
 
 ### finding-code-smells
 
 | File                          | Lines | Words | Tokens |
 |-------------------------------|------:|------:|-------:|
-| `SKILL.md`                    |   228 | 1,696 |  2,609 |
+| `SKILL.md`                    |   198 | 1,306 |  2,061 |
 | `evals/evals.json`            |    23 |   450 |    706 |
 | `evals/trigger-queries.json`  |    12 |   143 |    252 |
-| `references/smell-catalog.md` |   373 | 3,017 |  4,277 |
+| `references/smell-catalog.md` |   362 | 2,817 |  4,015 |
 | `scripts/scan.mjs`            |   400 | 1,528 |  5,137 |
-| **Total**                     | 1,036 | 6,834 | 12,981 |
+| **Total**                     |   995 | 6,244 | 12,171 |
 
 ### finding-dev-commands
 
 | File                         | Lines | Words | Tokens |
 |------------------------------|------:|------:|-------:|
-| `SKILL.md`                   |   159 | 1,132 |  1,919 |
+| `SKILL.md`                   |   146 |   980 |  1,689 |
 | `evals/evals.json`           |    23 |   305 |    523 |
 | `evals/trigger-queries.json` |    12 |   163 |    275 |
-| **Total**                    |   194 | 1,600 |  2,717 |
+| **Total**                    |   181 | 1,448 |  2,487 |
 
 ### finding-trackers
 
 | File                         | Lines | Words | Tokens |
 |------------------------------|------:|------:|-------:|
-| `SKILL.md`                   |   153 | 1,205 |  1,829 |
+| `SKILL.md`                   |   134 |   953 |  1,507 |
 | `evals/evals.json`           |    23 |   342 |    550 |
 | `evals/trigger-queries.json` |    12 |   178 |    285 |
-| **Total**                    |   188 | 1,725 |  2,664 |
+| **Total**                    |   169 | 1,473 |  2,342 |
 
 ### formatting-tasks
 
 | File                              | Lines | Words | Tokens |
 |-----------------------------------|------:|------:|-------:|
-| `SKILL.md`                        |   175 | 1,372 |  2,013 |
+| `SKILL.md`                        |   133 |   940 |  1,391 |
 | `evals/evals.json`                |    23 |   319 |    591 |
 | `evals/trigger-queries.json`      |    12 |   207 |    352 |
-| `references/line-count.md`        |    37 |   228 |    369 |
-| `references/quality-checklist.md` |    95 |   673 |  1,024 |
-| `references/task-format.md`       |   164 |   814 |  1,402 |
-| **Total**                         |   506 | 3,613 |  5,751 |
+| `references/line-count.md`        |    30 |   162 |    263 |
+| `references/quality-checklist.md` |    89 |   629 |    971 |
+| `references/task-format.md`       |   147 |   647 |  1,126 |
+| `references/user-run.md`          |    28 |   191 |    280 |
+| **Total**                         |   462 | 3,095 |  4,974 |
 
 ### implementing-tasks
 
 | File                                 | Lines | Words | Tokens |
 |--------------------------------------|------:|------:|-------:|
-| `SKILL.md`                           |   302 | 2,596 |  3,724 |
+| `SKILL.md`                           |   274 | 2,216 |  3,219 |
 | `evals/evals.json`                   |    42 |   555 |  1,090 |
 | `evals/trigger-queries.json`         |    12 |   175 |    356 |
-| `references/quality-checklist.md`    |    79 |   570 |    850 |
-| `references/work-report-template.md` |    93 |   619 |    968 |
+| `references/quality-checklist.md`    |    79 |   564 |    842 |
+| `references/work-report-template.md` |    90 |   583 |    917 |
 | `evals/files/ (16 files)`            |   303 | 1,044 |  1,878 |
-| **Total**                            |   831 | 5,559 |  8,866 |
+| **Total**                            |   800 | 5,137 |  8,302 |
 
 ### loading-tasks
 
 | File                         | Lines | Words | Tokens |
 |------------------------------|------:|------:|-------:|
-| `SKILL.md`                   |   159 | 1,267 |  1,871 |
+| `SKILL.md`                   |   142 | 1,009 |  1,532 |
 | `evals/evals.json`           |    23 |   280 |    501 |
 | `evals/trigger-queries.json` |    12 |   151 |    308 |
-| **Total**                    |   194 | 1,698 |  2,680 |
+| **Total**                    |   177 | 1,440 |  2,341 |
 
 ### measuring-code
 
 | File                             | Lines | Words | Tokens |
 |----------------------------------|------:|------:|-------:|
-| `SKILL.md`                       |   221 | 1,639 |  2,623 |
+| `SKILL.md`                       |   202 | 1,405 |  2,306 |
 | `evals/evals.json`               |    23 |   468 |    762 |
 | `evals/trigger-queries.json`     |    12 |   170 |    276 |
-| `references/measure-tool.md`     |   174 | 1,308 |  2,502 |
-| `references/mutation-reports.md` |   129 |   903 |  1,705 |
-| `references/test-reports.md`     |    93 |   559 |  1,061 |
-| **Total**                        |   652 | 5,047 |  8,929 |
+| `references/measure-tool.md`     |   145 | 1,045 |  2,088 |
+| `references/mutation-reports.md` |   118 |   789 |  1,543 |
+| `references/test-reports.md`     |    86 |   485 |    957 |
+| **Total**                        |   586 | 4,362 |  7,932 |
 
 ### orchestrating-tasks
 
 | File                                          | Lines | Words | Tokens |
 |-----------------------------------------------|------:|------:|-------:|
-| `SKILL.md`                                    |   330 | 2,794 |  4,331 |
+| `SKILL.md`                                    |   310 | 2,515 |  3,954 |
 | `evals/evals.json`                            |    43 |   489 |  1,051 |
 | `evals/trigger-queries.json`                  |    12 |   206 |    380 |
-| `references/job-prompt-template.md`           |    42 |   264 |    357 |
-| `references/orchestration-report-template.md` |   104 |   669 |  1,092 |
-| `references/quality-checklist.md`             |    88 |   577 |    884 |
+| `references/job-prompt-template.md`           |    37 |   200 |    284 |
+| `references/orchestration-report-template.md` |   102 |   647 |  1,061 |
+| `references/quality-checklist.md`             |    87 |   572 |    879 |
 | `evals/files/ (18 files)`                     |   459 | 1,927 |  3,687 |
-| **Total**                                     | 1,078 | 6,926 | 11,782 |
+| **Total**                                     | 1,050 | 6,556 | 11,296 |
 
 ### refactoring-code
 
 | File                              | Lines | Words | Tokens |
 |-----------------------------------|------:|------:|-------:|
-| `SKILL.md`                        |   322 | 2,505 |  3,808 |
+| `SKILL.md`                        |   292 | 2,156 |  3,305 |
 | `evals/evals.json`                |    23 |   639 |    926 |
 | `evals/trigger-queries.json`      |    12 |   227 |    377 |
-| `references/analysis-tools.md`    |    58 |   482 |    698 |
-| `references/quality-checklist.md` |    74 |   652 |    877 |
-| `references/refactor-sections.md` |   110 | 1,043 |  1,529 |
-| `references/refactoring-rules.md` |   158 | 1,378 |  1,767 |
-| **Total**                         |   757 | 6,926 |  9,982 |
+| `references/analysis-tools.md`    |    46 |   351 |    515 |
+| `references/quality-checklist.md` |    71 |   612 |    825 |
+| `references/refactor-sections.md` |   103 |   958 |  1,403 |
+| `references/refactoring-rules.md` |   151 | 1,299 |  1,668 |
+| **Total**                         |   698 | 6,242 |  9,019 |
 
 ### saving-tasks
 
 | File                         | Lines | Words | Tokens |
 |------------------------------|------:|------:|-------:|
-| `SKILL.md`                   |   201 | 1,670 |  2,549 |
+| `SKILL.md`                   |   173 | 1,341 |  2,091 |
 | `evals/evals.json`           |    23 |   401 |    713 |
 | `evals/trigger-queries.json` |    12 |   164 |    285 |
-| **Total**                    |   236 | 2,235 |  3,547 |
+| **Total**                    |   208 | 1,906 |  3,089 |
 
 ### updating-packages
 
 | File                                   | Lines | Words | Tokens |
 |----------------------------------------|------:|------:|-------:|
-| `SKILL.md`                             |   376 | 2,816 |  4,347 |
+| `SKILL.md`                             |   337 | 2,354 |  3,771 |
 | `agents/openai.yaml`                   |     2 |     3 |     11 |
 | `evals/evals.json`                     |    23 |   425 |    643 |
 | `evals/trigger-queries.json`           |    12 |   163 |    288 |
-| `references/package-managers.md`       |    76 |   466 |    797 |
-| `references/quality-checklist.md`      |    52 |   339 |    566 |
-| `references/update-report-template.md` |   114 |   709 |  1,129 |
-| `references/update-rules.md`           |   214 | 1,536 |  2,500 |
+| `references/package-managers.md`       |    72 |   416 |    728 |
+| `references/quality-checklist.md`      |    52 |   341 |    565 |
+| `references/update-report-template.md` |   110 |   680 |  1,099 |
+| `references/update-rules.md`           |   203 | 1,384 |  2,280 |
 | `scripts/set-range.mjs`                |   220 |   921 |  1,864 |
-| **Total**                              | 1,089 | 7,378 | 12,145 |
+| **Total**                              | 1,031 | 6,687 | 11,249 |
 
 ### writing-agent-docs
 
 | File                         | Lines | Words | Tokens |
 |------------------------------|------:|------:|-------:|
-| `SKILL.md`                   |   138 | 1,188 |  1,700 |
+| `SKILL.md`                   |   130 | 1,048 |  1,521 |
 | `evals/evals.json`           |    23 |   401 |    631 |
 | `evals/trigger-queries.json` |    12 |   213 |    351 |
-| `references/adr-template.md` |    90 |   467 |    708 |
-| `references/audit.md`        |   125 | 1,027 |  1,557 |
+| `references/adr-template.md` |    52 |   262 |    407 |
+| `references/audit.md`        |    98 |   781 |  1,171 |
 | `scripts/audit.mjs`          |   350 | 1,618 |  3,658 |
-| **Total**                    |   738 | 4,914 |  8,605 |
+| **Total**                    |   665 | 4,323 |  7,739 |
 
 ### writing-clean-code
 
 | File                         | Lines | Words | Tokens |
 |------------------------------|------:|------:|-------:|
-| `SKILL.md`                   |   397 | 2,165 |  3,224 |
+| `SKILL.md`                   |   222 | 1,486 |  2,109 |
 | `evals/evals.json`           |    23 |   332 |    516 |
 | `evals/trigger-queries.json` |    12 |   152 |    266 |
-| **Total**                    |   432 | 2,649 |  4,006 |
+| `references/user-run.md`     |    27 |   181 |    254 |
+| **Total**                    |   284 | 2,151 |  3,145 |
 
 ### writing-glossaries
 
 | File                              | Lines | Words | Tokens |
 |-----------------------------------|------:|------:|-------:|
-| `SKILL.md`                        |   271 | 2,302 |  3,143 |
+| `SKILL.md`                        |   235 | 1,833 |  2,515 |
 | `evals/evals.json`                |    23 |   438 |    627 |
 | `evals/trigger-queries.json`      |    12 |   208 |    349 |
-| `references/glossary-template.md` |    29 |   143 |    222 |
-| `references/quality-checklist.md` |    93 |   570 |    942 |
-| **Total**                         |   428 | 3,661 |  5,283 |
+| `references/glossary-template.md` |    29 |   141 |    218 |
+| `references/quality-checklist.md` |    88 |   530 |    893 |
+| `references/user-run.md`          |    26 |   176 |    257 |
+| **Total**                         |   413 | 3,326 |  4,859 |
 
 ### writing-unit-tests
 
 | File                         | Lines | Words | Tokens |
 |------------------------------|------:|------:|-------:|
-| `SKILL.md`                   |   312 | 2,577 |  3,473 |
+| `SKILL.md`                   |   271 | 2,078 |  2,828 |
 | `evals/evals.json`           |    23 |   313 |    487 |
 | `evals/trigger-queries.json` |    12 |   159 |    281 |
-| **Total**                    |   347 | 3,049 |  4,241 |
+| `references/user-run.md`     |    31 |   224 |    305 |
+| **Total**                    |   337 | 2,774 |  3,901 |

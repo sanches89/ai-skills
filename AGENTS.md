@@ -57,8 +57,10 @@ These rules hold in every Markdown file of this repository.
   link to another skill's files. When two skills need the same content, move
   it into one skill and invoke that skill by name from the other.
 - **Dependencies.** Invoke another skill by name at the step that needs it.
-  Write the invocation as: Invoke the `<name>` skill (in Claude Code, with
-  the `Skill` tool) with the invocation text `from <caller>: <args>`.
+  Write the invocation as: Invoke the `<name>` skill with
+  `from <caller>: <args>`. Add the aside (in Claude Code, with the `Skill`
+  tool) after `skill` in the first invocation of each file. Add it also to
+  every invocation inside a subagent prompt.
   `<caller>` is the name of the invoking skill. The invoked skill then skips
   its own hand-off and ends with its return block. A required skill has no
   fallback copy, and the caller's `compatibility` names it in the sentence
@@ -87,6 +89,9 @@ These rules hold in every Markdown file of this repository.
   over 100 lines opens with a `Sections:` line that lists its headings,
   separated by semicolons. An agent that reads part of the file then finds
   the rest.
+- **Agent readers.** Write skill files for agents alone. Write only what an
+  agent acts on, and state each rule once. Write no rationale, no restated
+  rule, and no example of a practice agents already know.
 - **Subagents.** Every skill except `orchestrating-tasks` holds the
   `**Subagents.**` block at the top of its first step that reads project files
   or runs commands. `writing-agent-docs` has no steps and holds it at the top of
@@ -103,9 +108,8 @@ These rules hold in every Markdown file of this repository.
   define `<skill-dir>` as the folder holding the `SKILL.md`. A skill with a
   script names its runtime and tools in the `compatibility` frontmatter field.
   Every script has the executable bit set.
-- **Hard rules.** Each numbered rule under `## Hard rules` ends with one
-  sentence that says what goes wrong without it. A rule with its reason
-  survives a case the wording did not foresee.
+- **Hard rules.** Each numbered rule under `## Hard rules` states the rule
+  alone, with no sentence on why it exists.
 - **Evals.** Every skill holds `evals/evals.json`: three cases of `prompt`,
   `expected_output`, and `files`, in the format of the anthropics/skills
   skill-creator. It also holds `evals/trigger-queries.json`: ten entries of
