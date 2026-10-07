@@ -1,6 +1,6 @@
 ---
 name: writing-agent-docs
-description: Writes and audits a repository's AGENTS.md, CLAUDE.md, READMEs, ADRs, docs/refs, and glossary. Use before editing any of them, when adding a convention or a decision record, or when the user wants the agent docs audited, shrunk, deduped, tidied, or checked for stale rules.
+description: Writes a repository's AGENTS.md, CLAUDE.md, READMEs, ADRs, docs/refs, and glossary entries, and audits its AGENTS.md, CLAUDE.md, and docs/refs. Use before editing any of them, when adding a convention or a decision record, or when the user wants the agent docs audited, shrunk, deduped, tidied, or checked for stale rules.
 license: MIT
 compatibility: The audit script requires Node.js 18 or newer and git, run inside a git repository.
 ---
@@ -85,12 +85,29 @@ Apply these rules to every doc below, plus the doc rules the repo's root
 
 ## Glossary
 
-- Use each word with the meaning `GLOSSARY.md` gives it.
-- When a change gives a word a second meaning and no other word fits, add an
-  entry: one terse bullet with the meaning that holds. When the agent has a
-  skill named `writing-glossaries`, invoke it instead with the invocation text
-  `from writing-agent-docs: glossary GLOSSARY.md, files <the edited doc>, words
-  <the word>`.
+The glossary is the path the request names, else `GLOSSARY.md`. A word passes
+the entry test when Gate A or Gate B holds.
+
+Gate A, the conflict test. All three hold:
+- at one usage at least, a reader can take the word in two ways that lead
+  to different actions;
+- no word or phrase with one reading fits every usage;
+- the sentence around that usage does not settle the reading.
+
+Gate B, the sense test. All three hold:
+- the project gives the word a meaning that its ordinary sense and its
+  common sense in the project's field do not give;
+- no document defines that meaning where the word is used;
+- a reader who takes the ordinary sense acts wrongly.
+
+- Use each word with the meaning the glossary gives it.
+- Define each word of an edited doc that passes the entry test and has no
+  entry. When the agent has a skill named `writing-glossaries`, invoke the
+  `writing-glossaries` skill (in Claude Code, with the `Skill` tool) with
+  the invocation text `from writing-agent-docs: glossary <glossary path>,
+  files <the edited doc>, words <the words>`.
+- Without that skill, add each word to the glossary as one bullet in the
+  form `- **Term**: definition.`, in alphabetical order inside its section.
 
 ## After editing
 

@@ -20,16 +20,19 @@ node <skill-dir>/scripts/audit.mjs --base <ref>
 the last audit landed, when the request names it. Otherwise omit `--base`:
 the default `HEAD` measures this audit's own edits. The script prints words
 per `AGENTS.md` and per refs folder against the base ref. It fails on:
-- a missing `CLAUDE.md` pair;
+- an `AGENTS.md` with no `CLAUDE.md` beside it;
+- a `CLAUDE.md` that holds anything but `@AGENTS.md`;
+- a `CLAUDE.md` with no `AGENTS.md` beside it;
 - a pointer to a parent file;
 - a refs folder no `AGENTS.md` indexes;
-- a README that misses a file;
+- a refs folder with no `README.md` index, or a README that misses a file;
 - a missing footer;
 - a broken relative link or heading;
 - a cited `docs/refs` path that is gone;
 - inline URLs and padded tables.
 Run `--fix` to rewrite the last two; fix the rest by hand. The script lists
-files over 1000 words as notes. Run `--help` for the flags and exit codes.
+each reference doc over 1000 words as a note. Run `--help` for the flags and
+exit codes.
 
 ## 2. AGENTS.md
 
@@ -86,23 +89,23 @@ For each folder changed since `<ref>`, or all of them when asked:
 ## 4. Words and sentences
 
 Run this section after every cut and move of sections 2 and 3, so that both
-skills see the final text. Invoke a skill the way the agent does (in Claude
-Code, the `Skill` tool).
+skills see the final text.
 
-- **Glossary.** When a skill named `writing-glossaries` is available to the
-  agent, invoke it with the invocation text `from writing-agent-docs: glossary
-  <path>, files <every AGENTS.md and every reference doc>`. Take `<path>` from
-  the request when it names one, else `GLOSSARY.md`. Wait for it to finish: it
-  asks its own questions, writes after its own approval, and prints its glossary
-  report. Without that skill, change no word, and state in the audit report that
-  the glossary was not checked.
-- **Wording.** When a skill named `disambiguating-text` is available to the
-  agent, invoke it one file at a time with the invocation text `from
-  writing-agent-docs: <file path>`. Cover every `AGENTS.md` and every reference
-  doc changed since `<ref>`. Wait for each run to finish: it shows its rewrite,
-  asks its own approval, and prints its clarity report. Without that skill,
-  change no wording, and state in the audit report that the wording was not
-  rewritten.
+- **Glossary.** When the agent has the skill, invoke the `writing-glossaries`
+  skill (in Claude Code, with the `Skill` tool) with the invocation text
+  `from writing-agent-docs: glossary <path>, files <every AGENTS.md and every
+  reference doc>`. Take `<path>` from the request when it names one, else
+  `GLOSSARY.md`. Wait for it to finish: it asks its own questions, writes
+  after its own approval, and prints its glossary report. Without that skill,
+  change no word, and state in the audit report that the glossary was not
+  checked.
+- **Wording.** When the agent has the skill, invoke the `disambiguating-text`
+  skill (in Claude Code, with the `Skill` tool) with the invocation text
+  `from writing-agent-docs: <file path>`. Run it one file at a time. Cover
+  every `AGENTS.md` and every reference doc changed since `<ref>`. Wait for
+  each run to finish: it shows its rewrite, asks its own approval, and prints
+  its clarity report. Without that skill, change no wording, and state in the
+  audit report that the wording was not rewritten.
 
 ## 5. Verify and report
 

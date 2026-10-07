@@ -5,7 +5,7 @@ license: MIT
 argument-hint: <folder>
 ---
 
-# Finding project commands
+# Finding dev commands
 
 Find the build, lint, type-check, format, test, single-file test, and
 install commands of a project, each with the file and line it came from.
@@ -101,8 +101,8 @@ ecosystem, take the install command of the CI workflow. Without one, write
 
 Take each of build, lint, type-check, format, and test from the first
 source that has it, in this order:
-1. the CI workflow: the step that runs the command. For test, the step of
-   the job that runs the unit tests;
+1. the CI workflow: the step that runs the command. For test, the CI step
+   that runs the unit tests;
 2. the scripts of the manifest, such as the `scripts` field of
    `package.json`;
 3. the target of the task runner: `Makefile`, then `justfile`, then

@@ -9,13 +9,19 @@ needed it also holds `references/` for templates, checklists, and rules, and
 
 These rules hold in every Markdown file of this repository.
 
-- **Entry test.** A word gets a glossary entry only when all three hold: at
-  one usage at least, a reader can take it in two ways that lead to different
-  actions; no word or phrase with one reading fits every usage; and the
-  sentence around that usage does not settle the reading. A word that fails
-  the second condition is renamed, never defined. A definition holds no path,
-  placeholder, format, list of allowed values, section list, or condition:
-  such a fact goes in the instruction that uses it.
+- **Entry test.** A word gets a glossary entry only when Gate A or Gate B
+  holds. A word that holds every condition of Gate A but the second is
+  renamed, never defined. A definition holds no path, placeholder, format,
+  list of allowed values, section list, or condition: such a fact goes in
+  the instruction that uses it.
+  - Gate A, the conflict test. All three hold: at one usage at least, a
+    reader can take the word in two ways that lead to different actions; no
+    word or phrase with one reading fits every usage; the sentence around
+    that usage does not settle the reading.
+  - Gate B, the sense test. All three hold: the project gives the word a
+    meaning that its ordinary sense and its common sense in the project's
+    field do not give; no document defines that meaning where the word is
+    used; a reader who takes the ordinary sense acts wrongly.
 - **Glossary.** `GLOSSARY.md` holds the entries for words used in
   `AGENTS.md`, `README.md`, and `docs/refs/`. Create the file with the first
   word that passes the entry test and delete it with the last.
@@ -206,10 +212,13 @@ Folders:
 - The size target is 500 code lines. It appears in `formatting-tasks`,
   `creating-tasks`, and `breaking-down-tasks`. Change it in the three in the
   same commit.
-- `writing-glossaries` writes the glossary and never edits another document.
-  `disambiguating-text` reads the glossary and never writes it. Both read a
-  glossary entry as a bullet `- **Term**: definition.`; change that form in both
-  skills in the same commit.
+- `writing-glossaries` writes the glossary, and its reference line in the root
+  `AGENTS.md` or `CLAUDE.md`. It never edits another document.
+  `disambiguating-text` reads the glossary and never writes it.
+- `writing-glossaries`, `disambiguating-text`, and `writing-agent-docs` read a
+  glossary entry in the form `- **Term**: definition.`, one bullet per term.
+  Each states the entry test in the words of the Entry test rule above.
+  Change the form or the test in the three skills and here in the same commit.
 - Each of the two invokes the other as an optional skill.
   `writing-agent-docs` invokes `writing-glossaries` the same way.
 

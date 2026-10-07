@@ -13,10 +13,19 @@ one reading. Keep the meaning. Write only the file the text came from. When the
 needs before the rewrite.
 
 The glossary is `GLOSSARY.md` at the repository root, unless the user names
-another path. A word passes the entry test when all three hold: at one usage
-at least, a reader can take it in two ways that lead to different actions;
-no word or phrase with one reading fits every usage; and the sentence around
-that usage does not settle the reading.
+another path. A word passes the entry test when Gate A or Gate B holds.
+
+Gate A, the conflict test. All three hold:
+- at one usage at least, a reader can take the word in two ways that lead
+  to different actions;
+- no word or phrase with one reading fits every usage;
+- the sentence around that usage does not settle the reading.
+
+Gate B, the sense test. All three hold:
+- the project gives the word a meaning that its ordinary sense and its
+  common sense in the project's field do not give;
+- no document defines that meaning where the word is used;
+- a reader who takes the ordinary sense acts wrongly.
 
 ## Terms
 
@@ -79,22 +88,28 @@ ambiguity with its location, its kind, and its readings.
 
 **2b. The glossary.** Read the glossary, when it exists, and every
 `## Terms`, `## Definitions`, or `## Glossary` section of the input text.
-Record every term the input text uses with its definition. Run the entry
-test on every word whose sense in the text differs from its common sense.
-Record every undefined word with the readings a reader can take.
+Read each glossary entry in the form `- **Term**: definition.`, one bullet
+per term. Record every term the input text uses with its definition. Run
+Gate A on every word a reader can take in two ways. Run Gate B on every word
+whose sense in the text differs from its common sense. Record every
+undefined word with the readings a reader can take.
 
 Then define the undefined words with the `writing-glossaries` skill when all of
 these hold:
 - there is at least one undefined word;
 - the input text is a file inside a git repository;
 - a skill named `writing-glossaries` is available to the agent;
-- no other skill invoked this run. Invoke it the way the agent invokes a skill
-(in Claude Code, the `Skill` tool). Pass the invocation text `from
-disambiguating-text: glossary <glossary path>, files <input file path>, words
-<the undefined words>`. Wait for it to finish: it asks its own questions and
-writes the glossary after its own approval. Then read the glossary again and
-record each undefined word it defined as a term. When a condition fails, keep
-the undefined words for the clarity report.
+- no other skill invoked this run.
+
+Invoke the `writing-glossaries` skill (in Claude Code, with the `Skill` tool)
+with the invocation text `from disambiguating-text: glossary <glossary path>,
+files <input file path>, words <the undefined words>`. Wait for it to
+finish: it asks its own questions and writes the glossary after its own
+approval. Then read the glossary again and record each undefined word it
+defined as a term. Read the input file again. When it changed, run 2a again
+on the new content. That skill can add its reference line to the input file,
+and the rewrite keeps that line. When a condition fails, keep the undefined
+words for the clarity report.
 
 **2c. Referents.** For every referent without a name, search the input text,
 the code, and the docs the text names for the thing it points at. Record the

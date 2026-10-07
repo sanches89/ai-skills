@@ -97,8 +97,8 @@ line:
   - every word named in the invocation text or by the user;
 - every synonym pair: two words whose usages point at one thing;
 - every usage of every candidate and of every existing term;
-- every restatement: a `## Terms`, `## Definitions`, or `## Glossary`
-  section, and every bullet `- **X**: ...` outside the glossary;
+- every restatement: a bullet `- **X**: ...` outside the glossary, where
+  `X` is a term of the existing glossary;
 - every verbatim third-party excerpt, such as a quoted vendor page.
 
 A usage inside a verbatim third-party excerpt is evidence of a conflict and
@@ -108,16 +108,16 @@ never a rewrite. A rewritten quotation stops being a quotation.
 identifier that carries the word and what the code does with it, so that
 the definition matches the code, not the prose.
 
-**2d. Findings.** Run the entry test, Gate A, and the sense test, Gate B, on
-every candidate and every existing entry. A word gets an entry when one
-gate holds.
+**2d. Findings.** Run the entry test on every candidate and every existing
+entry. A word passes the entry test when Gate A or Gate B holds.
 
-Gate A, the entry test for a conflict. All three hold:
-- the word points at two things;
+Gate A, the conflict test. All three hold:
+- at one usage at least, a reader can take the word in two ways that lead
+  to different actions;
 - no word or phrase with one reading fits every usage;
-- the sentence around at least one usage does not settle the reading.
+- the sentence around that usage does not settle the reading.
 
-Gate B, the sense test for an opaque sense. All three hold:
+Gate B, the sense test. All three hold:
 - the project gives the word a meaning that its ordinary sense and its
   common sense in the project's field do not give;
 - no document defines that meaning where the word is used;
