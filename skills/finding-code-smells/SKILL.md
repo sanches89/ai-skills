@@ -64,8 +64,9 @@ counts: <smell>: <n>, ...
 
 ### Step 1: Set the refactor scope
 
-**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in one
-each read or command that yields only facts, returned with path and line.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run each read
+or command that yields only facts in a subagent. It returns the facts with path
+and line.
 
 `<scratch-dir>` is a scratch directory outside the repository (in Claude Code,
 the scratchpad directory). Set `<out>` to the `out` option, as an absolute path.

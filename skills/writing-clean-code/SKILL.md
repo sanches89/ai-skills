@@ -32,8 +32,9 @@ nothing else. Without that prefix, a user invoked this run: read
 
 ### Step 1: Load the code
 
-**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in one
-each read or command that yields only facts, returned with path and line.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run each read
+or command that yields only facts in a subagent. It returns the facts with path
+and line.
 
 Read README, CLAUDE.md, AGENTS.md, CONTRIBUTING, and the docs that cover the
 touched code. Record the naming, error handling, and formatting conventions.
@@ -43,7 +44,7 @@ with `from writing-clean-code: find`. Keep its `format`, `test`, and
 
 Record whether the project has a test setup. When the agent has the
 `writing-unit-tests` skill, invoke the `writing-unit-tests` skill with the text
-below:
+below, as one line:
 
 ```
 from writing-clean-code: setup for <paths>, test <command>,
@@ -131,10 +132,10 @@ defect it works around. The code states what and how. Delete commented-out code.
 ### 6. Formatting
 
 Run the format command. When it reports a file you wrote or changed, format that
-file with the project formatter's write form. Then run the format command again.
-Without a format command, keep related code together and separate concepts with
-a blank line. Declare a variable next to its first use. Place a caller above its
-callee.
+file with the project formatter's write form, such as `prettier --write`. Then
+run the format command again. Without a format command, keep related code
+together and separate concepts with a blank line. Declare a variable next to its
+first use. Place a caller above its callee.
 
 **Check:** the format command reports no change. Without one, check the rule
 above by reading.
@@ -202,9 +203,9 @@ client. No business-logic class creates its own collaborator.
 - **Dependency inversion.** High-level code depends on an abstraction, and the
   detail implements it, in the form principle 12 states.
 
-**Check:** no new case added to a type `switch`. No override that throws or
-rejects an input the parent accepts. No interface method that a client never
-calls.
+**Check:** no new case added to a type `switch`, such as `switch (shape.kind)`.
+No override that throws or rejects an input the parent accepts. No interface
+method that a client never calls.
 
 ### 14. KISS and YAGNI
 

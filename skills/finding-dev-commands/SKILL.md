@@ -43,8 +43,9 @@ that names the command. For a marker file or a lockfile, write its path alone.
 
 ### Step 1: List the command files
 
-**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in one
-each read or command that yields only facts, returned with path and line.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run each read
+or command that yields only facts in a subagent. It returns the facts with path
+and line.
 
 Look for each command file in the project folder, then in each parent folder up
 to the repository root. Take the nearest. Record each that exists:
@@ -113,8 +114,9 @@ prefix.
 
 **Format.** The format command writes nothing and fails on a file that the
 formatter would change. When the command file runs the formatter in a form that
-writes, write the formatter's check form instead. Without a check form, write
-`format: none`.
+writes, write the formatter's check form instead: `prettier --check`,
+`black --check`, `ruff format --check`, `cargo fmt --check`, or
+`dotnet format --verify-no-changes`. Without a check form, write `format: none`.
 
 **Test one file.** Take it from the command files in the order above. Else build
 it from the test command by _Test one file_ in `references/runners.md`.

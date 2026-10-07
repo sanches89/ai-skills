@@ -23,7 +23,7 @@ skill when all of these hold:
 - a skill named `writing-glossaries` is available to the agent.
 
 Invoke the `writing-glossaries` skill (in Claude Code, with the `Skill` tool)
-with the text below:
+with the text below, as one line:
 
 ```
 from disambiguating-text: glossary <glossary path>,

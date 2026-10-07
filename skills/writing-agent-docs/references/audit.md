@@ -74,7 +74,8 @@ For each folder changed since `<ref>`, or all of them when asked:
 Run this section after every cut and move of sections 2 and 3.
 
 - **Glossary.** When the agent has the skill, invoke the `writing-glossaries`
-  skill (in Claude Code, with the `Skill` tool) with the text below:
+  skill (in Claude Code, with the `Skill` tool) with the text below, as one
+  line:
 
   ```
   from writing-agent-docs: glossary <path>,

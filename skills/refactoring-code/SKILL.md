@@ -37,8 +37,9 @@ measuring, and running commands on the unchanged code.
 
 ### Step 1: Load the request
 
-**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in one
-each read or command that yields only facts, returned with path and line.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run each read
+or command that yields only facts in a subagent. It returns the facts with path
+and line.
 
 From the invocation text, drop a leading `from <skill name>:`. Then drop a
 trailing `, files`, a request for files. Then drop a trailing
@@ -111,8 +112,8 @@ line reads `none`, record the test command in its place. For request kind
 _task_, a command on the task map's `commands` line replaces the command of the
 same name.
 
-**3c. Test setup.** Invoke the `writing-unit-tests` skill with the text below.
-Leave out each part whose command 3b did not find:
+**3c. Test setup.** Invoke the `writing-unit-tests` skill with the text below,
+as one line. Leave out each part whose command 3b did not find:
 
 ```
 from refactoring-code: setup for <paths of the refactor scope>,
@@ -127,7 +128,7 @@ analysis tool it lists that the project configures, with its command and limits.
 
 ### Step 4: Record the baseline
 
-Invoke the `measuring-code` skill with the text below:
+Invoke the `measuring-code` skill with the text below, as one line:
 
 ```
 from refactoring-code: paths <path>..., out <scratch-dir>, ignore <globs>,
@@ -152,11 +153,11 @@ task's _Out of scope_ with the failing test.
 
 ### Step 5: Find and rank
 
-Invoke the `finding-code-smells` skill with the text below. `<path>...` is the
-refactor scope after Step 4. `<summary>` is the path on the `summary` line of
-the measurement record, or `none` when that line reads `none`. `<limits>` is its
-`limits` line without the `limits:` label. Leave out `ignore` when Step 2
-recorded no glob:
+Invoke the `finding-code-smells` skill with the text below, as one line.
+`<path>...` is the refactor scope after Step 4. `<summary>` is the path on the
+`summary` line of the measurement record, or `none` when that line reads `none`.
+`<limits>` is its `limits` line without the `limits:` label. Leave out `ignore`
+when Step 2 recorded no glob:
 
 ```
 from refactoring-code: paths <path>..., summary <summary>,
@@ -177,8 +178,9 @@ Give every other finding its risk:
   Extract Variable, Inline Variable, Extract Function, Move Function, Remove
   Dead Code, and a seam. A seam is Parameterize Function, Parameterize
   Constructor, or Extract Function around the call to a system boundary. A
-  Parameterize seam takes a default equal to the current collaborator. The safe
-  set holds the refactorings allowed on code that no test covers;
+  Parameterize seam takes a default equal to the current collaborator, so it
+  changes no part of the contract. The safe set holds the refactorings allowed
+  on code that no test covers;
 - else `medium`.
 
 Drop a finding when:
@@ -262,7 +264,7 @@ Write into the notes, under _Writing rules_, what each section of the task and
 of each subtask holds, by `refactor-sections.md`. Restate there every rule of
 `refactoring-rules.md` that a section takes.
 
-Invoke the `formatting-tasks` skill with the text below:
+Invoke the `formatting-tasks` skill with the text below, as one line:
 
 ```
 from refactoring-code: write <scratch-dir>/draft,
@@ -281,10 +283,11 @@ every draft in order. Fix every failure it returns.
 
 ### Step 9: Save
 
-Invoke the `saving-tasks` skill with the text below. `<subtask drafts>` is the
-subtask draft paths in order, separated by spaces. Add `files` when the
-invocation text ended with `, files`, or when the user asked for files at any
-point. Add `dir <folder>` when the request names the folder for tasks:
+Invoke the `saving-tasks` skill with the text below, as one line.
+`<subtask drafts>` is the subtask draft paths in order, separated by spaces. Add
+`files` when the invocation text ended with `, files`, or when the user asked
+for files at any point. Add `dir <folder>` when the request names the folder for
+tasks:
 
 ```
 from refactoring-code: task <scratch-dir>/draft/task.md,

@@ -77,8 +77,9 @@ never replaces one.
 
 ### Step 3: Run the checks
 
-**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in one
-each read or command that yields only facts, returned with path and line.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run each read
+or command that yields only facts in a subagent. It returns the facts with path
+and line.
 
 When Step 2 did not run, read `references/task-format.md` first. Read
 `references/quality-checklist.md`. Run every check and both grep helpers over

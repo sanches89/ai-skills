@@ -75,8 +75,9 @@ every list a later step reads.
 
 ### Step 2: Inventory
 
-**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in one
-each read or command that yields only facts, returned with path and line.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run each read
+or command that yields only facts in a subagent. It returns the facts with path
+and line.
 
 **2a. Manifests.** List every `package.json` under the paths, from the
 repository root:

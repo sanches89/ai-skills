@@ -61,8 +61,9 @@ covering tests: <test files that cover the paths> | none
 
 ### Step 1: Test setup
 
-**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in one
-each read or command that yields only facts, returned with path and line.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run each read
+or command that yields only facts in a subagent. It returns the facts with path
+and line.
 
 Take the paths from the invocation text, else from the user's request. Take the
 test command and the `test one file` command from the invocation text. When

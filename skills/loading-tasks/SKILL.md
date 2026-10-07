@@ -36,8 +36,9 @@ the target from that text or the conversation.
 
 ### Step 1: Resolve the target
 
-**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in one
-each read or command that yields only facts, returned with path and line.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run each read
+or command that yields only facts in a subagent. It returns the facts with path
+and line.
 
 Resolve the target to one source:
 
@@ -129,7 +130,8 @@ Line rules:
 
 - `title`: the target's `#` heading, else the first line of the text.
 - `verification`: `none` when the target has no Verification section.
-- `new`: from the target's Changes section, or its Approach section for a task.
+- `new`: the paths marked `(new)` in the target's Changes section, or in its
+  Approach section for a task.
 - `state`: the target's state, by the rule for a subtask's `state`.
 - `commands`: one entry per command, from the nearest task in the chain whose
   Context section names it.

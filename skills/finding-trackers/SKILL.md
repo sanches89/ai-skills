@@ -27,8 +27,9 @@ tracker map.
 
 ### Step 1: Find the tracker
 
-**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in one
-each read or command that yields only facts, returned with path and line.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run each read
+or command that yields only facts in a subagent. It returns the facts with path
+and line.
 
 The tracker is the project's issue tracker, reached through an MCP server or
 `gh`, the GitHub CLI. Take the first rule that applies:

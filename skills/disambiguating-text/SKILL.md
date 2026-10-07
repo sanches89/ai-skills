@@ -17,7 +17,7 @@ Gate A, the conflict test. All three hold:
 
 - at one usage at least, a reader can take the word in two ways that lead to
   different actions;
-- no word or phrase with one reading fits every usage;
+- no set of words or phrases, each with one reading, fits every usage;
 - the sentence around that usage does not settle the reading.
 
 Gate B, the sense test. All three hold:
@@ -52,8 +52,9 @@ Gate B, the sense test. All three hold:
 
 ### Step 1: Load the input text
 
-**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in one
-each read or command that yields only facts, returned with path and line.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run each read
+or command that yields only facts in a subagent. It returns the facts with path
+and line.
 
 When the invocation text starts with `from <skill name>:`, that skill invoked
 this run, and a file path follows the prefix. The file's content is the input
@@ -104,7 +105,8 @@ For each open decision:
 
 - State it in one sentence. Quote the passage and its readings.
 - Give each reading as an option, worded as the sentence that replaces the
-  passage.
+  passage: `Retry the call at most 5 times, then raise the last error.`, never
+  `keep the retry behavior`.
 - Name the option you recommend.
 
 After each answer, record the decision as a fact in the research notes and add

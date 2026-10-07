@@ -37,8 +37,9 @@ Return the change in the working tree and a work report.
 
 ### Step 1: Load the target
 
-**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in one
-each read or command that yields only facts, returned with path and line.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run each read
+or command that yields only facts in a subagent. It returns the facts with path
+and line.
 
 Invoke the `loading-tasks` skill (in Claude Code, with the `Skill` tool) with
 `from implementing-tasks: <target>`. `<target>` is the invocation text of this
@@ -125,7 +126,8 @@ docs of the version the manifest or lockfile pins: through a documentation MCP
 server such as Context7 when connected, else the installed package's docs and
 types.
 
-**4e. Test setup.** Invoke the `writing-unit-tests` skill with the text below:
+**4e. Test setup.** Invoke the `writing-unit-tests` skill with the text below,
+as one line:
 
 ```
 from implementing-tasks: setup for <paths>, test <command>,

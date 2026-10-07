@@ -38,8 +38,9 @@ the user to confirm or correct it before any research.
 
 ### Step 2: Research
 
-**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in one
-each read or command that yields only facts, returned with path and line.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run each read
+or command that yields only facts in a subagent. It returns the facts with path
+and line.
 
 **2a. Codebase.** Read the code the idea touches, not only file names. Record,
 with paths and line numbers:
@@ -129,7 +130,7 @@ Invoke the `formatting-tasks` skill with
 ### Step 6: Quality check
 
 Run every check in `references/quality-checklist.md` over the draft. Then invoke
-the `formatting-tasks` skill with the text below:
+the `formatting-tasks` skill with the text below, as one line:
 
 ```
 from creating-tasks: check <scratch-dir>/draft/task.md,

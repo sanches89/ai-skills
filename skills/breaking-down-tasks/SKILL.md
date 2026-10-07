@@ -38,8 +38,9 @@ Put every fact the implementing agent needs in the subtask.
 
 ### Step 1: Load the task
 
-**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in one
-each read or command that yields only facts, returned with path and line.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run each read
+or command that yields only facts in a subagent. It returns the facts with path
+and line.
 
 Take the input from the invocation text or the conversation. Without one, ask
 for the task first.
@@ -193,7 +194,7 @@ Add these rules to the research notes, under _Writing rules_:
   and the behavior on error.
 - Make every line serve the original task or an _Out of scope_ entry.
 
-Invoke the `formatting-tasks` skill with the text below:
+Invoke the `formatting-tasks` skill with the text below, as one line:
 
 ```
 from breaking-down-tasks: write <scratch-dir>/draft,

@@ -70,7 +70,7 @@ Gate A, the conflict test. All three hold:
 
 - at one usage at least, a reader can take the word in two ways that lead to
   different actions;
-- no word or phrase with one reading fits every usage;
+- no set of words or phrases, each with one reading, fits every usage;
 - the sentence around that usage does not settle the reading.
 
 Gate B, the sense test. All three hold:
@@ -82,9 +82,9 @@ Gate B, the sense test. All three hold:
 
 - Use each word with the meaning the glossary gives it.
 - Define each word of an edited doc that passes the entry test and has no entry.
-  When the agent has a skill named `writing-glossaries`, invoke the
+  The `writing-glossaries` skill is optional. When the agent has it, invoke the
   `writing-glossaries` skill (in Claude Code, with the `Skill` tool) with the
-  text below:
+  text below, as one line:
 
   ```
   from writing-agent-docs: glossary <glossary path>, files <the edited doc>,
@@ -109,8 +109,9 @@ node <skill-dir>/scripts/audit.mjs
 
 ## Audit
 
-**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in one
-each read or command that yields only facts, returned with path and line.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run each read
+or command that yields only facts in a subagent. It returns the facts with path
+and line.
 
 When the user asks to audit, shrink, tidy or dedupe the docs, follow
 `references/audit.md`.

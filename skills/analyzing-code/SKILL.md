@@ -29,8 +29,9 @@ ranked findings. Never compare two versions.
 
 ### Step 1: Load the request
 
-**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in one
-each read or command that yields only facts, returned with path and line.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run each read
+or command that yields only facts in a subagent. It returns the facts with path
+and line.
 
 Resolve the invocation text, or the request in the conversation, as one request
 kind:
@@ -65,8 +66,8 @@ Tell the user that the run can take hours: the mutation run runs the tests once
 per mutant.
 
 Invoke the `measuring-code` skill (in Claude Code, with the `Skill` tool) with
-the text below. Without a name, write `install on failure` in place of
-`install first`:
+the text below, as one line. Without a name, write `install on failure` in place
+of `install first`:
 
 ```
 from analyzing-code: paths ., root <root>, out <scratch-dir>, mutation all,

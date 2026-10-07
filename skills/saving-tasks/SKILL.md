@@ -54,8 +54,9 @@ repository (in Claude Code, the scratchpad directory). Set `replace`, `files`,
 
 ### Step 1: Read the drafts
 
-**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in one
-each read or command that yields only facts, returned with path and line.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run each read
+or command that yields only facts in a subagent. It returns the facts with path
+and line.
 
 Read the task draft and every subtask draft. A draft's title is its `#` heading.
 When a draft path does not exist, save nothing and end with one line:
@@ -82,9 +83,8 @@ Save to the tracker by Step 3, or to files by Step 4.
 
 ### Step 3: Save to the tracker
 
-Read `references/save-to-tracker.md` and save by it.
-
-Go to Step 5.
+Read `references/save-to-tracker.md` and save by it. Then go to Step 5, unless
+that file sent the save to Step 4.
 
 ### Step 4: Save to files
 

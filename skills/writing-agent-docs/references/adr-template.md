@@ -7,6 +7,8 @@
   coupling: code, a code comment, an `AGENTS.md`, a README or `docs/refs/`.
 - Write in it only what those places do not show. Applying a convention needs no
   ADR.
+- When a requested ADR fails these conditions, say so and propose the rule for
+  the root `AGENTS.md` instead. Write the ADR only after the user confirms it.
 
 ## The file
 
@@ -30,15 +32,17 @@ Date: YYYY-MM-DD
 ## Consequences
 ```
 
-- **Title**: the decision in the present tense, never the problem.
+- **Title**: the decision as a present-tense statement, as
+  `Email sends run in the queue package`, never the problem.
 - **Date**: the day the decision was taken. An edit sets it to the day of the
   change.
 - **Context**: the problem in one paragraph, then one bullet per alternative
   turned down, each with the reason it lost.
 - **Decision**: one paragraph with the reason the choice holds, and what it
   leaves out of scope. The rule it creates lives in an `AGENTS.md`.
-- **Consequences**: the trade-offs and couplings no other place states. Leave
-  the section out when there are none.
+- **Consequences**: the trade-offs and couplings no other place states. Code
+  that shows a coupling does not state it. Leave the section out when there are
+  none.
 
 ## Citing it
 

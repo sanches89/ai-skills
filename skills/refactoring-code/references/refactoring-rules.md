@@ -94,8 +94,8 @@ replaces a value here.
 - Reach a system boundary through a parameter or a constructor argument. A
   decision never reads the clock, the environment, or a global on its own.
 - Introduce a seam so that no caller changes. A Parameterize seam takes a
-  default equal to the current collaborator. Move the callers only in a contract
-  change the request names.
+  default equal to the current collaborator and changes no part of the contract.
+  Move the callers only in a contract change the request names.
 - Keep a decision in a function that returns a value. The caller performs the
   effect.
 - Reuse through composition. Keep a subclass only where every caller of the

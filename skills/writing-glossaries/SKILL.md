@@ -55,8 +55,9 @@ question: whether that evidence is complete, and which files to add or drop.
 
 ### Step 2: Research
 
-**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in one
-each read or command that yields only facts, returned with path and line.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run each read
+or command that yields only facts in a subagent. It returns the facts with path
+and line.
 
 **2a. Existing glossary.** Read the glossary in full, when it exists. Record
 every term, its definition, and its section, or that no glossary exists. Record
@@ -93,7 +94,7 @@ Gate A, the conflict test. All three hold:
 
 - at one usage at least, a reader can take the word in two ways that lead to
   different actions;
-- no word or phrase with one reading fits every usage;
+- no set of words or phrases, each with one reading, fits every usage;
 - the sentence around that usage does not settle the reading.
 
 Gate B, the sense test. All three hold:

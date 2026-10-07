@@ -15,9 +15,9 @@ These rules hold in every Markdown file of this repository.
   values, section list, or condition: such a fact goes in the instruction that
   uses it.
   - Gate A, the conflict test. All three hold: at one usage at least, a reader
-    can take the word in two ways that lead to different actions; no word or
-    phrase with one reading fits every usage; the sentence around that usage
-    does not settle the reading.
+    can take the word in two ways that lead to different actions; no set of
+    words or phrases, each with one reading, fits every usage; the sentence
+    around that usage does not settle the reading.
   - Gate B, the sense test. All three hold: the project gives the word a meaning
     that its ordinary sense and its common sense in the project's field do not
     give; no document defines that meaning where the word is used; a reader who
@@ -59,12 +59,12 @@ These rules hold in every Markdown file of this repository.
 - **Dependencies.** Invoke another skill by name at the step that needs it.
   Write the invocation as: Invoke the `<name>` skill with
   `from <caller>: <args>`. A long invocation text goes in a fenced block after
-  the words "with the text below". Add the aside (in Claude Code, with the
-  `Skill` tool) after `skill` in the first invocation of each file. Add it also
-  to every invocation inside a subagent prompt. A skill that invokes itself
-  leaves its own name out of `compatibility`. `<caller>` is the name of the
-  invoking skill. The invoked skill then skips its own hand-off and ends with
-  its return block. A required skill has no fallback copy, and the caller's
+  the words "with the text below, as one line". Add the aside (in Claude Code,
+  with the `Skill` tool) after `skill` in the first invocation of each file. Add
+  it also to every invocation inside a subagent prompt. A skill that invokes
+  itself leaves its own name out of `compatibility`. `<caller>` is the name of
+  the invoking skill. The invoked skill then skips its own hand-off and ends
+  with its return block. A required skill has no fallback copy, and the caller's
   `compatibility` names it in the sentence `Requires the <a> and <b> skills`. An
   optional skill runs only when the agent has it, and the caller works alone
   without it.
