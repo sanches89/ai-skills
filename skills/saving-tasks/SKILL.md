@@ -21,7 +21,7 @@ to a numbered task folder as files.
    unlink, or delete only the task file, its subtask files, the folders
    that hold them, and their items.
 3. **Ask only what the invocation allows.** With `unattended`, ask nothing.
-   Otherwise ask only the questions of Step 2 and Step 4, one at a time.
+   Otherwise ask only the questions of Step 3 and Step 4, one at a time.
 
 ## Invocation
 
@@ -79,93 +79,17 @@ with `tracker: none`. Under rule 1, when no tracker is connected or the
 tracker holds no such item, save nothing and end with one line:
 `not saved: the tracker holds no such item`.
 
-For the tracker, settle these values from the tracker map:
-- **Destination.** On `replace`, the replaced item's. Else the `destination`
-  option, else the map's `destination` line. When that line reads
-  `none named` and the `destinations` line reads `one`, create the items
-  without one. When it reads `none named` and `destinations` reads anything
-  else, ask one question: which team, project, or board receives the
-  items. With `unattended`, save to files instead of asking.
-- **Required fields.** Take each value the map's `required fields` line
-  settles. Ask one question per field that reads `unsettled`. With
-  `unattended`, save to files instead of asking.
-
 Save to the tracker by Step 3, or to files by Step 4.
 
 ### Step 3: Save to the tracker
 
-Use the tools and commands of the tracker map:
-1. **Task item.** On `replace`, read the item's old body with `read item`.
-   Set the item's title to the task's title, unless they are equal, and its
-   body to the task draft. When the old body holds a `Task` line, put that
-   line under the draft's `#` heading. Without `replace`, create an item at
-   the destination, with the task's title, the task draft as body, and the
-   required field values.
-2. **Old children.** On `replace`, list the item's children with
-   `list children`. When that line reads `none`, take them from the links
-   in the old body's Subtasks section. Delete each with `delete item`.
-   When that line reads `none` or the delete fails, close the child with
-   `close item`. Unlink each closed child with `unlink child`, unless the
-   `unlink child` line reads `none`.
-3. **Children.** Create one child item per subtask draft, in subtask order,
-   with the subtask's title, its draft as body, and the required field
-   values. Put the task's item link on the `Task` line and sibling item
-   links on the `Depends on` line. Link each child to the task's item with
-   `link child`. When that line starts with `none`, put the child links in
-   the task's body and the task's link in each child body.
-4. **Subtasks section.** Edit the task item: replace the title and number
-   of each entry of its Subtasks section with the link of its child item.
-
-When a tool or command other than a delete fails, stop and end with one
-line: `not saved: the tracker failed at <map line>`, with the map line of
-the action, such as `create item`.
+Read `references/save-to-tracker.md` and save by it.
 
 Go to Step 5.
 
 ### Step 4: Save to files
 
-**Tasks directory.** `<tasks-dir>` holds the task folders. With `dir`, it
-is the folder `dir` names: create it when it does not exist. Without `dir`,
-it is the first of these that exists:
-1. the folder that README, CLAUDE.md, AGENTS.md, CONTRIBUTING, or
-   `docs/README.md` names as the place for tasks, plans, or specs;
-2. the parent of a task folder named `###-<task-slug>`;
-3. a folder named `tasks`, `plans`, or `specs`, at most three levels below
-   the repository root, that holds a `.md` file at any depth;
-4. else `<scratch-dir>/tasks/`.
-
-Entries 2 and 3 of this list search the repository outside
-`node_modules`, `.git`, and `vendor`. When one finds several folders, take
-the shortest path, then the first in alphabetical order.
-
-Save by the numbering rule below:
-1. **Task folder.** On `replace`, the task folder it names. Else, when
-   `<tasks-dir>` holds a folder with the same `<task-slug>` under any
-   number, no subtask draft is given, and `unattended` is absent, ask one
-   question. The choices: overwrite its `task.md` and delete its subtask
-   files, keeping its number, or write a new folder with a new number. In
-   every other case, create `<tasks-dir>/###-<task-slug>/` with the next
-   free number.
-2. **Task file.** Write the task draft to the folder's `task.md`, over any
-   previous one.
-3. **Old subtask files.** On `replace` or on overwrite, first delete every
-   subtask file in the task folder.
-4. **Subtask files.** Write each subtask draft to `###-<subtask-slug>.md`
-   in the task folder, numbered `001` upward in subtask order. Link the
-   `Task` line to `./task.md` and the `Depends on` line to the sibling
-   files. Link each entry of the task's Subtasks section to its subtask
-   file.
-
-When a write, a delete, or a folder creation fails, stop and end with one
-line: `not saved: a file write failed`.
-
-**Numbering rule.** `###` is a zero-padded three-digit sequence from `001`:
-for a task, the next free number across every entry of `<tasks-dir>` whose
-name starts with three digits; for subtasks, the next free numbers inside
-the task folder. A slug is a title in kebab-case: lowercase ASCII letters
-and digits, every other run of characters replaced by one hyphen, cut to 60
-characters, no leading or trailing hyphen. `<task-slug>` comes from the task
-title, `<subtask-slug>` from the subtask title.
+Read `references/save-to-files.md` and save by it.
 
 ### Step 5: Finish
 

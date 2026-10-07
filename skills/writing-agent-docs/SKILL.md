@@ -54,31 +54,13 @@ every doc below. Where the two disagree, the repo's rule wins.
 
 ## ADRs
 
-- Add an ADR only for a decision that spans packages or is costly to
-  reverse. Add it only when no other place shows its reason, rejected
-  alternative or coupling: code, a code comment, an `AGENTS.md`, a README or
-  `docs/refs/`.
-- Write in it only what those places do not show. Applying a convention
-  needs no ADR.
-- When the decision changes, amend the ADR.
-- When its reason no longer holds, or one of those places now shows it,
-  retire the ADR.
-- Read `references/adr-template.md` before writing, amending, or retiring
-  an ADR.
+Read `references/adr-template.md` before adding, amending, retiring, or
+citing an ADR.
 
 ## Reference docs
 
-- Fill each `docs/refs/<folder>/` with excerpts of one outside site: one
-  file per section of that site, cut to what the repo uses.
-- End each file with a footer: `---`, a blank line, then `Reference:` and
-  the URLs of the pages it was taken from.
-- Keep an inline link's URL only when the link text does not name the
-  linked page. Never pad a table for alignment.
-- Make each folder's `README.md` an index: one line per file saying what the
-  file answers, with no introduction.
-- Index each folder in the `AGENTS.md` it serves, in one line saying when to
-  open it. Open a reference doc only when the task touches its topic and the
-  conventions leave a question open.
+Read `references/reference-docs.md` before adding or editing a file under
+`docs/refs/`, or the `AGENTS.md` line that indexes such a folder.
 
 ## Glossary
 

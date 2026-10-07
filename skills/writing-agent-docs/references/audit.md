@@ -1,8 +1,12 @@
 # Agent docs audit
 
-Hold every `AGENTS.md` and reference doc to the rules of `SKILL.md` and the
-doc rules of the repo's root `AGENTS.md`. Add no rule here: a finding that
-needs a new rule becomes an edit to the root `AGENTS.md`.
+Sections: 1. Measure; 2. AGENTS.md; 3. docs/refs; 4. Words and sentences;
+5. Verify and report.
+
+Hold every `AGENTS.md` and reference doc to the rules of `SKILL.md`, of
+`reference-docs.md`, and the doc rules of the repo's root `AGENTS.md`. Add
+no rule here: a finding that needs a new rule becomes an edit to the root
+`AGENTS.md`.
 
 ## 1. Measure
 

@@ -41,14 +41,14 @@ nothing else. Without that prefix, a user invoked this run: read
   <command>]`: run Step 1 for the paths, separated by spaces. Return the
   **test setup** block below.
 - `from <caller>: write`: load the rules. Return `rules loaded`.
-- `from <caller>: characterization`: load the *Characterization tests*
-  section. Return `rules loaded`.
-- `from <caller>: check <test file>...`: run the Checks over the tests the
-  caller added or edited in those files. Return one line per failure,
-  `<path:line> <check>`, or `pass`.
+- `from <caller>: characterization`: read
+  `references/characterization-tests.md`. Return `rules loaded`.
+- `from <caller>: check <test file>...`: run the checks of
+  `references/checks.md` over the tests the caller added or edited in those
+  files. Return one line per failure, `<path:line> <check>`, or `pass`.
 
-The rules are the sections from *What to test* to *Characterization
-tests*. The **test setup** block:
+The rules are the sections from *What to test* to *Test-first loop*. The
+**test setup** block:
 
 ```
 test setup: yes | none: <reason>
@@ -202,70 +202,6 @@ A test gives the same result on every run, on every machine, in any order:
   missing behavior, a symbol that does not exist yet included, never a
   mistake in the test. Then write the code and run the test again.
 - Start a bug fix with a regression test.
-- Before a refactor of code that no existing test covers, write
-  characterization tests. Confirm they pass before and after the refactor.
-
-## Characterization tests
-
-**What to record.**
-- Record the behavior of the code the change touches, and nothing beyond it.
-- Test through the public interface that reaches the code, as *What to
-  test* states.
-- Name one test case per branch the refactoring touches: the normal path,
-  the input boundaries that *What to test* lists, and one test per error the
-  code raises.
-- Name each test case by the unit, the condition, and the result it records,
-  in the project's naming style. Example:
-  `parseRange returns an empty list for "5-1"`.
-- Run or read the current code. Write its result into the test case name as
-  a literal, right or wrong. Keep the test case when the result looks wrong,
-  and report that result.
-- Before merging clones, record the behavior of every copy. Two copies that
-  differ in one branch are two behaviors.
-
-**Reaching the code.**
-- Reach a private function through the public function that calls it.
-- Use a test double only as *Test doubles* allows.
-- Use a seam the code already has: a parameter, a constructor argument, an
-  injected dependency, a module the framework lets a test replace.
-- Add a seam only by one of these refactorings, as a change of its own made
-  before the tests. Take the first one that reaches the code:
-  1. Parameterize Function: the collaborator becomes a parameter with a
-     default equal to the current one;
-  2. Parameterize Constructor: the same, as a constructor argument stored
-     in a field;
-  3. Extract Function around the call to the system boundary, so that a
-     test replaces the one function.
-- Keep the seam in the code after the tests.
-- When no seam reaches the code, write no characterization test for it and
-  change none of that code. Report the reason.
-
-## Checks
-
-Run each check over every test this run added or edited in the files. A
-failure line names the check by its bold name.
-
-- **one behavior**: the test acts once and asserts one behavior.
-- **name**: the name states the unit, the condition, and the expected
-  result.
-- **no logic**: the test holds no loop and no conditional, except the one
-  `for` loop over cases in a framework without a table form.
-- **literal**: every expected value is a literal, never computed with the
-  logic under test.
-- **visible values**: the test shows every value its assertion depends on.
-- **deterministic**: the test keeps every rule of *Determinism*.
-- **boundary doubles**: every test double replaces a system boundary, never
-  the unit under test. An assertion on a call to a double exists only where
-  the call is the behavior.
-- **public interface**: no direct test of a private function, a third-party
-  library, the framework, the language, or generated code.
-- **assertion**: the test holds at least one assertion, and never
-  `does not throw` alone.
-- **error**: an error test asserts the error type and its message or code.
-- **incidental**: no assertion on log text, field order, or internal
-  counters.
-- **snapshot**: no snapshot of logic, and no snapshot where the project
-  uses none.
-- **weakened**: against `HEAD`, no test is deleted, skipped, or loosened,
-  and no assertion changed for a rename or a move. An assertion on a call
-  to a removed double, replaced by one on the real result, is no loosening.
+- Before a refactor of code that no existing test covers, read
+  `references/characterization-tests.md` and write characterization tests
+  by it. Confirm they pass before and after the refactor.

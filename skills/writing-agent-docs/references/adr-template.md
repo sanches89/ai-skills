@@ -1,5 +1,14 @@
 # Writing an ADR
 
+## When to add one
+
+- Add an ADR only for a decision that spans packages or is costly to
+  reverse. Add it only when no other place shows its reason, rejected
+  alternative or coupling: code, a code comment, an `AGENTS.md`, a README or
+  `docs/refs/`.
+- Write in it only what those places do not show. Applying a convention
+  needs no ADR.
+
 ## The file
 
 - Name it `docs/adrs/NNNN-<kebab-title>.md`, with `NNNN` the next free
@@ -39,6 +48,7 @@ Date: YYYY-MM-DD
 
 ## Amending it
 
+- When the decision changes, amend the ADR.
 - Edit the ADR in place, keeping its file name.
 - Git keeps the history, so write no superseded-by line and add no status
   field.
@@ -47,6 +57,8 @@ Date: YYYY-MM-DD
 
 ## Retiring it
 
+- When its reason no longer holds, or one of the places of *When to add
+  one* now shows it, retire the ADR.
 - Delete the ADR and its row in `docs/adrs/README.md`.
 - List every citation with `git grep -n 'ADR NNNN'`. Delete each one, and
   give the rule a short inline reason when its reason still holds.

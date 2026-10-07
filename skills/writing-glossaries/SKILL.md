@@ -159,7 +159,9 @@ Continue until no open decision remains.
 ### Step 4: Write the glossary
 
 Read `references/glossary-template.md` and fill it, in the scratch
-directory, with the words that pass a gate. Writing rules:
+directory, with the words that pass a gate. Read
+`references/glossary-report-template.md` and start the glossary report in
+the scratch directory. Writing rules:
 - Start a definition with a noun phrase that says what the thing is.
 - Never say how it works, never use its own term, and never use a banned
   word. The grep helper of `references/quality-checklist.md` lists the
@@ -171,20 +173,8 @@ directory, with the words that pass a gate. Writing rules:
 - Write the retired word of a synonym pair, and the words of a settled
   conflict, in the glossary report, not in the glossary.
 
-When 2a found no glossary, write one reference line for the project's agent
-instructions, in the scratch directory next to the draft. Its file is the
-repository root's `AGENTS.md`, or the root's `CLAUDE.md` when the root has
-no `AGENTS.md`. The line names the glossary's path relative to the
-repository root:
-
-```markdown
-- Read `<glossary path>` first. Use every word it defines with that meaning.
-```
-
-Its place is the first bullet under that file's first heading, above every
-other rule and section. Write no line when that file already names the
-glossary's path, or when the root has no `AGENTS.md` and no `CLAUDE.md`.
-Name either case in the glossary report.
+When 2a found no glossary, read `references/reference-line.md` and write
+the reference line by it.
 
 When no word passes a gate, write no draft and no reference line. Show the
 reference line 2a recorded, with its file, under *Instructions* in the
@@ -213,23 +203,6 @@ that 2a recorded. When Step 4 wrote a reference line, add the approved line
 at the place Step 4 names. Change nothing else in the file of a reference
 line.
 
-Finish with the glossary report:
-- *Added*: each new term.
-- *Changed*: each term whose name or definition changed, with the old text.
-- *Removed*: each term removed, with the gate and condition it failed, or
-  the word `unused`.
-- *Renamed*: each word replaced by a word with one reading. Give the new
-  word, every usage in the evidence set, and a count of the usages
-  elsewhere.
-- *Facts to place*: each fact taken out of a definition, with the document
-  and line that use it. The user places these.
-- *Instructions*: the file the reference line was added to, or the reason
-  no line was added. For a deleted glossary, the removed reference line and
-  its file.
-- *Disagreements*: every usage in another document that disagrees with the
-  glossary, with its path and line and the change that settles it. Add the
-  word `rewritten` when the `disambiguating-text` skill rewrote that
-  document. Add the word `quoted` when the usage sits in a verbatim
-  third-party excerpt.
+Finish with the glossary report.
 
 Ask nothing else.

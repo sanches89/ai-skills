@@ -41,13 +41,14 @@ These words have one meaning in this skill.
    Never push or open a pull request. Change an item's status or comment on
    an item only as Step 1 states. Do more only when the invoking request
    says so.
-6. **Delegate every read and run.** Run every fenced prompt of this skill
-   and the job prompt in a new subagent (in Claude Code, the `Agent` tool).
-   Fill every placeholder and add nothing. Run in a subagent every other
-   step that reads a task, an item, a manifest, or a doc. Run in one every
-   build, lint, type-check, test, and Verification command. The subagent
-   returns only what the prompt or step names. Without subagents, follow
-   the prompt or step yourself and keep only that return.
+6. **Delegate every read and run.** Run every fenced prompt of this skill,
+   the job prompt, and the report prompt in a new subagent (in Claude Code,
+   the `Agent` tool). Fill every placeholder and add nothing. Run in a
+   subagent every other step that reads a task, an item, a manifest, or a
+   doc. Run in one every build, lint, type-check, test, and Verification
+   command. The subagent returns only what the prompt or step names.
+   Without subagents, follow the prompt or step yourself and keep only that
+   return.
 
 ## Workflow
 
@@ -134,21 +135,7 @@ else `task/<task folder name>` for source *file* and `task/<identifier>` in
 lowercase for source *tracker*. In an existing tree, the jobs run on its
 current branch.
 
-Draft the plan:
-
-```
-# Plan: <target title>
-target: <path | identifier and URL>
-tree: current | <path> | new worktree at <path>, because <reason>
-branch: <name> | none: no git repository
-base: <commit, filled in Step 3>
-baseline: <command>: pass | fail (<failing checks>), filled in Step 3
-jobs:
-1. <subtask number or identifier> <title>: pending
-2. <...>
-rounds:
-facts:
-```
+Draft the plan by `references/plan-template.md`.
 
 State the jobs, the tree with its reason, and the branch in chat, and
 continue.
@@ -279,22 +266,9 @@ Step 7.
 ### Step 7: Finish
 
 1. **Report.** Read `references/quality-checklist.md` and confirm every
-   check under *Run* from this run. Run this prompt by hard rule 6, with
-   the folder holding this `SKILL.md` as `<skill-dir>`:
-
-   ```
-   Read the orchestration record: <path of orchestration.md | the
-   comments on item <identifier> and on its children, and on every
-   refactor task item under `rounds` and on its children>. Read the target
-   <task file path | item identifier or URL> and its subtasks. Read
-   <skill-dir>/references/orchestration-report-template.md and
-   <skill-dir>/references/quality-checklist.md. Fill the orchestration
-   report from the orchestration record and from git in <tree>. The
-   proof is <pass | fail: <command> (<failing check>) | not run>. The
-   run is blocked by <the cause from Step 4, 5, or 6 | nothing>. Run
-   every check in the checklist except those under Run, grep helper
-   included, and fix every failure. Return the report and nothing else.
-   ```
+   check under *Run* from this run. Run the prompt of
+   `references/report-prompt.md` by hard rule 6, with the folder holding
+   this `SKILL.md` as `<skill-dir>`.
 
    Save the orchestration report in the orchestration record, and on
    `done` mark the target's item completed.

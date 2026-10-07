@@ -274,13 +274,7 @@ breaking group, mark the first rung whose trial is sound as accepted: its
 packages are lowered. Park a breaking group with no accepted rung. Both
 record the park reason `check: <name>`.
 
-With commits requested, take the groups one at a time in plan order:
-1. run a trial of the group;
-2. on a broken trial, restore the checkpoint. Run a trial of the group at
-   the next rung of its ladder. Park the group when no rung remains;
-3. on a sound trial, commit. Then replace the checkpoint. A sound trial
-   below the candidate versions lowers the group's packages, with the park
-   reason `check: <name>` of the first broken trial.
+With commits requested, run the groups by `references/commit-groups.md`.
 
 **6c. Assemble.** Skip this step with commits requested. Otherwise:
 1. restore the checkpoint;
@@ -315,18 +309,8 @@ Step 7 passes for an install root when all of these hold:
 - every `overrides`, `resolutions`, and `pnpm.overrides` field is unchanged;
 - no file outside the install root changed.
 
-On a fail, act on the first failing condition, then run this step again:
-- the frozen install: run the plain install;
-- a check command or the peer report: bisect the accepted plan entries.
-  Park every package of the breaking plan entry with the reason
-  `verify: <condition>`;
-- a condition on a manifest: restore that manifest from the checkpoint. Set
-  its accepted ranges again with the script. Run the plain install;
-- a condition on a file that is not a manifest or a lockfile: revert a
-  tracked file with `git checkout -- <file>`, and delete an untracked file.
-
-After 3 fails on one install root, restore that install root from the
-baseline copy. Then park every package of that install root.
+On a fail, read `references/verify-failures.md` and act on the first
+failing condition by it, then run this step again.
 
 ### Step 8: Update report
 

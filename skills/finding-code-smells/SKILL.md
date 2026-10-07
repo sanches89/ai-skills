@@ -149,39 +149,25 @@ tests ran every line and branch of it:
 
 ### Step 4: Find
 
-Read `references/smell-catalog.md`. Findings come from the `top` lists of
-the summary, the scan signals, and reading the code. Check nesting by
-reading: a finding at 3 levels or deeper. When the summary skips
-`complexity`, check length, parameters, and complexity by reading too.
+Read `references/smell-catalog.md` and `references/finding-entry.md`.
+Findings come from the `top` lists of the summary, the scan signals, and
+reading the code. Check nesting by reading: a finding at 3 levels or
+deeper. When the summary skips `complexity`, check length, parameters, and
+complexity by reading too.
 
 Group the files of the refactor scope by folder and run one subagent per
 folder. Give it:
-- its files, to read in full, and the path of `references/smell-catalog.md`;
+- its files, to read in full;
+- the paths of `references/smell-catalog.md` and
+  `references/finding-entry.md`;
 - the limits, and the `top` entries, scan signals, and coverage of Step 3
   that fall in its folder;
-- the contract list, and the entry form below with its field rules.
+- the contract list.
 
 It reads code outside its folder when a smell needs it.
 
-Record one entry per smell and location in `<out>/findings.md`:
-
-```
-- <smell>: `<path:line>` (<symbol>)
-  evidence: <the clone, the measured value against its limit, or what the
-    code shows>
-  refactoring: <refactoring from the catalog>[; <refactoring>]... | report
-  covered: yes | partly | no
-  contract: yes | no
-```
-
-- `refactoring`: each refactoring of the catalog entry that the location
-  needs, in the order of the catalog line, separated by semicolons.
-  `report` for an entry with **Report** in the catalog, except a case that
-  its **Report** line sends to a refactoring.
-- `covered`: read the tests of the function. `yes` when the tests ran
-  every line and branch and a test asserts the result. `no` when no test
-  ran the code. Else `partly`.
-- `contract`: `yes` when the location holds a part of `contract.md`.
+Record one entry per smell and location in `<out>/findings.md`, in the
+form of `finding-entry.md`.
 
 Order the entries by file, the files of `hotspots.top` first in its order,
 then by path. Inside a file, order them by line.

@@ -247,14 +247,15 @@ Folders:
 1. Run `node skills/writing-agent-docs/scripts/audit.mjs` from the repo root
    when `AGENTS.md`, `CLAUDE.md`, or `docs/refs/` changed, and fix every error
    it reports.
-2. Grep the skill for agent-specific tokens and confirm each one sits inside an
-   aside. The verb "Explore" in the `creating-tasks` description is not a token:
+2. Grep the skill's `SKILL.md` and `references/` for agent-specific tokens
+   and confirm each one sits inside an aside. The verb "Explore" in the
+   `creating-tasks` description is not a token:
 
    ```bash
-   grep -n -E \
+   grep -rn --include='*.md' --exclude-dir=evals -E \
      -e '\$ARGUMENTS|AskUserQuestion|Explore' \
      -e 'ToolSearch|scratchpad|CLAUDE_SKILL_DIR|Skill. tool|Agent. tool' \
-     skills/<name>/SKILL.md
+     skills/<name>/
    ```
 3. Run the banned-word grep from the skill's own
    `references/quality-checklist.md`, when it has one, over its `SKILL.md` and
@@ -268,9 +269,10 @@ Folders:
    ```bash
    for s in loading-tasks saving-tasks creating-tasks breaking-down-tasks \
      implementing-tasks orchestrating-tasks refactoring-code; do
-     cat "skills/$s/SKILL.md"
+     find "skills/$s" -name '*.md' ! -path '*/evals/*' -exec cat {} +
    done | tr '\n' ' ' \
-     | grep -oE '\b[A-Z][a-z]+( [a-z]+)? section\b' | sort -u
+     | grep -oE '\b[A-Z][a-z]+( [a-z]+)? section\b' | sort -u \
+     | grep -vE '^(No|What each) section$'
    ```
 6. List every word with two definition texts across `GLOSSARY.md`, when it
    exists, and the Terms sections. Every word printed is a failure:
@@ -340,7 +342,8 @@ Folders:
 
     ```bash
     for f in skills/*/SKILL.md; do
-      grep -oiE 'invoke the `[a-z-]+` skill' "$f" \
+      grep -rhoiE --include='*.md' 'invoke the `[a-z-]+` skill' \
+        "$f" "${f%SKILL.md}references" 2>/dev/null \
         | grep -oE '[a-z]+(-[a-z]+)+' | sort -u | while read -r s; do
           grep -q "^compatibility:.*$s" "$f" || echo "$f: $s"
         done

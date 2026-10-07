@@ -105,17 +105,8 @@ the tool it runs. Write a script of `package.json` as
 `<package manager> run <script>`, with the package manager of Step 2, else
 npm.
 
-**Test that no command file names.** Take the runner from the first line below
-whose file the project has:
-- `pytest.ini`, or `pytest` in `pyproject.toml`: `pytest`;
-- `go.mod`: `go test ./...`;
-- `Cargo.toml`: `cargo test`;
-- `phpunit.xml` or `phpunit.xml.dist`: `phpunit`;
-- a `*.sln` or `*.csproj` file: `dotnet test`;
-- `pom.xml`: `mvn test`;
-- `build.gradle` or `build.gradle.kts`: `./gradlew test`;
-- `Gemfile` with `rspec`: `bundle exec rspec`.
-
+**Test that no command file names.** Take the runner from the first line
+of *Test runners* in `references/runners.md` whose file the project has.
 Without a runner from that list, write `test: none`.
 
 **Run prefix.** With uv, Poetry, or PDM from Step 2, prefix the test
@@ -128,17 +119,8 @@ that writes, write the formatter's check form instead, such as
 `prettier --check`. Without a check form, write `format: none`.
 
 **Test one file.** Take it from the command files in the order above. Else
-build it from the test command. Jest, Vitest, Mocha, the Node.js test runner,
-pytest, PHPUnit, and RSpec take a test file as an argument: append `<file>`.
-For `npm test` and `npm run`, append it after `--`, and only when the script
-ends with one of those runners. Other runners select a package or a class:
-- Go: `go test ./<folder of <file>>`;
-- Rust, for a file under `tests/`: `cargo test --test <file name without
-  .rs>`;
-- .NET: `dotnet test --filter FullyQualifiedName~<class of <file>>`;
-- Maven: `mvn test -Dtest=<class of <file>>`;
-- Gradle: `./gradlew test --tests <class of <file>>`.
-For any other runner, write `test one file: none`.
+build it from the test command by *Test one file* in
+`references/runners.md`.
 
 ### Step 4: Return the command map
 

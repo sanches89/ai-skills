@@ -13,16 +13,17 @@ Pick the mode from the user's request:
 - **Write mode**: the user asks for tests written or fixed, for a
   regression test, or for tests that pin down code before a change. Write
   the tests by the rules and the *Test-first loop*.
-- **Review mode**: the user asks for tests reviewed. Run the *Checks* over
-  the test files. Fix a failure only when the user asked for changes.
+- **Review mode**: the user asks for tests reviewed. Run the checks of
+  `checks.md` over the test files. Fix a failure only when the user asked
+  for changes.
 
 ## Step 3: Verify
 
 Skip this step in review mode without changes. Run each test file this run
 added or edited alone, with the `test one file` command. Then run the test
-command. Fix every failure. Then run the *Checks* over every test file this
-run added or edited, and fix every check that fails. After any fix, run
-this step again.
+command. Fix every failure. Then run the checks of `checks.md` over every
+test file this run added or edited, and fix every check that fails. After
+any fix, run this step again.
 
 ## Step 4: Report
 

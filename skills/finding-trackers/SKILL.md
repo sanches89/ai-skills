@@ -56,52 +56,9 @@ found, such as `the docs name Jira and nothing reaches it`. Go to Step 3.
 Fill each action line of the tracker map with the tool name or command
 that performs the action, else `none`.
 
-**Through `gh`.** Fill the map with these values:
-- tracker: `GitHub Issues`; reached through: `gh`;
-- search items: `gh issue list --state all --search "<words>"`;
-- read item: `gh issue view <number> --comments`;
-- read parent: `gh api repos/{owner}/{repo}/issues/<number>/parent`;
-- list children: `gh api repos/{owner}/{repo}/issues/<number>/sub_issues`;
-- create item: `gh issue create --title "<title>" --body-file <path>`;
-- edit item: `gh issue edit <number> --title "<title>" --body-file <path>`;
-- comment on item: `gh issue comment <number> --body-file <path>`;
-- close item: `gh issue close <number>`;
-- delete item: `none`;
-- link child: a POST with `gh api -X POST` to that `sub_issues` path with
-  `-F sub_issue_id=<id>`. `<id>` is the `id` that
-  `gh api repos/{owner}/{repo}/issues/<child>` prints. Write both commands;
-- unlink child: a DELETE with `gh api -X DELETE` to
-  `repos/{owner}/{repo}/issues/<number>/sub_issue`, singular, with
-  `-F sub_issue_id=<id>`. `<id>` is the child's `id`, as for link child.
-  Write both commands;
-- completed status: `closed`;
-- destinations: `one`;
-- required fields: `none`.
-
-**Through an MCP server.** Read the name and the input schema of every tool
-of the server. Fill:
-- tracker with the tracker's name, and reached through with the server's
-  name;
-- read parent with the tool or the field that returns an item's parent,
-  else `none`;
-- list children with the tool or the field that returns an item's
-  children, else `none`;
-- link child with the tool and the field of the tracker's relation for
-  children: a sub-issue, a child, or a parent field. Without such a
-  relation, write `none: children linked in the body`;
-- unlink child with the tool and the field that remove a child from that
-  relation, else `none`;
-- completed status with the name of every status in the tracker's
-  completed or done category, read with the tracker's tools. When no tool
-  lists them, write `unsettled`;
-- destinations with `one` or `several`: the count of teams, projects, or
-  boards that the tracker's tools list for new items. When no tool lists
-  them, write `unsettled`;
-- required fields with every field that the input schema of the create
-  tool marks required, for an item and for a child item. Leave out the
-  title, the body, the parent field, and the team, project, or board
-  field. Give each field the value the docs of rule 1 name, else
-  `unsettled`. With no such field, write `none`.
+For a tracker reached through `gh`, read `references/gh-map.md` and fill
+the map by it. For one reached through an MCP server, read
+`references/mcp-map.md` and fill the map by it.
 
 **Destination.** Write the team, project, or board that the docs of rule 1
 name for new items, else `none named`.
