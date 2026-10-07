@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "Save the approved task in drafts/task.md and its two subtasks, drafts/subtask-1.md and drafts/subtask-2.md, to the tasks folder as files. The repo already holds tasks/001-add-login/ and tasks/002-typed-config/.",
-      "expected_output": "Saves to files because the user asked for files, and never asks which destination. Finds tasks/ as <tasks-dir> and creates tasks/003-<task-slug>/ from the task title. Writes task.md and the subtask files 001-<subtask-slug>.md and 002-<subtask-slug>.md in subtask order. Links each Task line to ./task.md, the Depends on line to the sibling file, and each Subtasks entry to its subtask file. Changes no other text of the drafts and no other project file. The final message is one line: the path of task.md.",
+      "expected_output": "Saves to files because the user asked for files, and never asks which store. Finds tasks/ as <tasks-dir> and creates tasks/003-<task-slug>/ from the task title. Writes task.md and the subtask files 001-<subtask-slug>.md and 002-<subtask-slug>.md in subtask order. Links each Task line to ./task.md, the Depends on line to the sibling file, and each Subtasks entry to its subtask file. Changes no other text of the drafts and no other project file. The final message is one line: the path of task.md.",
       "files": []
     },
     {
@@ -16,7 +16,7 @@
     {
       "id": 3,
       "prompt": "from breaking-down-tasks: task /tmp/scratch/task.md, subtasks /tmp/scratch/subtask-1.md /tmp/scratch/subtask-2.md, replace #42\n\n(GitHub Issues through gh. Issue #42 already has two sub-issues.)",
-      "expected_output": "Invokes finding-trackers and saves to the tracker because replace names an item identifier. Sets the title and body of #42 to the task draft. Lists its sub-issues and closes each with gh issue close, because the tracker map's delete item line reads none for gh. Creates one issue per subtask in order, with #42's link on the Task line and the earlier sibling's link on the Depends on line, and links each to #42 through a POST to the sub_issues path. Edits #42 so its Subtasks section links the new issues. The final message is one line: #42 and its URL.",
+      "expected_output": "Invokes finding-trackers and saves to the tracker because replace names an item identifier. Sets the title and body of #42 to the task draft. Lists its sub-issues and closes each with gh issue close, because the tracker map's delete item line reads none for gh. Creates one issue per subtask in order, with #42's link on the Task line and the earlier sibling's link on the Depends on line, and links each to #42 through a POST to the sub_issues path. Edits #42 so its Subtasks section links the new issues. The final message is one line: #42, and nothing else.",
       "files": []
     }
   ]

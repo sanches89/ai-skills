@@ -166,9 +166,9 @@ Folders:
 - The file layout is `<tasks-dir>/###-<task-slug>/task.md` and
   `<tasks-dir>/###-<task-slug>/###-<subtask-slug>.md`. `saving-tasks` writes it
   and `loading-tasks` reads it. Change the layout in both in the same commit.
-- `implementing-tasks`, `orchestrating-tasks`, and `refactoring-code` read the
-  section names of `skills/formatting-tasks/references/task-format.md`. Rename
-  a section there and in the three in the same commit.
+- `loading-tasks`, `saving-tasks`, `implementing-tasks`, and `refactoring-code`
+  read the section names of `skills/formatting-tasks/references/task-format.md`.
+  Rename a section there and in the four in the same commit.
 - `implementing-tasks` implements a task or subtask and never writes or edits
   one.
 - `orchestrating-tasks` runs the subtasks of a task through
@@ -229,13 +229,14 @@ Folders:
    `references/`. Hits are allowed only in lines that quote the banned words as
    a rule.
 4. Run `node --check` on every file under `scripts/`.
-5. For `implementing-tasks`, `orchestrating-tasks`, and `refactoring-code`,
-   confirm that every section name printed below is a heading in
-   `skills/formatting-tasks/references/task-format.md`:
+5. For `loading-tasks`, `saving-tasks`, `implementing-tasks`, and
+   `refactoring-code`, confirm that every section name printed below is a
+   heading in `skills/formatting-tasks/references/task-format.md`:
 
    ```bash
-   cat skills/implementing-tasks/SKILL.md skills/orchestrating-tasks/SKILL.md \
-     skills/refactoring-code/SKILL.md | tr '\n' ' ' \
+   cat skills/loading-tasks/SKILL.md skills/saving-tasks/SKILL.md \
+     skills/implementing-tasks/SKILL.md skills/refactoring-code/SKILL.md \
+     | tr '\n' ' ' \
      | grep -oE '\b[A-Z][a-z]+( [a-z]+)? section\b' | sort -u
    ```
 6. List every word with two definition texts across `GLOSSARY.md`, when it

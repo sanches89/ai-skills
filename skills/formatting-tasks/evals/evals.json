@@ -3,13 +3,13 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "from creating-tasks: write <scratch-dir>/draft",
-      "expected_output": "Reads references/task-format.md and the caller's research notes, then writes <scratch-dir>/draft/task.md with exactly the Task block headings: Summary, Success criteria, Scope with In scope and Out of scope, Approach, Decisions, Context, References, Subtasks, Verification. Subtasks holds exactly 'None.' and no subtask file is written. Runs every check of references/quality-checklist.md and both grep helpers, fixes what the notes settle, and writes no file outside the scratch directory. Asks nothing. The final message is the return block alone: 'drafts: <scratch-dir>/draft/task.md' and 'checks: pass', or one 'checks: decision needed: ...' line per decision the notes leave open.",
+      "prompt": "from creating-tasks: write <scratch-dir>/draft, notes <scratch-dir>/notes.md",
+      "expected_output": "Reads references/task-format.md and the research notes at <scratch-dir>/notes.md, then writes <scratch-dir>/draft/task.md with exactly the Task block headings: Summary, Success criteria, Scope with In scope and Out of scope, Approach, Decisions, Context, References, Subtasks, Verification. Subtasks holds exactly 'None.' and no subtask file is written. Runs every check of references/quality-checklist.md and both grep helpers, fixes what the notes settle, and writes no file outside the scratch directory. Asks nothing. The final message is the return block alone: 'drafts: <scratch-dir>/draft/task.md' and 'checks: pass', or one 'checks: decision needed: ...' line per decision the notes leave open.",
       "files": []
     },
     {
       "id": 2,
-      "prompt": "from breaking-down-tasks: check <scratch-dir>/draft/task.md <scratch-dir>/draft/subtask-1.md <scratch-dir>/draft/subtask-2.md. Subtask 2's Context reads 'Same backoff as above, see task', and the task's Decisions reads 'Store the attempts in Redis or Postgres'.",
+      "prompt": "from breaking-down-tasks: check <scratch-dir>/draft/task.md <scratch-dir>/draft/subtask-1.md <scratch-dir>/draft/subtask-2.md, notes <scratch-dir>/notes.md. Subtask 2's Context reads 'Same backoff as above, see task', and the task's Decisions reads 'Store the attempts in Redis or Postgres'.",
       "expected_output": "Runs every check and both grep helpers over the three drafts. Replaces 'see task' and 'as above' in subtask-2.md by restating the backoff decision from the task in full. Does not pick between Redis and Postgres: the alternative stays a decision needed. Asks nothing and keeps every heading. The final message is the return block alone: 'drafts:' with the three paths in order, then 'checks: decision needed: <store for the attempts: Redis or Postgres>' naming the Decisions section.",
       "files": []
     },

@@ -26,8 +26,8 @@ Rules for filling:
 - *Subtasks* holds exactly `None.` for a task without subtasks, and the
   numbered list otherwise.
 - In the draft, name titles and numbers on `Task`, `Depends on`, and in the
-  Subtasks list. The `saving-tasks` skill replaces them with file links or
-  item links at save time.
+  Subtasks section. The `saving-tasks` skill replaces them with file links
+  or item links at save time.
 
 ---
 

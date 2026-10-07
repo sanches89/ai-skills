@@ -3,7 +3,7 @@ name: breaking-down-tasks
 description: Splits an existing task into commit-sized subtasks, each self-contained with one verification command. Use when a task, ticket, issue, spec, or plan is too big for one change, when the user wants it broken down, sliced, phased, or split into steps, or before orchestrating-tasks runs it.
 license: MIT
 compatibility: Requires the finding-trackers, loading-tasks, finding-dev-commands, formatting-tasks, and saving-tasks skills.
-argument-hint: <task id | task file | task text>
+argument-hint: <task id | task file>
 ---
 
 # Breaking down tasks
@@ -56,18 +56,20 @@ the files, and stays small. Without subagents, follow the step yourself and
 keep only what it names.
 
 Take the input from the invocation text, or the task in the conversation.
-Without an input, ask for the task first. When the input is the path of a
-file not named `task.md`, the content of that file is the input.
+Without an input, ask for the task first.
 
 Invoke the `loading-tasks` skill (in Claude Code, with the `Skill` tool) with
-the invocation text `from breaking-down-tasks: <input>`. Its task map names
-the source on its `source` line: `tracker`, `file`, or `text`. When that line
-reads `none: <reason>`, ask one question: give the task as a task file path
-or as text. Then invoke the `loading-tasks` skill again with the answer.
+the invocation text `from breaking-down-tasks: <input>`. Act on the `source`
+line of the task map it returns:
+- `none: <reason>`: ask one question: give the task as a task file path or
+  an item identifier. Then invoke the `loading-tasks` skill again with the
+  invocation text `from breaking-down-tasks: <answer>`.
+- `text`: end with one line: no task to break down, write the task first
+  with the `creating-tasks` skill. Write nothing.
+- `tracker` or `file`: continue.
 
-Read the target of the task map in full: the task file, the text, or the
-item through the `read item` line of the tracker map on the map's `tracker`
-line.
+Read the target of the task map in full: its file, or its item through the
+`read item` line of the tracker map on the map's `tracker` line.
 
 The task already has subtasks when the `subtasks` line of the task map is
 not `none`. Then ask one question: replace them, or abort. On replace,
@@ -119,7 +121,7 @@ Claude Code they are deferred: search them with `ToolSearch` for
   user for the facts it settles.
 Never ask the user to install or connect anything.
 
-**2e. Research notes.** Write a private file in the scratch directory with
+**2e. Research notes.** Write a private file, `<scratch-dir>/notes.md`, with
 two parts:
 1. *Facts*: each with the path and line, identifier, or URL it came from.
 2. *Open decisions*: every decision research did not settle, with the
@@ -188,14 +190,15 @@ constraints too:
   subtask. Make the union of the subtasks' Changes sections equal the task's
   Approach section, nothing more.
 
-Then record the ordered subtask list in the research notes. Confirm that the
-task's Verification section proves the whole task after the last subtask.
+Then record the ordered subtask list in the research notes, with the title
+and the planned Changes section of each subtask. Confirm that the task's
+Verification section proves the whole task after the last subtask.
 
 ### Step 5: Write
 
 Invoke the `formatting-tasks` skill (in Claude Code, with the `Skill` tool)
-with the invocation text
-`from breaking-down-tasks: write <scratch-dir>/draft, subtasks <count>`.
+with the invocation text `from breaking-down-tasks: write <scratch-dir>/draft,
+notes <scratch-dir>/notes.md, subtasks <count>`.
 `<count>` is the number of subtasks. It fills the drafts
 `<scratch-dir>/draft/task.md` and `<scratch-dir>/draft/subtask-<n>.md` from
 the research notes. Follow these rules of this skill too:
@@ -216,7 +219,8 @@ the research notes. Follow these rules of this skill too:
 
 Run every check in `references/quality-checklist.md` over the drafts. Then
 invoke the `formatting-tasks` skill (in Claude Code, with the `Skill` tool)
-with the invocation text `from breaking-down-tasks: check <drafts>`.
+with the invocation text
+`from breaking-down-tasks: check <drafts>, notes <scratch-dir>/notes.md`.
 `<drafts>` is the draft paths of Step 5. Fix every failure of both. When a
 failure needs a decision, return to Step 3 for that decision. Treat a
 `checks: decision needed` line the same way. After every fix, run both
@@ -239,14 +243,14 @@ Invoke the `saving-tasks` skill (in Claude Code, with the `Skill` tool) with
 the invocation text
 `from breaking-down-tasks: task <scratch-dir>/draft/task.md, subtasks <subs>`.
 `<subs>` is the subtask draft paths in subtask order. Append to it by the
-`source` line of Step 1:
+`source` and `kind` lines of Step 1:
 - `tracker`: `, replace <identifier>`, with the identifier of the target.
-- `file`: `, replace <task folder>, files`, with the folder of the target
-  `task.md`.
-- `text`: `, files` when the user asked for files at any point, and
-  `, dir <folder>` when the user named a folder for tasks.
+- `file` and kind *task*: `, replace <task folder>, files`, with the folder
+  of the target `task.md`.
+- `file` and kind *subtask*: `, files`. The subtask becomes a new task
+  folder. Append `, dir <folder>` when the user named a folder for tasks.
 
-Never ask where to save: the `saving-tasks` skill settles the destination.
+Never ask where to save: the `saving-tasks` skill settles the store.
 
 Finish with the line the `saving-tasks` skill returns, and nothing else. Ask
 nothing else.

@@ -24,31 +24,31 @@ counts one tier.
 ## Summary
 
 Tokens per skill and tier. With all 19 skills installed, the startup
-tier costs 1,383 tokens per session. Using one skill then adds its
+tier costs 1,385 tokens per session. Using one skill then adds its
 `SKILL.md` and the references it reads.
 
 | Skill                | Startup | SKILL.md | References | Scripts |   Total |
 |----------------------|--------:|---------:|-----------:|--------:|--------:|
 | analyzing-code       |      76 |    1,309 |      2,899 |       0 |   5,002 |
-| breaking-down-tasks  |      74 |    3,124 |        536 |       0 |   4,743 |
-| creating-tasks       |      67 |    2,170 |        249 |       0 |   3,362 |
+| breaking-down-tasks  |      74 |    3,183 |        343 |       0 |   4,573 |
+| creating-tasks       |      67 |    2,216 |        143 |       0 |   3,310 |
 | disambiguating-text  |      72 |    1,955 |      1,819 |       0 |   4,584 |
 | finding-code-smells  |      74 |    2,384 |      4,031 |   4,962 |  12,233 |
 | finding-dev-commands |      72 |    1,897 |          0 |       0 |   2,695 |
-| finding-trackers     |      70 |    1,551 |          0 |       0 |   2,346 |
-| formatting-tasks     |      63 |    1,881 |      2,709 |       0 |   5,512 |
+| finding-trackers     |      70 |    1,683 |          0 |       0 |   2,494 |
+| formatting-tasks     |      63 |    1,925 |      2,709 |       0 |   5,577 |
 | implementing-tasks   |      65 |    3,482 |      1,660 |       0 |   8,421 |
-| loading-tasks        |      86 |    1,726 |          0 |       0 |   2,520 |
+| loading-tasks        |      88 |    1,806 |          0 |       0 |   2,600 |
 | measuring-code       |      64 |    2,545 |      5,055 |       0 |   8,591 |
 | orchestrating-tasks  |      78 |    3,749 |      2,134 |       0 |   6,872 |
-| refactoring-code     |      85 |    3,363 |      4,510 |       0 |   9,027 |
-| saving-tasks         |      69 |    2,258 |          0 |       0 |   3,209 |
+| refactoring-code     |      85 |    3,383 |      4,510 |       0 |   9,047 |
+| saving-tasks         |      69 |    2,407 |          0 |       0 |   3,359 |
 | updating-packages    |      69 |    4,125 |      4,948 |   1,864 |  11,814 |
 | writing-agent-docs   |      80 |    1,434 |      2,164 |   3,582 |   8,121 |
 | writing-clean-code   |      75 |    2,883 |          0 |       0 |   3,613 |
 | writing-glossaries   |      79 |    3,008 |      1,135 |       0 |   5,071 |
 | writing-unit-tests   |      65 |    3,286 |          0 |       0 |   4,074 |
-| **All skills**       |   1,383 |   48,130 |     33,849 |  10,408 | 111,810 |
+| **All skills**       |   1,385 |   48,660 |     33,550 |  10,408 | 112,051 |
 
 ## Files per skill
 
@@ -71,21 +71,21 @@ Lines, words, and tokens of every file, grouped by skill.
 
 | File                              | Lines | Words | Tokens |
 |-----------------------------------|------:|------:|-------:|
-| `SKILL.md`                        |   252 | 2,099 |  3,124 |
-| `evals/evals.json`                |    23 |   425 |    681 |
-| `evals/trigger-queries.json`      |    12 |   237 |    402 |
-| `references/quality-checklist.md` |    52 |   406 |    536 |
-| **Total**                         |   339 | 3,167 |  4,743 |
+| `SKILL.md`                        |   256 | 2,116 |  3,183 |
+| `evals/evals.json`                |    23 |   395 |    647 |
+| `evals/trigger-queries.json`      |    12 |   236 |    400 |
+| `references/quality-checklist.md` |    36 |   257 |    343 |
+| **Total**                         |   327 | 3,004 |  4,573 |
 
 ### creating-tasks
 
 | File                              | Lines | Words | Tokens |
 |-----------------------------------|------:|------:|-------:|
-| `SKILL.md`                        |   188 | 1,482 |  2,170 |
-| `evals/evals.json`                |    23 |   349 |    539 |
+| `SKILL.md`                        |   191 | 1,501 |  2,216 |
+| `evals/evals.json`                |    23 |   351 |    547 |
 | `evals/trigger-queries.json`      |    12 |   251 |    404 |
-| `references/quality-checklist.md` |    29 |   190 |    249 |
-| **Total**                         |   252 | 2,272 |  3,362 |
+| `references/quality-checklist.md` |    21 |   108 |    143 |
+| **Total**                         |   247 | 2,211 |  3,310 |
 
 ### disambiguating-text
 
@@ -122,22 +122,22 @@ Lines, words, and tokens of every file, grouped by skill.
 
 | File                         | Lines | Words | Tokens |
 |------------------------------|------:|------:|-------:|
-| `SKILL.md`                   |   134 | 1,042 |  1,551 |
-| `evals/evals.json`           |    23 |   314 |    510 |
+| `SKILL.md`                   |   144 | 1,124 |  1,683 |
+| `evals/evals.json`           |    23 |   326 |    526 |
 | `evals/trigger-queries.json` |    12 |   178 |    285 |
-| **Total**                    |   169 | 1,534 |  2,346 |
+| **Total**                    |   179 | 1,628 |  2,494 |
 
 ### formatting-tasks
 
 | File                              | Lines | Words | Tokens |
 |-----------------------------------|------:|------:|-------:|
-| `SKILL.md`                        |   166 | 1,296 |  1,881 |
-| `evals/evals.json`                |    23 |   314 |    570 |
+| `SKILL.md`                        |   170 | 1,321 |  1,925 |
+| `evals/evals.json`                |    23 |   319 |    591 |
 | `evals/trigger-queries.json`      |    12 |   207 |    352 |
 | `references/line-count.md`        |    37 |   228 |    369 |
 | `references/quality-checklist.md` |    93 |   635 |    977 |
 | `references/task-format.md`       |   162 |   786 |  1,363 |
-| **Total**                         |   493 | 3,466 |  5,512 |
+| **Total**                         |   497 | 3,496 |  5,577 |
 
 ### implementing-tasks
 
@@ -155,10 +155,10 @@ Lines, words, and tokens of every file, grouped by skill.
 
 | File                         | Lines | Words | Tokens |
 |------------------------------|------:|------:|-------:|
-| `SKILL.md`                   |   151 | 1,179 |  1,726 |
+| `SKILL.md`                   |   155 | 1,227 |  1,806 |
 | `evals/evals.json`           |    23 |   276 |    486 |
 | `evals/trigger-queries.json` |    12 |   151 |    308 |
-| **Total**                    |   186 | 1,606 |  2,520 |
+| **Total**                    |   190 | 1,654 |  2,600 |
 
 ### measuring-code
 
@@ -188,23 +188,23 @@ Lines, words, and tokens of every file, grouped by skill.
 
 | File                              | Lines | Words | Tokens |
 |-----------------------------------|------:|------:|-------:|
-| `SKILL.md`                        |   290 | 2,201 |  3,363 |
+| `SKILL.md`                        |   291 | 2,205 |  3,383 |
 | `evals/evals.json`                |    23 |   518 |    777 |
 | `evals/trigger-queries.json`      |    12 |   227 |    377 |
 | `references/analysis-tools.md`    |    51 |   403 |    586 |
 | `references/quality-checklist.md` |    65 |   566 |    752 |
 | `references/refactor-sections.md` |   105 |   975 |  1,418 |
 | `references/refactoring-rules.md` |   162 | 1,377 |  1,754 |
-| **Total**                         |   708 | 6,267 |  9,027 |
+| **Total**                         |   709 | 6,271 |  9,047 |
 
 ### saving-tasks
 
 | File                         | Lines | Words | Tokens |
 |------------------------------|------:|------:|-------:|
-| `SKILL.md`                   |   181 | 1,474 |  2,258 |
-| `evals/evals.json`           |    23 |   370 |    666 |
+| `SKILL.md`                   |   193 | 1,574 |  2,407 |
+| `evals/evals.json`           |    23 |   370 |    667 |
 | `evals/trigger-queries.json` |    12 |   164 |    285 |
-| **Total**                    |   216 | 2,008 |  3,209 |
+| **Total**                    |   228 | 2,108 |  3,359 |
 
 ### updating-packages
 

@@ -4,13 +4,13 @@
     {
       "id": 1,
       "prompt": "Which issue tracker does this project use, and how would an agent reach its issues from this machine?",
-      "expected_output": "Reads README, CLAUDE.md, AGENTS.md, CONTRIBUTING, and docs/README.md for a named tracker, lists the agent's MCP tools, and runs git remote get-url origin and gh auth status. Takes the first rule that applies. Shows the tracker map in chat with the lines tracker, reached through, search items, read item, list children, create item, edit item, comment on item, close item, delete item, link child, completed status, destination, and required fields. Creates, edits, comments on, and closes no item, changes no project file, and asks nothing.",
+      "expected_output": "Reads README, CLAUDE.md, AGENTS.md, CONTRIBUTING, and docs/README.md for a named tracker, lists the agent's MCP tools, and runs git remote get-url origin and gh auth status. Takes the first rule that applies. Shows the tracker map in chat with the lines tracker, reached through, search items, read item, read parent, list children, create item, edit item, comment on item, close item, delete item, link child, completed status, destination, destinations, and required fields. Creates, edits, comments on, and closes no item, changes no project file, and asks nothing.",
       "files": []
     },
     {
       "id": 2,
       "prompt": "from saving-tasks: find\n\n(The docs name no tracker, no MCP server reads or writes issues, origin is https://github.com/acme/shop.git, and gh auth status exits 0.)",
-      "expected_output": "Finds GitHub Issues through gh by rule 3. The final message is the tracker map and nothing else: tracker GitHub Issues, reached through gh, read item 'gh issue view <number> --comments', list children through the sub_issues API path, create, edit, comment, and close through gh issue, delete item none, link child as a POST to the sub_issues path with -F sub_issue_id=<id> plus the command that prints the id, completed status closed, destination none named, required fields none. Asks nothing and writes nothing.",
+      "expected_output": "Finds GitHub Issues through gh by rule 3. The final message is the tracker map and nothing else: tracker GitHub Issues, reached through gh, read item 'gh issue view <number> --comments', read parent through the parent API path, list children through the sub_issues API path, create, edit, comment, and close through gh issue, delete item none, link child as a POST to the sub_issues path with -F sub_issue_id=<id> plus the command that prints the id, completed status closed, destination none named, destinations one, required fields none. Asks nothing and writes nothing.",
       "files": []
     },
     {

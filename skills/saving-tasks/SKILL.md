@@ -1,6 +1,6 @@
 ---
 name: saving-tasks
-description: Saves an approved task and its subtasks to the project's tracker as linked items, or to numbered task folders, and returns the item identifier or the task file path. Use when a written task, subtask, ticket, or plan needs saving, filing, or replacing in the tracker or the tasks folder.
+description: Saves an approved task and its subtasks to the project's tracker as linked items, or to numbered task folders, and returns the item identifier or the task file path. Use when a written task, subtask, ticket, or plan needs saving, filing, or replacing in the tracker or the tasks directory.
 license: MIT
 compatibility: Requires the finding-trackers skill.
 argument-hint: <task draft path> [subtask draft paths]
@@ -19,8 +19,9 @@ identifier, or the task file path.
    other text of a draft. The drafts hold approved text, and an edit saves
    text nobody approved.
 2. **Write only the task and its subtasks.** Create, overwrite, close, or
-   delete only the task file, its subtask files, and their items. Any other
-   change reaches the project or the tracker without a review.
+   delete only the task file, its subtask files, the folders that hold
+   them, and their items. Any other change reaches the project or the
+   tracker without a review.
 3. **Ask only what the invocation allows.** With `unattended`, ask nothing.
    Otherwise ask only the questions of Step 2 and Step 4, one at a time. A
    calling skill with `unattended` runs where no user reads a question.
@@ -41,7 +42,7 @@ from <caller>: task <draft path>[, subtasks <draft path> <draft path>...]
   replace its subtasks. Delete them, or close them when the tracker cannot
   delete.
 - `files`: save to files although a tracker is connected.
-- `dir`: the tasks folder the user named.
+- `dir`: the tasks directory the user named. It implies `files`.
 - `destination`: the team, project, or board that the request or the
   caller's task names for new items.
 - `unattended`: ask nothing. A same-slug folder gets a new number. An
@@ -54,8 +55,8 @@ Any invocation text without the `from <skill name>:` prefix means a user
 invoked this skill. Take the task and its subtasks from that text or the
 conversation. Write each one given as text, unchanged, to a draft in a
 scratch directory outside the repository (in Claude Code, the scratchpad
-directory). Set `replace`, `files`, and `dir` from what the user asked, and
-never `unattended`.
+directory). Set `replace`, `files`, `dir`, and `destination` from what the
+user asked, and never `unattended`.
 
 ## Workflow
 
@@ -75,14 +76,15 @@ heading. When a draft path does not exist, save nothing and end with one
 line: `not saved: a draft is missing`.
 
 The drafts name titles and numbers on the `Task` and `Depends on` lines and
-in the Subtasks list. Saving replaces them with file links or item links.
+in the Subtasks section. Saving replaces them with file links or item links.
 
-### Step 2: Choose the destination
+### Step 2: Choose the store
 
-Take the first rule that applies:
+The store is where the save goes: the tracker or files. Take the first
+rule that applies:
 1. `replace` with an item identifier: the tracker;
 2. `replace` with a task folder: files;
-3. `files`: files;
+3. `files` or `dir`: files;
 4. a connected tracker: the tracker;
 5. else files.
 
@@ -95,9 +97,10 @@ with one line: `not saved: the tracker holds no such item`.
 
 For the tracker, settle these values from the tracker map:
 - **Destination.** On `replace`, the replaced item's. Else the `destination`
-  option, else the map's `destination` line. When it reads `none named` and the
-  tracker offers more than one team, project, or board, ask one question: which
-  one receives the items. With `unattended`, create the items without one.
+  option, else the map's `destination` line. When it reads `none named` and
+  the map's `destinations` line does not read `one`, ask one question: which
+  team, project, or board receives the items. With `unattended`, create the
+  items without one.
 - **Required fields.** Take each value the map's `required fields` line
   settles. Ask one question for each field that reads `unsettled`. With
   `unattended`, an `unsettled` field sends the save to files instead. Give
@@ -127,24 +130,30 @@ Use the tools and commands that the tracker map names:
 4. **Subtasks section.** Edit the task item: replace each entry of its
    Subtasks section with the link of its child item.
 
+When a tool or command fails, stop. A failed delete is the one exception:
+it falls back to `close item`. End with one line:
+`not saved: the tracker failed at <map line>`, with the map line of the
+action, such as `create item`.
+
 Go to Step 5.
 
 ### Step 4: Save to files
 
 **Tasks directory.** `<tasks-dir>` is the folder that holds the task
-folders. It is the first of these that exists:
-1. the folder that `dir` names;
-2. the folder that README, CLAUDE.md, AGENTS.md, CONTRIBUTING, or
+folders. With `dir`, it is the folder that `dir` names. Create that folder
+when it does not exist. Without `dir`, it is the first of these that
+exists:
+1. the folder that README, CLAUDE.md, AGENTS.md, CONTRIBUTING, or
    `docs/README.md` names as the place for tasks, plans, or specs;
-3. the parent of a task folder: a folder named `###-<task-slug>`, three
+2. the parent of a task folder: a folder named `###-<task-slug>`, three
    digits, a hyphen, and a slug, that holds a `task.md`, anywhere in the
    repository outside `node_modules`, `.git`, and `vendor`. With several
    parents, the shortest path, then the first in alphabetical order;
-4. a folder named `tasks`, `plans`, or `specs` that holds a `.md` file at
+3. a folder named `tasks`, `plans`, or `specs` that holds a `.md` file at
    any depth. It sits at most three levels below the repository root,
    outside `node_modules`, `.git`, and `vendor`. With several, the
    shortest path, then the first in alphabetical order;
-5. else `<scratch-dir>/tasks/`, where `<scratch-dir>` is a scratch
+4. else `<scratch-dir>/tasks/`, where `<scratch-dir>` is a scratch
    directory outside the repository (in Claude Code, the scratchpad
    directory).
 
@@ -166,6 +175,9 @@ Save by the numbering rule below:
    subtask order. Link the `Task` line to `./task.md` and the `Depends on`
    line to the sibling files. Link each entry of the task's Subtasks
    section to its subtask file.
+
+When a write, a delete, or a folder creation fails, stop. End with one
+line: `not saved: a file write failed`.
 
 **Numbering rule.** `###` is a zero-padded three-digit sequence from `001`: for
 a task, the next free number across every entry of `<tasks-dir>` whose name

@@ -8,7 +8,8 @@ license: MIT
 
 Find the issue tracker a project uses and the way to reach it. Return the
 tracker map: the tool or command for each action on an item, the completed
-status, the destination, and the required fields. Change nothing.
+status, the destination, the count of destinations, and the required
+fields. Change nothing.
 
 ## Hard rules
 
@@ -71,6 +72,7 @@ the tracker performs.
 - tracker: `GitHub Issues`; reached through: `gh`;
 - search items: `gh issue list --state all --search "<words>"`;
 - read item: `gh issue view <number> --comments`;
+- read parent: `gh api repos/{owner}/{repo}/issues/<number>/parent`;
 - list children: `gh api repos/{owner}/{repo}/issues/<number>/sub_issues`;
 - create item: `gh issue create --title "<title>" --body-file <path>`;
 - edit item: `gh issue edit <number> --title "<title>" --body-file <path>`;
@@ -83,6 +85,7 @@ the tracker performs.
   `gh api repos/{owner}/{repo}/issues/<child>` prints. Write both commands;
 - completed status: `closed`. A closed issue is in a completed status, and
   `gh` has no other status;
+- destinations: `one`. Every issue goes to the repository of `origin`;
 - required fields: `none`.
 
 **Through an MCP server.** Read the name and the input schema of every tool
@@ -90,6 +93,8 @@ of the server. Then fill:
 - tracker with the tracker's name, and reached through with the server's
   name;
 - each action line with the tool that performs that action;
+- read parent with the tool or the field that returns an item's parent.
+  Without such a relation, write `none`;
 - list children with the tool or the field that returns an item's
   children;
 - link child with the tool and the field of the tracker's relation for
@@ -98,6 +103,9 @@ of the server. Then fill:
 - completed status with the name of every status in the tracker's
   completed or done category. Read the statuses with the tracker's tools.
   When no tool lists them, write `unsettled`;
+- destinations with `one` or `several`: the count of teams, projects, or
+  boards that the tracker's tools list for new items. When no tool lists
+  them, write `unsettled`;
 - required fields with every field that the input schema of the create
   tool marks required, for an item and for a child item. Leave out the
   title, the body, and the parent field. Give each field the value the
@@ -115,15 +123,17 @@ tracker: <name, such as Linear, Jira, or GitHub Issues> | none: <reason>
 reached through: <MCP server name> | gh
 search items: <tool or command>
 read item: <tool or command>
+read parent: <tool or command> | none
 list children: <tool or command>
 create item: <tool or command>
 edit item: <tool or command>
 comment on item: <tool or command>
 close item: <tool or command>
 delete item: <tool or command>
-link child: <tool or command> | none: <children linked in the body>
+link child: <tool or command> | none: children linked in the body
 completed status: <status names>
 destination: <team, project, or board the docs name> | none named
+destinations: one | several | unsettled
 required fields: <field>: <value | unsettled>, ... | none
 ```
 

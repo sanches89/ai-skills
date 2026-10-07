@@ -1,9 +1,9 @@
 ---
 name: loading-tasks
-description: Loads a task or subtask from a tracker item, a task file, or a subtask file and returns its task map with the parent chain, the subtasks in order, and their verification commands. Use when a task, ticket, or issue must be read with its parents and subtasks, or the user asks what a task's subtasks are and in which order they run.
+description: Loads a task or subtask from a tracker item, a task file or folder, or a subtask file and returns its task map with the parent chain, the subtasks in order, and their verification commands. Use when a task, ticket, or issue must be read with its parents and subtasks, or the user asks what a task's subtasks are and in which order they run.
 license: MIT
 compatibility: Requires the finding-trackers skill.
-argument-hint: <task or subtask id | file | text>
+argument-hint: <task or subtask id | file | task folder | text>
 ---
 
 # Loading tasks
@@ -28,7 +28,7 @@ Another skill invokes this one in one of two forms:
 
 ```
 from <caller>: <item identifier or URL | task file path |
-  subtask file path | text>
+  subtask file path | task folder path | text>
 from <caller>:
 ```
 
@@ -64,6 +64,9 @@ Resolve the target as one source:
   `task.md`. Source: *file*.
 - **A task file**, a file named `task.md`. Its folder is the task folder.
   Source: *file*.
+- **A task folder**, a folder that holds a `task.md`. That `task.md` is the
+  target. Source: *file*.
+- **Any other folder.** Source: `none: <path> holds no task.md`.
 - **A path that does not exist.** Source: `none: <path> does not exist`.
 - **Free text**, or the path of any other file, whose content is then the
   text. Source: *text*.
@@ -77,9 +80,10 @@ The chain is the target, its parent, and every parent above, up to the root
 task, the task with no parent:
 - Source *file*: the parent of a subtask file is the `task.md` of its task
   folder. A task file has no parent.
-- Source *tracker*: the parent of an item is the item the tracker's parent
-  relation points to, else the item its `Task` line links. Read parents
-  until an item has none. Stop when an identifier repeats.
+- Source *tracker*: the parent of an item is the item that the map's
+  `read parent` line returns. When that line reads `none` or returns no
+  item, the parent is the item its `Task` line links. Read parents until
+  an item has none. Stop when an identifier repeats.
 - Source *text*: the chain is the target alone.
 
 The kind is *subtask* when the target has a parent, else *task*.

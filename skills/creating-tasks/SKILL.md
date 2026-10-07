@@ -89,7 +89,7 @@ Claude Code they are deferred: search them with `ToolSearch` for
   user for the facts it settles.
 Never ask the user to install or connect anything.
 
-**2d. Research notes.** Write a private file in the scratch directory with
+**2d. Research notes.** Write a private file, `<scratch-dir>/notes.md`, with
 two parts:
 1. *Facts*: each with the path and line, identifier, or URL it came from.
 2. *Open decisions*: every decision research did not settle, with the task
@@ -135,7 +135,8 @@ until the user confirms:
 ### Step 5: Write the task
 
 Invoke the `formatting-tasks` skill (in Claude Code, with the `Skill` tool)
-with the invocation text `from creating-tasks: write <scratch-dir>/draft`.
+with the invocation text
+`from creating-tasks: write <scratch-dir>/draft, notes <scratch-dir>/notes.md`.
 It fills the draft `<scratch-dir>/draft/task.md` from the research notes.
 Follow these rules of this skill too:
 - In *Approach*, name every component that changes, with the path and symbol
@@ -150,8 +151,8 @@ Follow these rules of this skill too:
 
 Run every check in `references/quality-checklist.md` over the draft. Then
 invoke the `formatting-tasks` skill (in Claude Code, with the `Skill` tool)
-with the invocation text
-`from creating-tasks: check <scratch-dir>/draft/task.md`. Fix every failure
+with the invocation text `from creating-tasks: check
+<scratch-dir>/draft/task.md, notes <scratch-dir>/notes.md`. Fix every failure
 of both. When a failure needs a decision, return to Step 3 for that
 decision. Treat a `checks: decision needed` line the same way. After every
 fix, run both again.
@@ -167,8 +168,10 @@ until the user approves.
 Invoke the `saving-tasks` skill (in Claude Code, with the `Skill` tool) with
 the invocation text `from creating-tasks: task <scratch-dir>/draft/task.md`.
 Append `, files` to it when the user asked for a file at any point. Append
-`, dir <folder>` to it when the user named a folder for tasks. Never ask
-where to save: the `saving-tasks` skill settles the destination.
+`, dir <folder>` to it when the user named a folder for tasks. Append
+`, destination <name>` to it when the user named a team, project, or board
+for the item. Never ask where to save: the `saving-tasks` skill settles the
+store.
 
 ### Step 9: Size check
 

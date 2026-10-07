@@ -27,8 +27,8 @@ pass its own folder.
    the gap. A guessed decision becomes a wrong fact that the implementing
    agent follows without noticing.
 3. **Keep every heading.** Never rename, add, or drop a heading of
-   `references/task-format.md`. The `implementing-tasks`,
-   `orchestrating-tasks`, and `refactoring-code` skills find each section by
+   `references/task-format.md`. The `loading-tasks`, `saving-tasks`,
+   `implementing-tasks`, and `refactoring-code` skills find each section by
    its heading. A renamed heading hides its section from them.
 
 ## Invocation
@@ -36,11 +36,15 @@ pass its own folder.
 When the invocation text starts with `from <skill name>:`, that skill
 invoked this run. Ask nothing, follow the form the text names, and end with
 the return block of that form and nothing else:
-- `from <caller>: write <draft folder>[, subtasks <count>]`: Step 2 fills
-  `<draft folder>/task.md` and, with `subtasks`,
+- `from <caller>: write <draft folder>, notes <notes path>[, subtasks
+  <count>]`: Step 2 fills `<draft folder>/task.md` and, with `subtasks`,
   `<draft folder>/subtask-<n>.md` for each `<n>` from 1 to `<count>`. Then
   Step 3 checks them.
-- `from <caller>: check <draft path>...`: Step 3 checks the drafts.
+- `from <caller>: check <draft path>..., notes <notes path>`: Step 3 checks
+  the drafts.
+
+`<notes path>` is the file that holds the caller's research notes: the
+facts with their origins, the decisions, and the subtask list in order.
 - `from <caller>: size <draft path>...[, tests <test folders and files>]`:
   Step 4 counts the code lines of each draft.
 
@@ -80,9 +84,9 @@ the conversation are the research notes.
 
 ### Step 2: Write the drafts
 
-Read `references/task-format.md` now. Read the caller's research notes: the
-facts with their origins, the decisions, and the subtask list in order.
-Fill the Task block into `<draft folder>/task.md`. With `subtasks <count>`,
+Read `references/task-format.md` now. Read the research notes: the file at
+`<notes path>`, or for a user, the request and the conversation. Fill the
+Task block into `<draft folder>/task.md`. With `subtasks <count>`,
 fill the Subtask block into `<draft folder>/subtask-<n>.md`, one file per
 subtask in order. Without `subtasks`, write the single word `None.` in the
 task's Subtasks section.
@@ -139,8 +143,8 @@ to show.
 ### Step 4: Count the code lines
 
 Read `references/line-count.md` now. The test locations are the folders and
-files after `tests`. Without `tests`, take them from the caller's research
-notes, else from the Context and Decisions sections of the draft.
+files after `tests`. Without `tests`, take them from the Context and
+Decisions sections of the draft.
 
 For each draft, estimate the code lines its change adds, removes, or
 modifies, outside the test locations. The change of a task is its Approach

@@ -16,7 +16,7 @@
     {
       "id": 3,
       "prompt": "Break this down: 'Add dark mode to the settings page.' We have no issue tracker connected and no tasks folder.",
-      "expected_output": "The task map from the loading-tasks skill has 'source: text'. Researches the settings page code and interviews on the open decisions with concrete options, never asking for a team, project, or board. Invokes the saving-tasks skill with no 'replace' and no 'files'. Because no tracker is connected, it saves the task and subtasks as files in a new task folder under <scratch-dir>/tasks/ with the next free number, and the skill never asks which destination. The last message is one line: the absolute path of the task.md file.",
+      "expected_output": "Invokes the loading-tasks skill with 'from breaking-down-tasks: Add dark mode to the settings page.' and gets a task map with 'source: text'. Does no research, asks no interview question, invokes neither formatting-tasks nor saving-tasks, and writes no file. The last message is one line: no task to break down, write the task first with the creating-tasks skill.",
       "files": []
     }
   ]

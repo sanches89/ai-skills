@@ -70,8 +70,9 @@ For kind *task*, invoke the `loading-tasks` skill (in Claude Code, with the
 `from refactoring-code: <identifier, URL, or path>`. Keep the task map it
 returns. When the task map reads `source: none`, the request is kind *text*.
 
-Write private notes in the scratch directory from this step on, written
-`<scratch-dir>` in commands. Keep in them every list a later step reads.
+Write private notes to `<scratch-dir>/notes.md` from this step on.
+`<scratch-dir>` is the scratch directory. Keep in the notes every list a
+later step reads.
 
 ### Step 2: Set the refactor scope
 
@@ -259,10 +260,10 @@ task and of a subtask holds. Read `references/refactoring-rules.md` now, for
 the task's *Decisions* and each subtask's *Context*.
 
 Invoke the `formatting-tasks` skill (in Claude Code, with the `Skill` tool)
-with the invocation text
-`from refactoring-code: write <scratch-dir>/draft, subtasks <entry count>`.
-It fills the task and one subtask per entry, in the order of Step 6, from
-the notes and the two files above. On `checks: decision needed`, settle the
+with the invocation text `from refactoring-code: write <scratch-dir>/draft,
+notes <scratch-dir>/notes.md, subtasks <entry count>`. It fills the task
+and one subtask per entry, in the order of Step 6, from the notes and the
+two files above. On `checks: decision needed`, settle the
 decision from the notes and the rules of this skill, then fix the draft.
 
 ### Step 8: Quality check
@@ -270,8 +271,8 @@ decision from the notes and the rules of this skill, then fix the draft.
 Run every check in `references/quality-checklist.md` over the drafts. Fix
 every failure. Then invoke the `formatting-tasks` skill (in Claude Code,
 with the `Skill` tool) with the invocation text
-`from refactoring-code: check <draft path>...`, every draft in order. Fix
-every failure it returns.
+`from refactoring-code: check <draft path>..., notes <scratch-dir>/notes.md`,
+every draft in order. Fix every failure it returns.
 
 ### Step 9: Save
 
