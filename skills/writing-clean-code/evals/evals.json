@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "Clean up src/orders/checkout.ts. The functions are huge and half of them take five arguments.",
-      "expected_output": "Treats the request as review mode with changes. Reads the project's conventions and invokes the finding-dev-commands skill for the format command. Runs the Check of all 14 principles over the diff of src/orders/checkout.ts. Fixes every failure: splits each function to 20 lines or fewer, turns a third parameter into an object, removes boolean flag parameters, and extracts copies that change together. Edits no code outside that file. Runs the Checks again and ends with the remaining failures as `<path:line> <principle number>: <failure>`, or `pass`.",
+      "expected_output": "Treats the request as review mode with changes. Reads the project's conventions and invokes the finding-dev-commands skill for the format command. Runs the Check of all 14 principles over every line of src/orders/checkout.ts, committed or not. Fixes every failure: splits each function to 20 lines or fewer, turns a third parameter into an object, removes boolean flag parameters, and extracts copies that change together. Edits no code outside that file. Runs the Checks again and ends with the remaining failures as `<path:line> <principle number>: <failure>`, or `pass`.",
       "files": []
     },
     {

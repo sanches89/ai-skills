@@ -88,4 +88,4 @@ Skip a report that needs a package the project lacks, with the reason
 Skip the JUnit report for Go, Rust, and .NET, with the reason
 `<runner> writes no JUnit report`. When the test command runs without a
 JUnit report, count the tests from its output: add the passed, failed, and
-skipped counts to the reason on the `tests` line of the record.
+skipped counts to the reason on the `tests` line of the measurement record.

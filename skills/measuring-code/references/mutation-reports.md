@@ -98,15 +98,14 @@ command with the scope option below, with `<files>` in place of the files:
   `--filter=<files>` in place of the arguments, joined by commas.
   `vendor/bin/infection --version` prints the version.
 - **cargo-mutants**: `--file <files>`, with `--file` once per file.
-- **mutmut**: `mutmut run "<files>*"`, one run per file, each file written
-  as its dotted module path.
 
 A tool without an option in this list, such as PIT with Gradle, never
 limits its files. Record its command without `<files>`.
 
 ## When to skip the mutation run
 
-Record the reason and skip the run when one of these holds:
+Record the reason in place of the mutation command, and skip the run, when
+one of these holds:
 - the tool is missing: no `@stryker-mutator/core` in `package.json`, no
   `vendor/bin/infection` file, or `dotnet stryker --help` or
   `cargo mutants --help` fails. Maven and Gradle fetch PIT themselves. The
@@ -117,10 +116,14 @@ Record the reason and skip the run when one of these holds:
   `<tool> mutates the source in place`;
 - the configuration uploads a report: a `dashboard` reporter in the
   Stryker.NET configuration, or `logs.stryker` in the Infection
-  configuration. The reason is `<tool> uploads its report`;
+  configuration. The StrykerJS report option replaces its configured
+  reporters, so StrykerJS never uploads. The reason is
+  `<tool> uploads its report`;
 - the tool writes into the repository, and `git check-ignore -q <path>`
   fails for a path it writes. The paths are `.stryker-tmp` and the report
   folder for StrykerJS, the build folders for PIT, and the log path for
-  Infection. The reason is `<path> is not ignored by git`;
-- the invocation names files, and the tool has no scope option. The reason
-  is `<tool> cannot limit its files`.
+  Infection. The reason is `<path> is not ignored by git`.
+
+Keep the mutation command, and skip the run, when the invocation names
+files and the tool has no scope option. The reason is
+`<tool> cannot limit its files`.

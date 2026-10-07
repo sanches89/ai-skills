@@ -101,7 +101,13 @@ that limit:
 - PMD: the `methodReportLevel` of `CyclomaticComplexity` for `--ccn`, in
   the PMD ruleset XML file;
 - jscpd: `minLines` for `--min-lines` and `minTokens` for `--min-tokens`,
-  in `.jscpd.json`.
+  in `.jscpd.json`;
+- PMD CPD: the `minimumTokens` of `maven-pmd-plugin` for `--min-tokens`, in
+  `pom.xml`;
+- SonarQube: `sonar.cpd.<language>.minimumTokens` for `--min-tokens` and
+  `sonar.cpd.<language>.minimumLines` for `--min-lines`, in
+  `sonar-project.properties`. SonarQube fixes the Java rule at 10
+  statements, which sets no limit here.
 
 A cognitive complexity limit, such as Clippy's `cognitive_complexity` or
 SonarQube's, is not a cyclomatic limit. Never use it for `--ccn`. With two
@@ -113,6 +119,8 @@ values for one limit in one repository, take the lower one.
   follows every status other than `ok`. `settings` holds the limits, the
   ignore globs, `top`, and `since` of the run. `files` counts the files
   under the paths after the ignore globs.
+- `duplication` and `complexity` hold `tool` when their tool ran: its name
+  and version, such as `jscpd 4.0.5` or `lizard 1.17.10`.
 - `duplication` holds `files`, `lines`, `duplicatedLines`, `percentage`,
   and `clones`. `top` lists the largest clones first, each with `lines`,
   `tokens`, `format`, and the two locations `a` and `b` as

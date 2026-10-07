@@ -7,7 +7,9 @@ for the task, and how the task names them.
 ## Tool rules
 
 - Run the project's own analysis tools first, with the project's own
-  configuration. Their limits replace the defaults of the measure tool.
+  configuration. The `measuring-code` skill takes the limits that this
+  configuration sets, PMD CPD and SonarQube included. The `limits` line of
+  the measurement record names the file that set each limit.
 - Run each tool below only through the command the project already has.
 - Never add a tool to the project's manifest. Never write a tool's
   configuration file or report file inside the repository.

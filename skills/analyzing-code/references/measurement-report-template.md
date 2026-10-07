@@ -23,8 +23,9 @@ What each section keeps:
   and the clone floor, then the configuration file that set each limit, or
   `all defaults`.
 - **Tools**: the `tool` value of `duplication`; the `tool` value of
-  `complexity`, or `no lizard`; the test runner of the record's
-  `test command` line, or `no test command` when that line reads `none`;
+  `complexity`, or `no lizard`; the test runner of the measurement
+  record's `test command` line, or `no test command` when that line reads
+  `none`;
   the mutation tool of its `mutation command` line, or `no mutation
   command` when that line reads `none`.
 - **Measurements**: one line per measurement. A measurement whose line in

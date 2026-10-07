@@ -58,9 +58,9 @@ The final message is the measurement record, and nothing else:
 summary: <path of the measurement summary> | none: <reason>
 measure command: <the measure command as run>
 test command: <test command with the report options> | none: <reason>
-mutation command: <the project's mutation command with the thread option
-  and the scope option, <files> where the scope option takes files, and no
-  report option> | none: <reason>
+mutation command: <the project's mutation command with the thread option,
+  the scope option with <files> where it takes files, and each report
+  option that names no path> | none: <reason>
 reports: <paths of the test, coverage, and mutation reports> | none
 limits: ccn <n>, length <n>, params <n>, clone <n> lines and <n> tokens,
   each default or with the config file that set it
@@ -139,9 +139,11 @@ Record, as that file says, the mutation command and `<mutation-report>`.
 The command holds the report options, the thread option, and the scope
 option with `<files>`, with `<dir>` in place of the output folder. Record
 the command whenever the project configures a mutation tool, whatever the
-`mutation` option says. With `mutation no`, the `mutation` line reads
-`skipped: not requested`. Otherwise record the reason instead when the file
-says to skip the mutation run.
+`mutation` option says. Run the checks of *When to skip the mutation run*
+on it, whatever the `mutation` option says, because a caller runs the
+recorded command later. When a check holds, record its reason in place of
+the command, as the file says. Otherwise, with `mutation no`, the
+`mutation` line reads `skipped: not requested`.
 
 ### Step 3: Tests
 
@@ -198,18 +200,19 @@ first line of the error as the reason. When the measure command fails to
 start, measure by reading as *Without any tool* in `measure-tool.md`
 states.
 
-### Step 6: Return the record
+### Step 6: Return the measurement record
 
 Run `git status --porcelain` in `<root>` again. Restore and delete
-nothing. Name every line it adds to the output of Step 1 on the record's
-`tree changes` line.
+nothing. Name every line it adds to the output of Step 1 on the
+measurement record's `tree changes` line.
 
 Fill the measurement record:
 - `summary`: `<out>/summary.json`, `<out>/summary.md` after *Without any
   tool*, or `none` with the reason of Step 5;
 - the commands as run, with the real `<dir>`. The mutation command keeps
-  `<files>` and leaves out the report options, so that a caller can write
-  it into a task;
+  `<files>` and each report option that names no path, such as
+  `--reporters json`. It leaves out each option that names a path under
+  `<dir>`, so that a caller can write it into a task;
 - `reports`: the absolute path of every report under `<dir>`;
 - one line per measurement: `ok`, or the status with the reason this run
   recorded, else the reason the summary gives.

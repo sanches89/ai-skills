@@ -26,10 +26,11 @@ For a hotspot, read the last 10 commit subjects of the file:
 
 ## Clones
 
-Keep a clone as a finding of kind `duplicated code` when both copies state
-one rule and change for the same reason. The action is `extract function`
-when the copies are in one module, else `move to a shared module`. The
-evidence is the two locations and the line count.
+Keep a clone as a finding of kind `duplicated code` when its copies change
+for the same reason: from three copies, or from two copies of one rule. The
+action is `Extract Function` when the copies are in one module, else
+`Extract Function, then Move Function to a shared module`. The evidence is
+the locations and the line count.
 
 Leave a clone when:
 - it holds only imports, declarations, or type definitions;
@@ -44,18 +45,17 @@ Keep a function as a finding when the code shows the smell behind the value
 over the limit:
 - `ccn` over the limit, and the branches are not one flat `switch` or
   mapping from values to results. Kind `complex function`. Action
-  `replace nested conditionals with guard clauses` when conditionals nest
-  3 levels or deeper, else `extract function`;
+  `Replace Nested Conditional with Guard Clauses` when conditionals nest
+  3 levels or deeper, else `Extract Function`;
 - `length` over the limit, and the body is not one flat list of steps
   without a branch. A route list and a configuration table are such lists.
-  Kind `long function`. Action `extract function`;
+  Kind `long function`. Action `Extract Function`;
 - `params` over the limit, and the signature is not one that callers
   outside the repository depend on. Kind `long parameter list`. Action
-  `introduce parameter object`.
+  `Introduce Parameter Object`.
 
-The evidence is the measured values against their limits. A test function
-over a limit is a finding of the same kind, ranked after every other
-finding.
+The evidence is the measured values against their limits. A function in a
+test file is never a finding of these kinds.
 
 ## Hotspots
 
@@ -117,10 +117,10 @@ The action of a finding is an item of this list, or two items joined by
 - `add tests`;
 - `add tests before changing it`;
 - `assert the behavior the mutant changes`;
-- `extract function`;
-- `replace nested conditionals with guard clauses`;
-- `introduce parameter object`;
-- `move to a shared module`.
+- `Extract Function`;
+- `Replace Nested Conditional with Guard Clauses`;
+- `Introduce Parameter Object`;
+- `Move Function to a shared module`.
 
 ## Ranking
 

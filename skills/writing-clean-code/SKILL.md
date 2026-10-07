@@ -12,8 +12,9 @@ Write and review code by 14 principles. Each principle holds a rule, an
 example when one applies, and a **Check**: a test that the diff passes or
 fails. A convention of the project and a decision of the task the caller
 works on beat a principle. The numbers in the principles are targets for
-the lines a change writes or edits, never for code the change leaves alone.
-Examples are TypeScript. The rule holds in every language.
+the lines a change writes or edits. Review mode with paths applies them to
+every line under those paths. Examples are TypeScript. The rule holds in
+every language.
 
 ## Invocation
 
@@ -64,9 +65,11 @@ the lines you write or change.
 Take the diff from the first case that applies:
 1. write mode: the lines Step 2 wrote or changed;
 2. a git range: `git diff <range>`;
-3. paths: `git diff HEAD -- <paths>`, plus every untracked file under them
-   as added lines;
-4. else: `git diff HEAD`, plus every untracked file as added lines.
+3. review mode with paths: every line of every file under them, as added
+   lines;
+4. the `check` form with paths: `git diff HEAD -- <paths>`, plus every
+   untracked file under them as added lines;
+5. else: `git diff HEAD`, plus every untracked file as added lines.
 
 Run the **Check** of every principle over the diff. For principle 6, run the
 format command. Without one, check the rule of principle 6 by reading. A
@@ -241,26 +244,12 @@ No example: the rule limits scope.
 
 ### 9. Tests
 
-Each added or changed behavior has a test. A test is fast, independent,
-repeatable, self-validating, and written before the code (F.I.R.S.T.). A test
-checks one concept, follows arrange, act, assert, and has a name that states
-the behavior.
+Each added or changed behavior has a test. The `writing-unit-tests` skill
+holds the rules for writing one.
 
-```ts
-// Bad
-test("works", () => {
-  expect(checkout(cart)).toBeDefined();
-  expect(checkout(emptyCart)).toBeDefined();
-});
-
-// Good
-test("rejects an empty cart", () => {
-  expect(() => checkout(emptyCart)).toThrow(EmptyCartError);
-});
-```
+No example: the rule names what needs a test, never how to write it.
 
 **Check:** every changed behavior has a test that fails without the change.
-No test reads the clock, the network, or another test's state.
 
 ### 10. Simple design
 
@@ -361,7 +350,9 @@ calls.
 Write the simplest code that meets the request. Add no abstraction, option,
 parameter, hook, or layer without a use that exists today. Add an interface
 only with 2 implementations or more, or as the wrapper of a system boundary.
-Add an option or a parameter only with a caller that passes it.
+A test double is no implementation. Add an option or a parameter only with
+a caller that passes it. A test that passes a collaborator in through the
+parameter is such a caller.
 
 ```ts
 // Bad: one implementation, one caller
@@ -374,6 +365,6 @@ class DiscountStrategyFactory {
 const applyDiscount = (price: number) => price * 0.9;
 ```
 
-**Check:** every interface has 2 implementations or more, or is a boundary
-from principle 12. Every option and every parameter has a caller that passes
-it.
+**Check:** every interface has 2 implementations or more besides test
+doubles, or is a boundary from principle 12. Every option and every
+parameter has a caller that passes it.

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-// Lists text signals of the Agent-written code, Legibility, and Tests entries
-// of references/smell-catalog.md as path:line, by kind. A signal is a line
-// to read, never a finding: the catalog entry says what makes it one.
+// Lists text signals of the Design, Agent-written code, Legibility, and Tests
+// entries of references/smell-catalog.md as path:line, by kind. A signal is a
+// line to read, never a finding: the catalog entry says what makes it one.
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { extname, join, relative, resolve, sep } from 'node:path';
 
@@ -54,11 +54,14 @@ const TEST_FILE = new RegExp([
 ].join('|'));
 
 const COMMENT_LINE = /^\s*(\/\/|#|\*|\/\*|--|<!--|''')/;
+// A declaration names its literal with `=`. `if (x > 500)` and `return n * 60`
+// start with a word and a space too, and must stay signals.
 const DECLARATION = new RegExp(
   '^\\s*(export\\s+|public\\s+|private\\s+|protected\\s+|static\\s+|final\\s+' +
-  '|readonly\\s+|const\\s+|let\\s+|var\\s+|val\\s+|#define\\s+' +
+  '|readonly\\s+|const\\s+|let\\s+|var\\s+|val\\s+' +
   '|[A-Za-z_][\\w<>\\[\\].]*\\s+)*[A-Za-z_]\\w*\\s*(:\\s*[\\w<>\\[\\]|.]+\\s*)?' +
-  '(=(?!=)|\\s)\\s*[^=]',
+  '=(?!=)\\s*[^=]' +
+  '|^\\s*#define\\s+\\w+\\s',
 );
 
 // One regex per kind, run per line. A `test` flag limits the kind to test
@@ -107,6 +110,7 @@ const LINE_KINDS = {
     ].join('|'))],
   },
   placeholder: {
+    code: true,
     patterns: [new RegExp([
       '\\b(TODO|FIXME|XXX|HACK)\\b', '\\bNotImplementedError\\b',
       '\\bNotImplementedException\\b', '\\bunimplemented!\\s*\\(',
@@ -115,6 +119,7 @@ const LINE_KINDS = {
     ].join('|'), 'i')],
   },
   'compat-path': {
+    code: true,
     patterns: [
       /\b(legacy|deprecated|backwards?[_-]?compat\w*|compat|compatibility|fallback)\b/i,
       /\b\w+_old\b|\bold_\w+|\b[a-z]\w*Old\b|\bOld[A-Z]\w+|\bOLD_\w+/,
@@ -131,6 +136,7 @@ const LINE_KINDS = {
     ],
   },
   credential: {
+    code: true,
     hide: true,
     patterns: [
       new RegExp(
@@ -313,14 +319,17 @@ function scanFile(full, rel, options, signals) {
   if (content.slice(0, 1000).includes('\0')) return false;
   const test = isTestFile(rel);
   const lines = content.split('\n');
+  // A final newline ends the last line; it starts no line of its own.
+  const lineCount = content.endsWith('\n') ? lines.length - 1 : lines.length;
   const add = (kind, line, text) => {
     const bucket = signals[kind];
     bucket.count += 1;
     if (bucket.top.length < options.top) bucket.top.push({ file: rel, line, text });
   };
-  if (options.kinds.includes('oversized-file') && lines.length > options.maxLines) {
+  // In a test file the catalog counts only the Tests entries.
+  if (options.kinds.includes('oversized-file') && !test && lineCount > options.maxLines) {
     const tokens = Math.round(content.length / 4);
-    add('oversized-file', 1, `${lines.length} lines, about ${tokens} tokens`);
+    add('oversized-file', 1, `${lineCount} lines, about ${tokens} tokens`);
   }
   for (const kind of options.kinds) {
     const spec = LINE_KINDS[kind];
@@ -334,7 +343,7 @@ function scanFile(full, rel, options, signals) {
       if (spec.patterns.some((re) => re.test(line))) add(kind, i + 1, spec.hide ? '<hidden>' : cut(line));
     });
   }
-  if (options.kinds.includes('masked-error')) {
+  if (options.kinds.includes('masked-error') && !test) {
     const starts = lineStarts(content);
     const seen = new Set();
     for (const re of MASKED_ERROR) {

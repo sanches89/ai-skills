@@ -11,8 +11,8 @@ or the process environment. Skip an entry that the language of the code has no
 form for. Each entry gives the **Signal** that shows the smell, the
 **Refactoring** that removes it, and the case to **Leave it**. An entry with
 **Report** in place of a refactoring names a behavior change: its finding has
-the refactoring `report`. The limits named here are the defaults; the limits
-in `settings` of the measurement summary replace them. A value over a limit is
+the refactoring `report`. The limits named here are the defaults. The limits
+that Step 3 of `SKILL.md` takes replace them. A value over a limit is
 a finding only when no *Leave it when* case of its entry holds. The scan script
 lists the signals that name a kind, as `path:line`. A signal is a line to read,
 never a finding.
@@ -38,7 +38,8 @@ into the evidence of the finding:
     when the copies live in two modules.
   - Leave it when: the copies change for different reasons, or fewer than
     three copies exist and they state no single rule. Also when the clone
-    holds only imports, generated code, or test data.
+    holds only imports, declarations, or type definitions. Also when it is
+    test data, a fixture, a table of literals, or generated code.
 - **Repeated condition**
   - Signal: the same `switch` or `if` chain over one value in three places.
   - Refactoring: Replace Conditional with Lookup Table, or Replace Conditional
@@ -111,8 +112,8 @@ into the evidence of the finding:
 ## Data
 
 - **Data clump**
-  - Signal: the same three or more values passed or stored together in two
-    places or more.
+  - Signal: the same three or more values passed or stored together in
+    three places or more.
   - Refactoring: Introduce Parameter Object, Extract Module for the group.
   - Leave it when: the values only meet by accident, such as `x` and `y` of
     unrelated things.
@@ -183,8 +184,9 @@ into the evidence of the finding:
   - Signal: an interface with one implementation, a parameter with one value,
     a hook that no one uses.
   - Refactoring: Inline Function, Collapse Hierarchy, Remove Parameter.
-  - Leave it when: a test double is the second implementation, the interface
-    wraps a system boundary, or the contract exposes the extension point.
+  - Leave it when: the interface wraps a system boundary, a test passes a
+    collaborator in through the parameter, or the contract exposes the
+    extension point. A test double is no implementation.
 - **Lazy element**
   - Signal: a function or a module that adds a name and nothing else.
   - Refactoring: Inline Function, Inline Module.
@@ -250,7 +252,9 @@ into the evidence of the finding:
     imports a file at the head of `hotspots.top`.
   - Refactoring: Extract Interface, owned by the imported module. The hotspot
     implements it.
-  - Leave it when: the two modules change together in the git history.
+  - Leave it when: the two modules change together in the git history, or
+    the hotspot would be the one implementation. A test double is no
+    implementation.
 
 ## Agent-written code
 

@@ -141,9 +141,10 @@ Use that summary from then on. With the `summary` option, read the tests
 that import or call each function the cut list leaves out.
 
 **Scan.** Run the scan script. It lists the signals that the entries under
-*Agent-written code*, *Legibility*, and *Tests* in
-`references/smell-catalog.md` name, as `path:line` per kind. `<skill-dir>`
-is the folder holding this `SKILL.md`:
+*Design*, *Agent-written code*, *Legibility*, and *Tests* in
+`references/smell-catalog.md` name, as `path:line` per kind. In a test
+file it lists only the kinds of *Tests*. `<skill-dir>` is the folder
+holding this `SKILL.md`:
 
 ```bash
 node <skill-dir>/scripts/scan.mjs <path>... --ignore "<globs>" \

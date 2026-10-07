@@ -187,13 +187,22 @@ Folders:
   `implementing-tasks`, and `orchestrating-tasks` take that line as their input
   without an edit. `refactoring-code` with no finding ends instead with a line
   that starts with `No refactor task:`.
-- Two sets of limits exist. `writing-clean-code` holds the targets for code a
-  change writes: 20 lines per function, 2 parameters, no repeated block of 3
-  lines. `measuring-code`, the smell catalog, `refactoring-rules.md`, and
-  `analysis-rules.md` hold the limits that flag existing code: cyclomatic
-  complexity 10, 50 lines, 4 parameters, clones of 5 lines and 50 tokens, the
-  rule of three, nesting from 3 levels. Change a flagging limit in all four in
-  the same commit.
+- Two sets of limits exist. `writing-clean-code` holds the targets for the
+  lines a change writes, and for every line of the paths a review names: 20
+  lines per function, 2 parameters, no repeated block of 3 lines. The
+  flagging limits mark existing code. Change each one in every file that
+  holds it, in the same commit:
+  - cyclomatic complexity 10, 50 lines, 4 parameters: `measuring-code` and
+    the smell catalog;
+  - clones of 5 lines and 50 tokens: `measuring-code`;
+  - nesting from 3 levels: `measuring-code`, the smell catalog,
+    `refactoring-rules.md`, and `analysis-rules.md`;
+  - the rule of three for clones: the smell catalog, `refactoring-rules.md`,
+    and `analysis-rules.md`;
+  - 400 lines per code file: the smell catalog, `finding-code-smells` with
+    its scan script, and `refactoring-rules.md`;
+  - a parameter object from 3 places: the smell catalog and
+    `refactoring-rules.md`.
 - The size target is 500 code lines. It appears in `formatting-tasks`,
   `creating-tasks`, and `breaking-down-tasks`. Change it in the three in the
   same commit.

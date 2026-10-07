@@ -6,7 +6,7 @@ failed check on a run sends you back to Step 2, on a finding to Step 3.
 
 ## Project
 
-- [ ] `git status --porcelain` prints what the Step 1 record holds.
+- [ ] `git status --porcelain` prints what Step 1 recorded.
 - [ ] No commit, push, pull request, or comment.
 
 ## Runs
