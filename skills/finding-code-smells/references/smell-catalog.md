@@ -300,6 +300,10 @@ that nothing can fail, and errors caught and dropped.
     with the value hidden.
   - Report: the location alone. Never copy the value into a finding or a
     note.
+  - Leave it when: the value is in a test file and reads as a placeholder.
+    It holds `test`, `fake`, `dummy`, or `example`, or repeats one
+    character. A known token format, such as an `AKIA` key or a private
+    key header, always counts.
 - **Masked error**
   - Signal: a catch that logs and continues, an empty catch, or a default
     returned in place of an error. Kind `masked-error`.
