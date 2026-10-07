@@ -42,13 +42,15 @@ When the invocation text starts with `from <skill name>:`, another skill
 invoked this run. The text then takes this form:
 
 ```
-from <caller>: paths <path>...[, summary <measurement summary path>]
-[, ignore <globs>][, out <folder>]
+from <caller>: paths <path>...[, summary <measurement summary path | none>]
+[, limits <limits>][, ignore <globs>][, out <folder>]
 ```
 
 - `paths`: the paths to review, relative to the repository root.
-- `summary`: a measurement summary of those paths. Without it, Step 3
-  measures them.
+- `summary`: a measurement summary of those paths. `none` means the
+  caller's measurement produced no summary: Step 3 measures nothing.
+  Without `summary`, Step 3 measures the paths.
+- `limits`: the `limits` line of the caller's measurement record.
 - `ignore`: the ignore globs, joined by commas with no space. Default the
   ignore globs of the measurement.
 - `out`: the folder of the files this skill writes. Default
@@ -119,14 +121,16 @@ Without it, invoke the `measuring-code` skill (in Claude Code, with the
 `Skill` tool) with the invocation text
 `from finding-code-smells: paths <paths>, out <out>`. Add
 `, ignore <globs>` when the invocation gives `ignore`. Take the summary
-from the `summary` line of the record it returns. Take from the summary
-and the record:
-- the limits: `settings` of the summary, else the `limits` line of the
-  record, else the defaults of the catalog;
+from the `summary` line of the measurement record it returns. Take from
+the summary and the measurement record:
+- the limits: the `limits` option, else `settings` of the summary, else
+  the `limits` line of the measurement record, else the defaults of the
+  catalog;
 - the ignore globs: the `ignore` option, else `settings.ignore`, else the
-  `ignore` line of the record;
+  `ignore` line of the measurement record;
 - a `summary.md` holds the values that measuring-code took by reading;
-- with `summary: none`, read every function against the limits.
+- with no summary, by the `summary none` option or a `summary: none`
+  line, read every function against the limits.
 
 When `coverage.functions.top` holds `settings.top` entries, the list is
 cut. With a measurement record of this run, run its `measure command`

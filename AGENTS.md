@@ -173,7 +173,8 @@ Folders:
   one.
 - `orchestrating-tasks` runs the subtasks of a task through
   `implementing-tasks`, one at a time. It never writes or edits a task, a
-  subtask, or an item. It reads the headings of the work report in
+  subtask, or the title or body of an item. It comments on items and sets
+  their status. It reads the headings of the work report in
   `skills/implementing-tasks/references/work-report-template.md`. It reads the
   final line of `refactoring-code`. Change any of these in
   `skills/orchestrating-tasks/` in the same commit. It adds one file to the
@@ -184,7 +185,8 @@ Folders:
   and nothing else. A failed save ends with a line that starts with `not saved:`
   and names no path and no identifier. `breaking-down-tasks`,
   `implementing-tasks`, and `orchestrating-tasks` take that line as their input
-  without an edit.
+  without an edit. `refactoring-code` with no finding ends instead with a line
+  that starts with `No refactor task:`.
 - Two sets of limits exist. `writing-clean-code` holds the targets for code a
   change writes: 20 lines per function, 2 parameters, no repeated block of 3
   lines. `measuring-code`, the smell catalog, `refactoring-rules.md`, and

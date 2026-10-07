@@ -21,13 +21,16 @@ Without a test setup: the diff adds no test and no test framework, and
 
 - [ ] Every behavior the diff adds or alters has a test, and every test the
       target names exists.
-- [ ] Every new test failed for the expected reason before it passed.
+- [ ] Every new test failed for the expected reason before it passed. A
+      characterization test passed on the unchanged code, and failed once
+      when the named mutation command or a break by hand hit its behavior.
 - [ ] A bug fix has a regression test.
 - [ ] The `writing-unit-tests` check returns `pass` for every test file
       this run added or edited.
 - [ ] Every test file this run added or edited passes when run alone.
-- [ ] Every edited existing test asserts a behavior the target changes, or
-      changed only in an import, a path, or a symbol name.
+- [ ] Every edited existing test asserts a behavior the target changes,
+      or changed only in an import, a path, or a symbol name. Else it fixes
+      a weak test or an over-mocked test that the target names.
 - [ ] The *Tests* count equals the test cases added.
 
 ## Code
@@ -56,7 +59,8 @@ Without a test setup: the diff adds no test and no test framework, and
       offer or next step.
 - [ ] Every bullet under *Affects other work* is of a kind the template
       lists.
-- [ ] Every path and symbol in the report exists in the working tree.
+- [ ] Every path and symbol in the report exists in the working tree, or
+      the report marks it `(deleted)`.
 
 ## Grep helper
 

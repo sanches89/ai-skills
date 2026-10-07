@@ -54,8 +54,10 @@ limit the project configures replaces a value here.
   callers.
 - Never merge copies by adding a flag parameter that selects the behavior.
   Keep two functions and extract their shared part.
-- Add a new interface, base type, generic parameter, or option only with
-  three users. A test that passes the parameter of a seam counts as a user.
+- Add a new interface or base type only with 2 implementations or more, or
+  as the wrapper of a system boundary. A test double is no implementation.
+- Add a generic parameter or an option only with a caller that passes it.
+  A test that passes the parameter of a seam is such a caller.
 - Replace a helper that repeats a function of the project or of the
   standard library with a call to that function.
 
@@ -93,17 +95,17 @@ limit the project configures replaces a value here.
 - Reach a system boundary through a parameter or a constructor argument.
   A decision never reads the clock, the environment, or a global on its
   own.
-- Introduce a seam with a default equal to the current collaborator, so
-  that no caller changes. Move the callers only in a contract change the
-  request names.
+- Introduce a seam so that no caller changes. A Parameterize seam takes a
+  default equal to the current collaborator. Move the callers only in a
+  contract change the request names.
 - Keep a decision in a function that returns a value. The caller performs
   the effect.
 - Reuse through composition. Keep a subclass only where every caller of the
   parent works with it.
 - Give one design decision, a format, a layout, or a rule, one owner
   module.
-- Keep a code file under 400 lines, or under the project's own limit. Split
-  by concept, one concept per file.
+- Keep a code file at 400 lines or fewer, or within the project's own
+  limit. Split by concept, one concept per file.
 - Wire a collaborator by an import and a call that a search for its name
   finds. Use reflection, a string name, or a patch only where the
   project's framework requires it.
@@ -137,9 +139,9 @@ limit the project configures replaces a value here.
 ## Tests during a refactoring
 
 - Run the tests that cover the changed code after every subtask.
-- Edit an existing test only for an import, a path, or a symbol name that the
-  refactoring moved or renamed. A finding in that test file is the other
-  reason.
+- Edit an existing test only for an import, a path, or a symbol name that
+  the refactoring moved or renamed. A weak test or an over-mocked test that
+  the subtask names is the other reason.
 - Change an assertion only by Replace Assertion with Literal, with the
   value the unchanged code produces. Never weaken one.
 - Replace a test double of a collaborator inside the project with the real

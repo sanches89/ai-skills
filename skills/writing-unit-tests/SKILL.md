@@ -74,7 +74,8 @@ code to test, or the test files to review. Take the test command and the
 `test one file`. When either is missing, invoke the
 `finding-dev-commands` skill (in Claude Code, with the `Skill` tool)
 with the invocation text `from writing-unit-tests: find`. Take its `test`
-and `test one file` lines.
+and `test one file` lines. When the `test one file` command is still
+missing or reads `none`, take the test command in its place.
 
 The project has a test setup when it has a test command and the repository
 holds at least one test file. Then record:
@@ -201,7 +202,11 @@ A test gives the same result on every run, on every machine, in any order:
 ## Existing tests
 
 - Edit an existing test only for a behavior the change alters, or for an
-  import, path, or symbol name the change renames or moves.
+  import, path, or symbol name the change renames or moves. A weak test or
+  an over-mocked test that the request names is the third reason.
+- Fix a weak test by an expected value written as a literal: what the
+  unchanged code returns, changes, or raises. Fix an over-mocked test by
+  the real collaborator, when it is fast and deterministic.
 - Never edit an assertion for a rename or a move. Fix every other failing
   test in the code.
 - Leave alone a test that already failed before the change, unless an

@@ -31,8 +31,9 @@ what the review settled. Step numbers are those of `SKILL.md`.
   Step 5 or Step 6, with its reason. Every part removed from the refactor
   scope in Step 4. Every part of the contract, as a statement that it
   stays. Every *Out of scope* entry of a requested task, restated.
-- *Approach*: one bullet per entry, in order: path and symbol, then the
-  structure after the change.
+- *Approach*: one bullet per entry, in order: every file its Changes
+  section names, a characterization test file and a moved caller included.
+  Each file with its symbol and the structure after the change.
 - *Decisions*: the rules every entry follows, as `refactoring-rules.md`
   states. The conventions from 3a and the test setup block from 3c. The
   rule that a subtask applies one refactoring and gets one commit.
@@ -42,12 +43,15 @@ what the review settled. Step numbers are those of `SKILL.md`.
   command of the measurement record, as `analysis-tools.md` states. The
   `counts` line from Step 5. The baseline: one line per measurement with
   its values, or `skipped` with the reason. The test coverage of every
-  function the entries change. For kind *task*, the identifier or path of
-  the requested task.
+  function the entries change. For request kind *task*, the identifier or
+  path of the requested task.
 - *References*: `None.` Never copy the References of a requested task.
 - *Subtasks*: one line per entry, in order, with its dependencies.
 - *Verification*: the commands from 3b, then the test command of the
-  measurement record, then its measure command over the same paths.
+  measurement record, then its measure command over the same paths. Then
+  the structural check of every entry, which proves its structure after
+  the change. Then one search per part of the contract that an entry
+  touches, which finds its name and signature unchanged.
 
 ## Each subtask
 
@@ -71,7 +75,8 @@ what the review settled. Step numbers are those of `SKILL.md`.
   unchanged code and after the change. The structure after the change, as a
   binary check. The tests that cover the code pass. Every part of the
   contract the change touches keeps its name, signature, and format. No
-  assertion of an existing test changed.
+  assertion of an existing test changed, except by the Replace Assertion
+  with Literal that the subtask names.
 - *Verification*: the one command from Step 6.
 
 ## Characterization tests
@@ -80,26 +85,17 @@ The review names the test cases and the seam in the subtask. The
 implementer writes the tests.
 
 - Put a new seam in a subtask of its own, placed before every entry it
-  serves. Its refactoring is from the safe set, and its default equals the
-  current collaborator. The seam stays in the code after the tests.
+  serves. Its refactoring is one of the seams of Step 5. A Parameterize
+  seam takes a default equal to the current collaborator. The seam stays in
+  the code after the tests.
 - Put a result of the unchanged code that looks wrong under the task's
   *Out of scope*, and keep its test case.
 
 Write these rules into the Context section of every subtask that names a
 characterization test:
-- One behavior per test, with the expected value as a literal from the
-  unchanged code. Never compute the expected value with the same logic as
-  the code under test.
-- Assert the specific outcome: the value, the state, the raised error with
-  its type and message. `does not throw` alone proves nothing.
-- No real network, no real clock, no random values without a fixed seed, no
-  sleeping, no files outside a temporary folder.
-- Each test passes on the unchanged code and fails once when the asserted
-  behavior is broken. The implementer breaks the behavior by hand and
-  restores it. For a `high` risk subtask, name the mutation command instead,
-  as `analysis-tools.md` states.
-- Every test holds at least one assertion.
+- The tests follow the rules of the `writing-unit-tests` skill, which the
+  implementer loads before the first test.
+- For a `high` risk subtask, the mutation command, as `analysis-tools.md`
+  states. The implementer runs it instead of breaking the behavior by hand.
 - The characterization tests stay in the change, as the proof of the
   refactoring and the safety net of the next one.
-- A characterization test changes only in an import, a path, or a symbol
-  name that a subtask moves or renames. Its assertion never changes.

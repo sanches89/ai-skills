@@ -42,11 +42,12 @@ the return block of that form and nothing else:
   Step 3 checks them.
 - `from <caller>: check <draft path>..., notes <notes path>`: Step 3 checks
   the drafts.
-
-`<notes path>` is the file that holds the caller's research notes: the
-facts with their origins, the decisions, and the subtask list in order.
 - `from <caller>: size <draft path>...[, tests <test folders and files>]`:
   Step 4 counts the code lines of each draft.
+
+`<notes path>` is the file that holds the caller's research notes: the
+facts with their origins, the decisions, the subtask list in order, and the
+caller's own writing rules under *Writing rules*.
 
 Return block of `write` and `check`, with one `checks` line per decision
 needed:
@@ -91,8 +92,8 @@ fill the Subtask block into `<draft folder>/subtask-<n>.md`, one file per
 subtask in order. Without `subtasks`, write the single word `None.` in the
 task's Subtasks section.
 
-Apply the writing rules below, then every writing rule of the caller's own
-step. A rule of the caller adds to these and never replaces one.
+Apply the writing rules below, then every rule under *Writing rules* in the
+research notes. A rule of the notes adds to these and never replaces one.
 - Write decisions as facts:
   `Retries use exponential backoff from 500 ms, at most 5 attempts.`, never
   `We decided that...` or `Retries should probably...`.

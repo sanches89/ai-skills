@@ -31,7 +31,8 @@ What each section keeps:
   commit. A refactor job keeps its `R<round>.<n>` number.
 - **Changes**: the *Changes* bullets of every work report, merged: one
   bullet per changed file, also on `blocked`. With more than 10 changed
-  files, one bullet per folder: its path and what changed in it.
+  files, one bullet per folder: its path and what changed in it. Mark a
+  removed file or symbol `(deleted)`.
 - **Deviations** and **Affects other work**: the bullets of the work
   reports that matter outside the target. Drop a bullet about a subtask
   this run has since worked, and a fact the plan carried to a later job.
@@ -57,8 +58,8 @@ What the report leaves out:
 **Target:** <item identifier and URL | file path>
 **Branch:** <branch> from <base commit> | none: no git repository
 **Worktree:** <path> | removed | none
-**Jobs:** <number> done, <number> skipped, <number> blocked, <number> not
-started
+**Jobs:** <number> done, <number> skipped, <number> blocked, <number>
+pending
 **Refactor rounds:** <number>
 **Verification:** `<verification command>` | <number> steps: pass | fail |
 not run
@@ -67,7 +68,7 @@ not run
 ## Jobs
 
 - <subtask number or identifier | R<round>.<n>> <title>: done `<hash>` |
-  skipped | blocked | not started
+  skipped | blocked | pending
 - <...>
 
 ## Changes
@@ -75,6 +76,7 @@ not run
 - `<path/to/file.ext>` (<symbol>): <behavior after the change. Example:
   PaymentService.send retries according to RetryPolicy.>
 - `<path/to/new-file.ext>` (new): <what it holds.>
+- `<path/to/old-file.ext>` (deleted): <what it held.>
 - <...>
 
 ## Deviations

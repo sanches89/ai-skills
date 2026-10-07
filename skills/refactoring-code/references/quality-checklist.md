@@ -38,12 +38,13 @@ and this list checks the review.
       names a test or a test framework.
 - [ ] A contract change the request names is three subtasks: add the new
       form, move the callers, remove the old form.
-- [ ] Remove Dead Code and Rename subtasks come before every other kind.
+- [ ] Remove Dead Code and Rename subtasks come before every other
+      refactoring kind.
 - [ ] At most 12 subtasks. Every finding past the cut is under *Out of
       scope* as `next batch`, with its location and smell.
 - [ ] Every subtask in a test file applies a finding in that test file.
-- [ ] A seam subtask gives the parameter a default equal to the current
-      collaborator, and no caller changes in it.
+- [ ] A Parameterize seam subtask gives the parameter a default equal to
+      the current collaborator. No caller changes in a seam subtask.
 
 ## Measurements
 

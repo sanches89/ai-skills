@@ -17,7 +17,7 @@
     {
       "id": 2,
       "prompt": "Pick up tasks/009-cli-flags/task.md. Note: this repo has no test framework installed.",
-      "expected_output": "Invokes writing-unit-tests with 'from implementing-tasks: setup for' the paths that change, which returns 'test setup: none' because the project has no test command and no test file. Writes no test and installs no test framework. Implements the Approach section, proves each criterion with a manual step the agent performs itself, and lists the missing test setup under Affects other work in the work report. Tests line reads 'none: no test setup'. Writes the private notes, the baseline, and the criteria checklist to files in the scratch directory.",
+      "expected_output": "Invokes writing-unit-tests with 'from implementing-tasks: setup for' the paths that change, which returns 'test setup: none: <reason>' because the project has no test command and no test file. Writes no test and installs no test framework. Implements the Approach section, proves each criterion with a manual step the agent performs itself, and lists the missing test setup under Affects other work in the work report. Tests line reads 'none: no test setup'. Writes the private notes, the baseline, and the criteria checklist to files in the scratch directory.",
       "files": [
         "evals/files/cli-flags/input.txt",
         "evals/files/cli-flags/package.json",

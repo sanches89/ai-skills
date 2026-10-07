@@ -196,12 +196,7 @@ Verification section proves the whole task after the last subtask.
 
 ### Step 5: Write
 
-Invoke the `formatting-tasks` skill (in Claude Code, with the `Skill` tool)
-with the invocation text `from breaking-down-tasks: write <scratch-dir>/draft,
-notes <scratch-dir>/notes.md, subtasks <count>`.
-`<count>` is the number of subtasks. It fills the drafts
-`<scratch-dir>/draft/task.md` and `<scratch-dir>/draft/subtask-<n>.md` from
-the research notes. Follow these rules of this skill too:
+Add these rules to the research notes, under *Writing rules*:
 - **The task contains everything.** Place every fact, requirement, and
   success criterion of the original task in the matching section. Add what
   research and the interview settled, and the ordered subtask list.
@@ -214,6 +209,13 @@ the research notes. Follow these rules of this skill too:
 - Make every line serve the original task or an *Out of scope* entry. Write
   no remark or question from the conversation on another topic, and no
   mention of another task to create.
+
+Then invoke the `formatting-tasks` skill (in Claude Code, with the `Skill`
+tool) with the invocation text `from breaking-down-tasks: write
+<scratch-dir>/draft, notes <scratch-dir>/notes.md, subtasks <count>`.
+`<count>` is the number of subtasks. It fills the drafts
+`<scratch-dir>/draft/task.md` and `<scratch-dir>/draft/subtask-<n>.md` from
+the research notes.
 
 ### Step 6: Quality check
 

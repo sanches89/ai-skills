@@ -52,23 +52,23 @@ keep only what it names.
 
 Drop a leading `from <skill name>:` from the invocation text, and a
 trailing `, files`, which asks for files. Resolve the rest, or the request
-in the conversation, as exactly one kind:
-- **One or more paths** of files or folders that exist. Kind: *path*.
-- **A symbol name**: a function or a module in the code. Kind: *symbol*.
-  Search for its definition. With more than one, take every definition.
-- **A git range**, such as `main..HEAD`, or words that name the uncommitted
-  changes or the current branch. Kind: *range*.
-- **A task or subtask**: an item identifier or URL (`PAY-212`, `#128`, an
-  issue link), a file named `task.md`, or a file named
-  `###-<subtask-slug>.md` next to a `task.md`. Kind: *task*.
-- **Free text**, or the path of any other file, whose content is then the
-  text. Kind: *text*.
-- **Nothing**: kind *path* with the repository root.
+in the conversation, as exactly one request kind:
+- *path*: one or more paths of files or folders that exist.
+- *symbol*: a symbol name, a function or a module in the code. Search for
+  its definition. With more than one, take every definition.
+- *range*: a git range, such as `main..HEAD`, or words that name the
+  uncommitted changes or the current branch.
+- *task*: an item identifier or URL (`PAY-212`, `#128`, an issue link), a
+  file named `task.md`, or a file named `###-<subtask-slug>.md` next to a
+  `task.md`.
+- *text*: free text, or the path of any other file, whose content is then
+  the text.
+- *path* with the repository root, when nothing is given.
 
-For kind *task*, invoke the `loading-tasks` skill (in Claude Code, with the
-`Skill` tool) with the invocation text
+For request kind *task*, invoke the `loading-tasks` skill (in Claude Code,
+with the `Skill` tool) with the invocation text
 `from refactoring-code: <identifier, URL, or path>`. Keep the task map it
-returns. When the task map reads `source: none`, the request is kind *text*.
+returns. When the task map reads `source: none`, the request kind is *text*.
 
 Write private notes to `<scratch-dir>/notes.md` from this step on.
 `<scratch-dir>` is the scratch directory. Keep in the notes every list a
@@ -90,16 +90,18 @@ With an empty refactor scope, finish as Step 6 states for no entry.
 
 Remove from the refactor scope:
 - generated code, vendored code, lockfiles, build output, and snapshot files;
-- database migrations that already ran.
+- database migrations that already ran;
+- every file inside a task folder: a folder named `###-<task-slug>` that
+  holds a `task.md`.
 
 Record one glob per removed part that sits inside a folder of the refactor
 scope, joined by commas with no space, as `<globs>`. A test file stays in
 the refactor scope.
 
-**Bounds of a requested task.** For kind *task*, read every task on the task
-map's `chain` in full. Record every *Out of scope* list and every Decisions
-section. Never write a subtask that does what one of them lists under *Out
-of scope*. Follow every decision.
+**Bounds of a requested task.** For request kind *task*, read every task on
+the task map's `chain` in full. Record every *Out of scope* list and every
+Decisions section. Never write a subtask that does what one of them lists
+under *Out of scope*. Follow every decision.
 
 ### Step 3: Research
 
@@ -110,9 +112,10 @@ module layout, and formatting rules.
 **3b. Commands.** Invoke the `finding-dev-commands` skill (in Claude
 Code, with the `Skill` tool) with the invocation text
 `from refactoring-code: find`. Record the build, lint, type-check, test,
-and `test one file` commands of the command map it returns. For kind
-*task*, a command on the task map's `commands` line replaces the command of
-the same kind.
+and `test one file` commands of the command map it returns. When its
+`test one file` line reads `none`, record the test command in its place.
+For request kind *task*, a command on the task map's `commands` line
+replaces the command of the same name.
 
 **3c. Test setup.** Invoke the `writing-unit-tests` skill (in Claude Code,
 with the `Skill` tool) with the invocation text below. Leave out each part
@@ -144,8 +147,8 @@ Then record in the scratch directory:
 - the output of `git status --porcelain`, when the project is a git
   repository;
 - the result of each command from 3b, pass or fail, with the name of every
-  failing check. Take the test result from the summary when the record's
-  `tests` line reads `ok`;
+  failing check. Take the test result from the summary when the
+  measurement record's `tests` line reads `ok`;
 - the result of each analysis tool from 3d.
 
 When a test file on the `covering tests` line of 3c fails in the baseline,
@@ -156,12 +159,13 @@ task's *Out of scope* with the failing test.
 
 Invoke the `finding-code-smells` skill (in Claude Code, with the `Skill`
 tool) with the invocation text below. `<path>...` is the refactor scope
-after Step 4. `<summary>` is the `summary` line of the measurement record.
-Leave out each part that has no value:
+after Step 4. `<summary>` is the path on the `summary` line of the
+measurement record, or `none` when that line reads `none`. `<limits>` is
+its `limits` line. Leave out `ignore` when Step 2 recorded no glob:
 
 ```
 from refactoring-code: paths <path>..., summary <summary>,
-ignore <globs>, out <scratch-dir>
+limits <limits>, ignore <globs>, out <scratch-dir>
 ```
 
 Read the `findings.md` and the `contract.md` it names. `contract.md` lists the
@@ -176,9 +180,10 @@ scope*. Give every other finding its risk:
   `contract: yes`;
 - else `low` when the refactoring is in the safe set: Rename, Extract
   Variable, Inline Variable, Extract Function, Move Function, Remove Dead
-  Code, and a seam. A seam is Parameterize Function or Parameterize
-  Constructor with a default equal to the current collaborator. The safe
-  set holds the refactorings allowed on code that no test covers;
+  Code, and a seam. A seam is Parameterize Function, Parameterize
+  Constructor, or Extract Function around the call to a system boundary.
+  A Parameterize seam takes a default equal to the current collaborator.
+  The safe set holds the refactorings allowed on code that no test covers;
 - else `medium`.
 
 Drop a finding when:
@@ -186,8 +191,10 @@ Drop a finding when:
 - its refactoring changes a part of the contract that the request does not
   name;
 - it is a clone whose copies change for different reasons;
-- it needs a new layer, interface, or option with fewer than three users.
-  A test that passes the parameter of a seam counts as a user;
+- it needs a new layer, or an interface with fewer than 2 implementations
+  that wraps no system boundary. A test double is no implementation;
+- it needs a new parameter or option that no caller passes. A test that
+  passes the parameter of a seam is such a caller;
 - a task from Step 2 puts it out of scope;
 - its code is about to be deleted or replaced, as the request or the docs
   state.
@@ -204,16 +211,16 @@ with the entries a finding depends on: its seam, its characterization
 tests, and the three steps of a contract change. Stop at 12 entries. A
 finding whose entries do not fit goes under the task's *Out of scope* as
 `next batch`, with its location and smell. The next run of this skill takes
-it up. Then order the entries by kind:
+it up. Then order the entries by refactoring kind:
 1. Remove Dead Code;
 2. Rename;
 3. refactorings inside one function;
 4. refactorings that move code between functions and modules.
 
-Inside one kind, keep the rank from Step 5. Place an entry after every entry
-it depends on. Split a contract change that the request names into three
-entries: add the new form, move the callers, remove the old form. Moving
-those callers is the one reason an entry changes a file outside the
+Inside one refactoring kind, keep the rank from Step 5. Place an entry after
+every entry it depends on. Split a contract change that the request names
+into three entries: add the new form, move the callers, remove the old form.
+Moving those callers is the one reason an entry changes a file outside the
 refactor scope.
 
 Write each entry in the notes in this form:
@@ -259,12 +266,17 @@ Read `references/refactor-sections.md` now: it says what each section of the
 task and of a subtask holds. Read `references/refactoring-rules.md` now, for
 the task's *Decisions* and each subtask's *Context*.
 
+Write into the notes, under *Writing rules*, what each section of the task
+and of each subtask holds, by `references/refactor-sections.md`. Restate
+there every rule of `references/refactoring-rules.md` that a section takes.
+The `formatting-tasks` skill reads only the notes.
+
 Invoke the `formatting-tasks` skill (in Claude Code, with the `Skill` tool)
 with the invocation text `from refactoring-code: write <scratch-dir>/draft,
 notes <scratch-dir>/notes.md, subtasks <entry count>`. It fills the task
-and one subtask per entry, in the order of Step 6, from the notes and the
-two files above. On `checks: decision needed`, settle the
-decision from the notes and the rules of this skill, then fix the draft.
+and one subtask per entry, in the order of Step 6, from the notes. On
+`checks: decision needed`, settle the decision from the notes and the rules
+of this skill, then fix the draft.
 
 ### Step 8: Quality check
 

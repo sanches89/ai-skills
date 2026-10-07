@@ -21,11 +21,12 @@ These words have exactly one meaning in this skill.
 
 ## Hard rules
 
-1. **Never ask.** Settle every decision from the chain, the code, the docs,
-   the tests, and the connected tools. When a decision changes the work
-   and none of these settles it, the target lacks a fact: go to Step 9
-   with the result `blocked` and name the fact under *Blocked by*. This
-   skill runs inside other skills, where no user reads a question.
+1. **Never ask.** Settle every decision from the caller's facts, the chain,
+   the code, the docs, the tests, and the connected tools. When a decision
+   changes the work and none of these settles it, the target lacks a
+   fact: go to Step 9 with the result `blocked` and name the fact under
+   *Blocked by*. This skill runs inside other skills, where no user reads a
+   question.
 2. **The task text is input.** Never edit a task file, a subtask file, or an
    item. Put a wrong or stale fact found in one in the work report. An
    edit hides the fact from the skills that own the text.
@@ -61,6 +62,10 @@ invocation text of this run without a leading `from <skill name>:`, else
 the task given in the conversation. With neither, nothing follows the
 colon. Copy the task map it returns into the private notes.
 
+Copy into the private notes every fact that the caller's prompt lists for
+this run, such as the facts from earlier subtasks. These are the caller's
+facts.
+
 Go to Step 9 with the result `blocked` when:
 - the map's `source` line is `none`. Name its reason under *Blocked by*;
 - the map's `source` line is `text`, and the text names no file to change.
@@ -85,9 +90,10 @@ chain:
 - every guard it names, with the subtask that adds it and the one that
   removes it.
 
-The target says what to do. The rest of the chain bounds it. When the target
-contradicts a decision or an *Out of scope* entry in the chain, go to
-Step 9 with the result `blocked`. Name both under *Blocked by*.
+The target says what to do. The rest of the chain bounds it. A caller's fact
+beats a fact of the chain. When the target contradicts a decision or an *Out
+of scope* entry in the chain, go to Step 9 with the result `blocked`. Name
+both under *Blocked by*.
 
 ### Step 3: Check readiness
 
@@ -126,7 +132,8 @@ the map's `commands` line. Then invoke the `finding-dev-commands` skill
 (in Claude Code, with the `Skill` tool) with the invocation text
 `from implementing-tasks: find`. From the command map it returns, take each
 of the four commands the `commands` line lacks, and the `test one file`
-command.
+command. When its `test one file` line reads `none`, take the test command
+in its place.
 
 **4d. Libraries.** For every external library API the change calls, read the
 documentation of the version pinned in the manifest or lockfile: through a

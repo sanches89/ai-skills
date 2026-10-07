@@ -27,7 +27,8 @@ What each section keeps:
   Count each case the test runner reports, a generated case included.
 - **Changes**: one bullet per changed file, also on `blocked`: path, symbol,
   and behavior after the change. With more than 10 changed files, one
-  bullet per folder: its path and what changed in it.
+  bullet per folder: its path and what changed in it. Mark a removed file
+  or symbol `(deleted)`.
 - **Deviations**: each difference between the target's text and the
   implementation: what the target says, what was done, and why.
 - **Affects other work**: only these kinds of fact:
@@ -66,6 +67,7 @@ What the report leaves out:
 - `<path/to/file.ext>` (<symbol>): <behavior after the change. Example:
   PaymentService.send retries according to RetryPolicy.>
 - `<path/to/new-file.ext>` (new): <what it holds.>
+- `<path/to/old-file.ext>` (deleted): <what it held.>
 - <...>
 
 ## Deviations

@@ -134,11 +134,7 @@ until the user confirms:
 
 ### Step 5: Write the task
 
-Invoke the `formatting-tasks` skill (in Claude Code, with the `Skill` tool)
-with the invocation text
-`from creating-tasks: write <scratch-dir>/draft, notes <scratch-dir>/notes.md`.
-It fills the draft `<scratch-dir>/draft/task.md` from the research notes.
-Follow these rules of this skill too:
+Add these rules to the research notes, under *Writing rules*:
 - In *Approach*, name every component that changes, with the path and symbol
   verified in Step 2, and its behavior after the change.
 - In *References*, list every external source of Step 2c.
@@ -146,6 +142,11 @@ Follow these rules of this skill too:
 - Make every line serve the restated idea or an *Out of scope* entry. Write
   no remark or question from the conversation on another topic, and no
   mention of another task to create.
+
+Then invoke the `formatting-tasks` skill (in Claude Code, with the `Skill`
+tool) with the invocation text
+`from creating-tasks: write <scratch-dir>/draft, notes <scratch-dir>/notes.md`.
+It fills the draft `<scratch-dir>/draft/task.md` from the research notes.
 
 ### Step 6: Quality check
 
