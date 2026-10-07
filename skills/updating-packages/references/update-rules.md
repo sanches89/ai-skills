@@ -1,7 +1,7 @@
 # Update rules
 
 Sections: Range style; Reading the Node version; Constraints; Left alone;
-Groups; The ladder; Bisection; Checkpoint; Hold reasons; Release notes.
+Groups; The ladder; Bisection; Checkpoint; Park reasons; Release notes.
 
 Read this file in Step 2c. Steps 2 to 7 follow it.
 
@@ -40,7 +40,7 @@ Read each Node version source of Step 2c as follows:
 Check every candidate version against the constraints in this order. When a
 constraint refuses a candidate version, replace it with the highest rung of
 the ladder, defined below, that every constraint allows. When no rung is
-allowed, hold the package.
+allowed, park the package.
 
 1. **Node version.** The `engines.node` field of the candidate version, from
    the facts file, must allow `<node-version>`. Run:
@@ -63,24 +63,24 @@ allowed, hold the package.
    ```
 
    When the current major of `@types/node` is above the major of
-   `<node-version>`, hold the package with the reason `@types/node major`.
-4. **Overrides.** Hold a package named in `overrides`, `resolutions`, or
+   `<node-version>`, park the package with the reason `@types/node major`.
+4. **Overrides.** Park a package named in `overrides`, `resolutions`, or
    `pnpm.overrides` of the root manifest, with the reason `override`.
-5. **Pins.** Step 2e records the held packages and the capped packages from
+5. **Pins.** Step 2e records the parked packages and the capped packages from
    these files:
-   - Renovate: hold a package in `ignoreDeps` with the reason
-     `pinned by <file>`. Hold a package matched by a `packageRules` item
+   - Renovate: park a package in `ignoreDeps` with the reason
+     `pinned by <file>`. Park a package matched by a `packageRules` item
      with `enabled: false` with the same reason. Cap a package matched by a
      `packageRules` item with `allowedVersions` at that range. Exclude a
      manifest under `ignorePaths` from the run;
-   - Dependabot: hold a package named by an `ignore` item without
+   - Dependabot: park a package named by an `ignore` item without
      `update-types` with the reason `pinned by <file>`. Cap a package named
      by an `ignore` item with `version-update:semver-major` at level
      `minor`. Cap a package named by an `ignore` item with both
      `version-update:semver-major` and `version-update:semver-minor` at
      level `patch`;
    - `.ncurc*`: npm-check-updates reads the file on its own. Keep every rule
-     that the file applies. Hold a package that the file rejects with the
+     of the file. Park a package that the file rejects with the
      reason `pinned by <file>`.
    Lower a capped package to the highest candidate version that its cap
    allows.
@@ -150,26 +150,27 @@ The first rung of a group moves every package of the group one major line
 down from its candidate version. Each later rung moves every package one
 major line down from the previous rung. A package of the group with no major
 line left keeps the range of Step 6a. Restore the checkpoint before each
-apply of a rung, and again when the last rung's apply is broken.
+trial of a rung, and again when the last rung's trial is broken.
 
 ## Bisection
 
 Bisection finds the units that break a failing batch. Its unit is a
 package in Step 6a, a group in Step 6b, and a plan entry in Step 7.
 1. Split the batch into two halves by plan order.
-2. Restore the checkpoint. Apply the first half.
-3. Restore the checkpoint. Apply the second half.
-4. For a half whose apply is clean, mark every unit of the half as accepted.
-5. For a half whose apply is broken and that holds one unit, that unit is
-   breaking. In Step 6a and in Step 7, hold that unit. In Step 6b, walk its
-   ladder.
-6. For a half whose apply is broken and that holds more than one unit,
-   bisect that half from rule 1.
-7. In Step 6a, when every unit is settled, restore the checkpoint. Apply
-   every accepted unit as one batch. In Step 6b, Step 6c does this instead.
-8. When the apply of rule 7 is broken, apply the accepted units one at a
-   time in plan order. After a clean apply, replace the checkpoint. After a
-   broken one, restore the checkpoint. Then hold the unit.
+2. Restore the checkpoint. Run a trial of the first half.
+3. Restore the checkpoint. Run a trial of the second half.
+4. For a half whose trial is sound, mark every unit of the half as accepted.
+5. For a half of one unit whose trial is broken, that unit is breaking. In
+   Step 6a and in Step 7, park that unit. In Step 6b, walk its ladder.
+6. For a half of more than one unit whose trial is broken, bisect that half
+   from rule 1.
+7. In Step 6a, when every unit is settled, restore the checkpoint. Run one
+   trial of every accepted unit as one batch. In Step 6b, Step 6c does this
+   instead.
+8. When the trial of rule 7 is broken, take the accepted units one at a
+   time in plan order and run a trial of each. After a sound trial, replace
+   the checkpoint. After a broken one, restore the checkpoint. Then park the
+   unit.
 
 ## Checkpoint
 
@@ -183,9 +184,9 @@ package in Step 6a, a group in Step 6b, and a plan entry in Step 7.
   1. copy every file of the checkpoint back to its path;
   2. run the frozen install.
 
-## Hold reasons
+## Park reasons
 
-Write a hold reason as exactly the phrase below that fits, in the plan and
+Write a park reason as exactly the phrase below that fits, in the plan and
 in the report:
 - `engines.node <range>`: the range that refuses `<node-version>`;
 - `peer of <name>`: the package whose peer range caps the candidate version;

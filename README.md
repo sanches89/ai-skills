@@ -174,8 +174,8 @@ through another skill:
 - analyzing-code and finding-code-smells: measuring-code,
   finding-dev-commands;
 - loading-tasks and saving-tasks: finding-trackers;
-- measuring-code, writing-clean-code, and writing-unit-tests:
-  finding-dev-commands.
+- measuring-code, writing-clean-code, writing-unit-tests, and
+  updating-packages: finding-dev-commands.
 
 The other skills require none. The skills are also listed on
 [skills.sh](https://skills.sh/sanches89/ai-skills).
@@ -183,11 +183,10 @@ The other skills require none. The skills are also listed on
 Without the CLI, clone this repo into your agent's skills folder (e.g.
 `~/.claude/skills/`).
 
-Two skills run only when you ask for them by name: `/analyzing-code` and
-`/updating-packages`. Their `disable-model-invocation: true` frontmatter field
-stops Claude Code, Cursor, and Copilot from starting them on their own. Their
-`agents/openai.yaml` does the same in Codex, and their descriptions state the
-rule for every other agent.
+One skill runs only when you ask for it by name: `/updating-packages`. Its
+`disable-model-invocation: true` frontmatter field stops Claude Code, Cursor,
+and Copilot from starting it on its own. Its `agents/openai.yaml` does the
+same in Codex, and its description states the rule for every other agent.
 
 ## Contributing
 

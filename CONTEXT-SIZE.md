@@ -24,12 +24,12 @@ counts one tier.
 ## Summary
 
 Tokens per skill and tier. With all 19 skills installed, the startup
-tier costs 1,407 tokens per session. Using one skill then adds its
+tier costs 1,400 tokens per session. Using one skill then adds its
 `SKILL.md` and the references it reads.
 
 | Skill                | Startup | SKILL.md | References | Scripts |   Total |
 |----------------------|--------:|---------:|-----------:|--------:|--------:|
-| analyzing-code       |      83 |    1,308 |      2,905 |       0 |   4,996 |
+| analyzing-code       |      76 |    1,301 |      2,905 |       0 |   4,989 |
 | breaking-down-tasks  |      74 |    3,191 |        343 |       0 |   4,581 |
 | creating-tasks       |      67 |    2,223 |        143 |       0 |   3,317 |
 | disambiguating-text  |      72 |    2,109 |      1,819 |       0 |   4,738 |
@@ -48,7 +48,7 @@ tier costs 1,407 tokens per session. Using one skill then adds its
 | writing-clean-code   |      75 |    2,846 |          0 |       0 |   3,580 |
 | writing-glossaries   |      79 |    3,001 |      1,138 |       0 |   5,067 |
 | writing-unit-tests   |      65 |    3,378 |          0 |       0 |   4,166 |
-| **All skills**       |   1,407 |   50,017 |     34,063 |  10,556 | 114,214 |
+| **All skills**       |   1,400 |   50,010 |     34,063 |  10,556 | 114,207 |
 
 ## Files per skill
 
@@ -58,13 +58,13 @@ Lines, words, and tokens of every file, grouped by skill.
 
 | File                                        | Lines | Words | Tokens |
 |---------------------------------------------|------:|------:|-------:|
-| `SKILL.md`                                  |   120 |   869 |  1,308 |
+| `SKILL.md`                                  |   120 |   862 |  1,301 |
 | `evals/evals.json`                          |    23 |   312 |    500 |
 | `evals/trigger-queries.json`                |    12 |   161 |    283 |
 | `references/analysis-rules.md`              |   135 |   980 |  1,378 |
 | `references/measurement-report-template.md` |    86 |   558 |    953 |
 | `references/quality-checklist.md`           |    56 |   341 |    574 |
-| **Total**                                   |   432 | 3,221 |  4,996 |
+| **Total**                                   |   432 | 3,214 |  4,989 |
 
 ### breaking-down-tasks
 

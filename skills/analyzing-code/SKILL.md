@@ -1,10 +1,9 @@
 ---
 name: analyzing-code
-description: Measures the duplication, complexity, hotspots, tests, coverage, and mutation score of one version of the code, the working tree or one branch, and reports ranked findings, changing no code. Use only when the user asks for it by name or asks for the code measured or analyzed, never to compare two versions or answer a general code question.
+description: Measures the duplication, complexity, hotspots, tests, coverage, and mutation score of the working tree or one branch, and reports ranked findings, changing no code. Use when the user wants the code or a branch measured, analyzed, or ranked by hotspots, coverage, or mutation score, never to compare two versions or answer a general code question.
 license: MIT
 compatibility: Requires the measuring-code skill. Needs git, run inside a git repository.
 argument-hint: "[branch]"
-disable-model-invocation: true
 ---
 
 # Analyzing code

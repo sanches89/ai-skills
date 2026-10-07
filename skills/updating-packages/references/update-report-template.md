@@ -17,7 +17,7 @@ Rules for filling:
 Every dependency with a rewritable range has exactly one state:
 - **updated**: its range now names its candidate version;
 - **lowered**: its range changed, to a rung below its candidate version;
-- **kept**: its range is the current range, and the run recorded a hold
+- **kept**: its range is the current range, and the run recorded a park
   reason for it;
 - **up to date**: it has no candidate version.
 
@@ -40,10 +40,10 @@ What each section keeps:
   dependency, naming each with its current range and its new range. With
   more than 12 in one manifest, name those with bump kind `major` and count
   the others.
-- **Constrained**: one bullet per kept or lowered dependency whose hold
+- **Constrained**: one bullet per kept or lowered dependency whose park
   reason is `engines.node`, `peer of`, `@types/node major`, `override`,
   `pinned by`, `cooldown`, or `deprecated`.
-- **Needs migration**: one bullet per kept or lowered dependency whose hold
+- **Needs migration**: one bullet per kept or lowered dependency whose park
   reason is `check:` or `verify:`, with the release notes link from
   `update-rules.md`.
 - **Deprecated**: one bullet per dependency whose current version, or whose
@@ -86,13 +86,13 @@ major), <number> lowered, <number> kept, <number> up to date
 ## Constrained
 
 - <name> in `<manifest path>`: kept <range> | set <range>, candidate
-  <version>. <hold reason>
+  <version>. <park reason>
 - <... or the single word: None.>
 
 ## Needs migration
 
 - <name> in `<manifest path>`: kept <range> | set <range>, candidate
-  <version>. <hold reason>. <release notes link>
+  <version>. <park reason>. <release notes link>
 - <... or the single word: None.>
 
 ## Deprecated

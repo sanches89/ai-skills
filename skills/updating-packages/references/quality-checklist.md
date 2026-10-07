@@ -17,7 +17,7 @@ failure blocks delivery. Fix it, then run the whole checklist again.
 - [ ] No range names a prerelease version, unless its current range names
       one, a deprecated version, or a version inside the cooldown.
 - [ ] The `engines.node` field of every new version allows `<node-version>`.
-      The `@types/node` major equals its major, or the package is held.
+      The `@types/node` major equals its major, or the package is parked.
 - [ ] Every package that Step 2e records keeps its pin or its cap.
 
 ## Report
@@ -29,7 +29,7 @@ failure blocks delivery. Fix it, then run the whole checklist again.
       definitions, and the *Packages* counts match.
 - [ ] Every updated or lowered dependency is under *Updated*. Every kept or
       lowered dependency is under *Constrained* or *Needs migration*.
-- [ ] Every hold reason is a phrase from `update-rules.md`. Every link under
+- [ ] Every park reason is a phrase from `update-rules.md`. Every link under
       *Needs migration* comes from its *Release notes* section.
 - [ ] No command output, logs, or JSON listings. Every manifest path and
       package name in the report exists in the working tree.

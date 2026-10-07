@@ -1,8 +1,8 @@
 ---
 name: updating-packages
-description: Updates the npm dependencies of a package or monorepo to the highest versions the project's own checks accept, changing only manifests and lockfiles. Use only when the user asks for it by name or asks for packages updated, upgraded, or bumped, never for an install error or a question about one version.
+description: Updates the npm dependencies of a package or monorepo to the highest versions the project's own checks accept, changing only manifests and lockfiles. Use only when the user names this skill to update, upgrade, or bump packages, never for an install error or a question about one version.
 license: MIT
-compatibility: Requires Node.js 22 or newer with npx, git, network access to the package registry, and the project's package manager (npm, pnpm, yarn, or bun) on PATH. npx fetches npm-check-updates and semver into its own cache on the first run.
+compatibility: Requires the finding-dev-commands skill. Requires Node.js 22 or newer with npx, git, network access to the package registry, and the project's package manager (npm, pnpm, yarn, or bun) on PATH. npx fetches npm-check-updates and semver into its own cache on the first run.
 argument-hint: "[path...] [package name...] [latest | minor | patch] [cooldown <days>]"
 disable-model-invocation: true
 ---
@@ -21,17 +21,17 @@ These words have exactly one meaning in this skill.
   one install of that lockfile fills. A workspace root and its members share
   one install root.
 - **Root manifest**: the `package.json` in the folder of an install root.
-- **Apply**: set every range of a batch of packages, then run the plain
+- **Trial**: set every range of a batch of packages, then run the plain
   install. Then run the check commands in the baseline order up to the first
   failure.
-- **Clean**: an apply that meets three conditions. The plain install
+- **Sound**: a trial that meets three conditions. The plain install
   succeeds. Every failing check command fails in the baseline results too.
   The peer report shows no problem beyond the baseline peer report. Every
-  other apply is broken.
-- **Accepted**: the state of a plan entry, a group, or a rung whose apply is
-  clean.
-- **Hold**: leave the range that a package has at that moment, recording a
-  hold reason for the package.
+  other trial is broken.
+- **Accepted**: the state of a plan entry, a group, or a rung whose trial is
+  sound.
+- **Park**: leave the range that a package has at that moment, recording a
+  park reason for the package.
 
 ## Hard rules
 
@@ -46,8 +46,8 @@ These words have exactly one meaning in this skill.
    lockfiles, the docs, and the registry first. The registry settles a
    version better than a recollection.
 4. **Never assume.** When a decision changes the work and research cannot
-   settle it, ask the user. An assumed cap or hold leaves a version the
-   user did not choose.
+   settle it, ask the user. An assumed cap or parked package leaves a
+   version the user did not choose.
 5. **No outward actions.** Commit, push, or open a pull request only when
    the request says so. Then make one commit per accepted plan entry, in
    the project's branch and commit conventions. One commit per plan entry
@@ -115,10 +115,13 @@ each manifest one kind:
 - every other manifest is an orphan manifest. Step 6 sets its ranges without
   an install. The update report lists it under *Unverified*.
 
-Record the package manager and version of each install root by the
-*Detection* section of `package-managers.md`. When the package manager on
-PATH has a different major, follow its *Version* section. Every later
-install of that install root runs with that package manager, never another.
+For each install root, invoke the `finding-dev-commands` skill (in Claude
+Code, with the `Skill` tool) with the invocation text
+`from updating-packages: find in <install root>`. Record the package manager,
+its version, and the frozen install by the *Package manager* section of
+`package-managers.md`. When the package manager on PATH has a different
+major, follow its *Version* section. Every later install of that install
+root runs with that package manager, never another.
 
 **2c. Node version.** Read `references/update-rules.md` now. Take the first
 Node version source that exists, in this order:
@@ -133,7 +136,8 @@ Record the version as `<node-version>`, with its Node version source.
 
 **2d. Check commands.** Record the check commands of each install root, in
 this order:
-1. the frozen install and the plain install from `package-managers.md`;
+1. the frozen install of Step 2b, then the plain install from
+   `package-managers.md`;
 2. each `scripts` entry of the root manifest named `typecheck`,
    `type-check`, `check-types`, `lint`, `build`, or `test`;
 3. every other `scripts` entry of the root manifest that a workflow file
@@ -149,7 +153,7 @@ install-only root.
 Read the `overrides`, `resolutions`, and `pnpm.overrides` fields of every
 root manifest. Record two lists, as `update-rules.md` says under *Pins* and
 *Overrides*:
-- the held packages, each with its hold reason;
+- the parked packages, each with its park reason;
 - the capped packages, each with its cap: a version range or a level.
 
 ### Step 3: Baseline
@@ -181,15 +185,15 @@ Run in each install root, and in the folder of each orphan manifest:
 npx --yes npm-check-updates@23 --workspaces --root \
   --packageManager <package-manager> --target <level> --cooldown <days> \
   --no-deprecated --peer --dep prod,dev,optional \
-  --reject '<member names>,@types/node,<held package names>' \
+  --reject '<member names>,@types/node,<parked package names>' \
   --filter '<package names>' --jsonUpgraded \
   > <scratch-dir>/<root>-latest.json
 ```
 
 Drop `--workspaces --root` for a standalone install root and for an orphan
 manifest. Drop `--peer` for an orphan manifest. Drop `--filter` when the
-request names no package. `<held package names>` are the held packages of
-Step 2e. The output maps each manifest path to the dependencies with a
+request names no package. `<parked package names>` are the parked packages
+of Step 2e. The output maps each manifest path to the dependencies with a
 higher version, each with its new range in the manifest's own style. Remove
 from it every range that *Left alone* of `update-rules.md` names. Record
 each range and field under *Left alone*, with its kind, for the update
@@ -215,8 +219,8 @@ done < <scratch-dir>/<root>-specs.txt > <scratch-dir>/<root>-facts.tsv
 ```
 
 Check each candidate version against the constraints of `update-rules.md`,
-in its order. Lower or hold a refused candidate version as its *Constraints*
-section says. Then add
+in its order. Lower a refused candidate version, or park its package, as
+the *Constraints* section says. Then add
 `@types/node` as a candidate package in every manifest that has it, with the
 version that constraint 3 of `update-rules.md` gives. Record per candidate
 package:
@@ -232,13 +236,13 @@ package:
 
 Build the plan entries of each install root:
 1. one plan entry *minor and patch*, with every candidate package of
-   `<root>-minor.json` that Step 4 did not hold;
+   `<root>-minor.json` that Step 4 did not park;
 2. one plan entry per group, from the candidate packages of
    `<root>-latest.json` with bump kind `major`. `update-rules.md` defines a
    group under *Groups*.
 
 Then build one plan entry *orphan* per orphan manifest, with every candidate
-package of its `<root>-latest.json` that Step 4 did not hold.
+package of its `<root>-latest.json` that Step 4 did not park.
 
 Order the plan entries:
 1. the *minor and patch* plan entry of each install root;
@@ -259,7 +263,7 @@ Show in chat:
   `<node-version>`;
 - the check commands;
 - the plan entries;
-- the packages held by a constraint, each with its hold reason;
+- the packages a constraint parked, each with its park reason;
 - the *Left alone* list.
 
 Then ask one question with three options: approve every plan entry, approve
@@ -270,10 +274,10 @@ question until the user approves.
 With no candidate package, go to Step 8 with the result `done` and zero plan
 entries.
 
-### Step 6: Apply the update plan
+### Step 6: Run the update plan
 
-Work one install root at a time, in plan order. A batch is a list of
-packages applied together: a plan entry, a half of one, or a group at one
+Work one install root at a time, in plan order. A batch is the list of
+packages that one trial sets: a plan entry, a half of one, or a group at one
 rung. Set the ranges of a batch with one loop:
 
 ```bash
@@ -285,35 +289,36 @@ done < <scratch-dir>/<root>-<batch>.tsv
 A non-zero exit of the script stops the loop. Fix the TSV line that failed,
 then run the loop again: the script leaves a range that already equals its
 new value as it is. Never repair a fail with a code change. The bisection
-and the ladder hold what breaks.
+and the ladder park what breaks.
 
-**6a. Minor and patch.** Apply the *minor and patch* plan entry. On a clean
-apply, mark the plan entry accepted. On a broken apply, bisect the plan entry
-as `update-rules.md` defines under *Bisection*. The bisection holds each
-breaking package with the reason `check: <name>`. Then replace the
-checkpoint. With commits requested, commit now.
+**6a. Minor and patch.** Run a trial of the *minor and patch* plan entry. On
+a sound trial, mark the plan entry accepted. On a broken trial, bisect the
+plan entry as `update-rules.md` defines under *Bisection*. The bisection
+parks each breaking package with the reason `check: <name>`. Then replace
+the checkpoint. With commits requested, commit now.
 
-**6b. Major groups.** Without commits requested, apply every approved group
-as one batch. On a clean apply, mark every group accepted. On a broken
-apply, bisect the batch with a group as the unit. Walk the ladder of
-`update-rules.md` for each breaking group: apply the group at each rung,
-highest first. Mark the first rung whose apply is clean as accepted. Hold a
-group with no accepted rung, with the reason `check: <name>`.
+**6b. Major groups.** Without commits requested, run one trial of every
+approved group as one batch. On a sound trial, mark every group accepted.
+On a broken trial, bisect the batch with a group as the unit. Walk the
+ladder of `update-rules.md` for each breaking group: run a trial of the
+group at each rung, highest first. Mark the first rung whose trial is sound
+as accepted. Park a group with no accepted rung, with the reason
+`check: <name>`.
 
-With commits requested, apply the groups one at a time in plan order:
-1. apply the group;
-2. on a broken apply, restore the checkpoint. Then apply the group at the
-   next rung of its ladder. Hold the group when no rung remains;
-3. on a clean apply, commit. Then replace the checkpoint.
+With commits requested, take the groups one at a time in plan order:
+1. run a trial of the group;
+2. on a broken trial, restore the checkpoint. Then run a trial of the group
+   at the next rung of its ladder. Park the group when no rung remains;
+3. on a sound trial, commit. Then replace the checkpoint.
 
 **6c. Assemble.** Skip this step with commits requested. Otherwise:
 1. restore the checkpoint;
-2. apply every accepted group as one batch, each at its accepted rung, or
-   at its candidate versions when the bisection accepted it without the
-   ladder;
-3. on a broken apply, apply the accepted groups one at a time in plan
-   order. After a clean apply, replace the checkpoint. After a broken one,
-   restore the checkpoint. Then hold the group.
+2. run one trial of every accepted group as one batch, each at its accepted
+   rung. A group that the bisection accepted without the ladder takes its
+   candidate versions;
+3. on a broken trial, take the accepted groups one at a time in plan order
+   and run a trial of each. After a sound trial, replace the checkpoint.
+   After a broken one, restore the checkpoint. Then park the group.
 
 **6d. Orphans.** Set the ranges of each approved *orphan* plan entry with the
 loop above. Run no install and no check command there. With commits
@@ -327,7 +332,7 @@ Run for each install root, in this order:
 3. the peer report of `package-managers.md`;
 4. the diff review: compare every manifest with the baseline copy.
 
-Step 7 passes for an install root when all of these hold:
+Step 7 passes for an install root when all of these are true:
 - the frozen install succeeds;
 - every failing check command fails in the baseline results too;
 - the peer report shows no problem beyond the baseline peer report;
@@ -344,7 +349,7 @@ On a fail, act on the first condition above that fails, then run this step
 again:
 - the frozen install: run the plain install;
 - a check command or the peer report: find the accepted plan entry that
-  causes the fail by bisection, with a plan entry as the unit. Hold every
+  causes the fail by bisection, with a plan entry as the unit. Park every
   package of that plan entry with the reason `verify: <condition>`;
 - a condition on a manifest: restore that manifest from the checkpoint. Set
   its accepted ranges again with the script. Run the plain install;
@@ -352,7 +357,7 @@ again:
   tracked file with `git checkout -- <file>`, and delete an untracked file.
 
 After 3 fails on one install root, restore that install root from the
-baseline copy. Then hold every package of that install root.
+baseline copy. Then park every package of that install root.
 
 ### Step 8: Update report
 

@@ -3,19 +3,24 @@
 Read this file in Step 2b. Run every command of this file from the install
 root.
 
-## Detection
+## Package manager
+
+The `install` line of the command map from Step 2b holds the frozen
+install. The frozen install succeeds only when the lockfile matches the
+manifests. Its first words name the package manager:
+- npm: `npm ci`;
+- pnpm: `pnpm install --frozen-lockfile`;
+- yarn 1: `yarn install --frozen-lockfile`;
+- yarn 2 or newer: `yarn install --immutable`;
+- bun: `bun install --frozen-lockfile`.
+
+When the `install` line reads `unknown`, or starts with none of these
+commands, ask one question: which package manager the project uses. Then
+take the frozen install of that package manager from the list above.
 
 The `packageManager` field of the root manifest, such as `pnpm@9.12.0`,
-names the package manager and its version. Without the field, the lockfile
-beside the root manifest names the package manager:
-- npm: `package-lock.json` or `npm-shrinkwrap.json`;
-- pnpm: `pnpm-lock.yaml`;
-- yarn 1: `yarn.lock` without a `.yarnrc.yml` beside it;
-- yarn 2 or newer: `yarn.lock` with a `.yarnrc.yml` beside it;
-- bun: `bun.lock` or `bun.lockb`.
-
-With two lockfiles beside one root manifest and no `packageManager` field,
-ask one question: which package manager the project uses.
+names the version. Without the field, the version is that of the package
+manager on PATH.
 
 ## Workspace file
 
@@ -24,15 +29,13 @@ ask one question: which package manager the project uses.
 - pnpm: the `packages` list of `pnpm-workspace.yaml` beside the root
   manifest.
 
-## Install commands
+## Plain install
 
-The frozen install succeeds only when the lockfile matches the manifests.
 The plain install rewrites the lockfile.
-- npm: frozen `npm ci`, plain `npm install`.
-- pnpm: frozen `pnpm install --frozen-lockfile`, plain `pnpm install`.
-- yarn 1: frozen `yarn install --frozen-lockfile`, plain `yarn install`.
-- yarn 2 or newer: frozen `yarn install --immutable`, plain `yarn install`.
-- bun: frozen `bun install --frozen-lockfile`, plain `bun install`.
+- npm: `npm install`.
+- pnpm: `pnpm install`.
+- yarn 1, and yarn 2 or newer: `yarn install`.
+- bun: `bun install`.
 
 ## Recursive run command
 
