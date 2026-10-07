@@ -2,8 +2,8 @@
 
 Step numbers are those of `SKILL.md`.
 
-1. **Baseline.** Before any subtask changes a file, run Steps 4c and 4f
-   with the task as the target.
+1. **Baseline.** Before any subtask changes a file, run Steps 4c, 4e, and
+   4f with the task as the target.
 2. **Work each subtask** in the order of the map's `subtasks` lines, never
    two at once. Skip a subtask that is done by the rule in Step 3. A
    subtask whose `at` reads `none` has no file and no item: go to number 5
@@ -20,7 +20,11 @@ Step numbers are those of `SKILL.md`.
    and keep only the work report it returns. Give it one instruction: invoke
    the `implementing-tasks` skill (in Claude Code, with the `Skill` tool)
    with `from implementing-tasks: <the at of its line>`, with the subtask
-   facts listed after it.
+   facts listed after it. Without subagents, run the subtask yourself and
+   write its work report to the scratch directory instead of sending it.
+
+   When the invoking request asks for commits, commit after each subtask
+   whose result is `done`, as hard rule 3 states.
 3. **Stop on `blocked`.** When a subtask's result is `blocked`, work no
    further subtask. Go to number 5 with the result `blocked`.
 4. **Prove the task.** After the last subtask, run Steps 5, 7, and 8 with

@@ -23,4 +23,4 @@ every listed document that is not a verbatim third-party excerpt, the
 documents the user names, and none. For each chosen document, in the order
 listed, invoke the `disambiguating-text` skill (in Claude Code, with the
 `Skill` tool) with `from writing-glossaries: <file path>`. Wait for each run
-to finish.
+to finish: it asks its own approval.

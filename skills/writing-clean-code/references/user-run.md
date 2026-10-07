@@ -22,6 +22,7 @@ the rules it loads.
 ## Step 4: Fix and report
 
 In write mode, and in review mode when the user asked for changes, fix every
-failure inside the diff. Then run Step 3 of `SKILL.md` again. In review mode
+failure inside the diff. In review mode with paths, edit and create no file
+outside those paths. Then run Step 3 of `SKILL.md` again. In review mode
 without a request for changes, change no file. End with one line per failure
 that remains, or `pass`.

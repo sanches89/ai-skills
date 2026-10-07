@@ -13,8 +13,6 @@ documents disagree with it.
 
 ## Terms
 
-These words have one meaning in this skill.
-
 - **Candidate word**: a word research found in the evidence set that has
   no glossary entry yet.
 - **Evidence set**: the files research reads for usages.

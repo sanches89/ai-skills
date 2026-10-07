@@ -13,8 +13,6 @@ states. Return the change in the working tree and a work report.
 
 ## Terms
 
-These words have one meaning in this skill.
-
 - **Rollout guard**: what hides behavior that later subtasks complete: a
   feature flag, a disabled route, an unexported symbol.
 - **Criterion**: one observable, binary check that defines the target as done.

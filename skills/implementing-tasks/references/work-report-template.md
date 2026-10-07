@@ -1,8 +1,8 @@
 # Work report template
 
-Make every line a fact the caller needs to continue the parent task and
-the sibling subtasks. Keep every heading as written. Replace every
-`<placeholder>`.
+Make every line a fact that changes what the caller does next for the
+parent task and the sibling subtasks. Keep every heading as written. Replace
+every `<placeholder>`.
 
 Rules for filling:
 - At most 30 non-blank lines, 2 lines per bullet, and 25 words per sentence.

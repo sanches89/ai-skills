@@ -9,8 +9,8 @@ argument-hint: <draft path | text to format>
 # Formatting tasks
 
 Write and check a task and its subtasks in the one task format, and count
-the code lines their change touches. The implementing agent stops on a
-missing fact: every fact it needs goes in the text.
+the code lines their change touches. Put every fact the implementing agent
+needs in the text.
 
 ## Hard rules
 
@@ -82,8 +82,9 @@ those and never replaces one.
 one each read or command that yields only facts, returned with path and
 line.
 
-Read `references/quality-checklist.md`. Run every check and both grep
-helpers over each draft. Fix every failure that the research notes or the
+When Step 2 did not run, read `references/task-format.md` first. Read
+`references/quality-checklist.md`. Run every check and both grep helpers
+over each draft. Fix every failure that the research notes or the
 drafts settle. Run every check again until every check passes or every
 failure left needs a decision. Record each such decision with the section
 it affects.

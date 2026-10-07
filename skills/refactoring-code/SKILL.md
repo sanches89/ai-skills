@@ -186,7 +186,8 @@ Drop a finding when:
 - it needs a new layer, or an interface with fewer than 2 implementations
   that wraps no system boundary. A test double is no implementation;
 - it needs a new parameter or option that no caller passes. A test that
-  passes the parameter of a seam is such a caller;
+  passes the parameter of a seam is such a caller, also a test the refactor
+  task plans;
 - a task from Step 2 puts it out of scope;
 - its code is about to be deleted or replaced, as the request or the docs
   state.
@@ -260,7 +261,7 @@ Read `references/refactor-sections.md` and
 `references/refactoring-rules.md`. Write into the notes, under *Writing
 rules*, what each section of the task and of each subtask holds, by
 `refactor-sections.md`. Restate there every rule of `refactoring-rules.md`
-that a section takes: the `formatting-tasks` skill reads only the notes.
+that a section takes.
 
 Invoke the `formatting-tasks` skill with
 `from refactoring-code: write <scratch-dir>/draft,

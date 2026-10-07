@@ -9,12 +9,9 @@ argument-hint: <task id | task file>
 # Breaking down tasks
 
 Split one task into subtasks an agent implements one at a time without asking.
-The implementing agent stops on a missing fact: put every fact it needs in
-the subtask.
+Put every fact the implementing agent needs in the subtask.
 
 ## Terms
-
-These words have exactly one meaning in this skill.
 
 - **Rollout guard**: what hides behavior that later subtasks complete: a
   feature flag, a disabled route, an unexported symbol.
@@ -137,9 +134,10 @@ answer gives as Step 2d states. When the answer introduces an adjacent
 topic, one a reader would expect in this task, ask one question: in the
 task, or under *Out of scope*. Never expand or drop it in silence.
 
-Follow a project convention instead of asking, and record it as a decision.
-Never ask about a preference that changes no subtask. Continue until no open
-decision remains.
+Never ask about what the original task, the code, the docs, or a project
+convention settles: follow it and record it as a decision. Never ask about a
+preference that changes no subtask. Continue until no open decision
+remains.
 
 ### Step 4: Split
 

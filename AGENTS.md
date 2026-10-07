@@ -27,9 +27,9 @@ These rules hold in every Markdown file of this repository.
   word that passes the entry test and delete it with the last.
 - **Terms.** The Terms section of a `SKILL.md` holds the entries for words
   used in that skill. A skill with no word that passes the entry test has no
-  Terms section. A skill never cites `GLOSSARY.md` or another skill. A word
-  defined in two skills, or in a skill and the glossary, has the same
-  definition text in each place.
+  Terms section. A Terms section never cites `GLOSSARY.md` or another
+  skill. A word defined in two skills, or in a skill and the glossary, has
+  the same definition text in each place.
 - **One word, one meaning.** A word has one meaning in the whole repository.
   When two things need the same word, give each a fixed qualifier and never
   write the bare word: `Context section` and `context window`, never
@@ -58,9 +58,11 @@ These rules hold in every Markdown file of this repository.
   it into one skill and invoke that skill by name from the other.
 - **Dependencies.** Invoke another skill by name at the step that needs it.
   Write the invocation as: Invoke the `<name>` skill with
-  `from <caller>: <args>`. Add the aside (in Claude Code, with the `Skill`
-  tool) after `skill` in the first invocation of each file. Add it also to
-  every invocation inside a subagent prompt.
+  `from <caller>: <args>`. A long invocation text goes in a fenced block
+  after the words "with the text below". Add the aside (in Claude Code, with
+  the `Skill` tool) after `skill` in the first invocation of each file. Add
+  it also to every invocation inside a subagent prompt. A skill that
+  invokes itself leaves its own name out of `compatibility`.
   `<caller>` is the name of the invoking skill. The invoked skill then skips
   its own hand-off and ends with its return block. A required skill has no
   fallback copy, and the caller's `compatibility` names it in the sentence
@@ -229,10 +231,10 @@ Folders:
   `disambiguating-text` reads the glossary and never writes it.
 - `writing-glossaries`, `disambiguating-text`, and `writing-agent-docs` read a
   glossary entry in the form `- **Term**: definition.`, one bullet per term.
-  Each states the entry test in the words of the Entry test rule above.
+  Each states Gate A and Gate B in the words of the Entry test rule above.
   Change the form or the test in the three skills and here in the same commit.
 - `writing-glossaries` and `disambiguating-text` invoke each other as optional
-  skills. `writing-agent-docs` invokes `writing-glossaries` the same way.
+  skills. `writing-agent-docs` invokes both the same way.
 
 ## Workflow in this repo
 
@@ -248,8 +250,7 @@ Folders:
    when `AGENTS.md`, `CLAUDE.md`, or `docs/refs/` changed, and fix every error
    it reports.
 2. Grep the skill's `SKILL.md` and `references/` for agent-specific tokens
-   and confirm each one sits inside an aside. The verb "Explore" in the
-   `creating-tasks` description is not a token:
+   and confirm each one sits inside an aside:
 
    ```bash
    grep -rn --include='*.md' --exclude-dir=evals -E \
@@ -297,8 +298,8 @@ Folders:
      $(git ls-files -co --exclude-standard '*.md')
    ```
 8. List every sentence over 25 words. A code span counts as one word. A
-   heading, a list marker, and a table row start a new sentence. Every line
-   printed is a failure:
+   heading, a list marker, and a table row start a new sentence. A colon and
+   a semicolon also end one. Every line printed is a failure:
 
    ```bash
    for f in $(git ls-files -co --exclude-standard '*.md'); do
@@ -338,13 +339,14 @@ Folders:
     ```
 12. Confirm that `compatibility` names every skill that a step invokes as a
     required skill. Every line printed is a failure, except a line for an
-    optional skill:
+    optional skill. A skill that invokes itself prints no line:
 
     ```bash
     for f in skills/*/SKILL.md; do
-      grep -rhoiE --include='*.md' 'invoke the `[a-z-]+` skill' \
-        "$f" "${f%SKILL.md}references" 2>/dev/null \
+      cat "$f" "${f%SKILL.md}"references/*.md 2>/dev/null | tr -s '\n ' '  ' \
+        | grep -oiE 'invoke the `[a-z-]+` skill' \
         | grep -oE '[a-z]+(-[a-z]+)+' | sort -u | while read -r s; do
+          [ "skills/$s/SKILL.md" = "$f" ] && continue
           grep -q "^compatibility:.*$s" "$f" || echo "$f: $s"
         done
     done
@@ -379,7 +381,8 @@ Folders:
 
     ```bash
     for f in skills/*/references/*.md; do
-      [ "$(wc -l < "$f")" -gt 100 ] && ! grep -q '^Sections:' "$f" && echo "$f"
+      [ "$(wc -l < "$f")" -gt 100 ] && ! head -5 "$f" | grep -q '^Sections:' \
+        && echo "$f"
     done
     find skills -path '*/scripts/*' -type f ! -perm -u+x
     ```

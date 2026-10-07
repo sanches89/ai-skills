@@ -15,8 +15,6 @@ user asked for.
 
 ## Terms
 
-These words have one meaning in this skill.
-
 - **System boundary**: the network, files, a database, the clock,
   randomness, the process environment, or third-party code. Third-party
   code includes a framework, a driver, an HTTP client, and a UI toolkit.

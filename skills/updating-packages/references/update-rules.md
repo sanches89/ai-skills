@@ -60,6 +60,9 @@ park reason of that constraint.
 
    When the current major of `@types/node` is above the major of
    `<node-version>`, park the package with the reason `@types/node major`.
+   At level `minor` or `patch`, park it with that reason also when that
+   major is not its current major. At level `patch`, take the highest
+   version of its current minor line instead.
 4. **Overrides.** Park a package named in `overrides`, `resolutions`, or
    `pnpm.overrides` of the root manifest, with the reason `override`.
 5. **Pins.** Step 2e records the parked and the capped packages from these

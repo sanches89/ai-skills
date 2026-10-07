@@ -10,7 +10,8 @@ A request from a user maps to one form:
   lists subtasks;
 - a task or a subtask, as a file or as text, to check against the format:
   `check`. Write text into a draft file in `<scratch-dir>` first;
-- a question about the size of a change: `size`.
+- a question about the size of a change: `size`, with
+  `tests <locations>` when the request names test locations.
 
 Run the forms a request names in the order write, check, size. Without a
 request, ask for the draft or the text first. The request and the

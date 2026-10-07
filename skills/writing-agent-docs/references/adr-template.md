@@ -45,6 +45,7 @@ Date: YYYY-MM-DD
 
 - Cite an ADR only from the rule it explains, at the end of that rule's
   bullet, as `(ADR 0002)`.
+- Put the citation in the deepest `AGENTS.md` that holds the rule.
 
 ## Amending it
 

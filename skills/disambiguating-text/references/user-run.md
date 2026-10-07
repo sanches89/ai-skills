@@ -22,8 +22,9 @@ Resolve the invocation text, or the text in the conversation, as one of:
 
 Invoke the `writing-glossaries` skill (in Claude Code, with the `Skill` tool)
 with `from disambiguating-text: glossary <glossary path>,
-files <input file path>, words <the undefined words>`. Wait for it to finish.
-Read the glossary again and record each undefined word it defined as a term.
-Read the input file again. When it changed, run 2a again on the new content.
-The rewrite keeps that skill's change. When a condition fails, keep the
-undefined words for the clarity report.
+files <input file path>, words <the undefined words>`. Wait for it to finish:
+it asks its own questions and approval. Read the glossary again and record
+each undefined word it defined as a term. Read the input file again. When it
+changed, run 2a again on the new content. The rewrite keeps that skill's
+change. When a condition fails, keep the undefined words for the clarity
+report.

@@ -115,8 +115,8 @@ with that prefix.
 
 **Format.** The format command writes nothing and fails on a file that the
 formatter would change. When the command file runs the formatter in a form
-that writes, write the formatter's check form instead, such as
-`prettier --check`. Without a check form, write `format: none`.
+that writes, write the formatter's check form instead. Without a check
+form, write `format: none`.
 
 **Test one file.** Take it from the command files in the order above. Else
 build it from the test command by *Test one file* in

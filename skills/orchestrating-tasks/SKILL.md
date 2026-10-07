@@ -1,6 +1,6 @@
 ---
 name: orchestrating-tasks
-description: Runs a whole task end to end on a branch, one commit per subtask through implementing-tasks, then refactor rounds, asking at most where to run. Use when the user wants a task with subtasks implemented, orchestrated, run unattended, or shipped as a branch from an item or a task file, or says to run the whole plan.
+description: Runs a whole task end to end on a branch, with one commit per subtask and a refactoring pass, asking at most where to run. Use when the user wants a task with subtasks implemented, orchestrated, run unattended, or shipped as a branch from an item or a task file, or says to run the whole plan.
 license: MIT
 compatibility: Requires the loading-tasks, finding-dev-commands, implementing-tasks, and refactoring-code skills.
 argument-hint: <task id | task file>
@@ -13,8 +13,6 @@ and one commit each, then up to three `refactoring-code` rounds. Prove the task
 and keep the plan and every report with the task.
 
 ## Terms
-
-These words have one meaning in this skill.
 
 - **Job**: one task or subtask together with the `implementing-tasks` run that
   implements it.

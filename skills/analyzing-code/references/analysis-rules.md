@@ -67,8 +67,9 @@ A hotspot is a finding only when its file holds an entry of
 `complexity.top`, `duplication.top`, `coverage.functions.top`, or
 `mutation.survivors` that these rules keep. Then the finding is that entry,
 ranked by the hotspot score of the file under *Ranking*, with the commit
-subjects added to its evidence. A hotspot with no such entry appears only
-on the *Hotspots* line under *Measurements*.
+subjects added to its evidence: what change keeps hitting the file. A
+hotspot with no such entry appears only on the *Hotspots* line under
+*Measurements*.
 
 ## Tests
 

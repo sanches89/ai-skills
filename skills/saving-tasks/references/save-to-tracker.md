@@ -27,9 +27,9 @@ Use the tools and commands of the tracker map:
 2. **Old children.** On `replace`, list the item's children with
    `list children`. When that line reads `none`, take them from the links
    in the old body's Subtasks section. Delete each with `delete item`.
-   When that line reads `none` or the delete fails, close the child with
-   `close item`. Unlink each closed child with `unlink child`, unless the
-   `unlink child` line reads `none`.
+   When the `delete item` line reads `none` or the delete fails, close the
+   child with `close item`. Unlink each closed child with `unlink child`,
+   unless the `unlink child` line reads `none`.
 3. **Children.** Create one child item per subtask draft, in subtask order,
    with the subtask's title, its draft as body, and the required field
    values. Put the task's item link on the `Task` line and sibling item

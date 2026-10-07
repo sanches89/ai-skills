@@ -34,8 +34,8 @@ coding agent that loads `SKILL.md` files.
 - [refactoring-code](skills/refactoring-code/SKILL.md): reviews code in any
   language for refactoring, with the findings of finding-code-smells and the
   numbers of measuring-code. It writes a refactor task with at most 12
-  subtasks, one per refactoring, each with its tests and one verification
-  command. It lists the rest as the next batch and changes no code.
+  subtasks, one per refactoring, each with one verification command. It
+  lists the rest as the next batch and changes no code.
 - [writing-agent-docs](skills/writing-agent-docs/SKILL.md): holds the rules for
   a repo's `AGENTS.md` files, READMEs, ADRs, `docs/refs`, and glossary entries,
   which the agent follows whenever it edits one. On request, it audits and
@@ -99,17 +99,17 @@ writes both from a code review. saving-tasks writes every one of these files.
 `<tasks-dir>` is the folder you name, created when it does not exist. Without
 one, it is the first that exists of: the folder README, CLAUDE.md, AGENTS.md,
 CONTRIBUTING, or `docs/README.md` names for tasks, plans, or specs; the folder
-that already holds task folders; a `tasks`, `plans`, or `specs` folder of the
-repository. With none of these, it is a scratch directory outside the
-repository, which in Claude Code lives one session. implementing-tasks
-implements a task or one subtask from those files. orchestrating-tasks runs
-implementing-tasks on every subtask of a task, one at a time, with one commit
-each. Then it runs refactoring-code and implementing-tasks over the result,
-up to three rounds. The tracker is the one the project docs name. When
-neither an MCP server nor the `gh` CLI reaches it, no tracker is connected.
-When the docs name none, the tracker is the one an MCP server reaches, else
-GitHub Issues through `gh`. With a tracker connected, the writers create
-items there instead, unless you ask for files, and implementing-tasks and
+that already holds task folders; a `tasks`, `plans`, or `specs` folder at most
+three levels deep that holds a `.md` file. With none of these, it is a scratch
+directory outside the repository, which in Claude Code lives one session.
+implementing-tasks implements a task or one subtask from those files.
+orchestrating-tasks runs implementing-tasks on every subtask of a task, one at a
+time, with one commit each. Then it runs refactoring-code and implementing-tasks
+over the result, up to three rounds. The tracker is the one the project docs
+name. When neither an MCP server nor the `gh` CLI reaches it, no tracker is
+connected. When the docs name none, the tracker is the one an MCP server
+reaches, else GitHub Issues through `gh`. With a tracker connected, the writers
+create items there instead, unless you ask for files, and implementing-tasks and
 orchestrating-tasks read them. Each skill ends with the input of the next, so
 these sequences work without an edit in between:
 
@@ -149,6 +149,7 @@ skills/
     SKILL.md          # frontmatter (name, description) + instructions
     references/       # templates, checklists, and rules the skill cites
     scripts/          # executables the instructions run
+    agents/           # agent-specific config, such as openai.yaml
     evals/            # test prompts and trigger queries for the skill
 ```
 
@@ -189,8 +190,8 @@ through another skill:
 The other skills require none. The skills are also listed on
 [skills.sh](https://skills.sh/sanches89/ai-skills).
 
-Without the CLI, clone this repo into your agent's skills folder (e.g.
-`~/.claude/skills/`).
+Without the CLI, copy each folder under `skills/` into your agent's skills
+folder (e.g. `~/.claude/skills/`).
 
 One skill runs only when you ask for it by name: `/updating-packages`. Its
 `disable-model-invocation: true` frontmatter field stops Claude Code, Cursor,

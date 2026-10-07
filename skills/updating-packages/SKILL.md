@@ -194,13 +194,13 @@ while IFS= read -r spec; do
 done < <scratch-dir>/<root>-specs.txt > <scratch-dir>/<root>-facts.tsv
 ```
 
-Check each candidate version against the *Constraints* of
-`update-rules.md`. Add `@types/node` as a candidate package in every
-manifest that has it, at the version constraint 3 gives. Record per
-candidate package: manifest, section, name, current range, candidate range,
-bump kind, park reason of a lowered package or `none`, and peer ties. The
-bump kind is `major`, `minor`, or `patch`, from the first number that
-differs between the two ranges. *Groups* of `update-rules.md` defines peer ties.
+Check each candidate version against the *Constraints* of `update-rules.md`. Add
+`@types/node` as a candidate package in every manifest that has it, at the
+version constraint 3 gives, also when package names limit the dependencies.
+Record per candidate package: manifest, section, name, current range, candidate
+range, bump kind, park reason of a lowered package or `none`, and peer ties. The
+bump kind is `major`, `minor`, or `patch`, from the first number that differs
+between the two ranges. *Groups* of `update-rules.md` defines peer ties.
 
 ### Step 5: Write the update plan
 
@@ -210,6 +210,9 @@ Build the plan entries of each install root:
 2. one plan entry per group of the candidate packages of
    `<root>-latest.json` with bump kind `major`, by *Groups* of
    `update-rules.md`.
+
+Add each `@types/node` candidate of Step 4 to the plan entry its bump kind
+selects: *minor and patch*, or a major group of its own.
 
 Build one plan entry *orphan* per orphan manifest: every candidate package
 of its `<root>-latest.json` that Step 4 did not park.

@@ -10,7 +10,7 @@
     {
       "id": 2,
       "prompt": "Run updating-packages on eslint and typescript in packages/api only, minor level.",
-      "expected_output": "Paths limit the manifests to packages/api, package names limit the run to eslint and typescript with --filter, and level minor makes the run never bump a major. Every other dependency keeps its range and is not listed as updated. The @types/node candidate version is still checked against the Node major. The report's Request line names the paths, both packages, level minor, and the cooldown.",
+      "expected_output": "Paths limit the manifests to packages/api, package names limit the run to eslint and typescript with --filter, and level minor makes the run never bump a major. Every other dependency except @types/node keeps its range and is not listed as updated. The @types/node candidate version is still checked against the Node major and never leaves its current major. The report's Request line names the paths, both packages, level minor, and the cooldown.",
       "files": []
     },
     {

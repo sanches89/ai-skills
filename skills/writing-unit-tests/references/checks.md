@@ -1,7 +1,8 @@
 # Checks
 
-Run each check over every test this run added or edited in the files. A
-failure line names the check by its bold name.
+Run each check over the tests the invoking form or mode names; by
+default, every test this run added or edited in the files. A failure line
+names the check by its bold name.
 
 - **one behavior**: the test acts once and asserts one behavior.
 - **name**: the name states the unit, the condition, and the expected
@@ -11,8 +12,8 @@ failure line names the check by its bold name.
 - **literal**: every expected value is a literal, never computed with the
   logic under test.
 - **visible values**: the test shows every value its assertion depends on.
-- **deterministic**: the test keeps every rule of *Determinism* in
-  `SKILL.md`.
+- **deterministic**: the test uses no shared state and keeps every rule
+  of *Determinism* in `SKILL.md`.
 - **boundary doubles**: every test double replaces a system boundary, never
   the unit under test. An assertion on a call to a double exists only where
   the call is the behavior.

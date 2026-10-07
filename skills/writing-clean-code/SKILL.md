@@ -12,8 +12,6 @@ Write and review code by 14 principles.
 
 ## Terms
 
-These words have one meaning in this skill.
-
 - **System boundary**: the network, files, a database, the clock,
   randomness, the process environment, or third-party code. Third-party
   code includes a framework, a driver, an HTTP client, and a UI toolkit.
@@ -45,13 +43,13 @@ tool) with `from writing-clean-code: find`. Keep its `format`, `test`, and
 `test one file` lines.
 
 Record whether the project has a test setup. When the agent has the
-`writing-unit-tests` skill, invoke it with `from writing-clean-code: setup
-for <paths>, test <command>, test one file <command>`. `<paths>` is the
-paths the request names, else the repository root. Fill each `<command>`
-from the line of the same name. Leave out each part whose line reads
-`none`. The project has a test setup when the returned block reads
-`test setup: yes`. Without that skill, it has one unless the `test` line
-reads `none`.
+`writing-unit-tests` skill, invoke the `writing-unit-tests` skill with
+`from writing-clean-code: setup for <paths>, test <command>, test one file
+<command>`. `<paths>` is the paths the request names, else the repository
+root. Fill each `<command>` from the line of the same name. Leave out each
+part whose line reads `none`. The project has a test setup when the returned
+block reads `test setup: yes`. Without that skill, it has one unless the
+`test` line reads `none`.
 
 ### Step 2: Write
 
@@ -129,11 +127,11 @@ commented-out code.
 
 ### 6. Formatting
 
-Run the format command. When it reports a file you wrote or changed, format
-that file with the project formatter's write form, such as
-`prettier --write`. Then run the format command again. Without a format
-command, keep related code together and separate concepts with a blank line.
-Declare a variable next to its first use. Place a caller above its callee.
+Run the format command. When it reports a file you wrote or changed, format that
+file with the project formatter's write form. Then run the format command again.
+Without a format command, keep related code together and separate concepts with
+a blank line. Declare a variable next to its first use. Place a caller above its
+callee.
 
 **Check:** the format command reports no change. Without one, check the
 rule above by reading.
@@ -193,8 +191,6 @@ pass it in from outside.
 client. No business-logic class creates its own collaborator.
 
 ### 13. Open/closed, Liskov, interface segregation, dependency inversion
-
-These four are the O, L, I, and D of SOLID. Principle 3 is the S.
 
 - **Open/closed.** Add behavior by adding code, not by editing a branch
   chain. Replace a `switch` on a type with a lookup or polymorphism.

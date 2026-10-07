@@ -4,8 +4,8 @@
 
 - [ ] Every fact, requirement, and success criterion of the original task is
       in the task.
-- [ ] A subtask acceptance criterion covers every success criterion of the
-      task.
+- [ ] Every success criterion of the task has a subtask acceptance criterion
+      that covers it.
 - [ ] The task's References holds every entry of the original task.
 - [ ] Each subtask's References lists only the task's entries whose facts
       its Context restates, or holds exactly `None.`

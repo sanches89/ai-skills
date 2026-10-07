@@ -15,8 +15,9 @@ with ranked findings. Never compare two versions.
 
 1. **The project stays as it is.** Change no project file. Add no
    dependency, tool, configuration file, JUnit report, coverage report, or
-   mutation report to the repository. Write every report, summary, and note
-   of the run in the scratch directory.
+   mutation report to the repository. Output that git ignores, such as a
+   mutation tool's report folder, is no addition. Write every report,
+   summary, and note of the run in the scratch directory.
 2. **Never ask what research can answer.** Consult the code, the docs, the
    git history, and the summary first.
 3. **Never assume.** When a decision changes the work and research cannot

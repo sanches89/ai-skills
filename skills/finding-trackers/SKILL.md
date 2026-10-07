@@ -47,9 +47,9 @@ or `gh`, the GitHub CLI. Take the first rule that applies:
 
 `gh` reaches GitHub Issues only when both conditions of rule 3 hold.
 
-With no tracker connected, the tracker map is its first line alone:
+With no tracker connected, go to Step 3 with the first line
 `tracker: none: <reason>`. The reason states in one line what the rules
-found, such as `the docs name Jira and nothing reaches it`. Go to Step 3.
+found, such as `the docs name Jira and nothing reaches it`.
 
 ### Step 2: Map the actions
 
@@ -86,6 +86,8 @@ destination: <team, project, or board the docs name> | none named
 destinations: one | several | unsettled
 required fields: <field>: <value | unsettled>, ... | none
 ```
+
+With no tracker connected, the map is the first line alone.
 
 For a calling skill, send the tracker map unchanged as the final message,
 with nothing after it. For a user, show it in chat.

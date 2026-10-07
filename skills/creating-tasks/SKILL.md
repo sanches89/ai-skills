@@ -9,8 +9,7 @@ argument-hint: <idea>
 # Creating tasks
 
 Turn an idea into a task an agent implements without asking. Record
-decisions, not options, and every fact the implementing agent needs: it
-stops on a missing fact.
+decisions, not options, and every fact the implementing agent needs.
 
 ## Hard rules
 
@@ -101,10 +100,10 @@ answer gives as Step 2c states. When the answer introduces an adjacent
 topic, one a reader would expect in this task, ask one question: in scope,
 or under *Out of scope*. Never expand or drop it in silence.
 
-Follow a project convention instead of asking, and record it as a decision.
-Never ask about a preference that changes nothing in the task, and never an
-open-ended question such as "anything else?". Continue until no open
-decision remains.
+Never ask about what the code, the docs, or a project convention settles:
+follow it and record it as a decision. Never ask about a preference that
+changes nothing in the task, and never an open-ended question such as
+"anything else?". Continue until no open decision remains.
 
 ### Step 4: Scope lock
 

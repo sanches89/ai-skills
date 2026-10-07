@@ -77,14 +77,16 @@ Run this section after every cut and move of sections 2 and 3.
   skill (in Claude Code, with the `Skill` tool) with
   `from writing-agent-docs: glossary <path>, files <every AGENTS.md and every
   reference doc>`. Take `<path>` from the request when it names one, else
-  `GLOSSARY.md`. Wait for it to finish. Without that skill, follow the
-  Glossary section of `SKILL.md` for each doc this audit edited. State in the
-  audit report that the other docs were not checked against the glossary.
+  `GLOSSARY.md`. Wait for it to finish: it asks its own questions and
+  approval. Without that skill, follow the Glossary section of `SKILL.md`
+  for each doc this audit edited. State in the audit report that the other
+  docs were not checked against the glossary.
 - **Wording.** When the agent has the skill, invoke the `disambiguating-text`
   skill with `from writing-agent-docs: <file path>`. Run it one file at a
   time. Cover every `AGENTS.md` and every reference doc changed since
-  `<ref>`. Wait for each run to finish. Without that skill, change no
-  wording, and state in the audit report that the wording was not rewritten.
+  `<ref>`. Wait for each run to finish: it asks its own approval. Without
+  that skill, change no wording, and state in the audit report that the
+  wording was not rewritten.
 
 ## 5. Verify and report
 

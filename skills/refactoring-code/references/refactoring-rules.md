@@ -54,7 +54,8 @@ project configures replaces a value here.
 - Add a new interface or base type only with 2 implementations or more, or
   as the wrapper of a system boundary. A test double is no implementation.
 - Add a generic parameter or an option only with a caller that passes it.
-  A test that passes the parameter of a seam is such a caller.
+  A test that passes the parameter of a seam is such a caller, also a test
+  the refactor task plans.
 - Replace a helper that repeats a function of the project or of the
   standard library with a call to that function.
 

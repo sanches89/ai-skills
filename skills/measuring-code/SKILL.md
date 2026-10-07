@@ -15,8 +15,9 @@ record.
 ## Hard rules
 
 1. **The project stays as it is.** Change no project file. Add no
-   dependency, tool, configuration file, or report to the repository. Write
-   every report, summary, and note under `<out>`.
+   dependency, tool, configuration file, or report to the repository.
+   Output that git ignores, such as a mutation tool's report folder, is no
+   addition. Write every report, summary, and note under `<out>`.
 2. **Never ask.** Settle every choice from the invocation text, the code,
    the docs, and the reference files.
 
@@ -113,9 +114,9 @@ Skip Step 3 with `test: none`, or when the runner writes neither report.
 as that file says, the mutation command and `<mutation-report>`, with
 `<dir>` in place of the output folder. Whatever the `mutation` option says,
 record the command when the project configures a mutation tool. Run the
-checks of *When to skip the mutation run* on it too: a caller runs the
-recorded command later. When no check holds and the option is
-`mutation no`, the `mutation` line reads `skipped: not requested`.
+checks of *When to skip the mutation run* on it too. When no check holds
+and the option is `mutation no`, the `mutation` line reads
+`skipped: not requested`.
 
 ### Step 3: Tests
 

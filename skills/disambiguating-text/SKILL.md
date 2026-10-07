@@ -27,8 +27,6 @@ Gate B, the sense test. All three hold:
 
 ## Terms
 
-These words have one meaning in this skill.
-
 - **Ambiguity**: a passage of the input text with more than one reading, or
   one that breaks a clarity rule.
 - **Term**: a word or phrase with an entry in the project's glossary.
