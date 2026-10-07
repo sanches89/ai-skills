@@ -1,0 +1,23 @@
+{
+  "skill_name": "writing-unit-tests",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "src/billing/proration.ts has no tests at all. Add unit tests for it.",
+      "expected_output": "Invokes the finding-dev-commands skill for the test command and the single-file command, then records the test setup: framework and version, test location and naming, existing fixtures and helpers, and covering tests. Writes tests in the project's framework only, through the public interface: the normal path, the boundaries of each input, and one test per error the code raises. Each test name states the unit, the condition, and the expected result; expected values are literals; no loops or conditionals inside a test; no real clock or network. Breaks the asserted behavior by hand once per test to see it fail, then restores the code. Runs each new test file alone with the single-file command, then the test command, then the Checks, and ends with the test files and the behaviors their tests prove.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Review the tests in test/orders.spec.ts. Are they any good?",
+      "expected_output": "Records the test setup, then runs every check of the Checks section over each test in test/orders.spec.ts. Reports one line per failure in the form `<path:line> <check>`, such as `test/orders.spec.ts:42 literal` for an expected value computed with the logic under test, or `pass` when none fails. Changes no file, because the user asked for a review and not for changes.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "from implementing-tasks: setup for src/cart/total.ts src/cart/discount.ts",
+      "expected_output": "Asks nothing. Invokes finding-dev-commands for the missing test commands, finds the framework and version in the manifest or lockfile, where cart tests live and how they are named, the fixtures and factories they use, and which test files cover the two paths. Writes no test. Ends with the test setup block alone: the lines test setup, framework, location, helpers, test one file, and covering tests. With no test command or no test file, the first line is `test setup: none: <reason>`.",
+      "files": []
+    }
+  ]
+}

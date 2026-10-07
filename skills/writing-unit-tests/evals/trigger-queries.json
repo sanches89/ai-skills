@@ -1,0 +1,12 @@
+[
+  {"query": "nothing tests src/parser/tokenize.ts yet, write unit tests for it", "should_trigger": true},
+  {"query": "This test is flaky because it calls Date.now(). Make it deterministic.", "should_trigger": true},
+  {"query": "Look over spec/payments_spec.rb and tell me if these tests actually prove anything.", "should_trigger": true},
+  {"query": "Bug: the discount goes negative for an empty cart. Add a test that reproduces it before I fix it.", "should_trigger": true},
+  {"query": "I'm about to rework the legacy invoice module and nothing covers it. Pin down what it does today first.", "should_trigger": true},
+  {"query": "Implement the task in tasks/004-add-retry-policy/task.md.", "should_trigger": false},
+  {"query": "Which command runs the test suite in this repo, and how do I run one file?", "should_trigger": false},
+  {"query": "What is the line coverage and mutation score of src/billing right now?", "should_trigger": false},
+  {"query": "Review this diff for bad names, long functions, and duplicated logic.", "should_trigger": false},
+  {"query": "Find the code smells in src/legacy and tell me what needs refactoring first.", "should_trigger": false}
+]

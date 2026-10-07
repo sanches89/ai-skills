@@ -1,0 +1,12 @@
+[
+  {"query": "what's the command to run the tests in this repo? I don't want to guess between npm test and the Makefile.", "should_trigger": true},
+  {"query": "I just cloned this project. How do I install the dependencies and build it?", "should_trigger": true},
+  {"query": "Which lint and type-check commands does CI run for packages/web?", "should_trigger": true},
+  {"query": "How do I run a single test file here? The suite takes ten minutes.", "should_trigger": true},
+  {"query": "Is there a way to check the formatting without rewriting files in this codebase?", "should_trigger": true},
+  {"query": "Run the test suite and fix whatever fails.", "should_trigger": false},
+  {"query": "Measure the test coverage and the duplication of src/billing/ before I refactor it.", "should_trigger": false},
+  {"query": "Which issue tracker does this project use, and how do I comment on an item from the CLI?", "should_trigger": false},
+  {"query": "Upgrade every npm dependency to its latest major and fix the breakages.", "should_trigger": false},
+  {"query": "Write unit tests for RetryPolicy.next in src/payments/retry-policy.ts.", "should_trigger": false}
+]

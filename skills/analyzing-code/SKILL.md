@@ -2,7 +2,7 @@
 name: analyzing-code
 description: Measures the duplication, complexity, hotspots, tests, coverage, and mutation score of one version of the code, the working tree or one branch, and reports ranked findings, changing no code. Use only when the user asks for it by name or asks for the code measured or analyzed, never to compare two versions or answer a general code question.
 license: MIT
-compatibility: Requires Node.js 22.13 or newer with npx and git, run inside a git repository, with network access on the first run. Complexity needs lizard on PATH, or uv, pipx, or a Python that has lizard. Tests and coverage need the project's own test command. Mutation needs the project's own mutation command. A missing tool skips its measurement and never blocks the report.
+compatibility: Requires the measuring-code skill. Needs git, run inside a git repository.
 argument-hint: "[branch]"
 disable-model-invocation: true
 ---
@@ -71,94 +71,25 @@ output of `git rev-parse --show-toplevel`. With a name, run
 root, and `<root>` is `<scratch-dir>/measured`. Never check out, stash,
 reset, or switch the working tree.
 
-Run every command of Steps 2 to 6 from `<root>`, unless a step says
-otherwise. Measure `<root>` in every run, with `.` as the path.
+Run every command of Step 3 from `<root>`.
 
-### Step 2: Inventory
+### Step 2: Measure
 
-**2a. Ignore globs.** List the tracked files that are generated, vendored,
-or built:
+Invoke the `measuring-code` skill (in Claude Code, with the `Skill` tool)
+with the invocation text below. Without a name, write `install on failure`
+in place of `install first`:
 
-```bash
-git ls-files | grep -iE \
-  -e '(^|/)(generated|__generated__|vendor|vendored|third_party)/' \
-  -e '\.(min\.js|min\.css|pb\.go|pb\.ts|g\.dart|generated\.[a-z]+)$'
+```
+from analyzing-code: paths ., root <root>, out <scratch-dir>, mutation all,
+install first, top 200
 ```
 
-Record one glob per folder or extension found, such as `**/generated/**` or
-`**/*.pb.go`. Add one glob per folder that the project's lint or coverage
-configuration lists as generated. Record the globs as `<globs>`, joined by
-commas.
+Keep the measurement record it returns. When its `summary` line reads
+`none`, or names a file other than `summary.json`, go to Step 4. The result
+is then `blocked`. The reason is the reason on the `summary` line, else
+`the measure command failed to start`.
 
-**2b. Limits.** Read `references/measure-tool.md` now. Record `<ccn>`,
-`<length>`, and `<params>`: the project's own limits when it configures
-them, else 10, 50, and 4.
-
-**2c. Install and test commands.** Read `references/test-reports.md` now.
-Record, as that file says:
-- the install command, `none`, or `unknown`;
-- the test command with the report options, with `<dir>` in place of the
-  output folder;
-- `<junit-report>` and `<coverage-report>`: the paths of the JUnit report
-  and the coverage report relative to `<dir>`, or the reason a report is
-  skipped.
-
-Skip Step 3 when the runner writes neither report.
-
-**2d. Mutation command.** Read `references/mutation-reports.md` now.
-Record, as that file says, the mutation command and `<mutation-report>`.
-The command holds the report options and the thread option, with `<dir>`
-in place of the output folder. Record the reason instead when the file
-says to skip the mutation run.
-
-### Step 3: Tests
-
-Set `<dir>` to `<scratch-dir>/reports` in every command of Steps 3 to 5.
-
-With a name, run the install command first, unless it is `none` or
-`unknown`. With a name and the install command `unknown`, record the
-tests and coverage as skipped with the reason `no install command`, and
-go to Step 4.
-
-Run the test command. Without a name, when it fails to start on a missing
-dependency, run the install command once and the test command again. Skip
-both when the install command is `none` or `unknown`. Afterwards do the
-step that `test-reports.md` gives for .NET, Maven, and Gradle. A failing
-test is a result, not a failure of the run. When the install command fails,
-or the test command writes neither report, record the tests and coverage
-as skipped. The reason is the first line of the error.
-
-### Step 4: Mutation
-
-Skip this step when Step 2d recorded a reason. Run the mutation command
-from the folder that `mutation-reports.md` names, else from `<root>`. Let
-it finish, however long it takes (in Claude Code, run it in the
-background). Afterwards do the step that `mutation-reports.md` gives for
-the tool. A surviving mutant is a result, not a failure of the run. When
-the mutation command fails, or writes no report, record the first line of
-the error as the reason.
-
-### Step 5: Measure
-
-Run the measure tool:
-
-```bash
-<measure> . --ignore "<globs>" --ccn <ccn> --length <length> \
-  --params <params> --top 200 \
-  --test-report <scratch-dir>/reports/<junit-report> \
-  --coverage-report <scratch-dir>/reports/<coverage-report> \
-  --mutation-report <scratch-dir>/reports/<mutation-report> \
-  > <scratch-dir>/summary.json
-```
-
-Leave out `--ignore` with no glob, and each report option without its
-report. Pass `--mutation-report` once per mutation report.
-
-On exit code `2`, fix the arguments and run the command again. On `1`, or
-when the measure command fails to start, go to Step 7. The result is then
-`blocked`, with the first line of the error as the reason.
-
-### Step 6: Read the code
+### Step 3: Read the code
 
 Read `references/analysis-rules.md` now. A number alone is never a finding:
 read the code behind each entry that file names, both locations of a clone
@@ -173,13 +104,13 @@ entries of its folder, both locations of each clone, and the path of
 
 Rank the findings as the *Ranking* section of `analysis-rules.md` says.
 
-### Step 7: Measurement report
+### Step 4: Measurement report
 
 Read `references/measurement-report-template.md` now and fill it in the
 scratch directory. Run every check in `references/quality-checklist.md`,
 grep helper included, over the measurement report. Fix every failure.
 
-### Step 8: Deliver
+### Step 5: Deliver
 
 With a name, run from the repository root
 `git worktree remove --force <scratch-dir>/measured`, then

@@ -1,0 +1,12 @@
+[
+  {"query": "Check tasks/014-rate-limit-login/task.md against our task format. I think it has vague wording and a missing Verification section.", "should_trigger": true},
+  {"query": "Here's a rough plan in bullet points for the cache invalidation work. Rewrite it in the standard task and subtask format so an agent can implement it without asking anything.", "should_trigger": true},
+  {"query": "how many lines of code would this ticket touch? it's in tasks/012-typed-config/task.md, ignore the test folders", "should_trigger": true},
+  {"query": "Lint this spec draft for words like maybe or TBD, sentences that run too long, and subtasks that point back at the task.", "should_trigger": true},
+  {"query": "Is this subtask self-contained enough? Paste below. Fix it so it follows the format if it isn't.", "should_trigger": true},
+  {"query": "We need rate limiting on /login. Research the code, interview me, and write it up as a task.", "should_trigger": false},
+  {"query": "tasks/012-typed-config/task.md is too big for one PR. Split it into subtasks I can review one at a time.", "should_trigger": false},
+  {"query": "The task text is approved. Save it to Linear with its three subtasks as child issues.", "should_trigger": false},
+  {"query": "Load PAY-212 with its parent and list its subtasks in the order they run.", "should_trigger": false},
+  {"query": "Implement tasks/007-add-retry-to-webhooks/task.md and run the tests.", "should_trigger": false}
+]

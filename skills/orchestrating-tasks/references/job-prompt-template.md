@@ -15,9 +15,10 @@ Rules for filling:
 ## Prompt
 
 ```
-Use the implementing-tasks skill on the target below and return its work report.
+Invoke the implementing-tasks skill (in Claude Code, with the Skill tool)
+with the invocation text `from orchestrating-tasks: <task file path |
+subtask file path | item identifier or URL>`. Return its work report.
 
-Target: <task file path | subtask file path | item identifier and URL>
 Working tree: <absolute path of the tree>
 Branch: <branch name> | none: no git repository
 

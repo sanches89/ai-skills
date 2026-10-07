@@ -2,17 +2,17 @@
 name: refactoring-code
 description: Reviews code for smells, design flaws, and the marks of agent-written code, and writes a refactor task with one tested subtask per refactoring, changing no code. Use when the user wants code refactored, simplified, decoupled, made testable or agent-friendly, cleaned of AI slop, or a codebase improved in batches, never rewritten from scratch.
 license: MIT
-compatibility: The measurements and the scan script need Node.js 22.13 or newer with npx and network access on the first run. Complexity also needs uv, pipx, or a Python that has lizard. A missing tool skips its measurement and never blocks the review.
+compatibility: Requires the loading-tasks, finding-dev-commands, measuring-code, finding-code-smells, writing-unit-tests, formatting-tasks, and saving-tasks skills.
 argument-hint: <path | symbol | git range | task or subtask id | file | text>
 ---
 
 # Refactoring code
 
-Review the code inside the refactor scope of one request. Find every smell, pick
-the refactoring that removes it, and write the refactor task: one task with one
-subtask per refactoring, at most 12 per run, in the format the
-`implementing-tasks` skill implements. Every fact in it comes from reading,
-measuring, and running commands on the unchanged code.
+Review the code inside the refactor scope of one request. Rank the smells
+found, pick the refactoring that removes each, and write the refactor task:
+one task with one subtask per refactoring, at most 12 per run, in the format
+the `implementing-tasks` skill implements. Every fact in it comes from
+reading, measuring, and running commands on the unchanged code.
 
 ## Terms
 
@@ -27,13 +27,15 @@ These words have exactly one meaning in this skill.
 
 ## Hard rules
 
-1. **Read-only on the project.** Write only the task file and the subtask files,
-   in Step 9. Write drafts in a scratch directory outside the repository (in
-   Claude Code, the scratchpad directory). The `implementing-tasks` skill makes
-   every change, with the tests that prove it.
+1. **Read-only on the project.** Change no project file. Write notes and
+   drafts in a scratch directory outside the repository (in Claude Code,
+   the scratchpad directory). The `saving-tasks` skill writes the task in
+   Step 9, and the `implementing-tasks` skill makes every change. A change
+   made during the review has no test that proves it kept the behavior.
 2. **Never ask.** Settle every choice from the code, the docs, the tests, the
-   connected tools, and the rules below. Write the task without approval. The
-   `orchestrating-tasks` skill runs this skill with no user present.
+   connected tools, and the rules below. Write the task without approval. A
+   question stalls the `orchestrating-tasks` skill, which runs this skill
+   with no user present.
 
 ## Workflow
 
@@ -48,59 +50,39 @@ each with path and line. The context window then holds those returns, not
 the files, and stays small. Without subagents, follow the step yourself and
 keep only what it names.
 
-**Tracker.** The tracker is the issue tracker the project uses, reached
-through an MCP server or through `gh`, the GitHub CLI. Find it once, in
-this order, and take the first that applies:
-1. the tracker that README, CLAUDE.md, AGENTS.md, CONTRIBUTING, or
-   `docs/README.md` names, when an MCP server or `gh` reaches it. When
-   the docs name one that nothing reaches, no tracker is connected;
-2. the tracker of an MCP server whose tools read and write issues. List
-   the MCP tools of the agent (in Claude Code they are deferred: search
-   them with `ToolSearch` for
-   `issue ticket project linear jira notion asana github`). With several,
-   the first listed;
-3. GitHub Issues through `gh`, when `git remote get-url origin` prints a
-   `github.com` URL and `gh auth status` exits 0. Then
-   `gh issue view <number> --comments` reads an item,
-   `gh api repos/{owner}/{repo}/issues/<number>/sub_issues` lists its
-   children, and `gh issue create`, `gh issue edit`, `gh issue comment`,
-   and `gh issue close` write. A POST with `gh api -X POST` to that
-   `sub_issues` path with `-F sub_issue_id=<id>` links a child, where
-   `<id>` is the `id` that `gh api repos/{owner}/{repo}/issues/<child>`
-   prints. A closed issue is in a completed status, and `gh` has no other
-   status;
-4. else no tracker is connected.
-
-Resolve the invocation text, or the request in the conversation, as exactly
-one kind:
+Drop a leading `from <skill name>:` from the invocation text, and a
+trailing `, files`, which asks for files. Resolve the rest, or the request
+in the conversation, as exactly one kind:
 - **One or more paths** of files or folders that exist. Kind: *path*.
 - **A symbol name**: a function or a module in the code. Kind: *symbol*.
   Search for its definition. With more than one, take every definition.
 - **A git range**, such as `main..HEAD`, or words that name the uncommitted
   changes or the current branch. Kind: *range*.
 - **A task or subtask**: an item identifier or URL (`PAY-212`, `#128`, an
-  issue link) in the tracker, a task file, or a subtask file. A task file
-  is a file named `task.md`, and its folder is the task folder. A subtask
-  file is a file named `###-<subtask-slug>.md` next to a `task.md`. Kind:
-  *task*. Read it with every subtask file in its task folder, or every
-  child of its item. With no tracker connected, an identifier is kind
-  *text*.
+  issue link), a file named `task.md`, or a file named
+  `###-<subtask-slug>.md` next to a `task.md`. Kind: *task*.
 - **Free text**, or the path of any other file, whose content is then the
   text. Kind: *text*.
 - **Nothing**: kind *path* with the repository root.
 
+For kind *task*, invoke the `loading-tasks` skill (in Claude Code, with the
+`Skill` tool) with the invocation text
+`from refactoring-code: <identifier, URL, or path>`. Keep the task map it
+returns. When the task map reads `source: none`, the request is kind *text*.
+
 Write private notes in the scratch directory from this step on, written
 `<scratch-dir>` in commands. Keep in them every list a later step reads.
 
-### Step 2: Set the refactor scope and the contract
+### Step 2: Set the refactor scope
 
 **Refactor scope.** Take the files from the request:
 - *path*: every file under the paths;
 - *symbol*: the file of every definition of the symbol;
 - *range*: every file that `git diff --name-only <range>` prints and that
   still exists. For uncommitted changes, use `git status --porcelain`;
-- *task*: every file that the Changes or Approach section of the requested
-  task names, and every file that its subtasks' Changes sections name;
+- *task*: every file that the Changes or Approach section of the target
+  names. Add every file that the Changes section of each subtask on the
+  task map's `subtasks` line names;
 - *text*: the files that hold the code the text names, found by search.
 
 With an empty refactor scope, finish as Step 6 states for no entry.
@@ -109,153 +91,102 @@ Remove from the refactor scope:
 - generated code, vendored code, lockfiles, build output, and snapshot files;
 - database migrations that already ran.
 
-A test file stays in the refactor scope. Inside it, only the entries under
-*Tests* in `references/smell-catalog.md` are findings.
+Record one glob per removed part that sits inside a folder of the refactor
+scope, joined by commas with no space, as `<globs>`. A test file stays in
+the refactor scope.
 
-**Bounds of a requested task.** For kind *task*, read the requested task and
-every parent above it, in full. The parent of a subtask file is the task
-file in its task folder. The parent of an item is the item the tracker's
-parent relation points to. Record every *Out of scope* list and every
-Decisions section. Never write a subtask that does what one of them lists
-under *Out of scope*. Follow every decision.
-
-**Contract.** List every part of the contract that the refactor scope holds:
-- every symbol that code outside the refactor scope imports or calls, found
-  with the agent's code search or `git grep`;
-- in a library that others install, every exported symbol, with or without a
-  caller in the repository;
-- every endpoint, command-line flag, file format, database schema,
-  configuration key, and name of an event, a log, or a metric.
+**Bounds of a requested task.** For kind *task*, read every task on the task
+map's `chain` in full. Record every *Out of scope* list and every Decisions
+section. Never write a subtask that does what one of them lists under *Out
+of scope*. Follow every decision.
 
 ### Step 3: Research
 
 **3a. Conventions.** Read README, CLAUDE.md, AGENTS.md, CONTRIBUTING, and the
 docs that cover the refactor scope. Record the naming, error handling,
-module layout, and formatting rules. Then find `<tasks-dir>`.
+module layout, and formatting rules.
 
-**Tasks directory.** `<tasks-dir>` is the folder that holds the task
-folders. It is the first of these that exists:
-1. the folder that the request or the conversation names;
-2. the folder that README, CLAUDE.md, AGENTS.md, CONTRIBUTING, or
-   `docs/README.md` names as the place for tasks, plans, or specs;
-3. the parent of a task folder: a folder named `###-<task-slug>`, three
-   digits, a hyphen, and a slug, that holds a `task.md`, anywhere in the
-   repository outside `node_modules`, `.git`, and `vendor`. With several
-   parents, the shortest path, then the first in alphabetical order;
-4. a folder named `tasks`, `plans`, or `specs` that holds a `.md` file at
-   any depth. It sits at most three levels below the repository root,
-   outside `node_modules`, `.git`, and `vendor`. With several, the
-   shortest path, then the first in alphabetical order;
-5. else `<scratch-dir>/tasks/`.
+**3b. Commands.** Invoke the `finding-dev-commands` skill (in Claude
+Code, with the `Skill` tool) with the invocation text
+`from refactoring-code: find`. Record the build, lint, type-check, test,
+and `test one file` commands of the command map it returns. For kind
+*task*, a command on the task map's `commands` line replaces the command of
+the same kind.
 
-**3b. Commands.** Take the build, lint, type-check, and test commands from
-the project's manifest, Makefile, CI configuration, or docs. For kind
-*task*, prefer the commands in its Context section.
+**3c. Test setup.** Invoke the `writing-unit-tests` skill (in Claude Code,
+with the `Skill` tool) with the invocation text below. Leave out each part
+whose command 3b did not find:
 
-**3c. Test setup.** The project has a test setup when 3b found a test command
-and the repository holds at least one test file. When it has one, record:
-- the test framework and its version from the manifest or lockfile;
-- where the tests for the refactor scope live and how they are named;
-- the fixtures, factories, fakes, and helpers the existing tests use;
-- the command that runs a single test file;
-- the coverage command, when the project configures one.
+```
+from refactoring-code: setup for <paths of the refactor scope>,
+test <test command>, test one file <test one file command>
+```
 
-**3d. Analysis tools.** Read `references/measurement-tools.md` now. Record
-every analysis tool the project configures, with its command and limits.
-Record the options that make the test command write a test report and a
-coverage report.
+Record the test setup block it returns. The project has a test setup when
+that block reads `test setup: yes`.
 
-**3e. Tracker.** When a tracker is connected, record its relation for
-children (sub-issue, child, parent field) and the fields an item and a child
-item require. Record the team, project, or board that the request, the
-requested task, or the docs name.
+**3d. Analysis tools.** Read `references/analysis-tools.md` now. Record
+every analysis tool it lists that the project configures, with its command
+and limits.
 
 ### Step 4: Record the baseline
 
-Record in the scratch directory:
+Invoke the `measuring-code` skill (in Claude Code, with the `Skill` tool)
+with the invocation text
+`from refactoring-code: paths <path>..., out <scratch-dir>, ignore <globs>,
+top 200`.
+`<path>...` is the files or folders of the refactor scope. Leave out
+`ignore <globs>` when Step 2 recorded no glob. Keep the measurement record
+it returns.
+
+Then record in the scratch directory:
 - the output of `git status --porcelain`, when the project is a git
   repository;
 - the result of each command from 3b, pass or fail, with the name of every
-  failing check;
-- the result of each analysis tool from 3d;
-- the test report and the coverage report, written into the scratch
-  directory by the test command with the options from 3d. Skip a report the
-  test runner cannot write without a new dependency;
-- the measurement summary, from the measure tool run at the project root:
+  failing check. Take the test result from the summary when the record's
+  `tests` line reads `ok`;
+- the result of each analysis tool from 3d.
 
-```bash
-<measure> <path>... \
-  --test-report <scratch-dir>/junit.xml \
-  --coverage-report <scratch-dir>/coverage.info \
-  > <scratch-dir>/baseline.json
-```
-
-`<path>...` is the files or folders of the refactor scope. Leave out the
-option of a report that does not exist. Pass `--ignore <globs>` for
-generated and vendored code inside the paths, and the project's own limits
-with `--ccn`, `--length`, and `--params` when 3d found them. `--help` lists
-every option and exit code. When the measure command fails to start, follow
-*Without any tool* in `references/measurement-tools.md`.
-
-**Scan.** Run the scan script, which lists the signals that the entries
-under *Agent-written code*, *Legibility*, and *Tests* in
-`references/smell-catalog.md` name, as `path:line` per kind. `<skill-dir>`
-is the folder holding this `SKILL.md`:
-
-```bash
-node <skill-dir>/scripts/scan.mjs <path>... --ignore "<globs>" \
-  > <scratch-dir>/scan.json
-```
-
-A signal is never a finding on its own. When the script fails to start,
-search for the signals by hand, as *Without any tool* states.
-
-**Coverage of the refactor scope.** Record which functions in the refactor
-scope a test covers:
-- with a coverage report, a function is covered when the tests ran every
-  line and every branch of it. `coverage.functions.top` lists every function
-  that falls short, highest CRAP score first. Raise `--top` when the list is
-  cut;
-- a coverage report proves that a test runs the code, never that a test
-  asserts its result. Read the tests of every function a finding names;
-- without a coverage report, read the tests that import or call the code.
-
-When a test that covers a part of the refactor scope fails in the baseline,
-remove that part from the refactor scope. Name it under the task's *Out of
-scope* with the failing test.
+When a test file on the `covering tests` line of 3c fails in the baseline,
+remove the code it covers from the refactor scope. Name that code under the
+task's *Out of scope* with the failing test.
 
 ### Step 5: Find and rank
 
-Read `references/smell-catalog.md` now. The subagents below read every file
-in the refactor scope in full. A number alone is never a finding. Record one
-finding per smell and location:
-- the smell and its location as `path:line`;
-- the evidence: the clone, the measured value against its limit, or what the
-  code shows;
-- the refactoring that removes it;
-- the risk. `high` when the change crosses modules or touches the contract.
-  Else `low` when the refactoring is in the safe set, the refactorings
-  allowed on code that no test covers: Rename, Extract Variable, Inline
-  Variable, Extract Function, Move Function, Remove Dead Code, and a seam
-  as `references/characterization-tests.md` states. Else `medium`;
-- whether a test covers the code, from Step 4.
+Invoke the `finding-code-smells` skill (in Claude Code, with the `Skill`
+tool) with the invocation text below. `<path>...` is the refactor scope
+after Step 4. `<summary>` is the `summary` line of the measurement record.
+Leave out each part that has no value:
 
-Findings come from five origins: what the request names, the `top` lists of
-the measurement summary, the scan signals, the project's analysis tools, and
-reading the code.
+```
+from refactoring-code: paths <path>..., summary <summary>,
+ignore <globs>, out <scratch-dir>
+```
 
-Group the files of the refactor scope by folder and run one subagent per
-folder. Give it the files to read in full and the path of
-`references/smell-catalog.md`. Give it the `top` entries, scan signals, and
-coverage from Step 4 that fall in its folder, and the fields of a finding
-above. It reads code outside its folder when a smell needs it.
+Read the `findings.md` and the `contract.md` it names. `contract.md` lists the
+contract. Add a finding in the same form for each refactoring the request names,
+with the location and the reason the request gives. Add one for each hit of an
+analysis tool from 3d that the code confirms. Prove a dead-code hit by the
+search that *Removing code* in `references/refactoring-rules.md` requires.
+
+Put every finding with refactoring `report` under the task's *Out of
+scope*. Give every other finding its risk:
+- `high` when the change crosses modules or the finding reads
+  `contract: yes`;
+- else `low` when the refactoring is in the safe set: Rename, Extract
+  Variable, Inline Variable, Extract Function, Move Function, Remove Dead
+  Code, and a seam. A seam is Parameterize Function or Parameterize
+  Constructor with a default equal to the current collaborator. The safe
+  set holds the refactorings allowed on code that no test covers;
+- else `medium`.
 
 Drop a finding when:
 - its refactoring adds a feature, fixes a bug, or tunes performance;
 - its refactoring changes a part of the contract that the request does not
   name;
 - it is a clone whose copies change for different reasons;
-- it needs a new layer, interface, or option with fewer than three users;
+- it needs a new layer, interface, or option with fewer than three users.
+  A test that passes the parameter of a seam counts as a user;
 - a task from Step 2 puts it out of scope;
 - its code is about to be deleted or replaced, as the request or the docs
   state.
@@ -295,24 +226,27 @@ Write each entry in the notes in this form:
    verification: <one command>
 ```
 
-Without a test setup, keep only entries from the safe set, with
+`tests` reads `covered` for a finding that reads `covered: yes`. Without a
+test setup, keep only entries from the safe set, with
 `tests: none: safe set`. Move every other finding to the task's *Out of
 scope*, with the reason `no test setup`.
 
-**Characterization tests.** Read `references/characterization-tests.md` now.
-For every entry marked `characterization tests first`, record the test cases
-for the behavior of the code the entry changes, and the seam that reaches
-the code. With no seam, drop the entry and record the reason for the task's
-*Out of scope*.
+**Characterization tests.** Invoke the `writing-unit-tests` skill (in Claude
+Code, with the `Skill` tool) with the invocation text
+`from refactoring-code: characterization`. Read *Characterization tests*
+in `references/refactor-sections.md` now. For every entry marked
+`characterization tests first`, record the test cases for the behavior of
+the code the entry changes, and the seam that reaches the code. With no
+seam, drop the entry and record the reason for the task's *Out of scope*.
 
-**Verification.** Give every entry one verification command: the single-file
-test command from 3c over the tests that cover the entry, chained with one
-structural check that observes the result of the refactoring. A structural
-check is a search for a name that finds nothing, a count of matches, an
-existing file, or a measurement value. Run the command on the current code
-and confirm that it fails: a command that passes before the refactoring
-proves nothing. Without a test setup, the structural check alone is the
-command.
+**Verification.** Give every entry one verification command. It runs the
+`test one file` command of the test setup block over the tests that cover
+the entry. It chains that run with one structural check that observes the
+result of the refactoring. A structural check is a search for a name that
+finds nothing, a count of matches, an existing file, or a measurement
+value. Run the command on the current code and confirm that it fails: a
+command that passes before the refactoring proves nothing. Without a test
+setup, the structural check alone is the command.
 
 With no entry, write no task. State the refactor scope and the baseline
 measurements in chat. Finish with one line: `No refactor task: no finding
@@ -320,70 +254,37 @@ met the rules of Step 5.` Ask nothing else.
 
 ### Step 7: Write the refactor task
 
-Read `references/task-template.md` now. Fill it in the scratch directory for
-the task and for each entry, one subtask per entry in the order of Step 6.
-Its *Refactor task sections* part says what each section of the task and of
-a subtask holds. Read `references/refactoring-rules.md` now, for the task's
-*Decisions* and each subtask's *Context*.
+Read `references/refactor-sections.md` now: it says what each section of the
+task and of a subtask holds. Read `references/refactoring-rules.md` now, for
+the task's *Decisions* and each subtask's *Context*.
 
-Writing rules:
-- Write decisions as facts:
-  `The three copies of the business-day rule call isBusinessDay.`, never
-  `We decided that...` or `The copies should probably...`.
-- Make each subtask self-contained: restate every decision and fact an agent
-  needs to implement it with the repository alone. Never write `see task`,
-  `as above`, or `same as subtask 2`.
-- Use the paths and symbols verified in Step 2 and Step 5. Mark new files
-  `(new)`.
-- In the Changes section, name the functions to add, move, rename, or
-  remove, with their inputs and outputs. Never implementation code.
-- Write acceptance criteria that are binary: someone else can answer yes or
-  no.
-- Add no sections beyond the template: no Risks, Considerations,
-  Alternatives, Future work, Nice to have, or Notes.
-- Write at most 25 words per sentence, and only lines the implementing agent
-  needs.
+Invoke the `formatting-tasks` skill (in Claude Code, with the `Skill` tool)
+with the invocation text
+`from refactoring-code: write <scratch-dir>/draft, subtasks <entry count>`.
+It fills the task and one subtask per entry, in the order of Step 6, from
+the notes and the two files above. On `checks: decision needed`, settle the
+decision from the notes and the rules of this skill, then fix the draft.
 
 ### Step 8: Quality check
 
-Run every check in `references/quality-checklist.md`, grep helpers included,
-over the draft. Fix every failure.
+Run every check in `references/quality-checklist.md` over the drafts. Fix
+every failure. Then invoke the `formatting-tasks` skill (in Claude Code,
+with the `Skill` tool) with the invocation text
+`from refactoring-code: check <draft path>...`, every draft in order. Fix
+every failure it returns.
 
 ### Step 9: Save
 
-Save to files when no tracker is connected, or when the user asked for files
-at any point. Otherwise save to the tracker of 3e. Never ask which.
+Invoke the `saving-tasks` skill (in Claude Code, with the `Skill` tool) with the
+invocation text below. `<subtask drafts>` is the subtask draft paths in order,
+separated by spaces. Add `files` when the invocation text ended with `, files`,
+or when the user asked for files at any point. Add `dir <folder>` when the
+request names the folder for tasks:
 
-**To the tracker:**
-1. Use the destination and required field values from 3e. When research
-   did not settle a required value, save to files instead.
-2. Create the task as a new item with the task's title and body.
-3. Create one child item per subtask, in order, so that later children can
-   link to earlier siblings. The subtask title is the title. The subtask
-   is the body, with the task's item link on the `Task` line and
-   sibling item links on the `Depends on` line. Link each child to the
-   task's item with the tracker's relation. When the tracker has none, put
-   child links in the task's body and the task's link in each child body.
-4. Update the task's Subtasks section with the child links.
+```
+from refactoring-code: task <scratch-dir>/draft/task.md,
+subtasks <subtask drafts>[, files][, dir <folder>], unattended
+```
 
-**To files**, by the numbering rule below:
-1. A folder with the same `<task-slug>` under any number stays untouched.
-2. Create the task folder `<tasks-dir>/###-<task-slug>/` with the next free
-   number, with `<tasks-dir>` from 3a.
-3. Write the task to `task.md` in the task folder.
-4. Write one subtask file per subtask, `###-<subtask-slug>.md` in the task
-   folder, numbered `001` upward in subtask order. Link the `Task` line to
-   `./task.md` and the `Depends on` line to the sibling files. Link the
-   task's Subtasks section to each subtask file.
-
-**Numbering rule.** `###` is a zero-padded three-digit sequence from `001`: the
-next free number across every entry of `<tasks-dir>` whose name starts with
-three digits. Give subtasks the next free numbers inside their task folder. A
-slug is a title in kebab-case: lowercase ASCII letters and digits, every other
-run of characters replaced by one hyphen, cut to 60 characters, with no leading
-or trailing hyphen. Build `<task-slug>` from the task title and `<subtask-slug>`
-from the subtask title. The `creating-tasks` and `breaking-down-tasks` skills
-share this layout.
-
-Finish with one line: the task item's identifier and URL, or the path of the
-task file, absolute when outside the repository. Ask nothing else.
+Finish with the one line `saving-tasks` returns: the task item's identifier,
+or the path of the task file. Ask nothing else.

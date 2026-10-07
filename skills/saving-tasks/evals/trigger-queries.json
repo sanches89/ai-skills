@@ -1,0 +1,12 @@
+[
+  {"query": "The task in drafts/task.md is approved. File it in Linear with its three subtasks as child issues.", "should_trigger": true},
+  {"query": "Save this plan into tasks/ as a numbered task folder with one file per subtask.", "should_trigger": true},
+  {"query": "Replace the body of issue #42 with drafts/task.md and swap its sub-issues for the new subtask drafts.", "should_trigger": true},
+  {"query": "put the approved ticket text from my notes into GitHub Issues and give me the link", "should_trigger": true},
+  {"query": "Write drafts/task.md into the tasks folder. A folder with the same name already exists, keep its old number.", "should_trigger": true},
+  {"query": "Write a task for adding retries to the webhook sender before anyone codes it.", "should_trigger": false},
+  {"query": "Split tasks/012-typed-config/task.md into commit-sized subtasks.", "should_trigger": false},
+  {"query": "Which issue tracker does this project use?", "should_trigger": false},
+  {"query": "What are the subtasks of PAY-212 and in which order do they run?", "should_trigger": false},
+  {"query": "Check drafts/task.md against the task format before I save it.", "should_trigger": false}
+]

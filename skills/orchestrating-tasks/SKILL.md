@@ -2,6 +2,7 @@
 name: orchestrating-tasks
 description: Runs a whole task end to end on a branch, one commit per subtask through implementing-tasks, then refactor rounds, with no questions. Use when the user wants a task with subtasks implemented, orchestrated, run unattended, or shipped as a branch from an item or a task file, or says to run the whole plan.
 license: MIT
+compatibility: Requires the loading-tasks, finding-dev-commands, implementing-tasks, and refactoring-code skills.
 argument-hint: <task id | task file>
 ---
 
@@ -58,82 +59,44 @@ These words have exactly one meaning in this skill.
 
 ### Step 1: Load the target
 
-**Tracker.** The tracker is the issue tracker the project uses, reached
-through an MCP server or through `gh`, the GitHub CLI. Find it once, in
-this order, and take the first that applies:
-1. the tracker that README, CLAUDE.md, AGENTS.md, CONTRIBUTING, or
-   `docs/README.md` names, when an MCP server or `gh` reaches it. When
-   the docs name one that nothing reaches, no tracker is connected;
-2. the tracker of an MCP server whose tools read and write issues. List
-   the MCP tools of the agent (in Claude Code they are deferred: search
-   them with `ToolSearch` for
-   `issue ticket project linear jira notion asana github`). With several,
-   the first listed;
-3. GitHub Issues through `gh`, when `git remote get-url origin` prints a
-   `github.com` URL and `gh auth status` exits 0. Then
-   `gh issue view <number> --comments` reads an item,
-   `gh api repos/{owner}/{repo}/issues/<number>/sub_issues` lists its
-   children, and `gh issue create`, `gh issue edit`, `gh issue comment`,
-   and `gh issue close` write. A POST with `gh api -X POST` to that
-   `sub_issues` path with `-F sub_issue_id=<id>` links a child, where
-   `<id>` is the `id` that `gh api repos/{owner}/{repo}/issues/<child>`
-   prints. A closed issue is in a completed status, and `gh` has no other
-   status;
-4. else no tracker is connected.
+The target is the task or subtask this skill runs. `<target>` is the
+invocation text, else the task given in the conversation. With neither,
+`<target>` is empty.
 
-By hard rule 6, run the tracker rule in a subagent that returns the
-tracker and the way it is reached, and nothing else.
+**Task map.** Never open the target yourself. Run a subagent with this
+prompt, the placeholders filled, and nothing else. `<folder>` is the
+current working directory. Without subagents, follow the prompt yourself
+and keep only its return:
 
-The target is the task or subtask this skill runs. Resolve the invocation
-text, or the task given in the conversation, as one source:
-- **An item identifier or URL** (`PAY-212`, `#128`, an issue link) in the
-  tracker. Source: *tracker*. With no tracker connected, end with one
-  line: no tracker holds the item, give a task file path. Write no report.
-- **A task file**, a file named `task.md`. Its folder is the task folder.
-  Source: *file*.
-- **A subtask file**, a file named `###-<subtask-slug>.md` next to a
-  `task.md`. Source: *file*.
-- **Free text**, the path of any other file, or nothing: end with one line: no
-  task to run, give a task file path or an item identifier. Write no report. The
+```
+Work in <folder>. Invoke the loading-tasks skill (in Claude Code, with
+the Skill tool) with the invocation text
+`from orchestrating-tasks: <target>`. When the `commands` line of the
+task map it returns lacks a build, lint, type-check, or test command,
+invoke the finding-dev-commands skill (in Claude Code, with the
+Skill tool) with the invocation text `from orchestrating-tasks: find`.
+Add each missing command from the command map it returns to the
+`commands` line. Return the task map and nothing else.
+```
+
+Act on the map's `source` line:
+- `none: no tracker holds <identifier>`: end with one line: no tracker
+  holds the item, give a task file path. Write no report.
+- any other `none`, or `text`: end with one line: no task to run, give a
+  task file path or an item identifier. Write no report. The
   `creating-tasks` skill writes a task from text.
+- `tracker` or `file`: continue.
 
-**Summary.** Never open the target yourself. Run a subagent with this
-prompt, the placeholders filled, and nothing else. Without subagents,
-follow the prompt yourself and keep only its return:
-
-```
-Read <task file path | subtask file path | item identifier and URL> in
-full. A subtask of a task is a subtask file in its task folder, a child
-of its item, or an entry of its Subtasks section other than `None.`.
-Read every subtask of a task, and the task file or parent item of a
-subtask. List the subtasks in the order of the task's Subtasks section,
-else ordered so that each comes after every subtask on its Depends on
-line, ties by number or identifier, lowest first. Return this summary
-and nothing else:
-
-title: <the target's title>
-subtasks: none | one per line below
-- <number or identifier> <title>; depends on: <numbers | none>;
-  verification: <its Verification section, word for word>;
-  new: <every path its Changes section marks (new)> | none
-commands: <the build, lint, type-check, and test commands from the
-  target's Context section, or its task's for a subtask; a command the
-  tasks do not give, from the project's manifest, Makefile, CI
-  configuration, or docs>
-verification: <the target's Verification section, word for word>
-new: <every path the target's Changes section marks (new)> | none
-```
-
-The target has subtasks when the `subtasks` line is not `none`.
+The target has subtasks when the map's `subtasks` line is not `none`.
 
 **Record.** The record is the first of these that applies:
-- source *tracker*, when the tracker can add a comment to an item: the
-  items. The plan, every fact, and the orchestration report are comments
-  on the target's item. Each work report is a comment on its job's item.
-  A job's state is its item's status: in progress when the job starts,
-  completed on `done`, unchanged on `skipped` and `blocked`. A status the
-  tracker lacks stays unchanged. The target's item is completed when the
-  result is `done`;
+- source *tracker*, when the tracker map on the task map's `tracker` line names
+  a tool or command on its `comment on item` line: the items. The plan, every
+  fact, and the orchestration report are comments on the target's item. Each
+  work report is a comment on its job's item. A job's state is its item's
+  status: in progress when the job starts, completed on `done`, unchanged on
+  `skipped` and `blocked`. A status the tracker lacks stays unchanged. The
+  target's item is completed when the result is `done`;
 - source *file*: `orchestration.md` (new) in the target's task folder.
   When the task folder is in the repository, write it in the tree the
   jobs run in, at the same relative path. It holds the plan, then each
@@ -141,14 +104,19 @@ The target has subtasks when the `subtasks` line is not `none`.
   job's state is its line in the plan;
 - else `<scratch-dir>/orchestration.md`, with the same content.
 
+Comment on an item with the `comment on item` line of that tracker map.
+Complete an item with its `close item` line. Set the in-progress status
+only through a status field of the `edit item` tool. Never change an item's
+title or body for it. A tracker without such a field keeps the status.
+
 A scratch directory outside the repository (in Claude Code, the scratchpad
 directory) is written `<scratch-dir>` in commands. When the record holds a
 plan from an earlier run, copy its facts into the new plan.
 
 ### Step 2: Plan the jobs
 
-**Jobs.** With subtasks, one job per subtask, in the order of the
-summary's subtask lines. Without subtasks, one job: the target itself.
+**Jobs.** With subtasks, one job per subtask, in the order of the task
+map's `subtasks` lines. Without subtasks, one job: the target itself.
 
 **Tree.** In a git repository, the jobs run in a worktree when one of these
 holds:
@@ -195,7 +163,7 @@ continue.
    `, continued` to the plan's `branch` line. From here on, run every
    command in the tree the plan names, written `<tree>`.
 2. **Baseline.** Fill `base` with `git rev-parse --short HEAD` in
-   `<tree>`. Fill `baseline` with a probe of the summary's `commands`. A
+   `<tree>`. Fill `baseline` with a probe of the task map's `commands`. A
    probe runs in a subagent given this prompt, the placeholders filled,
    and nothing else. Without subagents, follow the prompt yourself and
    keep only its return:
@@ -212,18 +180,22 @@ continue.
 ### Step 4: Run the jobs
 
 Run the jobs in plan order, one at a time. Read
-`references/job-prompt-template.md` once, before the first job. For each
-job:
+`references/job-prompt-template.md` once, before the first job. The entry
+of a job is its line under the `subtasks` line of its task map. A job that
+is the target itself has no such line. Its entry takes the map's `target`
+line as its `at`, and the map's `verification`, `new`, and `state`
+lines. For each job:
 
 1. **Skip a done job.** The job's target is done when, for source
-   *tracker*, its item is in a completed status; for source *file*, a
-   probe of the job's `verification` and of `test -e <path>` for each of
-   its `new` paths passes on every line. Mark the job `skipped` in the
-   record and continue with the next job.
+   *tracker*, its entry holds `state: completed`. For source *file*, it is
+   done when a probe passes on every line. The probe runs the entry's
+   `verification` and `test -e <path>` for each of its `new` paths. Mark
+   the job `skipped` in the record and continue with the next job.
 2. **Start.** Mark the job `running` in the record. Note the output of
    `git status --porcelain` in `<tree>` as the job's start.
 3. **Write the prompt.** Fill the template: the job's target, `<tree>`,
-   the branch, and every fact in the record.
+   the branch, and every fact in the record. The job's target is the `at`
+   of its entry.
 4. **Run the job.** When the agent offers subagents, run the job in a new
    subagent. Give it the prompt and nothing else. Without subagents, follow the
    prompt yourself with the `implementing-tasks` skill and continue here with
@@ -255,16 +227,16 @@ loop: a third round is no failure, and the run continues to Step 6 after
 it. For each round:
 
 1. **Review.** Run a subagent with this prompt, the placeholders filled,
-   and nothing else. Keep the `Save to files.` line only for source
-   *file*. Without subagents, follow the prompt yourself and keep only
-   its return:
+   and nothing else. Keep `, files` only for source *file*. Without
+   subagents, follow the prompt yourself and keep only its return:
 
    ```
-   Use the refactoring-code skill on <the git range <base>..HEAD | the
-   paths under Changes of every work report so far>. Work in <tree>:
-   every command runs there and every file is read and written there.
-   Save to files.
-   Return your final line and nothing else.
+   Work in <tree>: every command runs there and every file is read and
+   written there.
+   Invoke the refactoring-code skill (in Claude Code, with the Skill
+   tool) with the invocation text `from orchestrating-tasks: <the git
+   range <base>..HEAD | the paths under Changes of every work report so
+   far>, files`. Return its final line and nothing else.
    ```
 
 2. **Round result.** Add `R<round>: <task file path | identifier | none>`
@@ -274,18 +246,18 @@ it. For each round:
    inside `<tree>`, commit the new task files alone on the branch. Use
    the project's commit convention, with the subject
    `Add <refactor task title>`.
-3. **Load.** Load the refactor task by the summary prompt of Step 1. Add
-   one job per subtask under `jobs` in the record, as
-   `R<round>.<n> <title>: pending`, in the order of the summary's subtask
-   lines.
+3. **Load.** Run the prompt of Step 1, with `<tree>` as `<folder>` and the
+   final line as `<target>`. Keep its return as the refactor task's task
+   map. Add one job per line of its `subtasks` line under `jobs` in the
+   record, as `R<round>.<n> <title>: pending`, in that order.
 4. **Run.** Run the new jobs by Step 4, with the target's record. Then
    start the next round.
 
 ### Step 6: Prove the target
 
 Run one probe of, in this order:
-1. the summary's `verification`;
-2. every command on the summary's `commands` line.
+1. the `verification` line of the target's task map;
+2. every command on the `commands` line of the target's task map.
 
 The proof passes when the `verification` passes and no command fails
 beyond the failures on the plan's `baseline` line. On a failure, the result is
@@ -303,7 +275,7 @@ Step 7.
    ```
    Read the record: <path of orchestration.md | the comments on item
    <identifier> and on its children>. Read the target
-   <task file path | item identifier and URL> and its subtasks. Read
+   <task file path | item identifier or URL> and its subtasks. Read
    <skill-dir>/references/orchestration-report-template.md and
    <skill-dir>/references/quality-checklist.md. Fill the orchestration
    report from the record and from git in <tree>. The proof is

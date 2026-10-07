@@ -2,7 +2,7 @@
 name: creating-tasks
 description: Writes one task from an idea, feature, bug, or refactor. Use when the user wants work explored, planned, scoped, or turned into a task, ticket, issue, spec, or plan before implementation, even from a one-line idea or a vague remark that something should change.
 license: MIT
-compatibility: The line count needs cloc on PATH, or Node.js with npx, Perl 5, and network access on the first run. A missing tool leaves the count to the agent and never blocks the task.
+compatibility: Requires the finding-trackers, finding-dev-commands, formatting-tasks, and saving-tasks skills.
 argument-hint: <idea>
 ---
 
@@ -14,10 +14,11 @@ nothing and stops on a missing fact: put every fact it needs in the task.
 
 ## Hard rules
 
-1. **Read-only on the project.** Write only the task file, in Step 8. Write
-   drafts in a scratch directory outside the repository (in Claude Code, the
-   scratchpad directory), written `<scratch-dir>` in paths. A draft inside
-   the repository ends up committed beside the code.
+1. **Read-only on the project.** Write only the task, through the
+   `saving-tasks` skill in Step 8. Write drafts in a scratch directory
+   outside the repository (in Claude Code, the scratchpad directory),
+   written `<scratch-dir>` in paths. A draft inside the repository ends up
+   committed beside the code.
 2. **Never ask what research can answer.** Consult code, docs, tests, and
    connected tools first. A question the code answers costs the user time
    and invites a guess.
@@ -58,36 +59,25 @@ Record, with paths and line numbers:
 - the entry points, modules, and symbols the change touches or calls;
 - how the project builds similar features: patterns, naming, error handling,
   configuration;
-- the test conventions and where tests for the touched areas live;
-- the build, lint, and test commands.
+- the test conventions and where tests for the touched areas live.
+
+Invoke the `finding-dev-commands` skill (in Claude Code, with the `Skill`
+tool) with the invocation text `from creating-tasks: find`. Record the build,
+lint, type-check, and test commands of its command map.
 
 **2b. Project docs.** Read README, CLAUDE.md, AGENTS.md, CONTRIBUTING,
 `docs/`, and ADRs. Record the conventions and constraints that affect the
-idea. Then find `<tasks-dir>` and read the tasks, plans, and specs in it
-that touch the idea.
+idea. Then read the tasks, plans, and specs that touch the idea, wherever
+the repository holds them.
 
-**Tasks directory.** `<tasks-dir>` is the folder that holds the task
-folders. It is the first of these that exists:
-1. the folder that the request or the conversation names;
-2. the folder that README, CLAUDE.md, AGENTS.md, CONTRIBUTING, or
-   `docs/README.md` names as the place for tasks, plans, or specs;
-3. the parent of a task folder: a folder named `###-<task-slug>`, three
-   digits, a hyphen, and a slug, that holds a `task.md`, anywhere in the
-   repository outside `node_modules`, `.git`, and `vendor`. With several
-   parents, the shortest path, then the first in alphabetical order;
-4. a folder named `tasks`, `plans`, or `specs` that holds a `.md` file at
-   any depth. It sits at most three levels below the repository root,
-   outside `node_modules`, `.git`, and `vendor`. With several, the
-   shortest path, then the first in alphabetical order;
-5. else `<scratch-dir>/tasks/`.
-
-**2c. Tracker and MCP servers.** Find the tracker by the rule below. List
-the other MCP tools of the agent (in Claude Code they are deferred: search
-them with `ToolSearch` for `context7`). Then:
-- **Tracker**: search for items related to the idea and record their
-  identifiers. Record the team, project, or board that the docs name, else
-  the ones the tracker offers, and the fields an item requires. Step 3
-  decides the destination among them.
+**2c. Tracker and MCP servers.** Invoke the `finding-trackers` skill (in
+Claude Code, with the `Skill` tool) with the invocation text
+`from creating-tasks: find`. List the other MCP tools of the agent (in
+Claude Code they are deferred: search them with `ToolSearch` for
+`context7`). Then:
+- **Tracker**: when the tracker map names a tracker, search for items
+  related to the idea with its `search items` line. Record their
+  identifiers.
 - **Context7**: for every external library the idea depends on, fetch the
   documentation of the version pinned in the manifest or lockfile. Record
   the API facts the task relies on.
@@ -99,29 +89,6 @@ them with `ToolSearch` for `context7`). Then:
   user for the facts it settles.
 Never ask the user to install or connect anything.
 
-**Tracker.** The tracker is the issue tracker the project uses, reached
-through an MCP server or through `gh`, the GitHub CLI. Find it once, in
-this order, and take the first that applies:
-1. the tracker that README, CLAUDE.md, AGENTS.md, CONTRIBUTING, or
-   `docs/README.md` names, when an MCP server or `gh` reaches it. When
-   the docs name one that nothing reaches, no tracker is connected;
-2. the tracker of an MCP server whose tools read and write issues. List
-   the MCP tools of the agent (in Claude Code they are deferred: search
-   them with `ToolSearch` for
-   `issue ticket project linear jira notion asana github`). With several,
-   the first listed;
-3. GitHub Issues through `gh`, when `git remote get-url origin` prints a
-   `github.com` URL and `gh auth status` exits 0. Then
-   `gh issue view <number> --comments` reads an item,
-   `gh api repos/{owner}/{repo}/issues/<number>/sub_issues` lists its
-   children, and `gh issue create`, `gh issue edit`, `gh issue comment`,
-   and `gh issue close` write. A POST with `gh api -X POST` to that
-   `sub_issues` path with `-F sub_issue_id=<id>` links a child, where
-   `<id>` is the `id` that `gh api repos/{owner}/{repo}/issues/<child>`
-   prints. A closed issue is in a completed status, and `gh` has no other
-   status;
-4. else no tracker is connected.
-
 **2d. Research notes.** Write a private file in the scratch directory with
 two parts:
 1. *Facts*: each with the path and line, identifier, or URL it came from.
@@ -131,9 +98,8 @@ two parts:
 ### Step 3: Interview
 
 Order the open decisions: scope first, then behavior, then technical
-choices, then delivery details. Ask delivery details only when the task goes
-to the tracker by the rule of Step 8: the team, project, or board, and the
-required field values research did not settle.
+choices. Never ask for the team, project, board, or required fields of a
+tracker item: the `saving-tasks` skill asks them in Step 8.
 
 For each open decision:
 - State it in one sentence, with what in the task depends on it.
@@ -168,35 +134,27 @@ until the user confirms:
 
 ### Step 5: Write the task
 
-Read `references/task-template.md` now and fill every section, in the scratch
-directory. Writing rules:
-- Write decisions as facts:
-  `Retries use exponential backoff from 500 ms, at most 5 attempts.`, never
-  `We decided that...` or `Retries should probably...`.
+Invoke the `formatting-tasks` skill (in Claude Code, with the `Skill` tool)
+with the invocation text `from creating-tasks: write <scratch-dir>/draft`.
+It fills the draft `<scratch-dir>/draft/task.md` from the research notes.
+Follow these rules of this skill too:
 - In *Approach*, name every component that changes, with the path and symbol
   verified in Step 2, and its behavior after the change.
-- Write success criteria that are binary: someone else can answer yes or no.
-- In *Verification*, list the exact commands or manual steps that prove
-  every success criterion.
-- In *References*, list every external source of Step 2c with its URL and
-  what it settles, else `None.`
+- In *References*, list every external source of Step 2c.
 - Write the single word `None.` in *Subtasks*.
-- Include code only when its exact shape is a decision: a schema, an
-  interface, a CLI flag, an endpoint signature. Never implementation code.
-- Add no section beyond the template: no Risks, Considerations,
-  Alternatives, Future work, Nice to have, or Notes.
-- Add no estimate, priority, or timeline unless the user asked for them.
 - Make every line serve the restated idea or an *Out of scope* entry. Write
   no remark or question from the conversation on another topic, and no
   mention of another task to create.
-- Write at most 25 words per sentence, and only lines the implementing agent
-  needs.
 
 ### Step 6: Quality check
 
-Run every check in `references/quality-checklist.md`, grep helpers included,
-over the draft. Fix every failure. When a failure needs a decision, return to
-Step 3 for that decision, then run the checks again.
+Run every check in `references/quality-checklist.md` over the draft. Then
+invoke the `formatting-tasks` skill (in Claude Code, with the `Skill` tool)
+with the invocation text
+`from creating-tasks: check <scratch-dir>/draft/task.md`. Fix every failure
+of both. When a failure needs a decision, return to Step 3 for that
+decision. Treat a `checks: decision needed` line the same way. After every
+fix, run both again.
 
 ### Step 7: Approval
 
@@ -206,33 +164,19 @@ until the user approves.
 
 ### Step 8: Save
 
-Save to a file when no tracker is connected, or when the user asked for a
-file at any point. Otherwise save to the tracker of Step 2c. Never ask which.
-
-**To the tracker**: create one item at the destination of Step 3, with the
-task title as title and the approved task, unchanged, as body.
-
-**To a file**: `<tasks-dir>/###-<task-slug>/task.md`, with `<tasks-dir>`
-from Step 2b. When `<tasks-dir>` already holds a folder with the same
-`<task-slug>` under any number, ask one question: overwrite its `task.md`
-keeping its number, or write a new folder with a new number. Write the
-approved task, unchanged.
-
-**Numbering rule.** `###` is a zero-padded three-digit sequence from `001`: the
-next free number across every entry of `<tasks-dir>` whose name starts with
-three digits. `<task-slug>` is the task title in kebab-case: lowercase ASCII
-letters and digits, every other run of characters replaced by one hyphen, cut to
-60 characters, with no leading or trailing hyphen. The `breaking-down-tasks`
-skill shares this layout and adds `###-<subtask-slug>.md` files inside the task
-folder.
+Invoke the `saving-tasks` skill (in Claude Code, with the `Skill` tool) with
+the invocation text `from creating-tasks: task <scratch-dir>/draft/task.md`.
+Append `, files` to it when the user asked for a file at any point. Append
+`, dir <folder>` to it when the user named a folder for tasks. Never ask
+where to save: the `saving-tasks` skill settles the destination.
 
 ### Step 9: Size check
 
-Read `references/line-count.md` now. Estimate the code lines the task adds,
-removes, or modifies, outside the test locations recorded in Step 2a. Count
-the files it deletes or rewrites with the count tool instead of an estimate.
-When the estimate is above 500 code lines, show this warning in chat, with
-the estimate in place of `<n>`:
+Invoke the `formatting-tasks` skill (in Claude Code, with the `Skill` tool)
+with the invocation text
+`from creating-tasks: size <scratch-dir>/draft/task.md, tests <tests>`.
+`<tests>` is the test locations recorded in Step 2a. When the count is above
+500 code lines, show this warning in chat, with the count in place of `<n>`:
 
 ```text
 Heads up: this task changes about <n> code lines. Reviews go best under
@@ -240,5 +184,5 @@ Heads up: this task changes about <n> code lines. Reviews go best under
 lines each.
 ```
 
-Finish with one line: the item's identifier, or the path of the task
-file, absolute when outside the repository. Ask nothing else.
+Finish with the line the `saving-tasks` skill returned in Step 8, and
+nothing else. Ask nothing else.

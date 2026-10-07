@@ -7,7 +7,8 @@ Never.
 Read this file in Step 7. Write the rules of *Behavior*, *Size of a change*,
 *Tests during a refactoring*, and *Never* into the task's Decisions section.
 Write the rules a subtask's refactoring needs into that subtask's Context
-section. A convention of the project, from Step 3a, replaces a rule here.
+section. A convention of the project, from Step 3a, replaces a rule here. A
+limit the project configures replaces a value here.
 
 ## Behavior
 
@@ -30,8 +31,8 @@ section. A convention of the project, from Step 3a, replaces a rule here.
 
 ## Size of a change
 
-- Apply one refactoring per subtask. Give it its name from
-  `smell-catalog.md`.
+- Apply one refactoring per subtask. Give it the name on the `refactoring`
+  line of its finding.
 - Keep the code able to build and pass after every subtask.
 - Revert the change of a subtask when a check fails. Then apply the
   refactoring another way. Never stack a repair on a failing change.
@@ -54,7 +55,7 @@ section. A convention of the project, from Step 3a, replaces a rule here.
 - Never merge copies by adding a flag parameter that selects the behavior.
   Keep two functions and extract their shared part.
 - Add a new interface, base type, generic parameter, or option only with
-  three users.
+  three users. A test that passes the parameter of a seam counts as a user.
 - Replace a helper that repeats a function of the project or of the
   standard library with a call to that function.
 
@@ -72,7 +73,8 @@ section. A convention of the project, from Step 3a, replaces a rule here.
 - Split a function that does two things into one function per thing.
 - Extract a block that needs a comment to explain what it does. Name the new
   function with the words of the comment.
-- Replace nested conditions with guard clauses that return early.
+- Replace conditions nested 3 levels or deeper with guard clauses that
+  return early.
 - Give a complex condition a name: extract it into a variable or a function.
 - Replace a flag argument with one function per flag value.
 - Replace a long parameter list with a parameter object when the same values
@@ -136,8 +138,8 @@ section. A convention of the project, from Step 3a, replaces a rule here.
 
 - Run the tests that cover the changed code after every subtask.
 - Edit an existing test only for an import, a path, or a symbol name that the
-  refactoring moved or renamed. An entry under *Tests* in `smell-catalog.md`
-  is the other reason.
+  refactoring moved or renamed. A finding in that test file is the other
+  reason.
 - Change an assertion only by Replace Assertion with Literal, with the
   value the unchanged code produces. Never weaken one.
 - Replace a test double of a collaborator inside the project with the real

@@ -1,0 +1,12 @@
+[
+  {"query": "Go through src/auth and point out bad names, oversized functions, and copy-pasted logic.", "should_trigger": true},
+  {"query": "Write the CSV export for reports, and keep it SOLID: no god class, no switch on the format type.", "should_trigger": true},
+  {"query": "Does anything in git diff main..feature break the Law of Demeter or swallow errors?", "should_trigger": true},
+  {"query": "src/api catches exceptions and returns null everywhere. Clean it up.", "should_trigger": true},
+  {"query": "is this function clean code? it has a boolean flag and six parameters", "should_trigger": true},
+  {"query": "Write unit tests for src/auth/session.ts.", "should_trigger": false},
+  {"query": "Scan the whole repo for code smells and rank what to refactor first.", "should_trigger": false},
+  {"query": "Measure the cyclomatic complexity and duplication of src/.", "should_trigger": false},
+  {"query": "Create a refactor task for the payments module with one subtask per refactoring.", "should_trigger": false},
+  {"query": "What is the command that checks formatting in this project?", "should_trigger": false}
+]

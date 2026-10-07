@@ -1,0 +1,23 @@
+{
+  "skill_name": "finding-code-smells",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review src/orders for code smells and AI slop. Don't change anything.",
+      "expected_output": "Runs the standalone workflow with paths src/orders and out <scratch-dir>/smells. Leaves generated code, vendored code, lockfiles, snapshots, and migrations that already ran out of the refactor scope, and keeps test files with only the Tests entries as findings. Writes contract.md with every symbol that code outside src/orders imports. Invokes measuring-code with 'from finding-code-smells: paths src/orders, out <out>', runs scripts/scan.mjs with the ignore globs of the summary into <out>/scan.json, and reads every file in full through one subagent per folder. Every entry of findings.md has the smell, path:line with the symbol, evidence, a refactoring from the catalog or report, covered, and contract. A credential appears by location alone. Shows the findings in chat grouped by file, hotspot files first, and changes no project file.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "from refactoring-code: paths src/billing, summary /tmp/r/summary.json, out /tmp/r",
+      "expected_output": "Does not invoke measuring-code: reads /tmp/r/summary.json, taking the limits and the ignore globs from its settings. Writes /tmp/r/contract.md, /tmp/r/findings.md, and /tmp/r/scan.json. Applies the default limits: a function over 50 lines, over 4 parameters, over ccn 10, or nested 3 levels or deeper is a candidate. A clone is a finding with Extract Function from three copies, or from two copies that state one rule. Leaves a message chain through a fluent builder, and a clone of imports. Asks nothing. The final message is exactly four lines: findings, contract, scan, and counts per smell.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "from refactoring-code: paths lib, out /tmp/q",
+      "expected_output": "Invokes measuring-code with 'from finding-code-smells: paths lib, out /tmp/q'. When Node.js cannot start the scan script, records 'scan: none:' with the first error line and searches by hand for catch blocks, skip markers, URLs and numbers of three digits or more, reflection calls, and files over 400 lines. A test with a skip marker becomes a Skipped test entry with refactoring report. An unused exported function of a library that others install is never Dead code. A Remove Dead Code entry holds in its evidence the search of every reference as symbol and as text. Ends with the four-line return block.",
+      "files": []
+    }
+  ]
+}

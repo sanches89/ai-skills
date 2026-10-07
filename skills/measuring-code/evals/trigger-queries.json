@@ -1,0 +1,12 @@
+[
+  {"query": "Get me the coverage and complexity numbers for src/payments before I touch it.", "should_trigger": true},
+  {"query": "What is the duplication percentage of lib/ right now, and which functions are over the complexity limit?", "should_trigger": true},
+  {"query": "Record a baseline of tests, coverage, and duplication for packages/api so I can compare after the change.", "should_trigger": true},
+  {"query": "Run the mutation tests on src/parser.ts only and give me the mutation score.", "should_trigger": true},
+  {"query": "measure services/ with the project's own test command, branch coverage included", "should_trigger": true},
+  {"query": "Analyze this repository and give me a ranked report of the worst problems in the code.", "should_trigger": false},
+  {"query": "Which command runs the tests in this project, and how do I install its dependencies?", "should_trigger": false},
+  {"query": "Review src/orders for code smells and tell me which refactorings apply.", "should_trigger": false},
+  {"query": "Write unit tests for the date parser so that its branches are covered.", "should_trigger": false},
+  {"query": "Our CI coverage job fails with a threshold error since yesterday. Why?", "should_trigger": false}
+]

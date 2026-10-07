@@ -2,6 +2,7 @@
 name: implementing-tasks
 description: Implements one task or subtask and proves every acceptance criterion with tests and the project's checks. Use when the user wants a task, subtask, ticket, issue, or task file implemented, started, picked up, finished, or done, or points at a task and says go.
 license: MIT
+compatibility: Requires the loading-tasks, finding-dev-commands, writing-clean-code, and writing-unit-tests skills.
 argument-hint: <task or subtask id | file | text>
 ---
 
@@ -50,63 +51,32 @@ each with path and line. The context window then holds those returns, not
 the files, and stays small. Without subagents, follow the step yourself and
 keep only what it names.
 
-**Tracker.** The tracker is the issue tracker the project uses, reached
-through an MCP server or through `gh`, the GitHub CLI. Find it once, in
-this order, and take the first that applies:
-1. the tracker that README, CLAUDE.md, AGENTS.md, CONTRIBUTING, or
-   `docs/README.md` names, when an MCP server or `gh` reaches it. When
-   the docs name one that nothing reaches, no tracker is connected;
-2. the tracker of an MCP server whose tools read and write issues. List
-   the MCP tools of the agent (in Claude Code they are deferred: search
-   them with `ToolSearch` for
-   `issue ticket project linear jira notion asana github`). With several,
-   the first listed;
-3. GitHub Issues through `gh`, when `git remote get-url origin` prints a
-   `github.com` URL and `gh auth status` exits 0. Then
-   `gh issue view <number> --comments` reads an item,
-   `gh api repos/{owner}/{repo}/issues/<number>/sub_issues` lists its
-   children, and `gh issue create`, `gh issue edit`, `gh issue comment`,
-   and `gh issue close` write. A POST with `gh api -X POST` to that
-   `sub_issues` path with `-F sub_issue_id=<id>` links a child, where
-   `<id>` is the `id` that `gh api repos/{owner}/{repo}/issues/<child>`
-   prints. A closed issue is in a completed status, and `gh` has no other
-   status;
-4. else no tracker is connected.
+Write private notes in a scratch directory outside the repository (in
+Claude Code, the scratchpad directory).
 
-The target is the task or subtask this skill implements. Resolve the
-invocation text, or the task given in the conversation, as one source:
-- **An item identifier or URL** (`PAY-212`, `#128`, an issue link) in the
-  tracker. Source: *tracker*. Fetch the item and its children. With no
-  tracker connected, go to Step 9 with the result `blocked`: no tracker
-  holds the item.
-- **A subtask file**, a file named `###-<subtask-slug>.md` next to a
-  `task.md`. Source: *file*. Read it.
-- **A task file**, a file named `task.md`. Its folder is the task folder.
-  Source: *file*. Read it and every subtask file in its task folder.
-- **Free text**, or the path of any other file, whose content is then the
-  text. Source: *text*. When the text names no file to change, go to
-  Step 9 with the result `blocked`.
-- **Nothing**: go to Step 9 with the result `blocked`: no target given.
+The target is the task or subtask this skill implements. Invoke the
+`loading-tasks` skill (in Claude Code, with the `Skill` tool) with the
+invocation text `from implementing-tasks: <target>`. `<target>` is the
+invocation text of this run without a leading `from <skill name>:`, else
+the task given in the conversation. With neither, nothing follows the
+colon. Copy the task map it returns into the private notes.
 
-The target has subtasks when its task folder holds subtask files, its item
-has children, or its Subtasks section holds entries other than `None.`.
+Go to Step 9 with the result `blocked` when:
+- the map's `source` line is `none`. Name its reason under *Blocked by*;
+- the map's `source` line is `text`, and the text names no file to change.
 
-### Step 2: Build the chain
+The target has subtasks when the map's `subtasks` line is not `none`.
+
+### Step 2: Read the chain
 
 The chain is the target, its parent, and every parent above, up to the root
-task, the task with no parent:
-- Source *file*: the parent of a subtask file is the task file in the same
-  task folder, which its `Task` line links to. A task file has no parent.
-- Source *tracker*: the parent of an item is the item that the tracker's
-  parent relation points to, else the item its `Task` line links to. Fetch
-  parents until an item has none. Stop when an identifier repeats.
-- Source *text*: the chain is the target alone.
-
-Read every task in the chain in full, root task first. Skip every
+task, the task with no parent. The map's `chain` lines list it, root task
+first. Read every task in the chain in full, root task first. Read an item
+with the `read item` line of the tracker map on the task map's `tracker`
+line. Skip every
 References section: it serves reviewers, and the other sections restate its
-facts. Never open its links. Write private notes
-in a scratch directory outside the repository (in Claude Code, the scratchpad
-directory), per task in the chain:
+facts. Never open its links. Write in the private notes, per task in the
+chain:
 - its Decisions section and the conventions it states;
 - its *Out of scope* list;
 - the success criteria the target contributes to;
@@ -121,13 +91,12 @@ Step 9 with the result `blocked`. Name both under *Blocked by*.
 
 ### Step 3: Check readiness
 
-**Dependencies.** Each subtask on the target's `Depends on` line is done
-when:
-- Source *tracker*: its item is in a completed status.
-- Source *file*: the command in its Verification section passes and every
-  file its Changes section marks `(new)` exists.
-When one is not done, go to Step 9 with the result `blocked` and name it
-under *Blocked by*.
+**Dependencies.** Find each entry of the map's `depends on` line among the
+lines under its `siblings` line. A subtask line of the map is done when its
+`state` is `completed`. For source *file*, it is also done when the command
+in its `verification` passes and every path on its `new` list exists. When
+a dependency is not done, go to Step 9 with the result `blocked` and name
+it under *Blocked by*.
 
 **Criteria.** Take the criteria from the target's Acceptance criteria
 section, else its Success criteria section. Without either, take the list it
@@ -153,23 +122,26 @@ test layout, and formatting rules. A convention stated in the chain beats
 one inferred from the code.
 
 **4c. Commands.** Take the build, lint, type-check, and test commands from
-the Context sections in the chain. Take a command the chain does not give
-from the project's manifest, Makefile, CI configuration, or docs.
+the map's `commands` line. Then invoke the `finding-dev-commands` skill
+(in Claude Code, with the `Skill` tool) with the invocation text
+`from implementing-tasks: find`. From the command map it returns, take each
+of the four commands the `commands` line lacks, and the `test one file`
+command.
 
 **4d. Libraries.** For every external library API the change calls, read the
 documentation of the version pinned in the manifest or lockfile: through a
 documentation MCP server such as Context7 when connected, else the installed
 package's own docs and types.
 
-**4e. Test setup.** The project has a test setup when 4c found a test
-command and the repository holds at least one test file. Then record:
-- the test framework and its version from the manifest or lockfile;
-- where tests for the touched areas live and how files and cases are named;
-- the fixtures, factories, fakes, and helpers the existing tests use;
-- the command that runs a single test file;
-- which existing tests cover the code that changes.
-Without one, record that, write no test, install no test framework, and
-state the missing test setup under *Affects other work* in the work report.
+**4e. Test setup.** Invoke the `writing-unit-tests` skill (in Claude Code, with
+the `Skill` tool) with the invocation text `from implementing-tasks: setup for
+<paths>, test <command>, test one file <command>`. `<paths>` is every path the
+target's Changes or Approach section names, separated by spaces. Fill each
+`<command>` with that command from 4c, and leave out each part whose command 4c
+lacks. Copy the test setup block it returns into the private notes. The project
+has a test setup when that block reads `test setup: yes`. Without one, write no
+test and install no test framework. State the missing test setup under *Affects
+other work* in the work report.
 
 **4f. Baseline.** Before changing anything, record in the scratch directory:
 - the output of `git status --porcelain`, in a git repository;
@@ -206,27 +178,19 @@ below. Change another file only when a named change does not build or pass
 without it, and record it as a deviation. Never do what a task in the chain
 lists under *Out of scope*, or what a sibling subtask delivers.
 
-**Code.** Read `references/clean-code-principles.md` before the first edit.
-Apply every principle to the lines you write or change. A convention of the
-project and a decision of the chain beat a principle.
+**Code.** Before the first edit, invoke the `writing-clean-code` skill (in
+Claude Code, with the `Skill` tool) with the invocation text
+`from implementing-tasks: write`. Apply every principle it loads to the
+lines you write or change. A convention of the project and a decision of
+the chain beat a principle.
 
-**Tests.** With a test setup, read `references/unit-testing.md` before the
-first test. A convention of the project beats a rule there. Then:
-- write every test the target names, plus one for every behavior the change
-  adds or alters that those tests do not cover;
-- write each test before the code that makes it pass. Run it with the
-  command from 4e and confirm it fails for the expected reason: the missing
-  behavior, a symbol that does not exist yet included, never a mistake in
-  the test. Then write the code and run the test again;
-- start a bug fix with a regression test;
-- write no new test for a change that adds or alters no behavior:
-  documentation, comments, configuration values, renames;
-- for a refactor of code no existing test covers, write tests first. Confirm
-  they pass before and after the refactor. Break the asserted behavior once
-  to see each test fail, then restore it;
-- edit an existing test only for a behavior the target changes, or for an
-  import, path, or symbol name it renames or moves. Never edit an assertion
-  for a rename or a move. Fix every other failing test in the code.
+**Tests.** With a test setup, invoke the `writing-unit-tests` skill (in
+Claude Code, with the `Skill` tool) with the invocation text
+`from implementing-tasks: write` before the first test. Write every test by
+its rules and its test-first loop, and run each with the `test one file`
+command of 4e. A convention of the project beats a rule there. Write every
+test the target names. Add one for every behavior the change adds or alters
+that those tests do not cover.
 
 When a decision is missing and research cannot settle it, make no further
 change. Go to Step 9 with the result `blocked` and name the decision under
@@ -237,8 +201,9 @@ change. Go to Step 9 with the result `blocked` and name the decision under
 Run, in this order:
 1. the command or steps in the target's Verification section;
 2. the proof of every criterion;
-3. every test file this run added or edited, each alone with the command
-   from 4e, so that no test depends on another file's state;
+3. every test file this run added or edited, each alone with the
+   `test one file` command of 4e, so that no test depends on another file's
+   state;
 4. every command from 4c.
 
 A subagent that runs a command returns its result and the error text of
@@ -268,15 +233,20 @@ Go to Step 9 with the result `blocked` when:
 Compare the working tree with the baseline from 4f and confirm:
 - the target's Changes or Approach section names every changed file, or a
   deviation with its reason records it. Revert every other change;
-- with a test setup, every behavior the diff adds or alters has a test, and
-  every new test holds at least one assertion;
+- with a test setup, every behavior the diff adds or alters has a test;
 - the diff holds no debug output, commented-out code, stray file, or
   unrelated formatting;
 - the change follows every convention from 4b;
-- the **Check** line of every principle in
-  `references/clean-code-principles.md` passes over the diff. A convention
-  from 4b or a decision of the chain overrules a principle that fails;
 - no task file, subtask file, or item changed.
+
+Then invoke the `writing-clean-code` skill (in Claude Code, with the `Skill`
+tool) with the invocation text `from implementing-tasks: check <paths>`.
+`<paths>` is every file the diff changes. Fix every failure it returns on a line
+this run wrote, unless a convention from 4b or a decision of the chain overrules
+that principle. With a test setup, invoke the `writing-unit-tests` skill (in
+Claude Code, with the `Skill` tool) with the invocation text `from
+implementing-tasks: check <test files>`. `<test files>` is every test file the
+diff adds or edits. Fix every failure it returns.
 
 After any edit in this step, run Step 7 again.
 
@@ -292,17 +262,17 @@ unchanged. Ask nothing and offer nothing after it.
 
 Work the subtasks one at a time, then prove the task itself.
 
-1. **Baseline and order.** Before any subtask changes a file, run Steps 4c
-   and 4f with the task as the target. Follow the order of the target's
-   Subtasks section. Without one, order the subtasks so that each comes
-   after every subtask on its `Depends on` line, ties by number or
-   identifier, lowest first.
-2. **Work each subtask** in order, never two at once, because they share
-   one working tree. Skip a subtask that is done by the rule in Step 3. For
-   every other one, run Steps 1 to 9 with that subtask as the target. When
-   the agent offers subagents, run each subtask in its own subagent: give it
-   the subtask's path or identifier and the instruction to use this skill,
-   and keep only the work report it returns.
+1. **Baseline.** Before any subtask changes a file, run Steps 4c and 4f
+   with the task as the target.
+2. **Work each subtask** in the order of the map's `subtasks` lines, never
+   two at once, because they share one working tree. Skip a subtask that
+   is done by the rule in Step 3. A subtask whose `at` reads `none` has no
+   file and no item: go to number 5 with the result `blocked`. For every
+   other one, run Steps 1 to 9 with the `at` of its line as the target.
+   When the agent offers subagents, run each subtask in its own subagent,
+   and keep only the work report it returns. Give it one instruction: invoke the
+   `implementing-tasks` skill (in Claude Code, with the `Skill` tool) with
+   the invocation text `from implementing-tasks: <the at of its line>`.
 3. **Stop on `blocked`.** When a subtask's result is `blocked`, work no
    further subtask. Go to number 5 with the result `blocked`.
 4. **Prove the task.** After the last subtask, run Steps 5, 7, and 8 with

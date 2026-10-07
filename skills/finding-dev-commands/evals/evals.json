@@ -1,0 +1,23 @@
+{
+  "skill_name": "finding-dev-commands",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "from measuring-code: find in packages/api. The repository root holds pnpm-lock.yaml and .github/workflows/ci.yml, whose test job runs 'pnpm --filter api test'. packages/api/package.json has the scripts build, lint, typecheck, 'format': 'prettier --write .', and 'test': 'vitest run'.",
+      "expected_output": "Runs no build, test, lint, or install command and changes no file. Takes the test command from the CI workflow with its path and line. Takes build, lint, and typecheck from packages/api/package.json as 'pnpm run <script>'. Writes the format line as the Prettier check form, 'prettier --check .', never the --write form. Writes 'test one file' by appending <file> to the test command. Writes 'install: pnpm install --frozen-lockfile (pnpm-lock.yaml)'. Asks nothing. The final message is the command map alone, seven lines in the order build, lint, type-check, format, test, test one file, install.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "How do I run the tests in this repo? It's a Python project with uv.lock and a pytest.ini, no CI config, no Makefile, and the README says nothing about tests.",
+      "expected_output": "Finds no test command in the CI workflow, the manifest scripts, a task runner, the README, or CONTRIBUTING, so takes pytest from pytest.ini and writes it as 'uv run pytest'. Writes 'install: uv sync (uv.lock)' and 'test one file: uv run pytest <file>'. Runs neither command. Shows the command map in chat, with 'none' for each command no source names.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "from writing-unit-tests: find. The repository root has package.json without a packageManager field, both package-lock.json and yarn.lock, and no CI workflow.",
+      "expected_output": "Never asks which package manager the project uses. Writes 'install: unknown: two lockfiles and no packageManager field'. Takes the other commands from the package.json scripts and installs nothing. The final message is the command map alone.",
+      "files": []
+    }
+  ]
+}

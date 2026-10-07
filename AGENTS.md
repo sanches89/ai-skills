@@ -48,8 +48,16 @@ These rules hold in every Markdown file of this repository.
   `${CLAUDE_SKILL_DIR}`, `$ARGUMENTS`, `AskUserQuestion`, the `Explore`
   subagent, `ToolSearch`, the `Skill` tool, the scratchpad directory.
 - **Self-contained.** A skill cites only files inside its own folder. Never
-  link to another skill's files. When two skills need the same content,
-  duplicate it and keep the copies identical.
+  link to another skill's files. When two skills need the same content, move
+  it into one skill and invoke that skill by name from the other.
+- **Dependencies.** Invoke another skill by name at the step that needs it.
+  Write the invocation as: Invoke the `<name>` skill (in Claude Code, with
+  the `Skill` tool) with the invocation text `from <caller>: <args>`.
+  `<caller>` is the name of the invoking skill. The invoked skill then skips
+  its own hand-off and ends with its return block. A required skill has no
+  fallback copy, and the caller's `compatibility` names it in the sentence
+  `Requires the <a> and <b> skills`. An optional skill runs only when the
+  agent has it, and the caller works alone without it.
 - **Frontmatter.** `name` equals the folder name: lowercase letters, digits, and
   single hyphens, at most 64 characters. Name a new skill in the gerund form
   `<verb>ing-<object>`, as `creating-tasks` and `analyzing-code`, so that the
@@ -132,72 +140,67 @@ Folders:
   `skill-md-spec.md` before changing folder structure or frontmatter. Read
   `best-practices.md` and `descriptions.md` before writing a new skill. Read
   `scripts.md` before adding a script.
-- `docs/refs/code-improvement/`: the smells, design rules, metrics, and evidence
-  behind the `refactoring-code` catalog, and what makes code cheap for a coding
-  agent. Read its `README.md` before changing
-  `skills/refactoring-code/references/smell-catalog.md` or
-  `refactoring-rules.md`.
 
 ## Skills that depend on each other
 
+- Each shared content has one holder skill. Change it there, and change every
+  skill that reads its invocation form or return block in the same commit:
+  - `finding-trackers`: the tracker rule and the tracker map;
+  - `loading-tasks`: a target, its parent chain, and its subtasks, as the task
+    map;
+  - `formatting-tasks`: the task format, its writing rules and checks, and
+    the code-line count;
+  - `saving-tasks`: the tasks directory, the file layout, the numbering rule,
+    and the save to the tracker or to files;
+  - `finding-dev-commands`: the command map;
+  - `writing-clean-code`: the clean code principles;
+  - `writing-unit-tests`: the unit test rules, characterization tests
+    included;
+  - `measuring-code`: the measure tool, the limits, and the report options;
+  - `finding-code-smells`: the smell catalog and the scan script.
 - `creating-tasks` writes one task and never writes subtasks.
   `breaking-down-tasks` writes subtasks for a task and never creates a task from
   an idea. `refactoring-code` reviews code and writes one refactor task with one
   subtask per refactoring. It never changes project code and never edits an
   existing task or subtask.
-- The three use one task format. The code block in
-  `skills/creating-tasks/references/task-template.md` and the `## Task` block in
-  `skills/breaking-down-tasks/references/task-template.md` must stay identical
-  except for the Subtasks section. The `## Task` and `## Subtask` blocks in
-  `skills/breaking-down-tasks/references/task-template.md` and in
-  `skills/refactoring-code/references/task-template.md` must stay identical.
-  Change them together and diff them afterwards.
-- The three share the file layout `<tasks-dir>/###-<task-slug>/task.md` and
-  `<tasks-dir>/###-<task-slug>/###-<subtask-slug>.md`, with the numbering
-  rule stated in each `SKILL.md`. The `**Tasks directory.**` block that
-  finds `<tasks-dir>` must stay identical in the three. A change to the
-  layout or to the block is made in the three skills in the same commit.
-- `creating-tasks`, `breaking-down-tasks`, `implementing-tasks`,
-  `orchestrating-tasks`, and `refactoring-code` find the tracker by the
-  `**Tracker.**` block, which must stay identical in the five. Change it in the
-  five in the same commit and diff the copies afterwards.
+- The file layout is `<tasks-dir>/###-<task-slug>/task.md` and
+  `<tasks-dir>/###-<task-slug>/###-<subtask-slug>.md`. `saving-tasks` writes it
+  and `loading-tasks` reads it. Change the layout in both in the same commit.
+- `implementing-tasks`, `orchestrating-tasks`, and `refactoring-code` read the
+  section names of `skills/formatting-tasks/references/task-format.md`. Rename
+  a section there and in the three in the same commit.
 - `implementing-tasks` implements a task or subtask and never writes or edits
-  one. It reads the section names of the task format and the subtask format, and
-  the file layout. Change a section name or the layout in
-  `skills/implementing-tasks/` in the same commit.
+  one.
 - `orchestrating-tasks` runs the subtasks of a task through
   `implementing-tasks`, one at a time. It never writes or edits a task, a
-  subtask, or an item. It reads the section names of the task format and the
-  subtask format, and the file layout. It also reads the headings of the work
-  report in `skills/implementing-tasks/references/work-report-template.md`. It
-  invokes `implementing-tasks` and `refactoring-code` by their skill names and
-  reads the final line of `refactoring-code`, the task file path or identifier.
-  Change any of these in `skills/orchestrating-tasks/` in the same commit. It
-  adds one file to the layout, `<tasks-dir>/###-<task-slug>/orchestration.md`,
-  which no other skill reads.
-- End `creating-tasks`, `breaking-down-tasks`, and `refactoring-code` with one
-  line: the task file path or the task item's identifier, and nothing else.
-  `breaking-down-tasks`, `implementing-tasks`, and `orchestrating-tasks` take
-  that line as their input without an edit.
+  subtask, or an item. It reads the headings of the work report in
+  `skills/implementing-tasks/references/work-report-template.md`. It reads the
+  final line of `refactoring-code`. Change any of these in
+  `skills/orchestrating-tasks/` in the same commit. It adds one file to the
+  layout, `<tasks-dir>/###-<task-slug>/orchestration.md`, which no other skill
+  reads.
+- End `creating-tasks`, `breaking-down-tasks`, and `refactoring-code` with the
+  line `saving-tasks` returns: the task file path or the task item's identifier,
+  and nothing else. A failed save ends with a line that starts with `not saved:`
+  and names no path and no identifier. `breaking-down-tasks`,
+  `implementing-tasks`, and `orchestrating-tasks` take that line as their input
+  without an edit.
+- Two sets of limits exist. `writing-clean-code` holds the targets for code a
+  change writes: 20 lines per function, 2 parameters, no repeated block of 3
+  lines. `measuring-code`, the smell catalog, `refactoring-rules.md`, and
+  `analysis-rules.md` hold the limits that flag existing code: cyclomatic
+  complexity 10, 50 lines, 4 parameters, clones of 5 lines and 50 tokens, the
+  rule of three, nesting from 3 levels. Change a flagging limit in all four in
+  the same commit.
+- The size target is 500 code lines. It appears in `formatting-tasks`,
+  `creating-tasks`, and `breaking-down-tasks`. Change it in the three in the
+  same commit.
 - `writing-glossaries` writes the glossary and never edits another document.
   `disambiguating-text` reads the glossary and never writes it. Both read a
   glossary entry as a bullet `- **Term**: definition.`; change that form in both
   skills in the same commit.
-- Each of the two invokes the other by its skill name when the agent has it, and
-  works alone when it does not. `writing-agent-docs` invokes both the same way.
-  An invocation text from a skill starts with `from <skill name>:`, and the
-  invoked skill then skips its own hand-off. Change that form in all three
-  skills in the same commit.
-- `refactoring-code` and `analyzing-code` both run the measure tool and make the
-  project's test command write its reports. The code block of report options in
-  `skills/refactoring-code/references/measurement-tools.md` and in
-  `skills/analyzing-code/references/test-reports.md` must stay identical. Change
-  them together and diff them afterwards.
-- `creating-tasks` and `breaking-down-tasks` both count code lines against the
-  same target of 500. `skills/creating-tasks/references/line-count.md` and
-  `skills/breaking-down-tasks/references/line-count.md` must stay identical, and
-  the number 500 appears in both `SKILL.md` files. Change them together and diff
-  the two files afterwards.
+- Each of the two invokes the other as an optional skill.
+  `writing-agent-docs` invokes `writing-glossaries` the same way.
 
 ## Workflow in this repo
 
@@ -226,21 +229,9 @@ Folders:
    `references/`. Hits are allowed only in lines that quote the banned words as
    a rule.
 4. Run `node --check` on every file under `scripts/`.
-5. For `creating-tasks` and `breaking-down-tasks`, diff the two task format
-   blocks. For `breaking-down-tasks` and `refactoring-code`, diff the `## Task`
-   and `## Subtask` blocks. Any output is a failure:
-
-   ```bash
-   diff <(sed -n '/^## Task$/,$p' \
-            skills/breaking-down-tasks/references/task-template.md) \
-        <(sed -n '/^## Task$/,$p' \
-            skills/refactoring-code/references/task-template.md)
-   ```
-
-   For `implementing-tasks`, `orchestrating-tasks`, and `refactoring-code`,
-   confirm that every section name printed below is a heading in the `## Task`
-   or `## Subtask` block of
-   `skills/breaking-down-tasks/references/task-template.md`:
+5. For `implementing-tasks`, `orchestrating-tasks`, and `refactoring-code`,
+   confirm that every section name printed below is a heading in
+   `skills/formatting-tasks/references/task-format.md`:
 
    ```bash
    cat skills/implementing-tasks/SKILL.md skills/orchestrating-tasks/SKILL.md \
@@ -283,27 +274,23 @@ Folders:
        | awk -v f="$f" 'NF > 25 { print f ": " $0 }'
    done
    ```
-9. For `refactoring-code` and `analyzing-code`, diff the two code blocks of
-   report options. Any output is a failure:
+9. Confirm every skill that a `compatibility` field requires exists. Every
+   name printed is a failure:
 
    ```bash
-   diff <(awk '/^# Node.js test runner/,/^```$/' \
-            skills/refactoring-code/references/measurement-tools.md) \
-        <(awk '/^# Node.js test runner/,/^```$/' \
-            skills/analyzing-code/references/test-reports.md)
+   grep -h '^compatibility:' skills/*/SKILL.md \
+     | grep -oE 'Requires the [^.]+ skills?\.' | grep -oE '[a-z]+(-[a-z]+)+' \
+     | sort -u | while read -r s; do [ -d "skills/$s" ] || echo "$s"; done
    ```
-10. Confirm that every copy of the `**Tasks directory.**` block, of the
-    `**Tracker.**` block, and of the `**Subagents.**` block is the same.
-    A block runs from its label to the next blank line. Every line
-    printed must be `1`:
+10. Confirm that every copy of the `**Subagents.**` block is the same. A
+    block runs from its label to the next blank line. The line printed must
+    be `1`:
 
     ```bash
-    for b in 'Tasks directory' Tracker Subagents; do
-      for f in $(grep -l "^\*\*$b\.\*\*" skills/*/SKILL.md); do
-        awk -v b="$b" '$0 ~ "^\\*\\*" b "\\.\\*\\*" { p = 1 }
-                       p && /^$/ { exit } p' "$f" | md5sum
-      done | sort -u | wc -l
-    done
+    for f in $(grep -l '^\*\*Subagents\.\*\*' skills/*/SKILL.md); do
+      awk '/^\*\*Subagents\.\*\*/ { p = 1 } p && /^$/ { exit } p' "$f" \
+        | md5sum
+    done | sort -u | wc -l
     ```
 11. Confirm every description has at most two sentences and 350 characters.
     Every path printed is a failure:
@@ -313,12 +300,17 @@ Folders:
          if (length > 350 || gsub(/[.!?]( |$)/, "&") > 2) print FILENAME }' \
       skills/*/SKILL.md
     ```
-12. For `creating-tasks` and `breaking-down-tasks`, diff the two line-count
-    files. Any output is a failure:
+12. Confirm that `compatibility` names every skill that a step invokes as a
+    required skill. Every line printed is a failure, except a line for an
+    optional skill:
 
     ```bash
-    diff skills/creating-tasks/references/line-count.md \
-         skills/breaking-down-tasks/references/line-count.md
+    for f in skills/*/SKILL.md; do
+      grep -oiE 'invoke the `[a-z-]+` skill' "$f" \
+        | grep -oE '[a-z]+(-[a-z]+)+' | sort -u | while read -r s; do
+          grep -q "^compatibility:.*$s" "$f" || echo "$f: $s"
+        done
+    done
     ```
 13. Confirm every frontmatter key is one the Agent Skills format allows.
     Every key printed must be `argument-hint` or `disable-model-invocation`:

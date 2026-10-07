@@ -13,24 +13,26 @@ Rules for filling:
   beyond the ones below.
 
 What each section keeps:
-- **Result**: `done` when Step 5 printed a summary, else `blocked` with the
-  reason.
-- **Scope**: `files` of the summary, the repository root, and the ignore
-  globs.
+- **Result**: `done` when the measurement record of Step 2 names a
+  `summary.json`, else `blocked` with the reason Step 2 gives.
+- **Scope**: `files` of the summary, the repository root, and the `ignore`
+  line of the measurement record.
 - **Code**: `working tree` without a name, else the name with the short
   hash of the measured commit.
-- **Limits**: the three limits, the clone floor, and their source: the
-  configuration file that sets them, or `defaults`.
+- **Limits**: the `limits` line of the measurement record: the three limits
+  and the clone floor, then the configuration file that set each limit, or
+  `all defaults`.
 - **Tools**: the `tool` value of `duplication`; the `tool` value of
-  `complexity`, or `no lizard`; the test runner, or `no test command`; the
-  mutation tool, or `no mutation command`.
-- **Measurements**: one line per measurement. A measurement with a status
-  other than `ok` in the summary gets `skipped` with its reason. The
-  *Unit tests*, *Coverage*, and *Mutation* lines take the reason that
-  Steps 2 to 4 recorded, when one did.
-- **Findings**: the findings of Step 6 in rank order, numbered.
-- **Skipped**: every measurement with a status other than `ok` in the
-  summary, with its reason. The count of findings left out per kind.
+  `complexity`, or `no lizard`; the test runner of the record's
+  `test command` line, or `no test command` when that line reads `none`;
+  the mutation tool of its `mutation command` line, or `no mutation
+  command` when that line reads `none`.
+- **Measurements**: one line per measurement. A measurement whose line in
+  the measurement record is not `ok` gets `skipped` with the reason on that
+  line.
+- **Findings**: the findings of Step 3 in rank order, numbered.
+- **Skipped**: every measurement whose line in the measurement record is
+  not `ok`, with its reason. The count of findings left out per kind.
 
 What the report leaves out:
 - the steps taken, and attempts that failed;
@@ -48,8 +50,8 @@ What the report leaves out:
 **Result:** done | blocked: <reason>
 **Scope:** <number> files under `<repository root>`, ignore: <globs> | none
 **Code:** working tree | <name> at <short hash>
-**Limits:** ccn <n>, length <n>, params <n>, clone <n> tokens and <n>
-lines, from `<configuration file>` | defaults
+**Limits:** ccn <n>, length <n>, params <n>, clone <n> lines and <n>
+tokens; <limits> from `<configuration file>`, <...> | all defaults
 **Tools:** <jscpd version>, <lizard version> | no lizard, <test runner> |
 no test command, <mutation tool> | no mutation command
 

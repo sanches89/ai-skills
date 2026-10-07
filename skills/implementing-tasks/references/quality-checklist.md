@@ -23,14 +23,18 @@ Without a test setup: the diff adds no test and no test framework, and
       target names exists.
 - [ ] Every new test failed for the expected reason before it passed.
 - [ ] A bug fix has a regression test.
-- [ ] Every new test holds an assertion and tests one behavior.
-- [ ] No new test uses a real network, clock, unseeded random value, sleep,
-      or file outside a temporary folder. No double replaces the unit under
-      test.
+- [ ] The `writing-unit-tests` check returns `pass` for every test file
+      this run added or edited.
 - [ ] Every test file this run added or edited passes when run alone.
 - [ ] Every edited existing test asserts a behavior the target changes, or
       changed only in an import, a path, or a symbol name.
 - [ ] The *Tests* count equals the test cases added.
+
+## Code
+
+- [ ] The `writing-clean-code` check returns `pass` for every changed
+      file. A convention from 4b or a decision of the chain overrules
+      every failure left.
 
 ## Scope
 

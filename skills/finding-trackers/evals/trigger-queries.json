@@ -1,0 +1,12 @@
+[
+  {"query": "Which issue tracker does this repo use? I can't tell if the team moved to Linear or still uses GitHub Issues.", "should_trigger": true},
+  {"query": "before you file anything, figure out how to reach our tickets from this machine: is gh logged in, is there a Jira MCP server?", "should_trigger": true},
+  {"query": "What command would I run to comment on and then close an issue in this project's tracker?", "should_trigger": true},
+  {"query": "Check whether this project has an issue tracker connected and which fields a new ticket requires.", "should_trigger": true},
+  {"query": "how do sub-issues get linked to their parent in the tracker this repo uses?", "should_trigger": true},
+  {"query": "Save drafts/task.md and its two subtask drafts to Linear as linked issues.", "should_trigger": false},
+  {"query": "Show me the subtasks of PAY-212 in the order they have to run.", "should_trigger": false},
+  {"query": "Write a ticket for adding rate limiting to the /login endpoint.", "should_trigger": false},
+  {"query": "Implement issue #131 and prove each acceptance criterion.", "should_trigger": false},
+  {"query": "Find the build, lint, and test commands for this project.", "should_trigger": false}
+]

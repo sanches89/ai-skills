@@ -1,0 +1,12 @@
+[
+  {"query": "List the subtasks of tasks/012-typed-config/task.md in the order they have to run.", "should_trigger": true},
+  {"query": "Read PAY-212 with its parent issue and every child ticket, and tell me what command verifies each one.", "should_trigger": true},
+  {"query": "which subtasks of issue #88 are still open, and which one comes next?", "should_trigger": true},
+  {"query": "Show me the parent chain of tasks/004-add-retry-to-webhooks/003-wire-retry-into-send.md and what it depends on.", "should_trigger": true},
+  {"query": "Load the task in tasks/009-search-index/ and give me the verification command of each subtask.", "should_trigger": true},
+  {"query": "Implement tasks/004-add-retry-to-webhooks/002-add-retry-policy.md, tests first.", "should_trigger": false},
+  {"query": "tasks/012-typed-config/task.md is too big, break it into subtasks.", "should_trigger": false},
+  {"query": "Run every subtask of PAY-212 with one commit each on a branch.", "should_trigger": false},
+  {"query": "Which issue tracker does this repo use, and is gh logged in?", "should_trigger": false},
+  {"query": "Save my approved task draft and its subtasks to the tracker as linked issues.", "should_trigger": false}
+]

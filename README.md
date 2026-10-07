@@ -17,9 +17,9 @@ coding agent that loads `SKILL.md` files.
   command.
 - [implementing-tasks](skills/implementing-tasks/SKILL.md): implements a task or
   subtask within the scope set by its parent tasks and proves every acceptance
-  criterion. It writes the code under 14 clean code principles, each with a
-  rule, an example, and a check that the diff passes. It returns a short work
-  report with only what the rest of the work needs.
+  criterion. It writes the code by writing-clean-code and the tests by
+  writing-unit-tests. It returns a short work report with only what the rest of
+  the work needs.
 - [orchestrating-tasks](skills/orchestrating-tasks/SKILL.md): runs a whole task
   from its task file or item: one subtask at a time, each in its own subagent
   with the implementing-tasks skill, each with one commit on a branch. Then it
@@ -29,11 +29,10 @@ coding agent that loads `SKILL.md` files.
   task and every project command runs in a subagent, so that its own context
   window stays small.
 - [refactoring-code](skills/refactoring-code/SKILL.md): reviews code in any
-  language for refactoring, with duplication, complexity, unit tests, and
-  coverage measured. Its catalog covers smells inside functions, design between
-  modules, the marks of agent-written code, and tests. It writes a refactor task
-  with at most 12 subtasks, one per refactoring, each with its tests and one
-  verification command. It lists the rest as the next batch and changes no code.
+  language for refactoring, with the findings of finding-code-smells and the
+  numbers of measuring-code. It writes a refactor task with at most 12
+  subtasks, one per refactoring, each with its tests and one verification
+  command. It lists the rest as the next batch and changes no code.
 - [writing-agent-docs](skills/writing-agent-docs/SKILL.md): holds the rules for
   a repo's `AGENTS.md` files, READMEs, ADRs, `docs/refs`, and glossary, which
   the agent follows whenever it edits one. On request, it audits and compresses
@@ -60,16 +59,44 @@ coding agent that loads `SKILL.md` files.
   and changes no code. A run can take hours: the mutation run runs the tests
   once per mutant.
 
+### Building blocks
+
+The skills above invoke these by name. Each holds one piece of content that
+used to be copied between skills. Each also works alone.
+
+- [finding-trackers](skills/finding-trackers/SKILL.md): finds the issue
+  tracker a project uses and the commands that reach its items.
+- [loading-tasks](skills/loading-tasks/SKILL.md): reads a task or subtask
+  with its parent chain and its subtasks in order.
+- [formatting-tasks](skills/formatting-tasks/SKILL.md): writes and checks a
+  task in the one task format, and counts the code lines a change touches.
+- [saving-tasks](skills/saving-tasks/SKILL.md): saves a task and its subtasks
+  to the tracker or to numbered task folders.
+- [finding-dev-commands](skills/finding-dev-commands/SKILL.md): finds
+  a project's build, lint, type-check, format, test, and install commands.
+- [writing-clean-code](skills/writing-clean-code/SKILL.md): writes and reviews
+  code by 14 clean code principles, each with a check that a diff passes.
+- [writing-unit-tests](skills/writing-unit-tests/SKILL.md): writes and
+  reviews unit tests, characterization tests included.
+- [measuring-code](skills/measuring-code/SKILL.md): measures duplication,
+  complexity, hotspots, tests, coverage, and mutation score of given paths.
+- [finding-code-smells](skills/finding-code-smells/SKILL.md): lists the
+  smells, design flaws, and marks of agent-written code, each with the
+  refactoring that removes it.
+
+### Pipeline
+
 creating-tasks, breaking-down-tasks, implementing-tasks, orchestrating-tasks,
 and refactoring-code form a pipeline. creating-tasks writes
 `<tasks-dir>/###-<task-slug>/task.md`. breaking-down-tasks adds
 `<tasks-dir>/###-<task-slug>/###-<subtask-slug>.md` next to it. refactoring-code
-writes both from a code review. `<tasks-dir>` is the first that exists of: the
-folder you name; the folder README, CLAUDE.md, AGENTS.md, CONTRIBUTING, or
-`docs/README.md` names for tasks, plans, or specs; the folder that already holds
-task folders; a `tasks`, `plans`, or `specs` folder of the repository. With none
-of these, it is a scratch directory outside the repository, which in Claude Code
-lives one session. implementing-tasks implements a task or one subtask from
+writes both from a code review. saving-tasks writes every one of these files.
+`<tasks-dir>` is the first that exists of: the folder you name; the folder
+README, CLAUDE.md, AGENTS.md, CONTRIBUTING, or `docs/README.md` names for
+tasks, plans, or specs; the folder that already holds task folders; a `tasks`,
+`plans`, or `specs` folder of the repository. With none of these, it is a
+scratch directory outside the repository, which in Claude Code lives one
+session. implementing-tasks implements a task or one subtask from
 those files. orchestrating-tasks runs implementing-tasks on every subtask of a
 task, one at a time, with one commit each. Then it runs refactoring-code and
 implementing-tasks over the result, up to three rounds. The tracker is the one
@@ -123,12 +150,34 @@ other agents:
 
 ```bash
 npx skills add sanches89/ai-skills
-npx skills add sanches89/ai-skills --skill creating-tasks breaking-down-tasks
+npx skills add sanches89/ai-skills --skill measuring-code finding-dev-commands
 ```
 
 The first command installs every skill and the second picks skills by name.
 Add `-a <agent>` to pick an agent and `-g` to install for the user instead of
-the project. The skills are also listed on
+the project.
+
+A skill invokes the skills it requires by name, and the CLI installs no
+dependency. Pick a skill together with every skill it requires, directly or
+through another skill:
+
+- creating-tasks: finding-trackers, finding-dev-commands,
+  formatting-tasks, saving-tasks;
+- breaking-down-tasks: the skills of creating-tasks, plus loading-tasks;
+- implementing-tasks: loading-tasks, finding-trackers,
+  finding-dev-commands, writing-clean-code, writing-unit-tests;
+- refactoring-code: loading-tasks, finding-trackers,
+  finding-dev-commands, measuring-code, finding-code-smells,
+  writing-unit-tests, formatting-tasks, saving-tasks;
+- orchestrating-tasks: implementing-tasks, refactoring-code, and every skill
+  the two require;
+- analyzing-code and finding-code-smells: measuring-code,
+  finding-dev-commands;
+- loading-tasks and saving-tasks: finding-trackers;
+- measuring-code, writing-clean-code, and writing-unit-tests:
+  finding-dev-commands.
+
+The other skills require none. The skills are also listed on
 [skills.sh](https://skills.sh/sanches89/ai-skills).
 
 Without the CLI, clone this repo into your agent's skills folder (e.g.

@@ -1,0 +1,23 @@
+{
+  "skill_name": "writing-clean-code",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Clean up src/orders/checkout.ts. The functions are huge and half of them take five arguments.",
+      "expected_output": "Treats the request as review mode with changes. Reads the project's conventions and invokes the finding-dev-commands skill for the format command. Runs the Check of all 14 principles over the diff of src/orders/checkout.ts. Fixes every failure: splits each function to 20 lines or fewer, turns a third parameter into an object, removes boolean flag parameters, and extracts copies that change together. Edits no code outside that file. Runs the Checks again and ends with the remaining failures as `<path:line> <principle number>: <failure>`, or `pass`.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Review my last commit for clean code problems. Don't change anything.",
+      "expected_output": "Takes the diff from `git diff HEAD~1 HEAD`. Runs the format command for principle 6 and the Check of every other principle over the diff. Counts no failure that a convention of the project overrules, and none for a method chain on a plain data structure, a fluent builder, or a query interface. Reports one line per failure as `<path:line> <principle number>: <failure>`, or `pass`. Changes no file.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "from implementing-tasks: check src/cart/total.ts src/cart/discount.ts",
+      "expected_output": "Asks nothing. Takes the diff of the two paths against HEAD, untracked files as added lines, and runs the Check of every principle over it. Flags a new interface with one implementation that wraps no system boundary under principle 14, and a block of 3 lines or more repeated in the diff under principle 4. Counts no failure that a decision of the task overrules. Ends with only the failure lines, `<path:line> <principle number>: <failure>`, or `pass`.",
+      "files": []
+    }
+  ]
+}

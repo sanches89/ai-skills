@@ -2,8 +2,7 @@
 
 Run every check and the grep helper before returning the measurement report.
 One failure blocks delivery: fix it, then run the whole checklist again. A
-failed check on a run sends you back to Step 3, Step 4, or Step 5, on a
-finding to Step 6.
+failed check on a run sends you back to Step 2, on a finding to Step 3.
 
 ## Project
 
@@ -12,10 +11,12 @@ finding to Step 6.
 
 ## Runs
 
-- [ ] The summary came from `<root>` with `--top 200`. It used the
-      ignore globs and limits of Step 2 and every report of Steps 3 and 4.
-- [ ] Every measurement with a status other than `ok` in the summary is
-      under *Skipped* with its reason.
+- [ ] The measurement record came from one `measuring-code` run with
+      `paths .`, `root <root>`, `mutation all`, and `top 200`. Its
+      `summary` line names a `summary.json` in the scratch directory, or
+      the result is `blocked`.
+- [ ] Every measurement whose line in the measurement record is not `ok`
+      is under *Skipped* with its reason.
 
 ## Findings
 
