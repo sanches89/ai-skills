@@ -25,14 +25,15 @@ limit the project configures replaces a value here.
   contract.
 - Tune no performance. On a path the docs or the request mark as hot, keep the
   same number of loops, allocations, and calls to external systems.
-- Keep a masked error masked and a stub a stub, under the task's *Out of
-  scope*. Letting the error through or filling the stub is a behavior
-  change.
+- Keep a masked error masked and a stub that code reaches a stub, under
+  the task's *Out of scope*. Letting the error through or filling the stub
+  is a behavior change.
 
 ## Size of a change
 
-- Apply one refactoring per subtask. Give it the name on the `refactoring`
-  line of its finding.
+- Apply one refactoring per subtask. A finding whose `refactoring` line
+  names several gets one subtask per refactoring, in the order of the line.
+  Give each subtask the name of its refactoring on that line.
 - Keep the code able to build and pass after every subtask.
 - Revert the change of a subtask when a check fails. Then apply the
   refactoring another way. Never stack a repair on a failing change.
@@ -43,6 +44,9 @@ limit the project configures replaces a value here.
 - Use a tool for a mechanical edit across many files: the agent's
   language-server rename, or the structural rewrite tool that the subtask's
   Context names. Review the full diff it produces.
+- Leave a failure of a `writing-clean-code` budget that the subtask's
+  refactoring does not remove. A fix adds a second refactoring to the
+  subtask, and the next `refactoring-code` run reviews the result.
 
 ## Duplication
 
@@ -80,8 +84,8 @@ limit the project configures replaces a value here.
 - Give a complex condition a name: extract it into a variable or a function.
 - Replace a flag argument with one function per flag value.
 - Replace a long parameter list with a parameter object when the same values
-  travel together in three places. Else pass the whole object the values
-  come from, remove a flag argument, or extract a function.
+  travel together in three places or more. Else pass the whole object the
+  values come from, remove a flag argument, or extract a function.
 - Separate a query from a modifier. A function that returns a value changes no
   state that a caller observes.
 - Narrow the scope of a mutable variable to the smallest block that uses it.

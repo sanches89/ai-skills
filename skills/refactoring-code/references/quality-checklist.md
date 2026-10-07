@@ -31,8 +31,9 @@ and this list checks the review.
 
 ## Subtask rule
 
-- [ ] Each subtask applies the one refactoring its finding names, and its
-      Context names the smell with its evidence.
+- [ ] Each subtask applies one refactoring its finding names, in the order
+      of the finding's `refactoring` line. Its Context names the smell with
+      its evidence.
 - [ ] Each subtask's verification command ran on the current code and
       failed.
 - [ ] A subtask on uncovered code is from the safe set, or its Changes name
@@ -43,7 +44,7 @@ and this list checks the review.
 - [ ] A contract change the request names is three subtasks: add the new
       form, move the callers, remove the old form.
 - [ ] Remove Dead Code and Rename subtasks come before every other
-      refactoring kind.
+      refactoring kind, except a subtask they depend on.
 - [ ] At most 12 subtasks. Every finding past the cut is under *Out of
       scope* as `next batch`, with its location and smell.
 - [ ] Every subtask in a test file applies a finding in that test file.
@@ -58,6 +59,9 @@ and this list checks the review.
 - [ ] Success criteria state the test and coverage counts against the
       baseline, and Verification holds the commands that produce them.
 - [ ] The repository holds no summary and no tool report.
+- [ ] No command in the task or a subtask names the scratch directory. It
+      reads `<scratch-dir>` instead, and the Context section beside it says
+      what `<scratch-dir>` is.
 - [ ] Every credential found is under *Out of scope* by location alone. No
       task or subtask holds a key, a token, or a password value.
 - [ ] Every finding with refactoring `report` is under *Out of scope*.

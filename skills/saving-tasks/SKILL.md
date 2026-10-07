@@ -19,9 +19,9 @@ identifier, or the task file path.
    other text of a draft. The one addition is the `Task` line that Step 3
    keeps on `replace`. The drafts hold approved text, and an edit saves
    text nobody approved.
-2. **Write only the task and its subtasks.** Create, overwrite, close, or
-   delete only the task file, its subtask files, the folders that hold
-   them, and their items. Any other change reaches the project or the
+2. **Write only the task and its subtasks.** Create, overwrite, close,
+   unlink, or delete only the task file, its subtask files, the folders
+   that hold them, and their items. Any other change reaches the project or the
    tracker without a review.
 3. **Ask only what the invocation allows.** With `unattended`, ask nothing.
    Otherwise ask only the questions of Step 2 and Step 4, one at a time. A
@@ -92,7 +92,7 @@ rule that applies:
 Unless rule 2 or rule 3 applies, first invoke the `finding-trackers` skill
 (in Claude Code, with the `Skill` tool) with the invocation text
 `from saving-tasks: find`. A tracker is connected when the first line of
-the tracker map does not read `tracker: none`. Under rule 1, when no
+the tracker map does not start with `tracker: none`. Under rule 1, when no
 tracker is connected or the tracker holds no such item, save nothing. End
 with one line: `not saved: the tracker holds no such item`.
 
@@ -126,17 +126,18 @@ Use the tools and commands that the tracker map names:
    `list children`. When that line reads `none`, take them from the links
    in the old body's Subtasks section. Delete each with `delete item`. When
    the `delete item` line reads `none`, or the delete fails, close each
-   with `close item`.
+   with `close item`. Unlink each closed child with `unlink child`, unless
+   that line reads `none`.
 3. **Children.** Create one child item per subtask draft, in subtask order,
    so that later children link to earlier siblings by their created
    identifiers. The subtask's title is the title, its draft the body, and
    the required field values its fields.
    Put the task's item link on the `Task` line and sibling item links on the
    `Depends on` line. Link each child to the task's item with `link child`.
-   When that line reads `none`, put the child links in the task's body and
-   the task's link in each child body.
-4. **Subtasks section.** Edit the task item: replace each entry of its
-   Subtasks section with the link of its child item.
+   When that line starts with `none`, put the child links in the task's
+   body and the task's link in each child body.
+4. **Subtasks section.** Edit the task item: replace the title and number
+   of each entry of its Subtasks section with the link of its child item.
 
 When a tool or command fails, stop. A failed delete is the one exception:
 it falls back to `close item`. End with one line:
@@ -153,10 +154,10 @@ when it does not exist. Without `dir`, it is the first of these that
 exists:
 1. the folder that README, CLAUDE.md, AGENTS.md, CONTRIBUTING, or
    `docs/README.md` names as the place for tasks, plans, or specs;
-2. the parent of a task folder: a folder named `###-<task-slug>`, three
-   digits, a hyphen, and a slug, that holds a `task.md`, anywhere in the
-   repository outside `node_modules`, `.git`, and `vendor`. With several
-   parents, the shortest path, then the first in alphabetical order;
+2. the parent of a task folder named `###-<task-slug>`, three digits, a
+   hyphen, and a slug, anywhere in the repository outside `node_modules`,
+   `.git`, and `vendor`. With several parents, the shortest path, then the
+   first in alphabetical order;
 3. a folder named `tasks`, `plans`, or `specs` that holds a `.md` file at
    any depth. It sits at most three levels below the repository root,
    outside `node_modules`, `.git`, and `vendor`. With several, the
@@ -170,14 +171,13 @@ Save by the numbering rule below:
    `<tasks-dir>` for a folder with the same `<task-slug>` under any
    number. When one exists, no subtask draft is given, and `unattended` is
    absent, ask one question:
-   overwrite its `task.md`, keeping its number, or write a new folder with
-   a new number. On overwrite, write only the `task.md` of that folder and
-   leave its subtask files as they are. In every other case, create
-   `<tasks-dir>/###-<task-slug>/` with the next free number.
+   overwrite its `task.md` and delete its subtask files, keeping its
+   number, or write a new folder with a new number. In every other case,
+   create `<tasks-dir>/###-<task-slug>/` with the next free number.
 2. **Task file.** Write the task draft to `task.md` in the task folder,
-   over the previous one on `replace`.
-3. **Old subtask files.** On `replace`, delete every subtask file in the
-   task folder first.
+   over the previous one on `replace` or on overwrite.
+3. **Old subtask files.** On `replace` or on overwrite, delete every
+   subtask file in the task folder first.
 4. **Subtask files.** Write one subtask file per subtask draft,
    `###-<subtask-slug>.md` in the task folder, numbered `001` upward in
    subtask order. Link the `Task` line to `./task.md` and the `Depends on`

@@ -18,6 +18,11 @@ for the task, and how the task names them.
 - Write the measure command of the measurement record, with its paths and
   options, into the task's Context and Verification sections. The
   implementer then measures the same way.
+- In every command of the task and its subtasks, write `<scratch-dir>` in
+  place of the scratch directory. The implementer's run has a scratch
+  directory of its own. State in the Context section of the same task or
+  subtask that `<scratch-dir>` is a scratch directory outside the
+  repository.
 
 ## Tools the project configures
 
@@ -28,12 +33,12 @@ for the task, and how the task names them.
   Use its findings beside the measurement summary.
 - **Mutation testing**, such as Stryker, PIT, Infection, or cargo-mutants.
   The `mutation command` line of the measurement record names its command.
-  Name that command in the Context section of a `high` risk subtask. It is
-  the proof that the subtask's tests are able to fail. Put the code files
-  the subtask changes, never a test file, in place of `<files>`. A command
-  without `<files>` never limits its files. For such a command, and without
-  a mutation command, the subtask states that the implementer breaks the
-  asserted behavior by hand once.
+  Name that command in the Context section of a `high` risk subtask when
+  it holds `<files>`. It is the proof that the subtask's tests are able to
+  fail. Put the code files the subtask changes, never a test file, in
+  place of `<files>`. A command without `<files>` never limits its files.
+  For such a command, and without a mutation command, the subtask states
+  that the implementer breaks the asserted behavior by hand once.
 
 ## Structural rewrite tools
 

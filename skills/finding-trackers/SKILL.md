@@ -13,9 +13,10 @@ fields. Change nothing.
 
 ## Hard rules
 
-1. **Read-only.** Never create, edit, delete, link, comment on, or close an
-   item, and never change a project file. Only read and list. A write here
-   happens before the skill or the user that reads the map decides it.
+1. **Read-only.** Never create, edit, delete, link, unlink, comment on, or
+   close an item, and never change a project file. Only read and list. A
+   write here happens before the skill or the user that reads the map
+   decides it.
 2. **Never ask.** Settle every line of the map from the docs, the connected
    tools, `git`, and `gh`. Write `unsettled` or `none` where they settle
    nothing. A calling skill runs unattended, where no user reads a
@@ -83,6 +84,10 @@ the tracker performs.
 - link child: a POST with `gh api -X POST` to that `sub_issues` path with
   `-F sub_issue_id=<id>`. `<id>` is the `id` that
   `gh api repos/{owner}/{repo}/issues/<child>` prints. Write both commands;
+- unlink child: a DELETE with `gh api -X DELETE` to
+  `repos/{owner}/{repo}/issues/<number>/sub_issue`, singular, with
+  `-F sub_issue_id=<id>`. `<id>` is the child's `id`, as for link child.
+  Write both commands;
 - completed status: `closed`. A closed issue is in a completed status, and
   `gh` has no other status;
 - destinations: `one`. Every issue goes to the repository of `origin`;
@@ -100,6 +105,8 @@ of the server. Then fill:
 - link child with the tool and the field of the tracker's relation for
   children: a sub-issue, a child, or a parent field. Without such a
   relation, write `none: children linked in the body`;
+- unlink child with the tool and the field that remove a child from that
+  relation. Without such a tool, write `none`;
 - completed status with the name of every status in the tracker's
   completed or done category. Read the statuses with the tracker's tools.
   When no tool lists them, write `unsettled`;
@@ -132,6 +139,7 @@ comment on item: <tool or command>
 close item: <tool or command>
 delete item: <tool or command> | none
 link child: <tool or command> | none: children linked in the body
+unlink child: <tool or command> | none
 completed status: <status names> | unsettled
 destination: <team, project, or board the docs name> | none named
 destinations: one | several | unsettled

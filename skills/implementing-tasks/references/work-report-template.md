@@ -15,8 +15,8 @@ Rules for filling:
   ones below.
 
 What each section keeps:
-- **Result**: `done` when every criterion has evidence from a run made after
-  the last edit, else `blocked`.
+- **Result**: `done` when every entry of the criteria checklist is ticked,
+  with evidence from a run made after the last edit, else `blocked`.
 - **Criteria**: the counts only. Every criterion not met goes under
   *Blocked by*.
 - **Verification**: the target's one verification command, or
@@ -38,9 +38,11 @@ What each section keeps:
   - a stale or wrong fact in a task of the chain or in a sibling subtask,
     with the correct fact;
   - a check that already failed in the baseline;
-  - the missing test setup, because no test proves the change.
-- **Blocked by**: one bullet per criterion not met, per dependency not
-  done, and per fact the target lacks: its cause and what unblocks it.
+  - the missing test setup, because no test proves the change;
+  - a `writing-clean-code` failure on a line this run did not write.
+- **Blocked by**: one bullet per criterion not met, per unticked
+  Verification or command entry, per dependency not done, and per fact the
+  target lacks: its cause and what unblocks it.
 
 What the report leaves out:
 - the steps taken, and attempts that failed;
@@ -84,7 +86,8 @@ What the report leaves out:
 
 ## Blocked by
 
-- <Criterion, word for word, the dependency's title, or the fact the
-  target lacks>: <cause in one sentence>. Needs: <what unblocks it>.
+- <Criterion, word for word, the Verification, the command, the
+  dependency's title, or the fact the target lacks>: <cause in one
+  sentence>. Needs: <what unblocks it>.
 - <...>
 ```

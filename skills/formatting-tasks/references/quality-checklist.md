@@ -36,10 +36,13 @@ again.
 
 ## Subtasks
 
-- [ ] Each subtask has exactly one verification command.
+- [ ] Each subtask has exactly one verification command, on one line. It
+      chains at most a test run and one structural check with `&&`.
+- [ ] Each subtask's verification command fails on the code before the
+      subtask's change and passes after it.
 - [ ] No subtask depends on a subtask with a higher number.
-- [ ] Each subtask is mergeable on its own: after it, the project builds and
-      every test passes.
+- [ ] Each subtask is mergeable on its own: after it, the project builds,
+      and every test passes except a baseline failure that the task names.
 - [ ] The union of the subtasks' Changes equals the task's Approach: nothing
       outside it, nothing missing.
 

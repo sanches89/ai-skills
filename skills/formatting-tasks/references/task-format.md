@@ -158,5 +158,7 @@ or items when saved>
 
 ## Verification
 
-`<one command that proves this subtask. Example: npm test -- retry.test.ts>`
+`<one command, on one line, that fails before this subtask's change and passes
+after it. It chains at most a test run and one structural check with &&.
+Example: npm test -- retry.test.ts, where Changes adds retry.test.ts>`
 ```

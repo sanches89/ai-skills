@@ -84,9 +84,11 @@ Add each missing command from the command map it returns to the
 Act on the map's `source` line:
 - `none: no tracker holds <identifier>`: end with one line: no tracker
   holds the item, give a task file path. Write no report.
-- any other `none`, or `text`: end with one line: no task to run, give a
-  task file path or an item identifier. Write no report. The
-  `creating-tasks` skill writes a task from text.
+- any other `none`: end with one line: no task to run: <its reason>.
+  Write no report.
+- `text`: end with one line: no task to run, give a task file path or an
+  item identifier. Write no report. The `creating-tasks` skill writes a
+  task from text.
 - `tracker` or `file`: continue.
 
 The target has subtasks when the map's `subtasks` line is not `none`.
@@ -231,9 +233,11 @@ on the map's `target` line as its `at`, and the map's `verification`,
    project's commit convention, with the job's title as the subject. Add
    every bullet under *Deviations* and *Affects other work* of the report
    to the orchestration record as a fact, prefixed with the job's number.
-   Mark the job `done` in the orchestration record with the hashes on the
-   report's *Commits* line and `git rev-parse --short HEAD`. Continue with
-   the next job.
+   When the job's entry is a subtask line, also add the fact
+   `<number or identifier>: done`, with no prefix and the number or
+   identifier of the entry. Mark the job `done` in the orchestration
+   record with the hashes on the report's *Commits* line and
+   `git rev-parse --short HEAD`. Continue with the next job.
 8. **On `blocked`.** Mark the job `blocked` in the orchestration record and
    go to Step 7 with the result `blocked`. Run no further job.
 
@@ -253,8 +257,8 @@ it. For each round:
    Invoke the `refactoring-code` skill (in Claude Code, with the `Skill`
    tool) with the invocation text `from orchestrating-tasks: <the git
    range <base>..HEAD | the paths under Changes of every work report so
-   far, except those marked (deleted)>, files`. Return its final line and
-   nothing else.
+   far, except those marked (deleted)>, bounds <the target's identifier,
+   URL, or path>, files`. Return its final line and nothing else.
    ```
 
 2. **Round result.** Add `R<round>: <final line>` under `rounds` in the
@@ -300,7 +304,8 @@ Step 7.
 
    ```
    Read the orchestration record: <path of orchestration.md | the
-   comments on item <identifier> and on its children>. Read the target
+   comments on item <identifier> and on its children, and on every
+   refactor task item under `rounds` and on its children>. Read the target
    <task file path | item identifier or URL> and its subtasks. Read
    <skill-dir>/references/orchestration-report-template.md and
    <skill-dir>/references/quality-checklist.md. Fill the orchestration

@@ -10,13 +10,15 @@ network, files, a database, the clock, randomness, the process environment,
 or third-party code. Third-party code includes a framework, a driver, an HTTP
 client, and a UI toolkit. Skip an entry that the language of the code has no
 form for. Each entry gives the **Signal** that shows the smell, the
-**Refactoring** that removes it, and the case to **Leave it**. An entry with
-**Report** in place of a refactoring names a behavior change: its finding has
-the refactoring `report`. The limits named here are the defaults. The limits
-that Step 3 of `SKILL.md` takes replace them. A value over a limit is
-a finding only when no *Leave it when* case of its entry holds. The scan script
-lists the signals of each scan kind, as `path:line`. A signal is a line to read,
-never a finding.
+**Refactoring** that removes it, and the case to **Leave it**. A
+**Refactoring** line with a list offers a choice, and *then* marks the next
+step of a sequence. A finding names each refactoring its location needs, in
+the order of the line. An entry with **Report** in place of a refactoring
+names a behavior change: its finding has the refactoring `report`. The limits
+named here are the defaults. The limits that Step 3 of `SKILL.md` takes
+replace them. A value over a limit is a finding only when no *Leave it when*
+case of its entry holds. The scan script lists the signals of each scan kind,
+as `path:line`. A signal is a line to read, never a finding.
 
 ## Proof of dead code
 

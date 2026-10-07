@@ -32,9 +32,10 @@ These words have exactly one meaning in this skill.
 
 1. **Read-only on the project.** Write, or delete, only the glossary, in
    Step 7. The one exception is the reference line of Step 4, which Step 7
-   adds to the project's agent instructions. Write drafts in a scratch
-   directory outside the repository (in Claude Code, the scratchpad
-   directory). A definition binds every document, so it lands in one place.
+   adds to or removes from the project's agent instructions. Write drafts in
+   a scratch directory outside the repository (in Claude Code, the
+   scratchpad directory). A definition binds every document, so it lands in
+   one place.
 2. **Never ask what research can answer.** Consult the evidence set, the
    code, and the existing glossary first. The code settles what a word
    means better than a recollection.
@@ -44,8 +45,8 @@ These words have exactly one meaning in this skill.
 4. **Never edit another document yourself.** A usage that disagrees with the
    glossary goes in the glossary report. Only the `disambiguating-text` skill
    rewrites a document, when Step 7 invokes it. The reference line of Step 4 is
-   the one exception: Step 7 adds that line and changes nothing else in that
-   file. A rewrite without that skill's checks changes meaning.
+   the one exception: Step 7 adds or removes that line and changes nothing else
+   in that file. A rewrite without that skill's checks changes meaning.
 5. **Write nothing outside the scratch directory before the user approves
    the full glossary text and that reference line** (Step 6). An
    unapproved entry binds every document from the moment it is saved.
@@ -84,7 +85,8 @@ keep only what it names.
 **2a. Existing glossary.** When the glossary exists, read it in full. Record
 every term, its definition, and its section. When it does not exist, record
 that. Record whether the repository root has an `AGENTS.md` or a
-`CLAUDE.md`, and whether that file names the glossary.
+`CLAUDE.md`. Record the reference line of that file, the line that names the
+glossary's path, when it has one.
 
 **2b. Evidence set.** Read every document in full. Record, with path and
 line:
@@ -193,23 +195,26 @@ directory, with the words that pass a gate. Writing rules:
 When 2a found no glossary, write one reference line for the project's agent
 instructions, in the scratch directory next to the draft. Its file is the
 repository root's `AGENTS.md`, or the root's `CLAUDE.md` when the root has
-no `AGENTS.md`. The line is:
+no `AGENTS.md`. The line names the glossary's path relative to the
+repository root:
 
 ```markdown
-- Read `GLOSSARY.md` first. Use every word it defines with that meaning.
+- Read `<glossary path>` first. Use every word it defines with that meaning.
 ```
 
 Place it as the first bullet under that file's first heading, above every
 other rule and every other section. A root instructions file loads at the
 start of a session and a folder's file loads later, so the reference belongs
-in the root file. Write no line when that file already names `GLOSSARY.md`,
-and write none when the root has no `AGENTS.md` and no `CLAUDE.md`. Name
-either case in the glossary report.
+in the root file. Write no line when that file already names the glossary's
+path, and write none when the root has no `AGENTS.md` and no `CLAUDE.md`.
+Name either case in the glossary report.
 
 When no word passes a gate, write no draft and no reference line. Go
 to Step 6 with the glossary report alone and ask whether the user confirms
 an empty glossary. On confirmation, Step 7 deletes an existing glossary and
-writes no new one.
+writes no new one. Step 7 also removes the reference line that 2a recorded.
+Show that line and its file under *Instructions* in the glossary report, so
+that the confirmation covers its removal.
 
 ### Step 5: Quality check
 
@@ -228,9 +233,10 @@ the user approves.
 ### Step 7: Save
 
 Write the approved glossary to its path, unchanged. When Step 4 found no
-term, delete the existing glossary instead. When Step 4 wrote a reference
-line, add the approved line at the place Step 4 names, and change nothing
-else in that file.
+term, delete the existing glossary instead. In that case, also remove the
+reference line that 2a recorded, and change nothing else in its file. When
+Step 4 wrote a reference line, add the approved line at the place Step 4
+names, and change nothing else in that file.
 
 Then rewrite the documents that disagree with the `disambiguating-text` skill
 when all of these hold:
@@ -256,7 +262,8 @@ Finish with the glossary report:
   line that use it. The user places these: the `disambiguating-text` skill adds
   no fact.
 - *Instructions*: the file the reference line was added to, or the reason
-  no line was added.
+  no line was added. For a deleted glossary, the removed reference line and
+  its file.
 - *Disagreements*: every usage in another document that disagrees with the
   glossary, with its path and line and the change that settles it. Add the word
   `rewritten` when the `disambiguating-text` skill rewrote that document. Add

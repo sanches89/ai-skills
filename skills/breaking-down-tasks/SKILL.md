@@ -61,13 +61,17 @@ Without an input, ask for the task first.
 Invoke the `loading-tasks` skill (in Claude Code, with the `Skill` tool) with
 the invocation text `from breaking-down-tasks: <input>`. Act on the `source`
 line of the task map it returns:
-- `none: <reason>`: ask one question: give the task as a task file path or
-  an item identifier. Then invoke the `loading-tasks` skill again with the
-  invocation text `from breaking-down-tasks: <answer>`.
+- `none: <reason>`: ask one question that starts with the reason:
+  `<reason>. Give the task as a task file path or an item identifier.` Then
+  invoke the `loading-tasks` skill again with the invocation text
+  `from breaking-down-tasks: <answer>`.
 - `text`: end with one line,
   `No task to break down: write the task first with the creating-tasks skill.`
   Write nothing.
-- `tracker` or `file`: continue.
+- `file` with `kind` *subtask*: end with one line,
+  `No task to break down: a subtask file has no subtasks. Break down its task.`
+  Write nothing.
+- `tracker`, or `file` with `kind` *task*: continue.
 
 Read the target of the task map in full: its file, or its item through the
 `read item` line of the tracker map on the map's `tracker` line.
@@ -162,11 +166,15 @@ decision remains.
 ### Step 4: Split
 
 Produce the subtask list. Every subtask is one reviewable change with one
-verification command, mergeable on its own: after it, the project builds and
-every test, existing and new, passes. Make every subtask meet these
-constraints too:
-- **One concern.** Split again a subtask that needs two verification
-  commands, or whose title needs the word "and".
+verification command, mergeable on its own: after it, the project builds,
+and every test, existing and new, passes except a baseline failure that the
+task names. The verification command is one line that fails on the code
+before the subtask's change and passes after it. It chains at most a test
+run and one structural check, such as a search or a file test, with `&&`.
+Make every subtask meet these constraints too:
+- **One concern.** Split again a subtask whose verification needs a second
+  test run or a second structural check, or whose title needs the word
+  "and".
 - **Size.** Write the title and the planned Changes section of each subtask
   to `<scratch-dir>/draft/subtask-<n>.md`, with `<n>` its number. Invoke the
   `formatting-tasks` skill (in Claude Code, with the `Skill` tool) with the
@@ -252,8 +260,6 @@ the invocation text
 - `tracker`: `, replace <identifier>`, with the identifier of the target.
 - `file` and `kind` *task*: `, replace <task folder>, files`, with the folder
   of the target `task.md`.
-- `file` and `kind` *subtask*: `, files`. The subtask becomes a new task
-  folder. Append `, dir <folder>` when the user named a folder for tasks.
 
 Never ask where to save: the `saving-tasks` skill settles the store.
 

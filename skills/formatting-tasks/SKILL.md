@@ -108,7 +108,11 @@ research notes. A rule of the notes adds to these and never replaces one.
   interface, a CLI flag, an endpoint signature. Never implementation code.
 - Write success criteria and acceptance criteria that are binary: someone
   else can answer yes or no.
-- In a subtask's *Verification*, write exactly one command.
+- In a subtask's *Verification*, write exactly one verification command, on
+  one line. It fails on the code before the subtask's change and passes
+  after it: a command that already passes marks the subtask done with no
+  work. It chains at most a test run and one structural check, such as a
+  search or a file test, with `&&`.
 - In *References*, give every entry its name, its URL, and what it
   settles. Write `None.` when there is none.
 - Add no section beyond the format: no Risks, Considerations, Alternatives,

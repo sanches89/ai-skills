@@ -30,7 +30,7 @@ what the review settled. Step numbers are those of `SKILL.md`.
   as `next batch` with its location and smell. Every finding dropped in
   Step 5 or Step 6, with its reason. Every part removed from the refactor
   scope in Step 4. Every part of the contract, as a statement that it
-  stays. Every *Out of scope* entry of a requested task, restated.
+  stays. Every *Out of scope* entry of a task read in Step 2, restated.
 - *Approach*: one bullet per entry, in order: every file its Changes
   section names, a characterization test file and a moved caller included.
   Each file with its symbol and the structure after the change.
@@ -40,18 +40,21 @@ what the review settled. Step numbers are those of `SKILL.md`.
 - *Context*: the commands from 3b, with the test command of the measurement
   record in place of the plain test command, and the `test one file`
   command. The analysis tools from 3d with their limits. The measure
-  command of the measurement record, as `analysis-tools.md` states. The
-  `counts` line from Step 5. The baseline: one line per measurement with
-  its values, or `skipped` with the reason. The test coverage of every
-  function the entries change. For request kind *task*, the identifier or
-  path of the requested task.
+  command of the measurement record, as `analysis-tools.md` states. In
+  each command, `<scratch-dir>` in place of the scratch directory, with the
+  statement that `<scratch-dir>` is a scratch directory outside the
+  repository. The `counts` line from Step 5. The baseline: one line per
+  measurement with its values, or `skipped` with the reason. The test
+  coverage of every function the entries change. For request kind *task*,
+  the identifier or path of the requested task.
 - *References*: `None.` Never copy the References of a requested task.
 - *Subtasks*: one line per entry, in order, with its dependencies.
 - *Verification*: the commands from 3b, then the test command of the
-  measurement record, then its measure command over the same paths. Then
-  the structural check of every entry, which proves its structure after
-  the change. Then one search per part of the contract that an entry
-  touches, which finds its name and signature unchanged.
+  measurement record, then its measure command over the same paths. Both
+  read `<scratch-dir>` as in Context. Then the structural check of every
+  entry, which proves its structure after the change. Then one search per
+  part of the contract that an entry touches, which finds its name and
+  signature unchanged.
 
 ## Each subtask
 
@@ -66,7 +69,8 @@ what the review settled. Step numbers are those of `SKILL.md`.
   tool from `analysis-tools.md`. For Remove Dead Code, the proof from the
   evidence of the finding. For an entry marked
   `characterization tests first`, the rules of *Characterization tests*
-  below.
+  below. For a subtask whose command holds `<scratch-dir>`, the statement
+  that `<scratch-dir>` is a scratch directory outside the repository.
 - *References*: `None.`
 - *Changes*: first, for an entry marked `characterization tests first`, the
   test file, `(new)` or existing, with every test case from Step 6 named.
@@ -98,7 +102,9 @@ Write these rules into the Context section of every subtask that names a
 characterization test:
 - The tests follow the rules of the `writing-unit-tests` skill, which the
   implementer loads before the first test.
-- For a `high` risk subtask, the mutation command, as `analysis-tools.md`
-  states. The implementer runs it instead of breaking the behavior by hand.
+- For a `high` risk subtask, the mutation command when it holds `<files>`,
+  as `analysis-tools.md` states. The implementer runs it instead of
+  breaking the behavior by hand. Else the statement that the implementer
+  breaks the asserted behavior by hand once.
 - The characterization tests stay in the change, as the proof of the
   refactoring and the safety net of the next one.

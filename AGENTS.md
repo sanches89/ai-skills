@@ -177,16 +177,19 @@ Folders:
   section names of `skills/formatting-tasks/references/task-format.md`. Rename
   a section there and in the seven in the same commit.
 - `implementing-tasks` implements a task or subtask and never writes or edits
-  one.
+  one. It counts a dependency as done when a caller's fact reads
+  `<number or identifier>: done`. `orchestrating-tasks` and the subtask runs
+  of `implementing-tasks` write that fact. Change its form in both skills in
+  the same commit.
 - `orchestrating-tasks` runs the subtasks of a task through
   `implementing-tasks`, one at a time. It never writes or edits a task, a
   subtask, or the title or body of an item. It comments on items and sets
   their status. It reads the headings of the work report in
   `skills/implementing-tasks/references/work-report-template.md`. It reads the
-  final line of `refactoring-code`. Change any of these in
-  `skills/orchestrating-tasks/` in the same commit. It adds one file to the
-  layout, `<tasks-dir>/###-<task-slug>/orchestration.md`, which no other skill
-  reads.
+  final line of `refactoring-code` and sends it the `bounds` option. Change
+  any of these in `skills/orchestrating-tasks/` in the same commit. It adds
+  one file to the layout, `<tasks-dir>/###-<task-slug>/orchestration.md`,
+  which no other skill reads.
 - End `creating-tasks`, `breaking-down-tasks`, and `refactoring-code` with the
   line `saving-tasks` returns: the task file path or the task item's identifier,
   and nothing else. A failed save ends with a line that starts with `not saved:`

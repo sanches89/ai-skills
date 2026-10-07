@@ -14,7 +14,9 @@ coding agent that loads `SKILL.md` files.
 - [breaking-down-tasks](skills/breaking-down-tasks/SKILL.md): takes a task from
   a project-management item or a task file and splits it into commit-sized
   subtasks. Each subtask is self-contained and has one verification command.
-  It sends a task given as text to creating-tasks first.
+  It also splits a subtask item. Given a subtask file or a task as text, it
+  writes nothing. It points to breaking down the file's task, or to
+  creating-tasks.
 - [implementing-tasks](skills/implementing-tasks/SKILL.md): implements a task or
   subtask within the scope set by its parent tasks and proves every acceptance
   criterion. It writes the code by writing-clean-code and the tests by
@@ -74,7 +76,8 @@ used to be copied between skills. You can also invoke each one directly.
 - [saving-tasks](skills/saving-tasks/SKILL.md): saves a task and its subtasks
   to the tracker or to numbered task folders.
 - [finding-dev-commands](skills/finding-dev-commands/SKILL.md): finds
-  a project's build, lint, type-check, format, test, and install commands.
+  a project's build, lint, type-check, format, test, `test one file`, and
+  install commands.
 - [writing-clean-code](skills/writing-clean-code/SKILL.md): writes code, or
   reviews code against 14 clean code principles, each with a check that a
   diff passes.
@@ -101,11 +104,12 @@ repository. With none of these, it is a scratch directory outside the
 repository, which in Claude Code lives one session. implementing-tasks
 implements a task or one subtask from those files. orchestrating-tasks runs
 implementing-tasks on every subtask of a task, one at a time, with one commit
-each. Then it runs refactoring-code and
-implementing-tasks over the result, up to three rounds. The tracker is the one
-the project docs name, else one an MCP server reaches, else GitHub Issues
-through the `gh` CLI. With a tracker connected, the writers create items there
-instead, unless you ask for files, and implementing-tasks and
+each. Then it runs refactoring-code and implementing-tasks over the result,
+up to three rounds. The tracker is the one the project docs name. When
+neither an MCP server nor the `gh` CLI reaches it, no tracker is connected.
+When the docs name none, the tracker is the one an MCP server reaches, else
+GitHub Issues through `gh`. With a tracker connected, the writers create
+items there instead, unless you ask for files, and implementing-tasks and
 orchestrating-tasks read them. Each skill ends with the input of the next, so
 these sequences work without an edit in between:
 

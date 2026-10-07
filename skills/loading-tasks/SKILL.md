@@ -57,9 +57,9 @@ Resolve the target as one source:
 - **An item identifier or URL** (`PAY-212`, `#128`, an issue link). Source:
   *tracker*. Invoke the `finding-trackers` skill (in Claude Code, with the
   `Skill` tool) with the invocation text `from loading-tasks: find`. Read
-  the item with the map's `read item` line. When the map reads
-  `tracker: none`, or the tracker holds no such item, the source is
-  `none: no tracker holds <identifier>`.
+  the item with the map's `read item` line. When the map's first line
+  starts with `tracker: none`, or the tracker holds no such item, the
+  source is `none: no tracker holds <identifier>`.
 - **A subtask file**, a file named `###-<subtask-slug>.md` next to a
   `task.md`. Source: *file*.
 - **A task file**, a file named `task.md`. Its folder is the task folder.
@@ -68,6 +68,8 @@ Resolve the target as one source:
   target. Source: *file*.
 - **Any other folder.** Source: `none: <path> holds no task.md`.
 - **A path that does not exist.** Source: `none: <path> does not exist`.
+- **A failed save**, a line that starts with `not saved:`. Source:
+  `none: <that line>`.
 - **Free text**, or the path of any other file, whose content is then the
   text. Source: *text*.
 - **Nothing.** Source: `none: no target given`.

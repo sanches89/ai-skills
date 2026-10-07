@@ -16,7 +16,7 @@
     {
       "id": 3,
       "prompt": "from breaking-down-tasks: task /tmp/scratch/task.md, subtasks /tmp/scratch/subtask-1.md /tmp/scratch/subtask-2.md, replace #42\n\n(GitHub Issues through gh. Issue #42 already has two sub-issues.)",
-      "expected_output": "Invokes finding-trackers and saves to the tracker because replace names an item identifier. Sets the title and body of #42 to the task draft. Lists its sub-issues and closes each with gh issue close, because the tracker map's delete item line reads none for gh. Creates one issue per subtask in order, with #42's link on the Task line and the earlier sibling's link on the Depends on line, and links each to #42 through a POST to the sub_issues path. Edits #42 so its Subtasks section links the new issues. The final message is one line: #42, and nothing else.",
+      "expected_output": "Invokes finding-trackers and saves to the tracker because replace names an item identifier. Sets the title and body of #42 to the task draft. Lists its sub-issues and closes each with gh issue close, because the tracker map's delete item line reads none for gh, then unlinks each from #42 through a DELETE to the sub_issue path. Creates one issue per subtask in order, with #42's link on the Task line and the earlier sibling's link on the Depends on line, and links each to #42 through a POST to the sub_issues path. Edits #42 so its Subtasks section links the new issues. The final message is one line: #42, and nothing else.",
       "files": []
     }
   ]

@@ -99,10 +99,11 @@ both under *Blocked by*.
 
 **Dependencies.** Find each entry of the map's `depends on` line among the
 lines under its `siblings` line. A subtask line of the map is done when its
-`state` is `completed`. For source *file*, it is also done when the command
-in its `verification` passes and every path on its `new` list exists. When
-a dependency is not done, go to Step 9 with the result `blocked` and name
-it under *Blocked by*.
+`state` is `completed`. It is also done when a caller's fact reads
+`<its number or identifier>: done`. For source *file*, it is also done when
+the command in its `verification` passes and every path on its `new` list
+exists. When a dependency is not done, go to Step 9 with the result
+`blocked` and name it under *Blocked by*.
 
 **Criteria.** Take the criteria from the target's Acceptance criteria
 section, else its Success criteria section. Without either, take the list it
@@ -116,11 +117,13 @@ subtasks* instead of Step 4.
 ### Step 4: Research
 
 **4a. Code.** Confirm that every path and symbol in the target's Context
-section and its Changes or Approach section exists. Read the code that
-changes yourself, because Step 6 edits it, and the code that calls it.
-When a named path or symbol is gone, search for where it moved. With
-exactly one match, use it and record a deviation. Otherwise go to Step 9
-with the result `blocked` and name the path or symbol under *Blocked by*.
+section and its Changes or Approach section exists. Skip every path marked
+`(new)` and every symbol the Changes or Approach section adds. Read the
+code that changes yourself, because Step 6 edits it, and the code that
+calls it. When a named path or symbol is gone, search for where it moved.
+With exactly one match, use it and record a deviation. Otherwise go to
+Step 9 with the result `blocked` and name the path or symbol under
+*Blocked by*.
 
 **4b. Conventions.** Read README, CLAUDE.md, AGENTS.md, CONTRIBUTING, and
 the docs that cover the touched areas. Record the naming, error handling,
@@ -250,10 +253,12 @@ Then invoke the `writing-clean-code` skill (in Claude Code, with the `Skill`
 tool) with the invocation text `from implementing-tasks: check <paths>`.
 `<paths>` is every file the diff changes. Fix every failure it returns on a line
 this run wrote, unless a convention from 4b or a decision of the chain overrules
-that principle. With a test setup, invoke the `writing-unit-tests` skill (in
-Claude Code, with the `Skill` tool) with the invocation text `from
-implementing-tasks: check <test files>`. `<test files>` is every test file the
-diff adds or edits. Fix every failure it returns.
+that principle. List every failure on a line this run did not write under
+*Affects other work*: it is no failure of this run. With a test setup,
+invoke the `writing-unit-tests` skill (in Claude Code, with the `Skill`
+tool) with the invocation text
+`from implementing-tasks: check <test files>`. `<test files>` is every
+test file the diff adds or edits. Fix every failure it returns.
 
 After any edit in this step, run Step 7 again.
 
@@ -276,11 +281,13 @@ Work the subtasks one at a time, then prove the task itself.
    is done by the rule in Step 3. A subtask whose `at` reads `none` has no
    file and no item: go to number 5 with the result `blocked`. Run Steps 1
    to 9 for every other one: the `at` of its line is the target, and the
-   subtask facts are the caller's facts. The subtask facts are the
-   caller's facts, then every bullet under *Deviations* and *Affects other
-   work* of each earlier subtask's work report. When the agent offers
-   subagents, run each subtask in its own subagent, and keep only the work
-   report it returns. Give it one instruction: invoke the
+   subtask facts are its caller's facts. Build the subtask facts from this
+   run's caller's facts, then every bullet under *Deviations* and *Affects
+   other work* of each earlier subtask's work report. End them with one
+   fact `<number or identifier>: done` per earlier subtask whose result was
+   `done`, as its map line names it. When the agent offers subagents, run
+   each subtask in its own subagent, and keep only the work report it
+   returns. Give it one instruction: invoke the
    `implementing-tasks` skill (in Claude Code, with the `Skill` tool) with
    the invocation text `from implementing-tasks: <the at of its line>`,
    with the subtask facts listed after it.

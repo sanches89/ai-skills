@@ -98,8 +98,9 @@ skills see the final text.
   reference doc>`. Take `<path>` from the request when it names one, else
   `GLOSSARY.md`. Wait for it to finish: it asks its own questions, writes
   after its own approval, and prints its glossary report. Without that skill,
-  change no word, and state in the audit report that the glossary was not
-  checked.
+  follow the Glossary section of `SKILL.md` for each doc this audit edited.
+  State in the audit report that the other docs were not checked against the
+  glossary.
 - **Wording.** When the agent has the skill, invoke the `disambiguating-text`
   skill (in Claude Code, with the `Skill` tool) with the invocation text
   `from writing-agent-docs: <file path>`. Run it one file at a time. Cover
@@ -118,7 +119,7 @@ skills see the final text.
   - the size table;
   - each rule moved, merged or reworded;
   - each ambiguity resolved, with the code that settled it;
-  - each term the `writing-glossaries` skill added, changed, or removed;
+  - each term added to, changed in, or removed from the glossary;
   - each ambiguity the `disambiguating-text` skill resolved;
   - anything left for the user to decide.
 - Commit only when asked.

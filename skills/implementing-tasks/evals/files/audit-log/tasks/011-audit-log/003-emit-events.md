@@ -30,4 +30,4 @@ cancelOrder publishes an event.
 
 ## Verification
 
-`npm test`
+`npm test && grep -q order.cancelled tests/cancel.test.js`

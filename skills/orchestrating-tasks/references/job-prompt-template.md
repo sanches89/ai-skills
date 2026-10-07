@@ -30,7 +30,8 @@ Never push, open a pull request, change an item's status, or comment on
 an item.
 
 Facts from earlier subtasks of this task. Each holds over the task text:
-- <job number>: <fact, copied from a work report>
+- <job number>: <fact, copied from a work report> | <number or
+  identifier>: done
 - <... | None.>
 
 Ask nothing. When a decision changes the work and research cannot settle

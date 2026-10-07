@@ -107,9 +107,9 @@ files <input file path>, words <the undefined words>`. Wait for it to
 finish: it asks its own questions and writes the glossary after its own
 approval. Then read the glossary again and record each undefined word it
 defined as a term. Read the input file again. When it changed, run 2a again
-on the new content. That skill can add its reference line to the input file,
-and the rewrite keeps that line. When a condition fails, keep the undefined
-words for the clarity report.
+on the new content. That skill can add or remove its reference line in the
+input file, and the rewrite keeps that change. When a condition fails, keep
+the undefined words for the clarity report.
 
 **2c. Referents.** For every referent without a name, search the input text,
 the code, and the docs the text names for the thing it points at. Record the

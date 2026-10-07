@@ -280,11 +280,14 @@ entries.
 
 Work one install root at a time, in plan order. A batch is the list of
 packages that one trial sets: a plan entry, a half of one, or a group at one
-rung. Set the ranges of a batch with one loop:
+rung. Write each batch to `<scratch-dir>/<root>-<batch>.tsv`, one line per
+package: the manifest, the section, the name, and the range, separated by
+tabs. Set the ranges of a batch with one loop:
 
 ```bash
-while IFS=$'\t' read -r manifest name range; do
-  node <skill-dir>/scripts/set-range.mjs "$manifest" "$name" "$range" || break
+while IFS=$'\t' read -r manifest section name range; do
+  node <skill-dir>/scripts/set-range.mjs "$manifest" "$name" "$range" \
+    --section "$section" || break
 done < <scratch-dir>/<root>-<batch>.tsv
 ```
 

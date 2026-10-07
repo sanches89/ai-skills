@@ -37,7 +37,8 @@ Without a test setup: the diff adds no test and no test framework, and
 
 - [ ] The `writing-clean-code` check returns `pass` for every changed
       file. A convention from 4b or a decision of the chain overrules
-      every failure left.
+      every failure left on a line this run wrote. *Affects other work*
+      lists every failure on a line this run did not write.
 
 ## Scope
 

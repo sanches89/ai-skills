@@ -61,16 +61,26 @@ Read README, CLAUDE.md, AGENTS.md, CONTRIBUTING, and the docs that cover the
 touched code. Record the naming, error handling, and formatting conventions.
 Invoke the `finding-dev-commands` skill (in Claude Code, with the
 `Skill` tool) with the invocation text `from writing-clean-code: find`. Keep
-its `format` line for principle 6.
+its `format` line for principle 6, and its `test` and `test one file` lines.
+
+Record whether the project has a test setup, for principle 9. When the agent
+has the `writing-unit-tests` skill, invoke it (in Claude Code, with the
+`Skill` tool) with the invocation text `from writing-clean-code: setup for
+<paths>, test <command>, test one file <command>`. `<paths>` is the paths
+the request names, else the repository root. Fill each `<command>` with the
+command of that line. Leave out each part whose line reads `none`. The
+project has a test setup when the block it returns reads `test setup: yes`.
+Without that skill, the project has a test setup unless the `test` line reads
+`none`.
 
 ### Step 2: Write
 
 Write mode only. Write the code the user asked for. Apply every principle to
 the lines you write or change.
 
-Principle 9 asks for tests. Before the first test, invoke the
-`writing-unit-tests` skill (in Claude Code, with the `Skill` tool) with the
-invocation text `from writing-clean-code: write`, when the agent has it.
+With a test setup, principle 9 asks for tests. Before the first test, invoke
+the `writing-unit-tests` skill (in Claude Code, with the `Skill` tool) with
+the invocation text `from writing-clean-code: write`, when the agent has it.
 Write every test by the rules it loads.
 
 ### Step 3: Check the diff
@@ -209,9 +219,11 @@ const BATCH_SIZE = 100;
 
 ### 6. Formatting
 
-Run the project formatter. Without one, keep related code together and
-separate concepts with a blank line. Declare a variable next to its first use.
-Place a caller above its callee.
+Run the format command. When it reports a file you wrote or changed, format
+that file with the project formatter's write form, such as
+`prettier --write`. Then run the format command again. Without a format
+command, keep related code together and separate concepts with a blank line.
+Declare a variable next to its first use. Place a caller above its callee.
 
 No example: the project formatter decides.
 
@@ -257,12 +269,14 @@ No example: the rule limits scope.
 
 ### 9. Tests
 
-Each added or changed behavior has a test. The `writing-unit-tests` skill
-holds the rules for writing one, and Step 2 invokes it.
+With a test setup, as Step 1 records it, each added or changed behavior has
+a test. Without one, write no test. The `writing-unit-tests` skill holds
+the rules for writing one, and Step 2 invokes it.
 
 No example: the rule names what needs a test, never how to write it.
 
-**Check:** every changed behavior has a test that fails without the change.
+**Check:** with a test setup, every changed behavior has a test that fails
+without the change. Without one, principle 9 records no failure.
 
 ### 10. Simple design
 

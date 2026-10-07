@@ -16,7 +16,7 @@
     {
       "id": 3,
       "prompt": "from orchestrating-tasks: PAY-212\n\n(No MCP server reaches a tracker, and origin is not on github.com.)",
-      "expected_output": "Treats PAY-212 as an item identifier and invokes the finding-trackers skill with the invocation text 'from loading-tasks: find'. The tracker map reads tracker: none, so the final message is one line, 'source: none: no tracker holds PAY-212', and nothing else. Asks nothing and writes nothing.",
+      "expected_output": "Treats PAY-212 as an item identifier and invokes the finding-trackers skill with the invocation text 'from loading-tasks: find'. The tracker map's first line starts with tracker: none, so the final message is one line, 'source: none: no tracker holds PAY-212', and nothing else. Asks nothing and writes nothing.",
       "files": []
     }
   ]

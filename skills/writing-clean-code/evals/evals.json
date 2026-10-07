@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "Clean up src/orders/checkout.ts. The functions are huge and half of them take five arguments.",
-      "expected_output": "Treats the request as review mode with changes. Reads the project's conventions and invokes the finding-dev-commands skill for the format command. Runs the Check of all 14 principles over every line of src/orders/checkout.ts, committed or not. Fixes every failure: splits each function to 20 lines or fewer, turns a third parameter into an object, removes boolean flag parameters, and extracts copies that change together. Edits no code outside that file. Runs the Checks again and ends with the remaining failures as `<path:line> <principle number>: <failure>`, or `pass`.",
+      "expected_output": "Treats the request as review mode with changes. Reads the project's conventions and invokes the finding-dev-commands skill for the format and test commands, then records the test setup with writing-unit-tests when the agent has it. Runs the Check of all 14 principles over every line of src/orders/checkout.ts, committed or not. Fixes every failure: splits each function to 20 lines or fewer, turns a third parameter into an object, removes boolean flag parameters, extracts copies that change together, and formats each file the format command reports with the project formatter's write form. Edits no code outside that file. Runs the Checks again and ends with the remaining failures as `<path:line> <principle number>: <failure>`, or `pass`.",
       "files": []
     },
     {
@@ -16,7 +16,7 @@
     {
       "id": 3,
       "prompt": "from implementing-tasks: check src/cart/total.ts src/cart/discount.ts",
-      "expected_output": "Asks nothing. Takes the diff of the two paths against HEAD, untracked files as added lines, and runs the Check of every principle over it. Flags a new interface with one implementation that wraps no system boundary under principle 14, and a block of 3 lines or more repeated in the diff under principle 4. Counts no failure that a decision of the task overrules. Ends with only the failure lines, `<path:line> <principle number>: <failure>`, or `pass`.",
+      "expected_output": "Asks nothing. Takes the diff of the two paths against HEAD, untracked files as added lines, and runs the Check of every principle over it. Flags a new interface with one implementation that wraps no system boundary under principle 14, and a block of 3 lines or more repeated in the diff under principle 4. Records no principle 9 failure when the project has no test setup. Counts no failure that a decision of the task overrules. Ends with only the failure lines, `<path:line> <principle number>: <failure>`, or `pass`.",
       "files": []
     }
   ]

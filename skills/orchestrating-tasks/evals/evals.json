@@ -3,15 +3,35 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "Run tasks/004-add-retry-to-webhooks/task.md end to end. It has four subtasks.",
-      "expected_output": "Never opens the task itself: a subagent invokes loading-tasks with 'from orchestrating-tasks: tasks/004-add-retry-to-webhooks/task.md', fills every command the map lacks from finding-dev-commands, and returns the task map with title, subtasks, commands, verification, and new paths. Outside a clean linked worktree, asks one question, where the jobs run, naming the reason: the main checkout or the dirty paths, the uncommitted task folder included. On an answer for a new worktree, creates it at <scratch-dir>/worktree on branch task/004-add-retry-to-webhooks, confirms the worktree holds the task file, and states the jobs, tree, and branch in chat. Runs one job at a time with the job prompt template, which invokes implementing-tasks with 'from orchestrating-tasks: <subtask file path>', each job ending in one commit by the project's conventions. Carries Deviations and Affects other work bullets into later prompts as facts. Runs refactoring-code rounds until an empty round or three rounds, loading each refactor task's task map by the Step 1 prompt and committing its files alone with its title in the subject, then proves the task with its Verification, each refactor task's Verification, and the commands. Writes orchestration.md in the task folder holding the plan, every work report, and the orchestration report, commits it alone, and removes the worktree it created, keeping the branch. Asks nothing beyond the tree question. The final message is the orchestration report with headings Result, Target, Branch, Worktree, Jobs, Refactor rounds, Verification, Commits, Jobs, Changes, Deviations, Affects other work.",
-      "files": []
+      "prompt": "Run tasks/004-add-retry-to-webhooks/task.md end to end. It has three subtasks.",
+      "expected_output": "Never opens the task itself: a subagent invokes loading-tasks with 'from orchestrating-tasks: tasks/004-add-retry-to-webhooks/task.md', fills every command the map lacks from finding-dev-commands, and returns the task map with title, subtasks, commands, verification, and new paths. Outside a clean linked worktree, asks one question, where the jobs run, naming the reason: the main checkout or the dirty paths, the uncommitted task folder included. On an answer for a new worktree, creates it at <scratch-dir>/worktree on branch task/004-add-retry-to-webhooks, confirms the worktree holds the task file, and states the jobs, tree, and branch in chat. Runs one job at a time with the job prompt template, which invokes implementing-tasks with 'from orchestrating-tasks: <subtask file path>', each job ending in one commit by the project's conventions. Carries Deviations and Affects other work bullets into later prompts as facts, plus one fact <number>: done per earlier done job, so jobs 2 and 3 find their dependency done. Runs refactoring-code rounds until an empty round or three rounds, each with the invocation text ending in ', bounds tasks/004-add-retry-to-webhooks/task.md, files', loading each refactor task's task map by the Step 1 prompt and committing its files alone with its title in the subject, then proves the task with its Verification, each refactor task's Verification, and the commands. Writes orchestration.md in the task folder holding the plan, every work report, and the orchestration report, commits it alone, and removes the worktree it created, keeping the branch. Asks nothing beyond the tree question. The final message is the orchestration report with headings Result, Target, Branch, Worktree, Jobs, Refactor rounds, Verification, Commits, Jobs, Changes, Deviations, Affects other work.",
+      "files": [
+        "evals/files/webhooks/package.json",
+        "evals/files/webhooks/src/webhooks/dispatch.js",
+        "evals/files/webhooks/src/webhooks/send.js",
+        "evals/files/webhooks/tasks/004-add-retry-to-webhooks/001-add-retry-policy.md",
+        "evals/files/webhooks/tasks/004-add-retry-to-webhooks/002-add-retrying-delivery.md",
+        "evals/files/webhooks/tasks/004-add-retry-to-webhooks/003-dispatch-events-with-retry.md",
+        "evals/files/webhooks/tasks/004-add-retry-to-webhooks/task.md",
+        "evals/files/webhooks/tests/send.test.js"
+      ]
     },
     {
       "id": 2,
-      "prompt": "Orchestrate tasks/006-typed-config/task.md. Subtasks 001 and 002 were already merged by hand yesterday.",
-      "expected_output": "For each of 001 and 002, a probe of its Verification command and 'test -e' on each path its Changes marks (new) passes, so the job is marked skipped in the orchestration record and no work runs for it. Jobs 003 onward run normally. The orchestration report's Jobs line counts 2 skipped, and the Jobs section lists 001 and 002 as skipped without a commit hash.",
-      "files": []
+      "prompt": "Orchestrate tasks/006-type-config-values/task.md. Subtasks 001 and 002 were already merged by hand yesterday.",
+      "expected_output": "For each of 001 and 002, a probe of its Verification command and 'test -e' on each path its Changes marks (new) passes, so the job is marked skipped in the orchestration record and no work runs for it. Job 003 runs normally, and its implementing-tasks run finds both dependencies done by their Verification and new paths. The orchestration report's Jobs line counts 2 skipped, and the Jobs section lists 001 and 002 as skipped without a commit hash.",
+      "files": [
+        "evals/files/typed-config/package.json",
+        "evals/files/typed-config/src/config/load.js",
+        "evals/files/typed-config/src/config/parse.js",
+        "evals/files/typed-config/src/config/schema.js",
+        "evals/files/typed-config/tasks/006-type-config-values/001-add-config-schema.md",
+        "evals/files/typed-config/tasks/006-type-config-values/002-add-value-parser.md",
+        "evals/files/typed-config/tasks/006-type-config-values/003-type-loadconfig.md",
+        "evals/files/typed-config/tasks/006-type-config-values/task.md",
+        "evals/files/typed-config/tests/parse.test.js",
+        "evals/files/typed-config/tests/schema.test.js"
+      ]
     },
     {
       "id": 3,

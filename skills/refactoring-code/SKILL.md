@@ -53,9 +53,11 @@ each with path and line. The context window then holds those returns, not
 the files, and stays small. Without subagents, follow the step yourself and
 keep only what it names.
 
-Drop a leading `from <skill name>:` from the invocation text, and a
-trailing `, files`, which asks for files. Resolve the rest, or the request
-in the conversation, as exactly one request kind:
+Drop a leading `from <skill name>:` from the invocation text. Then drop a
+trailing `, files`, which asks for files. Then drop a trailing
+`, bounds <identifier, URL, or path>`, which names a task whose bounds
+hold. Resolve the rest, or the request in the conversation, as exactly one
+request kind:
 - *path*: one or more paths of files or folders that exist, other than the
   files and folders of *task*.
 - *symbol*: a symbol name, a function or a module in the code. Search for
@@ -73,6 +75,10 @@ For request kind *task*, invoke the `loading-tasks` skill (in Claude Code,
 with the `Skill` tool) with the invocation text
 `from refactoring-code: <identifier, URL, or path>`. Keep the task map it
 returns. When the task map reads `source: none`, the request kind is *text*.
+With `bounds`, invoke the `loading-tasks` skill (in Claude Code, with the
+`Skill` tool) with the invocation text
+`from refactoring-code: <identifier, URL, or path>`, filled from `bounds`.
+Keep that task map too.
 
 Write private notes to `<scratch-dir>/notes.md` from this step on.
 `<scratch-dir>` is the scratch directory. Keep in the notes every list a
@@ -95,17 +101,17 @@ With an empty refactor scope, finish as Step 6 states for no entry.
 Remove from the refactor scope:
 - generated code, vendored code, lockfiles, build output, and snapshot files;
 - database migrations that already ran;
-- every file inside a task folder: a folder named `###-<task-slug>` that
-  holds a `task.md`.
+- every file inside a task folder, a folder that holds a `task.md`.
 
 Record one glob per removed part that sits inside a folder of the refactor
 scope, joined by commas with no space, as `<globs>`. A test file stays in
 the refactor scope.
 
 **Bounds of a requested task.** For request kind *task*, read every task on
-the task map's `chain` in full. Record every *Out of scope* list and every
-Decisions section. Never write a subtask that does what one of them lists
-under *Out of scope*. Follow every decision.
+the task map's `chain` in full. Do the same with the task map of `bounds`.
+Record every *Out of scope* list and every Decisions section. Never write
+a subtask that does what one of them lists under *Out of scope*. Follow
+every decision.
 
 ### Step 3: Research
 
@@ -184,12 +190,13 @@ Put every finding with refactoring `report` under the task's *Out of
 scope*. Give every other finding its risk:
 - `high` when the change crosses modules or the finding reads
   `contract: yes`;
-- else `low` when the refactoring is in the safe set: Rename, Extract
-  Variable, Inline Variable, Extract Function, Move Function, Remove Dead
-  Code, and a seam. A seam is Parameterize Function, Parameterize
-  Constructor, or Extract Function around the call to a system boundary.
-  A Parameterize seam takes a default equal to the current collaborator.
-  The safe set holds the refactorings allowed on code that no test covers;
+- else `low` when every refactoring of the finding is in the safe set:
+  Rename, Extract Variable, Inline Variable, Extract Function, Move
+  Function, Remove Dead Code, and a seam. A seam is Parameterize Function,
+  Parameterize Constructor, or Extract Function around the call to a
+  system boundary. A Parameterize seam takes a default equal to the
+  current collaborator. The safe set holds the refactorings allowed on
+  code that no test covers;
 - else `medium`.
 
 Drop a finding when:
@@ -212,12 +219,15 @@ the file, then `low` risk before `medium` before `high`.
 
 ### Step 6: Order the refactorings
 
-Turn the ranked findings into entries in rank order, one refactoring each,
-with the entries a finding depends on: its seam, its characterization
-tests, and the three steps of a contract change. Stop at 12 entries. A
-finding whose entries do not fit goes under the task's *Out of scope* as
-`next batch`, with its location and smell. The next run of this skill takes
-it up. Then order the entries by refactoring kind:
+Turn the ranked findings into entries in rank order, one refactoring each.
+Give a finding one entry per refactoring on its `refactoring` line, in the
+order of that line. Make each of those entries depend on the one before.
+Add the entries a finding depends on: its seam and the three steps of a
+contract change. Characterization tests stay in the entry they serve, as
+`tests: characterization tests first`. Stop at 12 entries. A finding
+whose entries do not fit goes under the task's *Out of scope* as
+`next batch`, with its location and smell. The next run of this skill
+takes it up. Then order the entries by refactoring kind:
 1. Remove Dead Code;
 2. Rename;
 3. refactorings inside one function;
@@ -252,6 +262,8 @@ in `references/refactor-sections.md` now. For every entry marked
 `characterization tests first`, record the test cases for the behavior of
 the code the entry changes, and the seam that reaches the code. With no
 seam, drop the entry and record the reason for the task's *Out of scope*.
+Then drop every entry that depends on a dropped entry, with the same
+reason.
 
 **Verification.** Give every entry one verification command. It runs the
 `test one file` command of the test setup block over the tests that cover
@@ -306,4 +318,5 @@ subtasks <subtask drafts>[, files][, dir <folder>], unattended
 ```
 
 Finish with the one line `saving-tasks` returns: the task item's identifier,
-or the path of the task file. Ask nothing else.
+the path of the task file, or a line that starts with `not saved:`. Ask
+nothing else.

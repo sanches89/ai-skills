@@ -16,7 +16,7 @@
     {
       "id": 3,
       "prompt": "Make a glossary for docs/. Every word in there already has exactly one meaning as far as I can tell.",
-      "expected_output": "When no word passes Gate A or Gate B, writes no draft and no reference line. Goes to approval with the glossary report alone and asks whether the user confirms an empty glossary. On confirmation, deletes an existing GLOSSARY.md if one exists and writes no new one. Asks nothing else after the report.",
+      "expected_output": "When no word passes Gate A or Gate B, writes no draft and no reference line. When the root AGENTS.md or CLAUDE.md has a reference line that names GLOSSARY.md, the glossary report shows that line and its file under Instructions. Goes to approval with the glossary report alone and asks whether the user confirms an empty glossary. On confirmation, deletes an existing GLOSSARY.md if one exists, removes that reference line, changes nothing else in that file, and writes no new glossary. Asks nothing else after the report.",
       "files": []
     }
   ]

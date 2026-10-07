@@ -17,8 +17,8 @@ Apply these rules to every doc below, plus the doc rules the repo's root
 - `README.md`: a short runbook for people, at the root and in every app and
   package. It covers setup, how to run, test and ship, and the context a new
   developer needs first. Leave out how things work: the code shows it.
-- `GLOSSARY.md`: one meaning for each word the docs use two ways or in a
-  sense the word alone does not give.
+- `GLOSSARY.md`: one meaning for each word a reader can take two ways, or
+  that the docs give a meaning its ordinary sense does not give.
 - `docs/adrs/`: the reasons behind architecture decisions.
 - `docs/refs/`: excerpts of outside docs.
 - A code comment: a reason tied to one file.

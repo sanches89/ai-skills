@@ -10,10 +10,11 @@ alphabetical order, one per term: `- **Term**: definition.`
 # Glossary
 
 Each word below has one reading here that a reader would otherwise miss.
-This project uses it for two things, or in a sense the word alone does not
-give. Each entry states the reading that holds. <One sentence on where
-restatements live, when a document restates entries. Example: A skill's
-Terms section restates the entries it uses with the same text.>
+A reader can take it two ways, or this project gives it a meaning its
+ordinary sense does not give. Each entry states the reading that holds. <One
+sentence on where restatements live, when a document restates entries.
+Example: A skill's Terms section restates the entries it uses with the same
+text.>
 
 ## <Subject>
 
