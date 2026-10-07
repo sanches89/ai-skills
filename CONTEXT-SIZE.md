@@ -33,7 +33,7 @@ tier costs 1,400 tokens per session. Using one skill then adds its
 | breaking-down-tasks  |      74 |    3,191 |        343 |       0 |   4,581 |
 | creating-tasks       |      67 |    2,223 |        143 |       0 |   3,317 |
 | disambiguating-text  |      72 |    2,109 |      1,819 |       0 |   4,738 |
-| finding-code-smells  |      74 |    2,475 |      4,085 |   5,088 |  12,504 |
+| finding-code-smells  |      74 |    2,485 |      4,103 |   5,107 |  12,555 |
 | finding-dev-commands |      72 |    1,895 |          0 |       0 |   2,693 |
 | finding-trackers     |      70 |    1,683 |          0 |       0 |   2,494 |
 | formatting-tasks     |      63 |    1,940 |      2,709 |       0 |   5,592 |
@@ -48,7 +48,7 @@ tier costs 1,400 tokens per session. Using one skill then adds its
 | writing-clean-code   |      75 |    2,846 |          0 |       0 |   3,580 |
 | writing-glossaries   |      79 |    3,001 |      1,138 |       0 |   5,067 |
 | writing-unit-tests   |      65 |    3,378 |          0 |       0 |   4,166 |
-| **All skills**       |   1,400 |   50,010 |     34,063 |  10,556 | 114,207 |
+| **All skills**       |   1,400 |   50,020 |     34,081 |  10,575 | 114,258 |
 
 ## Files per skill
 
@@ -101,12 +101,12 @@ Lines, words, and tokens of every file, grouped by skill.
 
 | File                          | Lines | Words | Tokens |
 |-------------------------------|------:|------:|-------:|
-| `SKILL.md`                    |   220 | 1,606 |  2,475 |
-| `evals/evals.json`            |    23 |   373 |    604 |
+| `SKILL.md`                    |   221 | 1,612 |  2,485 |
+| `evals/evals.json`            |    23 |   377 |    608 |
 | `evals/trigger-queries.json`  |    12 |   143 |    252 |
-| `references/smell-catalog.md` |   363 | 2,872 |  4,085 |
-| `scripts/scan.mjs`            |   396 | 1,483 |  5,088 |
-| **Total**                     | 1,014 | 6,477 | 12,504 |
+| `references/smell-catalog.md` |   364 | 2,889 |  4,103 |
+| `scripts/scan.mjs`            |   396 | 1,500 |  5,107 |
+| **Total**                     | 1,016 | 6,521 | 12,555 |
 
 ### finding-dev-commands
 

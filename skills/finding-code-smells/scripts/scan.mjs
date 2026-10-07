@@ -135,8 +135,8 @@ const LINE_KINDS = {
       /(?<![\w.#x$-])(?!0+\b)\d{3,}(?:\.\d+)?(?![\w.%])/,
     ],
   },
+  // No `code` flag: a credential in a test file leaks as much as one in code.
   credential: {
-    code: true,
     hide: true,
     patterns: [
       new RegExp(
@@ -326,7 +326,7 @@ function scanFile(full, rel, options, signals) {
     bucket.count += 1;
     if (bucket.top.length < options.top) bucket.top.push({ file: rel, line, text });
   };
-  // In a test file the catalog counts only the Tests entries.
+  // In a test file the catalog counts only the Tests entries and credentials.
   if (options.kinds.includes('oversized-file') && !test && lineCount > options.maxLines) {
     const tokens = Math.round(content.length / 4);
     add('oversized-file', 1, `${lineCount} lines, about ${tokens} tokens`);

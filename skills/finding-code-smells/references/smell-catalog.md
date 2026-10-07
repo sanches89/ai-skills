@@ -335,8 +335,9 @@ by searching for names. These entries keep both cheap.
 
 ## Tests
 
-A test file is in the refactor scope. Inside it, only these entries are
-findings, and a smell of another section is none.
+A test file is in the refactor scope. Inside it, only these entries and
+Credential in code are findings, and a smell of another section is none. A
+credential in a test file leaks as much as one in code.
 
 - **Weak test**
   - Signal: an assertion that proves nothing, such as not null, not

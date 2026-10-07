@@ -93,7 +93,8 @@ The refactor scope is every file under the paths, except:
 - database migrations that already ran.
 
 A test file stays in the refactor scope. Inside it, only the entries under
-*Tests* in `references/smell-catalog.md` are findings.
+*Tests* in `references/smell-catalog.md` and Credential in code are
+findings.
 
 With an empty refactor scope, write `None.` into `<out>/findings.md` and
 `<out>/contract.md`, and go to Step 5.
@@ -143,8 +144,8 @@ that import or call each function the cut list leaves out.
 **Scan.** Run the scan script. It lists the signals that the entries under
 *Design*, *Agent-written code*, *Legibility*, and *Tests* in
 `references/smell-catalog.md` name, as `path:line` per kind. In a test
-file it lists only the kinds of *Tests*. `<skill-dir>` is the folder
-holding this `SKILL.md`:
+file it lists only the kinds of *Tests* and `credential`. `<skill-dir>` is
+the folder holding this `SKILL.md`:
 
 ```bash
 node <skill-dir>/scripts/scan.mjs <path>... --ignore "<globs>" \
