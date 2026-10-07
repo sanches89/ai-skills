@@ -1,7 +1,6 @@
 # Extract sendWebhook
 
-**Task:** ./task.md
-**Depends on:** none
+**Task:** ./task.md **Depends on:** none
 
 ## Goal
 

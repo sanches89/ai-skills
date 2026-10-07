@@ -1,8 +1,8 @@
 # Glossary template
 
-Keep the headings and the entry form as written. Replace every
-`<placeholder>`. Write one `##` section per subject, with one entry per
-term in alphabetical order: `- **Term**: definition.`
+Keep the headings and the entry form as written. Replace every `<placeholder>`.
+Write one `##` section per subject, with one entry per term in alphabetical
+order: `- **Term**: definition.`
 
 ---
 

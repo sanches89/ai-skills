@@ -2,8 +2,7 @@
 
 ## Summary
 
-src/cli.js prints the line count of a file. Add `--verbose` and
-`--out <path>`.
+src/cli.js prints the line count of a file. Add `--verbose` and `--out <path>`.
 
 ## Success criteria
 

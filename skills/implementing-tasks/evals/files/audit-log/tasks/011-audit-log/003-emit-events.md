@@ -1,7 +1,6 @@
 # Emit order events
 
-**Task:** ./task.md
-**Depends on:** none
+**Task:** ./task.md **Depends on:** none
 
 ## Goal
 
@@ -20,8 +19,8 @@ cancelOrder publishes an event.
 
 - `src/orders/cancel.js`: cancelOrder calls
   `publish({ type: "order.cancelled", orderId: order.id })` before it returns.
-- `tests/cancel.test.js` (existing): add a case that subscribes and checks
-  the event.
+- `tests/cancel.test.js` (existing): add a case that subscribes and checks the
+  event.
 
 ## Acceptance criteria
 

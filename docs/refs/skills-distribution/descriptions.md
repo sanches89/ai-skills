@@ -15,11 +15,11 @@ tasks.
   Frontmatter rule in `AGENTS.md`.
 - Agents skip skills for one-step requests they can do with basic tools.
   Descriptions matter most for specialized workflows.
-- Third person, always: "Processes Excel files", never "I can help you" or
-  "You can use this". The description lands in the system prompt, and a
-  shift of person breaks discovery.
-- Name the key terms a request holds, because the agent picks one skill
-  out of a hundred by the description alone.
+- Third person, always: "Processes Excel files", never "I can help you" or "You
+  can use this". The description lands in the system prompt, and a shift of
+  person breaks discovery.
+- Name the key terms a request holds, because the agent picks one skill out of a
+  hundred by the description alone.
 - Never summarize the workflow in it. An agent that reads the steps in the
   description follows them and skips the body.
 

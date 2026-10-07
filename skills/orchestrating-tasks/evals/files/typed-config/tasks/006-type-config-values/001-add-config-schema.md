@@ -1,7 +1,6 @@
 # Add config schema
 
-**Task:** [Type config values](./task.md)
-**Depends on:** none
+**Task:** [Type config values](./task.md) **Depends on:** none
 
 ## Goal
 
@@ -9,8 +8,8 @@ Add the schema that maps each config key to its variable and its type.
 
 ## Context
 
-- The keys are `port` from PORT as a number, `host` from HOST as a string,
-  and `debug` from DEBUG as a boolean.
+- The keys are `port` from PORT as a number, `host` from HOST as a string, and
+  `debug` from DEBUG as a boolean.
 - Tests live in tests/ and use node:test with `node:assert/strict`.
 
 ## References

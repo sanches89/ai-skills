@@ -5,15 +5,16 @@ Sections: Task; Subtask.
 Fill every section of a block and replace every `<placeholder>`.
 
 Rules for filling:
-- Write facts in the present tense. Name real things: paths with line
-  numbers, symbols, endpoints, tables, environment variables, commands. Mark
-  a file that does not exist yet as `(new)`.
+
+- Write facts in the present tense. Name real things: paths with line numbers,
+  symbols, endpoints, tables, environment variables, commands. Mark a file that
+  does not exist yet as `(new)`.
 - Write quantities as numbers with units.
 - `a | b` on a line of a block means: write a or b, never both.
-- *Approach* says what changes where. *Decisions* holds the rules and values
-  the change follows. Put each fact in one section only.
-- *References* lists outside documents for reviewers. Write every fact a
-  document settles in *Decisions* or *Context* too.
+- _Approach_ says what changes where. _Decisions_ holds the rules and values the
+  change follows. Put each fact in one section only.
+- _References_ lists outside documents for reviewers. Write every fact a
+  document settles in _Decisions_ or _Context_ too.
 - In the draft, name titles and numbers on `Task`, `Depends on`, and in the
   Subtasks section.
 

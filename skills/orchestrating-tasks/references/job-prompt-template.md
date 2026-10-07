@@ -3,9 +3,10 @@
 Replace every `<placeholder>` and keep every other line.
 
 Rules for filling:
+
 - `a | b` on a template line means: write a or b, never both.
-- Copy a fact word for word from the plan. Name real things: paths,
-  symbols, commands, identifiers.
+- Copy a fact word for word from the plan. Name real things: paths, symbols,
+  commands, identifiers.
 - The single word `None.` under a heading with nothing to list.
 
 ---

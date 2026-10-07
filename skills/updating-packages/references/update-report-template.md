@@ -2,61 +2,60 @@
 
 Sections: Update report.
 
-Make every line a fact that changes what the user does next. Keep the
-headings as written. Replace every `<placeholder>`.
+Make every line a fact that changes what the user does next. Keep the headings
+as written. Replace every `<placeholder>`.
 
 Rules for filling:
+
 - At most 60 non-blank lines, 2 lines per bullet, and 25 words per sentence.
 - Present tense. Name real things: manifest paths, package names, versions,
   check commands, files.
 - `a | b` on a template line means: write a or b, never both.
-- The single word `None.` in a section with nothing to say. No section
-  beyond the ones below.
+- The single word `None.` in a section with nothing to say. No section beyond
+  the ones below.
 
 Every dependency with a rewritable range has exactly one state:
+
 - **updated**: its range now names its candidate version;
-- **lowered**: its range changed to a rung below its candidate version, with
-  a park reason;
+- **lowered**: its range changed to a rung below its candidate version, with a
+  park reason;
 - **kept**: its range is the current range, with a park reason;
 - **up to date**: it has no candidate version.
 
 What each section keeps:
-- **Result**: `done` when Step 7 passes on every install root, or when
-  Step 5 produced no plan entry. `partial` when Step 7 passes on at least
-  one install root and at least one other was restored from the baseline
-  copy. `blocked` in every other case.
-- **Request**: the paths and package names of Step 1, or `all`, with the
-  level and the cooldown.
+
+- **Result**: `done` when Step 7 passes on every install root, or when Step 5
+  produced no plan entry. `partial` when Step 7 passes on at least one install
+  root and at least one other was restored from the baseline copy. `blocked` in
+  every other case.
+- **Request**: the paths and package names of Step 1, or `all`, with the level
+  and the cooldown.
 - **Install roots**: the count of install roots and of orphan manifests.
-- **Packages**: the count of dependencies in each state, the updated count
-  split by bump kind.
-- **Checks**: `pass` when Step 7 passes on every install root.
-  `install only` when every install root is install-only. Otherwise `fail:`
-  with each check command that fails in Step 7 and passes in the baseline
-  results.
-- **Node version**: `<node-version>` and the file or the command it came
-  from.
-- **Updated**: one bullet per manifest with an updated or lowered
-  dependency, naming each with its current range and its new range. With
-  more than 12 in one manifest, name those with bump kind `major` and count
-  the others.
-- **Constrained**: one bullet per kept or lowered dependency whose park
-  reason is `engines.node`, `peer of`, `@types/node major`, `override`,
-  `pinned by`, `cooldown`, or `deprecated`.
+- **Packages**: the count of dependencies in each state, the updated count split
+  by bump kind.
+- **Checks**: `pass` when Step 7 passes on every install root. `install only`
+  when every install root is install-only. Otherwise `fail:` with each check
+  command that fails in Step 7 and passes in the baseline results.
+- **Node version**: `<node-version>` and the file or the command it came from.
+- **Updated**: one bullet per manifest with an updated or lowered dependency,
+  naming each with its current range and its new range. With more than 12 in one
+  manifest, name those with bump kind `major` and count the others.
+- **Constrained**: one bullet per kept or lowered dependency whose park reason
+  is `engines.node`, `peer of`, `@types/node major`, `override`, `pinned by`,
+  `cooldown`, or `deprecated`.
 - **Needs migration**: one bullet per kept or lowered dependency whose park
   reason is `check:` or `verify:`, with the release notes link from
   `update-rules.md`.
 - **Deprecated**: one bullet per dependency whose current version, or whose
-  `latest` dist-tag version, carries a deprecation message, quoted in one
-  line.
-- **Left alone**: one bullet per manifest, naming each range or field with
-  its label from `update-rules.md`.
-- **Unverified**: one bullet per orphan manifest, with the count of ranges
-  set there.
+  `latest` dist-tag version, carries a deprecation message, quoted in one line.
+- **Left alone**: one bullet per manifest, naming each range or field with its
+  label from `update-rules.md`.
+- **Unverified**: one bullet per orphan manifest, with the count of ranges set
+  there.
 
-Leave out the steps taken, failed attempts, command output, logs, stack
-traces, the JSON files of Step 4, and a restated request. Leave out praise,
-apologies, offers, questions, and next-step suggestions.
+Leave out the steps taken, failed attempts, command output, logs, stack traces,
+the JSON files of Step 4, and a restated request. Leave out praise, apologies,
+offers, questions, and next-step suggestions.
 
 ---
 

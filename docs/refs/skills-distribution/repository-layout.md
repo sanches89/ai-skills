@@ -7,8 +7,8 @@ or a local path.
 ## Scan depth
 
 The walk under `skills/` goes three levels deep, so
-`skills/<category>/<name>/SKILL.md` is found too. A `SKILL.md` at a
-shallower level shadows anything nested below it. This repo stays flat,
+`skills/<category>/<name>/SKILL.md` is found too. A `SKILL.md` at a shallower
+level shadows anything nested below it. This repo stays flat,
 `skills/<name>/SKILL.md`, so the path of an installed skill never changes.
 
 ## Hiding a skill

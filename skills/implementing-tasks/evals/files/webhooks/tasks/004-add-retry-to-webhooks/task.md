@@ -2,8 +2,8 @@
 
 ## Summary
 
-Webhook delivery fails on a transient error. Add a retry policy that the
-sender uses.
+Webhook delivery fails on a transient error. Add a retry policy that the sender
+uses.
 
 ## Success criteria
 
@@ -23,15 +23,15 @@ sender uses.
 
 ## Approach
 
-- src/webhooks/send.js (sendWebhook) already returns `{ status }`, with null
-  on a network error.
+- src/webhooks/send.js (sendWebhook) already returns `{ status }`, with null on
+  a network error.
 - src/webhooks/retry.js (new) exports `retryDelay(attempt)` and
   `shouldRetry(status, attempt)`.
 
 ## Decisions
 
-- Backoff starts at 100 ms, doubles per attempt, and caps at 5000 ms.
-  Attempts count from 1.
+- Backoff starts at 100 ms, doubles per attempt, and caps at 5000 ms. Attempts
+  count from 1.
 - At most 5 attempts. `shouldRetry` is false from attempt 5 on.
 - Retry on status null, 429, and any 5xx. Never retry other 4xx or 2xx.
 - Tests live in tests/ and use node:test with `node:assert/strict`.

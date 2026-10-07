@@ -1,7 +1,12 @@
 #!/bin/sh
-# Regenerates CONTEXT-SIZE.md from the skills folder and stages it, so every
-# commit carries the context size of the skills it contains.
+# Formats the staged Markdown files, then regenerates CONTEXT-SIZE.md from the
+# skills folder and stages it, so every commit carries formatted text and the
+# context size of the skills it contains.
 set -e
 cd "$(git rev-parse --show-toplevel)"
+git diff --cached --name-only -z --diff-filter=ACMR -- '*.md' \
+  | xargs -0 -r ./node_modules/.bin/prettier --write --log-level warn
+git diff --cached --name-only -z --diff-filter=ACMR -- '*.md' \
+  | xargs -0 -r git add
 node scripts/context-size.mjs
 git add CONTEXT-SIZE.md

@@ -1,7 +1,6 @@
 # Checks
 
-Sections: Ambiguity; Completeness; Subtasks; Scope; Executability; Grep
-helpers.
+Sections: Ambiguity; Completeness; Subtasks; Scope; Executability; Grep helpers.
 
 ## Ambiguity
 
@@ -19,53 +18,51 @@ helpers.
       verified in research, or carries `(new)`.
 - [ ] Every References entry has a name, a URL, and what it settles, or the
       section holds exactly `None.`
-- [ ] Every fact a reference settles is in the task's Decisions or Context,
-      and in the Context of each subtask that lists it.
-- [ ] Every section of the format is filled, in the task and in each
-      subtask.
-- [ ] The task's Verification holds only concrete commands or manual
-      steps, and each success criterion has one that proves it.
+- [ ] Every fact a reference settles is in the task's Decisions or Context, and
+      in the Context of each subtask that lists it.
+- [ ] Every section of the format is filled, in the task and in each subtask.
+- [ ] The task's Verification holds only concrete commands or manual steps, and
+      each success criterion has one that proves it.
 - [ ] The task's Subtasks section holds exactly `None.` for a task without
       subtasks, else the subtasks written: same count, order, and titles.
 
 ## Subtasks
 
-- [ ] Each subtask has exactly one verification command, on one line. It
-      chains at most a test run and one structural check with `&&`.
-- [ ] Each subtask's verification command fails before the subtask's
-      change and passes after it.
+- [ ] Each subtask has exactly one verification command, on one line. It chains
+      at most a test run and one structural check with `&&`.
+- [ ] Each subtask's verification command fails before the subtask's change and
+      passes after it.
 - [ ] No subtask depends on a subtask with a higher number.
-- [ ] Each subtask is mergeable on its own: after it, the project builds,
-      and every test passes except a baseline failure that the task names.
+- [ ] Each subtask is mergeable on its own: after it, the project builds, and
+      every test passes except a baseline failure that the task names.
 - [ ] The union of the subtasks' Changes equals the task's Approach: nothing
       outside it, nothing missing.
 
 ## Scope
 
-- [ ] Out of scope holds only topics from the research notes that a reader
-      would expect in this task.
-- [ ] No section beyond the format. No estimate, priority, or timeline
-      unless the user asked.
-- [ ] Every line serves the requested change or an *Out of scope* entry: no
-      remark or question from the conversation on another topic, no
-      mention of another task to create.
+- [ ] Out of scope holds only topics from the research notes that a reader would
+      expect in this task.
+- [ ] No section beyond the format. No estimate, priority, or timeline unless
+      the user asked.
+- [ ] Every line serves the requested change or an _Out of scope_ entry: no
+      remark or question from the conversation on another topic, no mention of
+      another task to create.
 
 ## Executability
 
-- [ ] An agent with only the task and the repository can implement it, or
-      its first subtask, without asking anything.
-- [ ] An agent with only one subtask and the repository can implement it
-      without opening the task or asking anything.
+- [ ] An agent with only the task and the repository can implement it, or its
+      first subtask, without asking anything.
+- [ ] An agent with only one subtask and the repository can implement it without
+      opening the task or asking anything.
 - [ ] The task's Context holds the build, lint, and test commands.
-- [ ] Approach names every file to change. Each subtask's Changes names
-      every file the subtask changes.
-- [ ] Every success criterion and acceptance criterion is binary: someone
-      else can answer yes or no.
+- [ ] Approach names every file to change. Each subtask's Changes names every
+      file the subtask changes.
+- [ ] Every success criterion and acceptance criterion is binary: someone else
+      can answer yes or no.
 
 ## Grep helpers
 
-Run over the draft. Remove every hit outside quoted user-interface text or
-code.
+Run over the draft. Remove every hit outside quoted user-interface text or code.
 
 ```bash
 grep -nEi \
@@ -80,10 +77,10 @@ grep -nEi \
 Sentences over 25 words, with a code span counted as one word. Every line
 printed is a failure.
 
-```bash
+````bash
 awk '/^```/ { c = !c; next } c || !NF { next }
      /^#/ { print "."; next }
      /^ *[-*] |^\|/ { print "." } { print }' <draft-file> \
   | tr '\n' ' ' | sed -E 's/`[^`]*`/X/g' | tr '.!?;:' '\n\n\n\n\n' \
   | awk 'NF > 25'
-```
+````

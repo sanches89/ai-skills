@@ -3,15 +3,16 @@
 Sections: What to read; Clones; Functions over a limit; Hotspots; Tests;
 Coverage; Surviving mutants; Actions; Ranking.
 
-A function is a function, a method, or a procedure. A module is a class, a
-file, or a package. A finding is one location that these rules keep after
-its code is read, with its evidence and its action.
+A function is a function, a method, or a procedure. A module is a class, a file,
+or a package. A finding is one location that these rules keep after its code is
+read, with its evidence and its action.
 
 ## What to read
 
-Read the code behind these entries of `summary.json`. Before counting,
-skip every entry of `duplication.top` and `complexity.top` with a location
-in a test file:
+Read the code behind these entries of `summary.json`. Before counting, skip
+every entry of `duplication.top` and `complexity.top` with a location in a test
+file:
+
 - the first 10 entries of `duplication.top`;
 - the first 10 entries of `complexity.top`;
 - the first 5 entries of `hotspots.top`;
@@ -21,8 +22,8 @@ in a test file:
 - the first 5 entries of `coverage.filesNotInReport`;
 - the first 10 entries of `mutation.survivors`.
 
-Read a function from its `line` to its end. Read both locations of a clone.
-For a hotspot, read the last 10 commit subjects of the file:
+Read a function from its `line` to its end. Read both locations of a clone. For
+a hotspot, read the last 10 commit subjects of the file:
 `git log -10 --format=%s -- <file>`.
 
 ## Clones
@@ -34,42 +35,43 @@ The action is `Extract Function` when the copies are in one module, else
 locations and the line count.
 
 Leave a clone when:
+
 - it holds only imports, declarations, or type definitions;
 - it is test data, a fixture, or a table of literals;
 - it is in generated code: the first line of the file says so;
-- the copies change for different reasons, such as two external formats
-  that look alike today.
+- the copies change for different reasons, such as two external formats that
+  look alike today.
 
 ## Functions over a limit
 
-Keep a function as a finding when the code shows the smell behind the value
-over the limit:
-- `ccn` over the limit, and the branches are not one flat `switch` or
-  mapping from values to results. Finding kind `complex function`. Action
-  `Replace Nested Conditional with Guard Clauses` when conditionals nest
-  3 levels or deeper, else `Extract Function`;
-- `length` over the limit, and the body is not one flat list of steps
-  without a branch. A route list and a configuration table are such lists.
-  Finding kind `long function`. Action `Extract Function`;
-- `params` over the limit, and the signature is not one that callers
-  outside the repository depend on. Finding kind `long parameter list`. Action
-  `Introduce Parameter Object` when the same values travel together in
-  three places or more. Else `Remove Flag Argument` for a flag parameter,
-  else `Preserve Whole Object` for values read from one object, else
+Keep a function as a finding when the code shows the smell behind the value over
+the limit:
+
+- `ccn` over the limit, and the branches are not one flat `switch` or mapping
+  from values to results. Finding kind `complex function`. Action
+  `Replace Nested Conditional with Guard Clauses` when conditionals nest 3
+  levels or deeper, else `Extract Function`;
+- `length` over the limit, and the body is not one flat list of steps without a
+  branch. A route list and a configuration table are such lists. Finding kind
+  `long function`. Action `Extract Function`;
+- `params` over the limit, and the signature is not one that callers outside the
+  repository depend on. Finding kind `long parameter list`. Action
+  `Introduce Parameter Object` when the same values travel together in three
+  places or more. Else `Remove Flag Argument` for a flag parameter, else
+  `Preserve Whole Object` for values read from one object, else
   `Extract Function`.
 
-The evidence is the measured values against their limits. A function in a
-test file is never a finding of these finding kinds.
+The evidence is the measured values against their limits. A function in a test
+file is never a finding of these finding kinds.
 
 ## Hotspots
 
-A hotspot is a finding only when its file holds an entry of
-`complexity.top`, `duplication.top`, `coverage.functions.top`, or
-`mutation.survivors` that these rules keep. Then the finding is that entry,
-ranked by the hotspot score of the file under *Ranking*, with the commit
-subjects added to its evidence: what change keeps hitting the file. A
-hotspot with no such entry appears only on the *Hotspots* line under
-*Measurements*.
+A hotspot is a finding only when its file holds an entry of `complexity.top`,
+`duplication.top`, `coverage.functions.top`, or `mutation.survivors` that these
+rules keep. Then the finding is that entry, ranked by the hotspot score of the
+file under _Ranking_, with the commit subjects added to its evidence: what
+change keeps hitting the file. A hotspot with no such entry appears only on the
+_Hotspots_ line under _Measurements_.
 
 ## Tests
 
@@ -79,16 +81,14 @@ the first line of its failure message from the JUnit report. The action is
 
 ## Coverage
 
-- A function in `coverage.functions.top` with `crap` of 30 or more is a
-  finding of finding kind `untested complex function`. The action is
-  `add tests before changing it`. A function with `crap` below 30 is a
-  finding only when it is also over a limit. Then the finding is the
-  function over the limit, with the action
-  `add tests, then <the action of its finding kind>`.
-- A file in `coverage.filesNotInReport` that holds a function is a finding
-  of finding kind `file no test loads`, one finding per file. The action is
-  `add tests`. Leave a file that holds only declarations, types, or
-  constants.
+- A function in `coverage.functions.top` with `crap` of 30 or more is a finding
+  of finding kind `untested complex function`. The action is
+  `add tests before changing it`. A function with `crap` below 30 is a finding
+  only when it is also over a limit. Then the finding is the function over the
+  limit, with the action `add tests, then <the action of its finding kind>`.
+- A file in `coverage.filesNotInReport` that holds a function is a finding of
+  finding kind `file no test loads`, one finding per file. The action is
+  `add tests`. Leave a file that holds only declarations, types, or constants.
 
 ## Surviving mutants
 
@@ -99,18 +99,20 @@ first one. The action is `assert the behavior the mutant changes`.
 
 Leave an entry whose mutant is equivalent: no input makes the changed code
 return another result or leave another state. Examples:
+
 - `i < n` to `i != n` in a loop that steps by 1 and starts below `n`;
 - a changed log message, or a changed error text that no caller reads;
 - a removed call whose only effect is a cache or a metric.
 
-When the function is already a finding of another finding kind, add the
-count of entries to the evidence of that finding instead. An entry of
-`mutation.top` alone is never a finding.
+When the function is already a finding of another finding kind, add the count of
+entries to the evidence of that finding instead. An entry of `mutation.top`
+alone is never a finding.
 
 ## Actions
 
 The action of a finding is an item of this list, or two items joined by
 `, then`:
+
 - `fix the test or the code`;
 - `add tests`;
 - `add tests before changing it`;
@@ -125,11 +127,12 @@ The action of a finding is an item of this list, or two items joined by
 ## Ranking
 
 Order the findings:
+
 1. every failed test;
-2. every other finding, by the hotspot score of its file, highest first. A
-   file with no score comes after every file with one;
+2. every other finding, by the hotspot score of its file, highest first. A file
+   with no score comes after every file with one;
 3. inside one rank, by `crap`, then `ccn`, then clone lines, then surviving
    mutants, highest first.
 
-Keep at most 12 findings. Count the findings left out, per finding kind,
-for the *Skipped* section of the measurement report.
+Keep at most 12 findings. Count the findings left out, per finding kind, for the
+_Skipped_ section of the measurement report.

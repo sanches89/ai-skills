@@ -12,9 +12,9 @@ Write and review code by 14 principles.
 
 ## Terms
 
-- **System boundary**: the network, files, a database, the clock,
-  randomness, the process environment, or third-party code. Third-party
-  code includes a framework, a driver, an HTTP client, and a UI toolkit.
+- **System boundary**: the network, files, a database, the clock, randomness,
+  the process environment, or third-party code. Third-party code includes a
+  framework, a driver, an HTTP client, and a UI toolkit.
 
 ## Invocation
 
@@ -24,32 +24,37 @@ nothing else. Without that prefix, a user invoked this run: read
 `references/user-run.md` first.
 
 - `from <caller>: write`: load the principles. Return `principles loaded`.
-- `from <caller>: check <git range | paths>`: run Step 1 without a mode,
-  then Step 3 over the git range or paths. Return one line per failure,
+- `from <caller>: check <git range | paths>`: run Step 1 without a mode, then
+  Step 3 over the git range or paths. Return one line per failure,
   `<path:line> <principle number>: <failure>`, or `pass`.
 
 ## Workflow
 
 ### Step 1: Load the code
 
-**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in
-one each read or command that yields only facts, returned with path and
-line.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in one
+each read or command that yields only facts, returned with path and line.
 
 Read README, CLAUDE.md, AGENTS.md, CONTRIBUTING, and the docs that cover the
 touched code. Record the naming, error handling, and formatting conventions.
-Invoke the `finding-dev-commands` skill (in Claude Code, with the `Skill`
-tool) with `from writing-clean-code: find`. Keep its `format`, `test`, and
+Invoke the `finding-dev-commands` skill (in Claude Code, with the `Skill` tool)
+with `from writing-clean-code: find`. Keep its `format`, `test`, and
 `test one file` lines.
 
 Record whether the project has a test setup. When the agent has the
-`writing-unit-tests` skill, invoke the `writing-unit-tests` skill with
-`from writing-clean-code: setup for <paths>, test <command>, test one file
-<command>`. `<paths>` is the paths the request names, else the repository
-root. Fill each `<command>` from the line of the same name. Leave out each
-part whose line reads `none`. The project has a test setup when the returned
-block reads `test setup: yes`. Without that skill, it has one unless the
-`test` line reads `none`.
+`writing-unit-tests` skill, invoke the `writing-unit-tests` skill with the text
+below:
+
+```
+from writing-clean-code: setup for <paths>, test <command>,
+  test one file <command>
+```
+
+`<paths>` is the paths the request names, else the repository root. Fill each
+`<command>` from the line of the same name. Leave out each part whose line reads
+`none`. The project has a test setup when the returned block reads
+`test setup: yes`. Without that skill, it has one unless the `test` line reads
+`none`.
 
 ### Step 2: Write
 
@@ -58,12 +63,12 @@ Run this step only in a user run, by `references/user-run.md`.
 ### Step 3: Check the diff
 
 Take the diff from the first case that applies:
+
 1. write mode: the lines Step 2 wrote or changed;
 2. a git range: `git diff <range>`;
-3. review mode with paths: every line of every file under them, as added
-   lines;
-4. the `check` form with paths: `git diff HEAD -- <paths>`, plus every
-   untracked file under them as added lines;
+3. review mode with paths: every line of every file under them, as added lines;
+4. the `check` form with paths: `git diff HEAD -- <paths>`, plus every untracked
+   file under them as added lines;
 5. else: `git diff HEAD`, plus every untracked file as added lines.
 
 Run the **Check** of every principle over the diff. Record each failure as
@@ -75,30 +80,30 @@ Run this step only in a user run, by `references/user-run.md`.
 
 ## Principles
 
-Each principle holds a rule and a **Check** that the diff passes or fails.
-A convention of the project and a decision of the task the caller works on
-beat a principle: a failure they overrule is no failure. The numbers in the
-principles are budgets for the lines a change writes or edits. Review mode
-with paths applies them to every line under those paths.
+Each principle holds a rule and a **Check** that the diff passes or fails. A
+convention of the project and a decision of the task the caller works on beat a
+principle: a failure they overrule is no failure. The numbers in the principles
+are budgets for the lines a change writes or edits. Review mode with paths
+applies them to every line under those paths.
 
 ### 1. Meaningful names
 
 A name states what the thing is or does. Use pronounceable, searchable words.
-Name a boolean as a question. Use one word per concept across the code. Write
-no abbreviation, no type prefix, and no name that misleads.
+Name a boolean as a question. Use one word per concept across the code. Write no
+abbreviation, no type prefix, and no name that misleads.
 
-**Check:** no name needs a comment to explain it. No single-letter name
-outside a loop index.
+**Check:** no name needs a comment to explain it. No single-letter name outside
+a loop index.
 
 ### 2. Small functions
 
-A function does one thing at one level of abstraction. Keep it to 20 lines
-or fewer and 2 parameters or fewer. A third parameter becomes an object. No
-boolean flag parameter: split the function into one function per flag
-value. The name states every side effect.
+A function does one thing at one level of abstraction. Keep it to 20 lines or
+fewer and 2 parameters or fewer. A third parameter becomes an object. No boolean
+flag parameter: split the function into one function per flag value. The name
+states every side effect.
 
-**Check:** every function is 20 lines or fewer, takes 2 parameters or fewer,
-and holds statements of one abstraction level only.
+**Check:** every function is 20 lines or fewer, takes 2 parameters or fewer, and
+holds statements of one abstraction level only.
 
 ### 3. Single responsibility
 
@@ -113,15 +118,13 @@ Each piece of knowledge has one representation. Extract a duplicate when the
 copies change together, from two copies on. Leave copies that change for
 different reasons.
 
-**Check:** no block of 3 lines or more, other than braces and imports,
-repeats in the diff. No literal repeats where one change should update every
-copy.
+**Check:** no block of 3 lines or more, other than braces and imports, repeats
+in the diff. No literal repeats where one change should update every copy.
 
 ### 5. Comments explain why
 
-A comment states why the code does what it does: a constraint, a trade-off,
-or a defect it works around. The code states what and how. Delete
-commented-out code.
+A comment states why the code does what it does: a constraint, a trade-off, or a
+defect it works around. The code states what and how. Delete commented-out code.
 
 **Check:** no comment restates the next line. No commented-out code.
 
@@ -133,8 +136,8 @@ Without a format command, keep related code together and separate concepts with
 a blank line. Declare a variable next to its first use. Place a caller above its
 callee.
 
-**Check:** the format command reports no change. Without one, check the
-rule above by reading.
+**Check:** the format command reports no change. Without one, check the rule
+above by reading.
 
 ### 7. Error handling
 
@@ -149,56 +152,55 @@ Every thrown error names the operation and the value.
 ### 8. Boy Scout rule
 
 Leave the code you write or change cleaner than you found it: name every new
-thing well, and delete the code your change makes dead. Never edit code
-outside the change to clean it.
+thing well, and delete the code your change makes dead. Never edit code outside
+the change to clean it.
 
 **Check:** every edited line serves the request.
 
 ### 9. Tests
 
-With a test setup, as Step 1 records it, each added or changed behavior has
-a test. Without one, write no test.
+With a test setup, as Step 1 records it, each added or changed behavior has a
+test. Without one, write no test.
 
 **Check:** with a test setup, every changed behavior has a test that fails
 without the change. Without one, principle 9 records no failure.
 
 ### 10. Simple design
 
-In this order, the code: passes every test, holds no duplication, expresses
-the intent of the author, and uses the fewest classes and methods that
-satisfy the first three.
+In this order, the code: passes every test, holds no duplication, expresses the
+intent of the author, and uses the fewest classes and methods that satisfy the
+first three.
 
 **Check:** the tests pass, then principles 1 and 4 pass, then no class or
 function exists only to satisfy a pattern.
 
 ### 11. Law of Demeter
 
-A method calls only: its own object, its parameters, objects it creates, and
-the fields of its object. It never reaches through a chain of objects. The
-rule does not apply to plain data structures, fluent builders, or query
-interfaces.
+A method calls only: its own object, its parameters, objects it creates, and the
+fields of its object. It never reaches through a chain of objects. The rule does
+not apply to plain data structures, fluent builders, or query interfaces.
 
-**Check:** no chain of 2 method calls or more reaches through another
-object's collaborators.
+**Check:** no chain of 2 method calls or more reaches through another object's
+collaborators.
 
 ### 12. Separation of concerns
 
 Business logic imports no framework, database driver, HTTP client, or
-third-party type. Wrap each behind an interface that the project owns, and
-pass it in from outside.
+third-party type. Wrap each behind an interface that the project owns, and pass
+it in from outside.
 
 **Check:** no business-logic file imports a framework, a driver, or an HTTP
 client. No business-logic class creates its own collaborator.
 
 ### 13. Open/closed, Liskov, interface segregation, dependency inversion
 
-- **Open/closed.** Add behavior by adding code, not by editing a branch
-  chain. Replace a `switch` on a type with a lookup or polymorphism.
-- **Liskov.** A subtype works wherever its parent works. It never throws on
-  an inherited method and never narrows what the parent accepts.
+- **Open/closed.** Add behavior by adding code, not by editing a branch chain.
+  Replace a `switch` on a type with a lookup or polymorphism.
+- **Liskov.** A subtype works wherever its parent works. It never throws on an
+  inherited method and never narrows what the parent accepts.
 - **Interface segregation.** A client depends only on the methods it calls.
-- **Dependency inversion.** High-level code depends on an abstraction, and
-  the detail implements it, in the form principle 12 states.
+- **Dependency inversion.** High-level code depends on an abstraction, and the
+  detail implements it, in the form principle 12 states.
 
 **Check:** no new case added to a type `switch`. No override that throws or
 rejects an input the parent accepts. No interface method that a client never
@@ -207,12 +209,12 @@ calls.
 ### 14. KISS and YAGNI
 
 Write the simplest code that meets the request. Add no abstraction, option,
-parameter, hook, or layer without a use that exists today. Add an interface
-only with 2 implementations or more, or as the wrapper of a system boundary.
-A test double is no implementation. Add an option or a parameter only with
-a caller that passes it. A test that passes a collaborator in through the
-parameter is such a caller.
+parameter, hook, or layer without a use that exists today. Add an interface only
+with 2 implementations or more, or as the wrapper of a system boundary. A test
+double is no implementation. Add an option or a parameter only with a caller
+that passes it. A test that passes a collaborator in through the parameter is
+such a caller.
 
-**Check:** every interface has 2 implementations or more besides test
-doubles, or wraps a system boundary. Every option and every parameter has a
-caller that passes it.
+**Check:** every interface has 2 implementations or more besides test doubles,
+or wraps a system boundary. Every option and every parameter has a caller that
+passes it.

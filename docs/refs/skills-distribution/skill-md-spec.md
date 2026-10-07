@@ -15,9 +15,9 @@ skill-name/
 
 - `name`, required: 1 to 64 characters; lowercase `a-z`, `0-9`, hyphens; no
   leading, trailing, or double hyphen; equals the folder name.
-- `description`, required: 1 to 1024 characters by the spec, at most 350 in
-  this repo by the Frontmatter rule in `AGENTS.md`; what the skill does and
-  when to use it, with the keywords that identify matching tasks.
+- `description`, required: 1 to 1024 characters by the spec, at most 350 in this
+  repo by the Frontmatter rule in `AGENTS.md`; what the skill does and when to
+  use it, with the keywords that identify matching tasks.
 - `license`, optional: a license name or the name of a bundled license file.
 - `compatibility`, optional: 1 to 500 characters; only when the skill needs a
   specific product, package, or network access, for example
@@ -30,11 +30,11 @@ skill-name/
 1. `name` and `description` load at startup for every skill, about 100 tokens.
 2. The whole `SKILL.md` body loads on activation. Keep it under 500 lines and
    about 5000 tokens.
-3. Files under `scripts/` and `references/` load only when the
-   instructions send the agent there.
-4. After it compacts the context window, Claude Code re-attaches only the
-   first 5,000 tokens of each skill, 25,000 in all. A rule that holds for
-   the whole run goes in those first tokens.
+3. Files under `scripts/` and `references/` load only when the instructions send
+   the agent there.
+4. After it compacts the context window, Claude Code re-attaches only the first
+   5,000 tokens of each skill, 25,000 in all. A rule that holds for the whole
+   run goes in those first tokens.
 
 Tell the agent when to read each file, not that files exist: "Read
 `references/api-errors.md` if the API returns a non-200 status".

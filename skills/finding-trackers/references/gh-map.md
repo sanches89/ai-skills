@@ -1,6 +1,7 @@
 # Tracker map through gh
 
 Fill the map with these values:
+
 - tracker: `GitHub Issues`; reached through: `gh`;
 - search items: `gh issue list --state all --search "<words>"`;
 - read item: `gh issue view <number> --comments`;
@@ -16,8 +17,8 @@ Fill the map with these values:
   `gh api repos/{owner}/{repo}/issues/<child>` prints. Write both commands;
 - unlink child: a DELETE with `gh api -X DELETE` to
   `repos/{owner}/{repo}/issues/<number>/sub_issue`, singular, with
-  `-F sub_issue_id=<id>`. `<id>` is the child's `id`, as for link child.
-  Write both commands;
+  `-F sub_issue_id=<id>`. `<id>` is the child's `id`, as for link child. Write
+  both commands;
 - completed status: `closed`;
 - destinations: `one`;
 - required fields: `none`.

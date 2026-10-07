@@ -1,39 +1,41 @@
 # Measurement report template
 
-Make every line a fact that changes what the user does next. Keep every
-heading as written. Replace every `<placeholder>`.
+Make every line a fact that changes what the user does next. Keep every heading
+as written. Replace every `<placeholder>`.
 
 Rules for filling:
+
 - At most 60 non-blank lines, 2 lines per bullet, and 25 words per sentence.
-- Present tense. Name real things: paths, symbols, branch names, test
-  names, configuration files.
+- Present tense. Name real things: paths, symbols, branch names, test names,
+  configuration files.
 - `a | b` on a template line means: write a or b, never both.
-- The single word `None.` in a section with nothing to say. No section
-  beyond the ones below.
+- The single word `None.` in a section with nothing to say. No section beyond
+  the ones below.
 
 What each section keeps:
+
 - **Result**: `done` when the measurement record of Step 2 names a
   `summary.json`, else `blocked` with the reason Step 2 gives.
-- **Scope**: `files` of the summary, the repository root, and the `ignore`
-  line of the measurement record.
-- **Code**: `working tree` without a name, else the name with the short
-  hash of the measured commit.
-- **Limits**: the `limits` line of the measurement record: the three limits
-  and the clone floor, then the configuration file that set each limit, or
+- **Scope**: `files` of the summary, the repository root, and the `ignore` line
+  of the measurement record.
+- **Code**: `working tree` without a name, else the name with the short hash of
+  the measured commit.
+- **Limits**: the `limits` line of the measurement record: the three limits and
+  the clone floor, then the configuration file that set each limit, or
   `all defaults`.
 - **Tools**: the `tool` value of `duplication`; the `tool` value of
-  `complexity`, or `no lizard`; the test runner of the measurement
-  record's `test command` line, or `no test command` when that line reads
-  `none`; the mutation tool of its `mutation command` line, or
-  `no mutation command` when that line reads `none`.
-- **Measurements**: one line per measurement. A measurement whose line in
-  the measurement record is not `ok` gets `skipped` with the reason on that
-  line.
+  `complexity`, or `no lizard`; the test runner of the measurement record's
+  `test command` line, or `no test command` when that line reads `none`; the
+  mutation tool of its `mutation command` line, or `no mutation command` when
+  that line reads `none`.
+- **Measurements**: one line per measurement. A measurement whose line in the
+  measurement record is not `ok` gets `skipped` with the reason on that line.
 - **Findings**: the findings of Step 3 in rank order, numbered.
-- **Skipped**: every measurement whose line in the measurement record is
-  not `ok`, with its reason. The count of findings left out per finding kind.
+- **Skipped**: every measurement whose line in the measurement record is not
+  `ok`, with its reason. The count of findings left out per finding kind.
 
 What the report leaves out:
+
 - the steps taken, and attempts that failed;
 - command output, logs, stack traces, and the JSON of the summary;
 - the request restated;

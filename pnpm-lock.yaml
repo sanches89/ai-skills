@@ -11,12 +11,22 @@ importers:
       gpt-tokenizer:
         specifier: ^4.0.0
         version: 4.0.0
+      prettier:
+        specifier: ^3.9.9
+        version: 3.9.9
 
 packages:
 
   gpt-tokenizer@4.0.0:
     resolution: {integrity: sha512-YAWIyzvuVUHEfW7tFfFAxH8qQb+Q3RU9nYOTy7skMNX5qzU6Q8jxTHZLyO56ug1vYvCR7wndzpd3jwD86/mhjQ==}
 
+  prettier@3.9.9:
+    resolution: {integrity: sha512-Z/CJHIkdujO/OtN7nXUii0Rf3VT5SRuhjBA82Xvu2XhBUgX3nhP67T0LHceBdQLex7OOFGTox+Q5Yg8Jk2Qivg==}
+    engines: {node: '>=14'}
+    hasBin: true
+
 snapshots:
 
   gpt-tokenizer@4.0.0: {}
+
+  prettier@3.9.9: {}

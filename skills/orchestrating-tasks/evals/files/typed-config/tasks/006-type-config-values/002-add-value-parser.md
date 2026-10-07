@@ -1,7 +1,6 @@
 # Add value parser
 
-**Task:** [Type config values](./task.md)
-**Depends on:** none
+**Task:** [Type config values](./task.md) **Depends on:** none
 
 ## Goal
 
@@ -20,10 +19,10 @@ Add the function that parses one raw value to a type.
 
 ## Changes
 
-- `src/config/parse.js` (new): `parseValue(raw, type)` returns the parsed
-  value and throws a TypeError on an invalid value.
-- `tests/parse.test.js` (new): a number, a boolean, a string, and an
-  invalid number and boolean.
+- `src/config/parse.js` (new): `parseValue(raw, type)` returns the parsed value
+  and throws a TypeError on an invalid value.
+- `tests/parse.test.js` (new): a number, a boolean, a string, and an invalid
+  number and boolean.
 
 ## Acceptance criteria
 

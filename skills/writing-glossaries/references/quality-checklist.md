@@ -2,10 +2,9 @@
 
 ## Form
 
-- [ ] Every entry is one bullet `- **Term**: definition.` under a `##`
-      section, in alphabetical order inside the section.
-- [ ] The header is the template's header, with every `<placeholder>`
-      replaced.
+- [ ] Every entry is one bullet `- **Term**: definition.` under a `##` section,
+      in alphabetical order inside the section.
+- [ ] The header is the template's header, with every `<placeholder>` replaced.
 
 ## Entry test
 
@@ -14,34 +13,32 @@
 
 ## Definitions
 
-- [ ] Every definition starts with a noun phrase that says what the thing
-      is, not how it works.
-- [ ] Every definition has at most two sentences and never uses its own
-      term.
+- [ ] Every definition starts with a noun phrase that says what the thing is,
+      not how it works.
+- [ ] Every definition has at most two sentences and never uses its own term.
 
 ## Meaning
 
-- [ ] No two entries define one thing, and no definition lists two
-      meanings.
-- [ ] Every conflict from research ends as a rename in the glossary report,
-      with a qualifier or its own word per thing. The bare word has no entry.
-- [ ] Every synonym pair from research ends as one word, and the retired
-      word is in the glossary report.
-- [ ] Every restatement matches its entry word for word, or the mismatch is
+- [ ] No two entries define one thing, and no definition lists two meanings.
+- [ ] Every conflict from research ends as a rename in the glossary report, with
+      a qualifier or its own word per thing. The bare word has no entry.
+- [ ] Every synonym pair from research ends as one word, and the retired word is
       in the glossary report.
+- [ ] Every restatement matches its entry word for word, or the mismatch is in
+      the glossary report.
 
 ## Report
 
-- [ ] Every disagreeing usage and every fact taken out of a definition is
-      in the glossary report with its path and line.
-- [ ] Every removed entry is in the glossary report with the gate and
-      condition it failed, or the word `unused`.
+- [ ] Every disagreeing usage and every fact taken out of a definition is in the
+      glossary report with its path and line.
+- [ ] Every removed entry is in the glossary report with the gate and condition
+      it failed, or the word `unused`.
 - [ ] The open-decisions list from research is empty.
 
 ## Grep helpers
 
-Banned words, questions, and alternatives. Remove every hit outside quoted
-text or code.
+Banned words, questions, and alternatives. Remove every hit outside quoted text
+or code.
 
 ```bash
 grep -nEi \
@@ -52,17 +49,17 @@ grep -nEi \
   <draft-file>
 ```
 
-Facts of an instruction inside a definition. Read every hit and move the
-fact to the glossary report.
+Facts of an instruction inside a definition. Read every hit and move the fact to
+the glossary report.
 
 ```bash
 grep -nE -e '`[^`]*/[^`]*`|<[a-z-]+>|sections? of|in order:' \
   -e '\bwhen (a|the|it|no) ' <draft-file>
 ```
 
-Terms with two definition texts across the draft and every restating
-document. `<restating-files>`: every document that holds a restatement
-from Step 2b. Every word printed is a failure.
+Terms with two definition texts across the draft and every restating document.
+`<restating-files>`: every document that holds a restatement from Step 2b. Every
+word printed is a failure.
 
 ```bash
 awk 'FNR == 1 { t = (FILENAME == "<draft-file>") }
@@ -76,13 +73,13 @@ awk 'FNR == 1 { t = (FILENAME == "<draft-file>") }
   | sort -u | sed -E 's/^- \*\*([^*]+)\*\*.*/\1/' | uniq -d
 ```
 
-Sentences over 25 words, a code span counted as one word. Every line printed
-is a failure.
+Sentences over 25 words, a code span counted as one word. Every line printed is
+a failure.
 
-```bash
+````bash
 awk '/^```/ { c = !c; next } c || !NF { next }
      /^#/ { print "."; next }
      /^ *[-*] |^\|/ { print "." } { print }' <draft-file> \
   | tr '\n' ' ' | sed -E 's/`[^`]*`/X/g' | tr '.!?;:' '\n\n\n\n\n' \
   | awk 'NF > 25'
-```
+````

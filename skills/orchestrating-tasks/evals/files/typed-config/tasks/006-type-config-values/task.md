@@ -2,9 +2,9 @@
 
 ## Summary
 
-loadConfig returns every value as the raw string of its environment
-variable. Parse each value to the type a schema gives, and fail at load on
-an invalid or missing value.
+loadConfig returns every value as the raw string of its environment variable.
+Parse each value to the type a schema gives, and fail at load on an invalid or
+missing value.
 
 ## Success criteria
 
@@ -27,16 +27,16 @@ an invalid or missing value.
 
 ## Approach
 
-- src/config/schema.js (new) exports `schema`, which maps each config key
-  to its environment variable and its type.
+- src/config/schema.js (new) exports `schema`, which maps each config key to its
+  environment variable and its type.
 - src/config/parse.js (new) exports `parseValue(raw, type)`.
 - src/config/load.js:1 (loadConfig) parses every key of `schema` with
   parseValue.
 
 ## Decisions
 
-- The keys are `port` from PORT as a number, `host` from HOST as a string,
-  and `debug` from DEBUG as a boolean.
+- The keys are `port` from PORT as a number, `host` from HOST as a string, and
+  `debug` from DEBUG as a boolean.
 - A boolean is the string `true` or `false`. Any other string is invalid.
 - An invalid or missing value throws a TypeError. Add no dependency.
 - Tests live in tests/ and use node:test with `node:assert/strict`.

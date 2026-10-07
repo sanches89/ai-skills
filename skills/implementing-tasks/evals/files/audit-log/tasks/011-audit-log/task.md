@@ -21,8 +21,7 @@ Record an audit event when an order is cancelled.
 ## Approach
 
 - src/orders/cancel.js (cancelOrder) publishes
-  `{ type: "order.cancelled", orderId }` through publish from
-  src/events/bus.js.
+  `{ type: "order.cancelled", orderId }` through publish from src/events/bus.js.
 
 ## Decisions
 

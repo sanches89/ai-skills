@@ -1,7 +1,7 @@
 # Type loadConfig
 
-**Task:** [Type config values](./task.md)
-**Depends on:** [Add config schema](./001-add-config-schema.md),
+**Task:** [Type config values](./task.md) **Depends on:**
+[Add config schema](./001-add-config-schema.md),
 [Add value parser](./002-add-value-parser.md)
 
 ## Goal
@@ -14,8 +14,8 @@ loadConfig returns every config value parsed to its type.
   `{ port: env.PORT, host: env.HOST, debug: env.DEBUG }`, all strings.
 - src/config/schema.js exports `schema`, which maps each key to
   `{ variable, type }`. Subtask 1 adds it.
-- src/config/parse.js exports `parseValue(raw, type)`, which throws a
-  TypeError on an invalid value. Subtask 2 adds it.
+- src/config/parse.js exports `parseValue(raw, type)`, which throws a TypeError
+  on an invalid value. Subtask 2 adds it.
 - A missing value throws a TypeError. Add no dependency.
 - Tests live in tests/ and use node:test with `node:assert/strict`.
 
@@ -25,11 +25,10 @@ loadConfig returns every config value parsed to its type.
 
 ## Changes
 
-- `src/config/load.js`: `loadConfig(env = process.env)` returns one entry
-  per key of `schema`, parsed with parseValue. A missing variable throws a
-  TypeError that names the variable.
-- `tests/load.test.js` (new): typed values, an invalid PORT, and a missing
-  HOST.
+- `src/config/load.js`: `loadConfig(env = process.env)` returns one entry per
+  key of `schema`, parsed with parseValue. A missing variable throws a TypeError
+  that names the variable.
+- `tests/load.test.js` (new): typed values, an invalid PORT, and a missing HOST.
 
 ## Acceptance criteria
 

@@ -7,8 +7,8 @@ compatibility: The audit script requires Node.js 18 or newer and git, run inside
 
 # Writing agent docs
 
-Apply these rules, and the doc rules of the repo's root `AGENTS.md`, to
-every doc below. Where the two disagree, the repo's rule wins.
+Apply these rules, and the doc rules of the repo's root `AGENTS.md`, to every
+doc below. Where the two disagree, the repo's rule wins.
 
 ## Which file holds what
 
@@ -17,45 +17,44 @@ every doc below. Where the two disagree, the repo's rule wins.
 - `README.md`: a short runbook for people, at the root and in every app and
   package. It covers setup, how to run, test and ship, and the context a new
   developer needs first. Leave out how things work.
-- `GLOSSARY.md`: one meaning for each word a reader can take two ways, or
-  that the docs give a meaning its ordinary sense does not give.
+- `GLOSSARY.md`: one meaning for each word a reader can take two ways, or that
+  the docs give a meaning its ordinary sense does not give.
 - `docs/adrs/`: the reasons behind architecture decisions.
 - `docs/refs/`: excerpts of outside docs.
 - A code comment: a reason tied to one file.
 
 ## AGENTS.md
 
-- Put in the root `AGENTS.md` every rule that must hold before any file is
-  read. A folder's `AGENTS.md` loads later, and not in every agent.
-  (Claude Code loads a folder's `CLAUDE.md` only when its file-read tool,
-  not a shell, reads a file there.)
+- Put in the root `AGENTS.md` every rule that must hold before any file is read.
+  A folder's `AGENTS.md` loads later, and not in every agent. (Claude Code loads
+  a folder's `CLAUDE.md` only when its file-read tool, not a shell, reads a file
+  there.)
 - Pair a folder's `AGENTS.md` with a `CLAUDE.md` only when the folder has
   conventions of its own. One pair may cover packages whose conventions are
   about how they relate.
-- Put a rule in the deepest folder covering every place it applies: two
-  sibling folders mean their parent. Never repeat a parent's rule or point
-  back to it.
-- Keep only what an agent can get wrong with nothing else to stop it: where
-  code goes, a boundary, a gotcha that fails silently or only on a real
-  deployment, a step no check or hook runs.
-- Leave out how things work, file inventories and what a header comment
-  says. Leave out anything lint, types, tests or a hook reject with a clear
-  message. Keep a tree only when it says where new files go.
+- Put a rule in the deepest folder covering every place it applies: two sibling
+  folders mean their parent. Never repeat a parent's rule or point back to it.
+- Keep only what an agent can get wrong with nothing else to stop it: where code
+  goes, a boundary, a gotcha that fails silently or only on a real deployment, a
+  step no check or hook runs.
+- Leave out how things work, file inventories and what a header comment says.
+  Leave out anything lint, types, tests or a hook reject with a clear message.
+  Keep a tree only when it says where new files go.
 - Put the rule that outranks the others first.
 - Write terse imperative bullets of at most 25 words per sentence. Keep short
-  parallel items inline, separated by commas. Make a list only of ordered
-  steps, or of items that are clauses.
-- Give a short reason inline when it stops a wrong shortcut. Cite an ADR for
-  a long one, as in `(ADR 0003)`.
-- Name the exact command for every step. Write "ask the user to" before a
-  step the agent cannot take alone.
+  parallel items inline, separated by commas. Make a list only of ordered steps,
+  or of items that are clauses.
+- Give a short reason inline when it stops a wrong shortcut. Cite an ADR for a
+  long one, as in `(ADR 0003)`.
+- Name the exact command for every step. Write "ask the user to" before a step
+  the agent cannot take alone.
 - Keep the rules for writing docs out of `AGENTS.md`: they live here. In the
   root `AGENTS.md`, one line sends the agent here before it edits a doc.
 
 ## ADRs
 
-Read `references/adr-template.md` before adding, amending, retiring, or
-citing an ADR.
+Read `references/adr-template.md` before adding, amending, retiring, or citing
+an ADR.
 
 ## Reference docs
 
@@ -68,35 +67,41 @@ The glossary is the path the request names, else `GLOSSARY.md`. A word passes
 the entry test when Gate A or Gate B holds.
 
 Gate A, the conflict test. All three hold:
-- at one usage at least, a reader can take the word in two ways that lead
-  to different actions;
+
+- at one usage at least, a reader can take the word in two ways that lead to
+  different actions;
 - no word or phrase with one reading fits every usage;
 - the sentence around that usage does not settle the reading.
 
 Gate B, the sense test. All three hold:
-- the project gives the word a meaning that its ordinary sense and its
-  common sense in the project's field do not give;
+
+- the project gives the word a meaning that its ordinary sense and its common
+  sense in the project's field do not give;
 - no document defines that meaning where the word is used;
 - a reader who takes the ordinary sense acts wrongly.
 
 - Use each word with the meaning the glossary gives it.
-- Define each word of an edited doc that passes the entry test and has no
-  entry. When the agent has a skill named `writing-glossaries`, invoke the
-  `writing-glossaries` skill (in Claude Code, with the `Skill` tool) with
-  `from writing-agent-docs: glossary <glossary path>,
-  files <the edited doc>, words <the words>`.
-- Without that skill, add each word to the glossary as one bullet in the
-  form `- **Term**: definition.`, in alphabetical order inside its section.
-  A word that holds every condition of Gate A but the second is renamed,
-  never defined. A definition holds no path, placeholder, format, list of
-  allowed values, section list, or condition: such a fact goes in the
-  instruction that uses it.
+- Define each word of an edited doc that passes the entry test and has no entry.
+  When the agent has a skill named `writing-glossaries`, invoke the
+  `writing-glossaries` skill (in Claude Code, with the `Skill` tool) with the
+  text below:
+
+  ```
+  from writing-agent-docs: glossary <glossary path>, files <the edited doc>,
+    words <the words>
+  ```
+
+- Without that skill, add each word to the glossary as one bullet in the form
+  `- **Term**: definition.`, in alphabetical order inside its section. A word
+  that holds every condition of Gate A but the second is renamed, never defined.
+  A definition holds no path, placeholder, format, list of allowed values,
+  section list, or condition: such a fact goes in the instruction that uses it.
 
 ## After editing
 
-Run from the repo root, with `<skill-dir>` the folder holding this
-`SKILL.md` (in Claude Code, `${CLAUDE_SKILL_DIR}` expands to it). Fix what it
-reports until it exits 0:
+Run from the repo root, with `<skill-dir>` the folder holding this `SKILL.md`
+(in Claude Code, `${CLAUDE_SKILL_DIR}` expands to it). Fix what it reports until
+it exits 0:
 
 ```bash
 node <skill-dir>/scripts/audit.mjs
@@ -104,9 +109,8 @@ node <skill-dir>/scripts/audit.mjs
 
 ## Audit
 
-**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in
-one each read or command that yields only facts, returned with path and
-line.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in one
+each read or command that yields only facts, returned with path and line.
 
 When the user asks to audit, shrink, tidy or dedupe the docs, follow
 `references/audit.md`.

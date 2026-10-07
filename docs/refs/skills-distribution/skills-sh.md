@@ -14,10 +14,8 @@ submission step.
 
 ## URLs
 
-| What | Pattern |
-| --- | --- |
-| Repository page | `https://skills.sh/<owner>/<repo>` |
-| Skill page | `https://skills.sh/<owner>/<repo>/<skill-name>` |
+- Repository page: `https://skills.sh/<owner>/<repo>`
+- Skill page: `https://skills.sh/<owner>/<repo>/<skill-name>`
 
 ---
 

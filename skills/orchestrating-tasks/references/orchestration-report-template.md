@@ -2,50 +2,52 @@
 
 Sections: Orchestration report.
 
-Make every line a fact the caller needs: what landed on the branch, what
-stayed open, and what the rest of the work needs. Keep every heading as
-written. Replace every `<placeholder>`.
+Make every line a fact the caller needs: what landed on the branch, what stayed
+open, and what the rest of the work needs. Keep every heading as written.
+Replace every `<placeholder>`.
 
 Rules for filling:
+
 - At most 50 non-blank lines, 2 lines per bullet, and 25 words per sentence.
 - Present tense. Name real things: paths, symbols, commands, branch names,
   commit hashes, item identifiers.
 - `a | b` on a template line means: write a or b, never both.
 - The single word `None.` in a section with nothing to say.
-- *Blocked by* only when the result is `blocked`. No section beyond the
-  ones below.
+- _Blocked by_ only when the result is `blocked`. No section beyond the ones
+  below.
 
 What each section keeps:
-- **Result**: `done` when every job is `done` or `skipped` and the proof
-  passes, else `blocked`.
-- **Branch**: the branch the commits are on and the commit the run started
-  from, or `none: no git repository`.
-- **Worktree**: `removed` when the run created the worktree and the result
-  is `done`: Step 7 removes it after the report. Else the path of `<tree>`
-  when it is a worktree, else `none`.
+
+- **Result**: `done` when every job is `done` or `skipped` and the proof passes,
+  else `blocked`.
+- **Branch**: the branch the commits are on and the commit the run started from,
+  or `none: no git repository`.
+- **Worktree**: `removed` when the run created the worktree and the result is
+  `done`: Step 7 removes it after the report. Else the path of `<tree>` when it
+  is a worktree, else `none`.
 - **Jobs** line: the number of jobs in each state, refactor jobs included.
-- **Refactor rounds**: the number of rounds that ran, an empty round
-  included. Reaching three is no failure.
-- **Verification**: the target's one verification command, or
-  `<number> steps` when its Verification is a list. `pass` only when every
-  step passes. `not run` when the run ended before Step 6.
+- **Refactor rounds**: the number of rounds that ran, an empty round included.
+  Reaching three is no failure.
+- **Verification**: the target's one verification command, or `<number> steps`
+  when its Verification is a list. `pass` only when every step passes. `not run`
+  when the run ended before Step 6.
 - **Commits**: every commit a job made, in order.
 - **Jobs** section: one line per job in plan order, with its state and its
   commit. A refactor job keeps its `R<round>.<n>` number.
-- **Changes**: the *Changes* bullets of every work report, merged: one
-  bullet per changed file, also on `blocked`. With more than 10 changed
-  files, one bullet per folder: its path and what changed in it. Mark a
-  removed file or symbol `(deleted)`.
-- **Deviations** and **Affects other work**: the bullets of the work
-  reports that matter outside the target. Drop a bullet about a subtask
-  this run has since worked, and a fact the plan carried to a later job.
-  Add every wrong or stale fact found in a task file, a subtask file, or
-  an item, with the correct fact.
-- **Blocked by**: one bullet per blocked job, per round whose final line
-  starts with `not saved:`, and per failed proof: its cause and what
-  unblocks it.
+- **Changes**: the _Changes_ bullets of every work report, merged: one bullet
+  per changed file, also on `blocked`. With more than 10 changed files, one
+  bullet per folder: its path and what changed in it. Mark a removed file or
+  symbol `(deleted)`.
+- **Deviations** and **Affects other work**: the bullets of the work reports
+  that matter outside the target. Drop a bullet about a subtask this run has
+  since worked, and a fact the plan carried to a later job. Add every wrong or
+  stale fact found in a task file, a subtask file, or an item, with the correct
+  fact.
+- **Blocked by**: one bullet per blocked job, per round whose final line starts
+  with `not saved:`, and per failed proof: its cause and what unblocks it.
 
 What the report leaves out:
+
 - the steps taken, the prompts, and attempts that failed;
 - command output, logs, stack traces, and code listings;
 - the target's text restated, and met criteria;

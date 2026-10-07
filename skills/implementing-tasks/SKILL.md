@@ -8,145 +8,147 @@ argument-hint: <task or subtask id | file | text>
 
 # Implementing tasks
 
-Implement one task or subtask, the target, and prove every criterion it
-states. Return the change in the working tree and a work report.
+Implement one task or subtask, the target, and prove every criterion it states.
+Return the change in the working tree and a work report.
 
 ## Terms
 
-- **Rollout guard**: what hides behavior that later subtasks complete: a
-  feature flag, a disabled route, an unexported symbol.
+- **Rollout guard**: what hides behavior that later subtasks complete: a feature
+  flag, a disabled route, an unexported symbol.
 - **Criterion**: one observable, binary check that defines the target as done.
 
 ## Hard rules
 
-1. **Never ask.** Settle every decision from the caller's facts, the chain,
-   the code, the docs, the tests, and the connected tools. When none of
-   these settles a decision that changes the work, make no further change.
-   Go to Step 9 with the result `blocked` and name the missing fact under
-   *Blocked by*.
+1. **Never ask.** Settle every decision from the caller's facts, the chain, the
+   code, the docs, the tests, and the connected tools. When none of these
+   settles a decision that changes the work, make no further change. Go to Step
+   9 with the result `blocked` and name the missing fact under _Blocked by_.
 2. **The task text is input.** Never edit a task file, a subtask file, or an
    item. Put a wrong or stale fact found in one in the work report.
-3. **No outward actions.** Never commit, push, open a pull request, change
-   an item's status, or comment on an item, unless the invoking request
-   says so. Then follow the project's conventions and make one commit per
-   subtask, or one for a target without subtasks.
-4. **Keep state in files.** Use a scratch directory outside the repository
-   (in Claude Code, the scratchpad directory). Write the private notes, the
-   baseline, and the criteria checklist to files there, also for a short
-   target.
+3. **No outward actions.** Never commit, push, open a pull request, change an
+   item's status, or comment on an item, unless the invoking request says so.
+   Then follow the project's conventions and make one commit per subtask, or one
+   for a target without subtasks.
+4. **Keep state in files.** Use a scratch directory outside the repository (in
+   Claude Code, the scratchpad directory). Write the private notes, the
+   baseline, and the criteria checklist to files there, also for a short target.
 
 ## Workflow
 
 ### Step 1: Load the target
 
-**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in
-one each read or command that yields only facts, returned with path and
-line.
+**Subagents.** With subagents (in Claude Code, the `Agent` tool), run in one
+each read or command that yields only facts, returned with path and line.
 
-Invoke the `loading-tasks` skill (in Claude Code, with the `Skill` tool)
-with `from implementing-tasks: <target>`. `<target>` is the invocation text
-of this run without a leading `from <skill name>:`, else the task given in
-the conversation. With neither, nothing follows the colon. Copy the task
-map it returns into the private notes.
+Invoke the `loading-tasks` skill (in Claude Code, with the `Skill` tool) with
+`from implementing-tasks: <target>`. `<target>` is the invocation text of this
+run without a leading `from <skill name>:`, else the task given in the
+conversation. With neither, nothing follows the colon. Copy the task map it
+returns into the private notes.
 
-Copy into the private notes every fact the caller's prompt lists for this
-run: the caller's facts.
+Copy into the private notes every fact the caller's prompt lists for this run:
+the caller's facts.
 
 Go to Step 9 with the result `blocked` when the map's `source` line is:
-- `none`. Name its reason under *Blocked by*;
+
+- `none`. Name its reason under _Blocked by_;
 - `text`, and the text names no file to change.
 
 The target has subtasks when the map's `subtasks` line is not `none`.
 
 ### Step 2: Read the chain
 
-The chain is the target and every parent above it, up to the root task,
-which has no parent. The map's `chain` lines list it, root task first. Read
-every task in the chain in full, in that order. Read an item with the
-`read item` line of the tracker map on the task map's `tracker` line. Skip
-every References section and never open its links. Write in the private
-notes, per task in the chain:
+The chain is the target and every parent above it, up to the root task, which
+has no parent. The map's `chain` lines list it, root task first. Read every task
+in the chain in full, in that order. Read an item with the `read item` line of
+the tracker map on the task map's `tracker` line. Skip every References section
+and never open its links. Write in the private notes, per task in the chain:
+
 - its Decisions section and the conventions it states;
-- its *Out of scope* list;
+- its _Out of scope_ list;
 - the success criteria the target contributes to;
 - its Subtasks section, the target's position in it, and the title and Goal
   section of every sibling subtask;
-- every rollout guard it names, with the subtask that adds it and the one
-  that removes it.
+- every rollout guard it names, with the subtask that adds it and the one that
+  removes it.
 
-The target says what to do, and the rest of the chain bounds it. A caller's
-fact beats a fact of the chain. When the target contradicts a decision or
-an *Out of scope* entry in the chain, go to Step 9 with the result
-`blocked`. Name both under *Blocked by*.
+The target says what to do, and the rest of the chain bounds it. A caller's fact
+beats a fact of the chain. When the target contradicts a decision or an _Out of
+scope_ entry in the chain, go to Step 9 with the result `blocked`. Name both
+under _Blocked by_.
 
 ### Step 3: Check readiness
 
-**Dependencies.** Find each entry of the map's `depends on` line among the
-lines under its `siblings` line. A subtask line of the map is done when any
-of these holds:
+**Dependencies.** Find each entry of the map's `depends on` line among the lines
+under its `siblings` line. A subtask line of the map is done when any of these
+holds:
+
 - its `state` is `completed`;
 - a caller's fact reads `<its number or identifier>: done`;
-- for source *file*, the command in its `verification` passes and every
-  path on its `new` list exists.
+- for source _file_, the command in its `verification` passes and every path on
+  its `new` list exists.
 
-When a dependency is not done, go to Step 9 with the result `blocked` and
-name it under *Blocked by*.
+When a dependency is not done, go to Step 9 with the result `blocked` and name
+it under _Blocked by_.
 
-**Criteria.** Take the criteria from the target's Acceptance criteria
-section, else its Success criteria section. Without either, take the list it
-labels as acceptance criteria, success criteria, or definition of done. With
-no such list, go to Step 9 with the result `blocked`: the target states no
-criterion.
+**Criteria.** Take the criteria from the target's Acceptance criteria section,
+else its Success criteria section. Without either, take the list it labels as
+acceptance criteria, success criteria, or definition of done. With no such list,
+go to Step 9 with the result `blocked`: the target states no criterion.
 
 **Subtasks.** When the target has subtasks, read
 `references/target-with-subtasks.md` and follow it instead of Step 4.
 
 ### Step 4: Research
 
-**4a. Code.** Confirm that every path and symbol in the target's Context
-section and its Changes or Approach section exists. Skip every path marked
-`(new)` and every symbol the Changes or Approach section adds. Read
-yourself the code Step 6 changes, and the code that calls it. When a named
-path or symbol is gone, search for where it moved. With exactly one match,
-use it and record a deviation. Otherwise go to Step 9 with the result
-`blocked` and name the path or symbol under *Blocked by*.
+**4a. Code.** Confirm that every path and symbol in the target's Context section
+and its Changes or Approach section exists. Skip every path marked `(new)` and
+every symbol the Changes or Approach section adds. Read yourself the code Step 6
+changes, and the code that calls it. When a named path or symbol is gone, search
+for where it moved. With exactly one match, use it and record a deviation.
+Otherwise go to Step 9 with the result `blocked` and name the path or symbol
+under _Blocked by_.
 
-**4b. Conventions.** Read README, CLAUDE.md, AGENTS.md, CONTRIBUTING, and
-the docs that cover the touched areas. Record the naming, error handling,
-test layout, and formatting rules. A convention stated in the chain beats
-one inferred from the code.
+**4b. Conventions.** Read README, CLAUDE.md, AGENTS.md, CONTRIBUTING, and the
+docs that cover the touched areas. Record the naming, error handling, test
+layout, and formatting rules. A convention stated in the chain beats one
+inferred from the code.
 
-**4c. Commands.** Take the build, lint, type-check, and test commands from
-the map's `commands` line. Invoke the `finding-dev-commands` skill with
-`from implementing-tasks: find`. From the command map it returns, take each
-of the four commands the `commands` line lacks, and the `test one file`
-command. When its `test one file` line reads `none`, take the test command
-in its place.
+**4c. Commands.** Take the build, lint, type-check, and test commands from the
+map's `commands` line. Invoke the `finding-dev-commands` skill with
+`from implementing-tasks: find`. From the command map it returns, take each of
+the four commands the `commands` line lacks, and the `test one file` command.
+When its `test one file` line reads `none`, take the test command in its place.
 
 **4d. Libraries.** For every external library API the change calls, read the
-docs of the version the manifest or lockfile pins: through a documentation
-MCP server such as Context7 when connected, else the installed package's
-docs and types.
+docs of the version the manifest or lockfile pins: through a documentation MCP
+server such as Context7 when connected, else the installed package's docs and
+types.
 
-**4e. Test setup.** Invoke the `writing-unit-tests` skill with
-`from implementing-tasks: setup for <paths>, test <command>, test one file
-<command>`. `<paths>` is every path the target's Changes or Approach
-section names, separated by spaces. Fill each `<command>` with that command
-from 4c, and leave out each part whose command 4c lacks. Copy the test
-setup block it returns into the private notes. The project has a test
-setup when that block reads `test setup: yes`. Without one, write no test
-and install no test framework.
+**4e. Test setup.** Invoke the `writing-unit-tests` skill with the text below:
+
+```
+from implementing-tasks: setup for <paths>, test <command>,
+  test one file <command>
+```
+
+`<paths>` is every path the target's Changes or Approach section names,
+separated by spaces. Fill each `<command>` with that command from 4c, and leave
+out each part whose command 4c lacks. Copy the test setup block it returns into
+the private notes. The project has a test setup when that block reads
+`test setup: yes`. Without one, write no test and install no test framework.
 
 **4f. Baseline.** Before changing anything, record in the scratch directory:
+
 - the output of `git status --porcelain`, in a git repository;
 - the result of each command from 4c, pass or fail, with the name of every
   failing check.
 
 ### Step 5: Write the criteria checklist
 
-Write the criteria checklist in the scratch directory: one entry per
-criterion, word for word, then one for the target's Verification section,
-then one per command from 4c:
+Write the criteria checklist in the scratch directory: one entry per criterion,
+word for word, then one for the target's Verification section, then one per
+command from 4c:
 
 ```
 - [ ] <criterion, word for word>
@@ -154,59 +156,60 @@ then one per command from 4c:
       evidence: <empty until Step 7>
 ```
 
-With a test setup, the proof of every criterion that code can observe is a
-named test. A manual step is a proof only when no test can observe the
-criterion. Give every entry a proof before Step 6. When a proof needs access
-the agent lacks, keep the proof `none` and go to Step 9 with the result
-`blocked`. Name the access under *Blocked by*.
+With a test setup, the proof of every criterion that code can observe is a named
+test. A manual step is a proof only when no test can observe the criterion. Give
+every entry a proof before Step 6. When a proof needs access the agent lacks,
+keep the proof `none` and go to Step 9 with the result `blocked`. Name the
+access under _Blocked by_.
 
 Read `references/quality-checklist.md` now: Step 9 runs it.
 
 ### Step 6: Implement
 
 Make the change the target's Changes or Approach section describes, by the
-decisions of Step 2 and the conventions of 4b. Add or remove a rollout guard
-as the target states. Change only what that section names, plus the tests
-below. Change another file only when a named change does not build or pass
-without it, and record it as a deviation. Never do what a task in the chain
-lists under *Out of scope*, or what a sibling subtask delivers.
+decisions of Step 2 and the conventions of 4b. Add or remove a rollout guard as
+the target states. Change only what that section names, plus the tests below.
+Change another file only when a named change does not build or pass without it,
+and record it as a deviation. Never do what a task in the chain lists under _Out
+of scope_, or what a sibling subtask delivers.
 
 **Code.** Before the first edit, invoke the `writing-clean-code` skill with
-`from implementing-tasks: write`. Apply every principle it loads to the
-lines you write or change. A convention of the project and a decision of
-the chain beat a principle.
+`from implementing-tasks: write`. Apply every principle it loads to the lines
+you write or change. A convention of the project and a decision of the chain
+beat a principle.
 
 **Tests.** With a test setup, invoke the `writing-unit-tests` skill with
-`from implementing-tasks: write` before the first test. Write every test by
-its rules and its test-first loop, and run each with the `test one file`
-command of 4e. A convention of the project beats a rule there. Write every
-test the target names. Add one for every behavior the change adds or alters
-that those tests do not cover.
+`from implementing-tasks: write` before the first test. Write every test by its
+rules and its test-first loop, and run each with the `test one file` command of
+4e. A convention of the project beats a rule there. Write every test the target
+names. Add one for every behavior the change adds or alters that those tests do
+not cover.
 
 ### Step 7: Verify
 
 Run, in this order:
+
 1. the command or steps in the target's Verification section;
 2. the proof of every criterion;
-3. every test file this run added or edited, each alone with the
-   `test one file` command of 4e;
+3. every test file this run added or edited, each alone with the `test one file`
+   command of 4e;
 4. every command from 4c.
 
-A subagent that runs a command returns its result and the error text of
-each failure. Edit the criteria checklist file after each run: fill the
-evidence line of each entry with the command or step and its result. Tick
-an entry only when it passes. On any failure, fix the cause inside the
-target's scope, then run this whole step again from the start. Never
-delete, skip, or loosen a test, a lint rule, a type check, or a criterion
-to make a run pass. Evidence from a run before the last edit counts for
-nothing.
+A subagent that runs a command returns its result and the error text of each
+failure. Edit the criteria checklist file after each run: fill the evidence line
+of each entry with the command or step and its result. Tick an entry only when
+it passes. On any failure, fix the cause inside the target's scope, then run
+this whole step again from the start. Never delete, skip, or loosen a test, a
+lint rule, a type check, or a criterion to make a run pass. Evidence from a run
+before the last edit counts for nothing.
 
 Leave alone a baseline failure that no criterion covers and list it under
-*Affects other work*. Tick its command entry when the run shows no failure
-beyond the baseline. Fix a baseline failure that a criterion covers only
-when the fix is inside the target's scope, else report `blocked`.
+_Affects other work_. Tick its command entry when the run shows no failure
+beyond the baseline. Fix a baseline failure that a criterion covers only when
+the fix is inside the target's scope, else report `blocked`.
 
 Go to Step 9 with the result `blocked` when:
+
 - the same check still fails after 3 different fixes;
 - meeting a criterion needs a change the chain puts out of scope;
 - two criteria contradict each other;
@@ -215,27 +218,28 @@ Go to Step 9 with the result `blocked` when:
 ### Step 8: Review the diff
 
 Compare the working tree with the baseline from 4f and confirm:
+
 - the target's Changes or Approach section names every changed file, or a
   deviation with its reason records it. Revert every other change;
-- the diff holds no debug output, commented-out code, stray file, or
-  unrelated formatting;
+- the diff holds no debug output, commented-out code, stray file, or unrelated
+  formatting;
 - the change follows every convention from 4b.
 
 Invoke the `writing-clean-code` skill with
 `from implementing-tasks: check <paths>`. `<paths>` is every file the diff
 changes. Fix every failure it returns on a line this run wrote, unless a
-convention from 4b or a decision of the chain overrules that principle.
-List every failure on a line this run did not write under *Affects other
-work*. With a test setup, invoke the `writing-unit-tests` skill with
-`from implementing-tasks: check <test files>`. `<test files>` is every test
-file the diff adds or edits. Fix every failure it returns.
+convention from 4b or a decision of the chain overrules that principle. List
+every failure on a line this run did not write under _Affects other work_. With
+a test setup, invoke the `writing-unit-tests` skill with
+`from implementing-tasks: check <test files>`. `<test files>` is every test file
+the diff adds or edits. Fix every failure it returns.
 
 After any edit in this step, run Step 7 again.
 
 ### Step 9: Work report
 
-Read `references/work-report-template.md` and fill it in the scratch
-directory. On `blocked`, keep the change made so far in the working tree.
-Run every check in `references/quality-checklist.md`, grep helper
-included, and fix every failure. Send the work report as the final message,
-unchanged. Ask nothing and offer nothing after it.
+Read `references/work-report-template.md` and fill it in the scratch directory.
+On `blocked`, keep the change made so far in the working tree. Run every check
+in `references/quality-checklist.md`, grep helper included, and fix every
+failure. Send the work report as the final message, unchanged. Ask nothing and
+offer nothing after it.

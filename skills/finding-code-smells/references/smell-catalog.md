@@ -1,31 +1,31 @@
 # Smell catalog
 
 Sections: Proof of dead code; Duplication; Size; Names; Conditionals; Data;
-Coupling; Dead weight; Comments; Design; Agent-written code; Legibility;
-Tests.
+Coupling; Dead weight; Comments; Design; Agent-written code; Legibility; Tests.
 
-A function is a function, a method, or a procedure. A module is a class, a
-file, or a package. A system boundary is the network, files, a database, the
-clock, randomness, the process environment, or third-party code. Third-party
-code includes a framework, a driver, an HTTP client, and a UI toolkit.
+A function is a function, a method, or a procedure. A module is a class, a file,
+or a package. A system boundary is the network, files, a database, the clock,
+randomness, the process environment, or third-party code. Third-party code
+includes a framework, a driver, an HTTP client, and a UI toolkit.
 
 - Skip an entry that the language of the code has no form for.
-- A **Refactoring** line with a list offers a choice. *Then* marks the next
-  step of a sequence.
-- The limits named here are defaults. The limits of Step 3 of `SKILL.md`
-  replace them.
-- A value over a limit is a finding only when no *Leave it when* case of
-  its entry holds.
+- A **Refactoring** line with a list offers a choice. _Then_ marks the next step
+  of a sequence.
+- The limits named here are defaults. The limits of Step 3 of `SKILL.md` replace
+  them.
+- A value over a limit is a finding only when no _Leave it when_ case of its
+  entry holds.
 - A scan signal is a line to read, never a finding.
 
 ## Proof of dead code
 
-Remove Dead Code needs proof that nothing reaches the code, written into
-the evidence of the finding:
+Remove Dead Code needs proof that nothing reaches the code, written into the
+evidence of the finding:
+
 - Search every reference as a symbol and as text, including reflection,
   dependency injection, configuration, templates, and build scripts.
-- A part of the contract is never dead on the grounds that the repository has
-  no caller.
+- A part of the contract is never dead on the grounds that the repository has no
+  caller.
 - A parameter, a field, or a branch that no caller uses needs the same proof.
 - A check on a value that the type system, the signature, or an earlier check
   guarantees has that guarantee as its proof.
@@ -33,14 +33,14 @@ the evidence of the finding:
 ## Duplication
 
 - **Duplicated code**
-  - Signal: an entry in `duplication.top`, or the same statements in two
-    places. Read both locations of a clone.
-  - Refactoring: Extract Function. Then Move Function to a shared module
-    when the copies live in two modules.
-  - Leave it when: the copies change for different reasons; fewer than
-    three copies exist and state no single rule; the clone holds only
-    imports, declarations, or type definitions; or it is test data, a
-    fixture, a table of literals, or generated code.
+  - Signal: an entry in `duplication.top`, or the same statements in two places.
+    Read both locations of a clone.
+  - Refactoring: Extract Function. Then Move Function to a shared module when
+    the copies live in two modules.
+  - Leave it when: the copies change for different reasons; fewer than three
+    copies exist and state no single rule; the clone holds only imports,
+    declarations, or type definitions; or it is test data, a fixture, a table of
+    literals, or generated code.
 - **Repeated condition**
   - Signal: the same `switch` or `if` chain over one value in three places.
   - Refactoring: Replace Conditional with Lookup Table, or Replace Conditional
@@ -59,8 +59,8 @@ the evidence of the finding:
   - Signal: `length` above its limit of 50 lines, or a block that needs a
     comment to say what it does.
   - Refactoring: Extract Function, Decompose Conditional, Split Loop.
-  - Leave it when: the function is one flat list of steps with no branch,
-    such as a configuration table or a route list.
+  - Leave it when: the function is one flat list of steps with no branch, such
+    as a configuration table or a route list.
 - **Complex function**
   - Signal: `ccn` above its limit of 10, or nesting of 3 levels or deeper.
   - Refactoring: Replace Nested Conditional with Guard Clauses, Decompose
@@ -82,14 +82,14 @@ the evidence of the finding:
 ## Names
 
 - **Mysterious name**
-  - Signal: a name that needs the body to be understood, an abbreviation, a
-    name with a type in it, or two names for one concept.
+  - Signal: a name that needs the body to be understood, an abbreviation, a name
+    with a type in it, or two names for one concept.
   - Refactoring: Rename.
   - Leave it when: the name is part of the contract, or the domain uses that
     word.
 - **Misleading name**
-  - Signal: a name that says less or more than the code does, such as a
-    `get` that writes.
+  - Signal: a name that says less or more than the code does, such as a `get`
+    that writes.
   - Refactoring: Rename. Then Separate Query from Modifier when the function
     does both.
   - Leave it when: the name is part of the contract.
@@ -97,14 +97,14 @@ the evidence of the finding:
 ## Conditionals
 
 - **Nested conditional**
-  - Signal: an `else` branch that holds the main path, or nesting of 3 levels
-    or deeper.
+  - Signal: an `else` branch that holds the main path, or nesting of 3 levels or
+    deeper.
   - Refactoring: Replace Nested Conditional with Guard Clauses.
   - Leave it when: both branches are normal paths of equal weight.
 - **Complex condition**
   - Signal: a condition with three or more operators, or a negated compound.
-  - Refactoring: Extract Variable, or Extract Function with a name that
-    states the rule.
+  - Refactoring: Extract Variable, or Extract Function with a name that states
+    the rule.
   - Leave it when: the condition is a standard idiom of the language.
 - **Flag argument**
   - Signal: a boolean or an enum parameter that picks between two bodies.
@@ -114,16 +114,16 @@ the evidence of the finding:
 ## Data
 
 - **Data clump**
-  - Signal: the same three or more values passed or stored together in
-    three places or more.
+  - Signal: the same three or more values passed or stored together in three
+    places or more.
   - Refactoring: Introduce Parameter Object, Extract Module for the group.
   - Leave it when: the values only meet by accident, such as `x` and `y` of
     unrelated things.
 - **Primitive obsession**
-  - Signal: a string or a number that carries rules, such as a currency
-    amount, a range, or an identifier that gets parsed in many places.
-  - Refactoring: Replace Primitive with Object, in the form the language and
-    the project use for value types.
+  - Signal: a string or a number that carries rules, such as a currency amount,
+    a range, or an identifier that gets parsed in many places.
+  - Refactoring: Replace Primitive with Object, in the form the language and the
+    project use for value types.
   - Leave it when: the value has no rule beyond its type.
 - **Mutable shared data**
   - Signal: a global or a module-level variable written from more than one
@@ -139,16 +139,14 @@ the evidence of the finding:
 ## Coupling
 
 - **Feature envy**
-  - Signal: a function that reads more data of another module than of its
-    own.
+  - Signal: a function that reads more data of another module than of its own.
   - Refactoring: Move Function, or Extract Function and move the part.
   - Leave it when: the function is a mapper or a serializer between the two
     modules.
 - **Shotgun surgery**
   - Signal: one reason to change that touches many modules, shown by files that
     change together in the git history.
-  - Refactoring: Move Function and Move Field until one module holds the
-    rule.
+  - Refactoring: Move Function and Move Field until one module holds the rule.
   - Leave it when: the modules are layers that the architecture keeps apart.
 - **Divergent change**
   - Signal: one module that changes for unrelated reasons, shown by a hotspot
@@ -156,17 +154,17 @@ the evidence of the finding:
   - Refactoring: Extract Module, one per reason.
   - Leave it when: the module is a composition root that wires the others.
 - **Message chain**
-  - Signal: a caller that walks `a.b().c()`: 2 method calls or more through
-    the collaborators of another object.
-  - Refactoring: Hide Delegate, or Extract Function and Move Function toward
-    the data.
-  - Leave it when: the chain walks a plain data structure, a fluent builder,
-    or a query interface.
+  - Signal: a caller that walks `a.b().c()`: 2 method calls or more through the
+    collaborators of another object.
+  - Refactoring: Hide Delegate, or Extract Function and Move Function toward the
+    data.
+  - Leave it when: the chain walks a plain data structure, a fluent builder, or
+    a query interface.
 - **Middle man**
   - Signal: a module whose functions only forward to another module.
   - Refactoring: Remove Middle Man, Inline Function.
-  - Leave it when: the module is a boundary that the architecture requires,
-    such as an adapter to an external system.
+  - Leave it when: the module is a boundary that the architecture requires, such
+    as an adapter to an external system.
 - **Dependency cycle**
   - Signal: two modules that import each other, directly or through a third.
   - Refactoring: Extract Module for the shared part, then Move Function.
@@ -177,18 +175,17 @@ the evidence of the finding:
 
 - **Dead code**
   - Signal: a symbol with no reference, a branch that no input reaches, a
-    parameter that no caller sets, or a finding of the project's dead-code
-    tool.
+    parameter that no caller sets, or a finding of the project's dead-code tool.
   - Refactoring: Remove Dead Code.
   - Leave it when: the symbol is part of the contract, or reflection or
     configuration reaches it.
 - **Speculative generality**
-  - Signal: an interface with one implementation, a parameter with one value,
-    a hook that no one uses.
+  - Signal: an interface with one implementation, a parameter with one value, a
+    hook that no one uses.
   - Refactoring: Inline Function, Collapse Hierarchy, Remove Parameter.
   - Leave it when: the interface wraps a system boundary, a test passes a
-    collaborator in through the parameter, or the contract exposes the
-    extension point. A test double is no implementation.
+    collaborator in through the parameter, or the contract exposes the extension
+    point. A test double is no implementation.
 - **Lazy element**
   - Signal: a function or a module that adds a name and nothing else.
   - Refactoring: Inline Function, Inline Module.
@@ -198,8 +195,8 @@ the evidence of the finding:
 
 - **Comment that explains what**
   - Signal: a comment that restates the next lines.
-  - Refactoring: Extract Function or Rename until the comment adds nothing,
-    then remove it.
+  - Refactoring: Extract Function or Rename until the comment adds nothing, then
+    remove it.
   - Leave it when: the comment says why, names an origin, or warns of a
     consequence.
 - **Commented-out code**
@@ -215,8 +212,8 @@ the evidence of the finding:
     database, or a global singleton. Scan kind `boundary-in-logic`.
   - Refactoring: Parameterize Function or Parameterize Constructor, with a
     default equal to the current collaborator.
-  - Leave it when: the function is the shell that performs the effect, or
-    the entry point that wires the program.
+  - Leave it when: the function is the shell that performs the effect, or the
+    entry point that wires the program.
 - **Constructor that does work**
   - Signal: a constructor that creates a collaborator, reaches a system
     boundary, loops, or branches: anything beyond storing its arguments.
@@ -224,111 +221,107 @@ the evidence of the finding:
     Constructor with Factory Function for the work that remains.
   - Leave it when: the constructor builds value objects from its arguments.
 - **Decision interleaved with effects**
-  - Signal: one function that reads a system boundary, decides, and writes
-    to a system boundary, with branches between the reads and the writes.
+  - Signal: one function that reads a system boundary, decides, and writes to a
+    system boundary, with branches between the reads and the writes.
   - Refactoring: Split Phase. The decision becomes a function that returns a
     value, and the caller performs the effect.
   - Leave it when: the function has one branch and one effect.
 - **Infrastructure type in a rule**
-  - Signal: a module that holds business rules and imports a database, an
-    HTTP, a queue, or a user-interface type.
-  - Refactoring: Extract Interface, owned by the module with the rules, and
-    Move Function for the code that uses the type.
+  - Signal: a module that holds business rules and imports a database, an HTTP,
+    a queue, or a user-interface type.
+  - Refactoring: Extract Interface, owned by the module with the rules, and Move
+    Function for the code that uses the type.
   - Leave it when: the project has no layer that separates rules from
     infrastructure. Never add a layer.
 - **Information leakage**
-  - Signal: one format, layout, or rule that two modules both know, such as
-    a reader and a writer of one file format.
+  - Signal: one format, layout, or rule that two modules both know, such as a
+    reader and a writer of one file format.
   - Refactoring: Move Function until one module owns the knowledge. Then
     Encapsulate Record for the data it exposes.
   - Leave it when: the two modules are the two sides of a protocol that an
     external system fixes.
 - **Inheritance without substitution**
-  - Signal: an override that throws, does nothing, or weakens what the
-    parent promises, or a subclass that exists only to reuse helpers.
+  - Signal: an override that throws, does nothing, or weakens what the parent
+    promises, or a subclass that exists only to reuse helpers.
   - Refactoring: Replace Subclass with Delegate, or Replace Superclass with
     Delegate.
   - Leave it when: every caller of the parent works with the subclass.
 - **Unstable dependency**
-  - Signal: a module that three or more modules import, and that itself
-    imports a file at the head of `hotspots.top`.
+  - Signal: a module that three or more modules import, and that itself imports
+    a file at the head of `hotspots.top`.
   - Refactoring: Extract Interface, owned by the imported module. The hotspot
     implements it.
-  - Leave it when: the two modules change together in the git history, or
-    the hotspot would be the one implementation. A test double is no
-    implementation.
+  - Leave it when: the two modules change together in the git history, or the
+    hotspot would be the one implementation. A test double is no implementation.
 
 ## Agent-written code
 
 - **Reinvented function**
-  - Signal: a function with the same result as one the project or the
-    standard library already has, often under a synonym, such as
-    `formatPrice` beside `renderCurrency`. A helper that no other file
-    calls.
-  - Refactoring: Replace Inline Code with Function Call, for every caller.
-    Then Remove Dead Code.
+  - Signal: a function with the same result as one the project or the standard
+    library already has, often under a synonym, such as `formatPrice` beside
+    `renderCurrency`. A helper that no other file calls.
+  - Refactoring: Replace Inline Code with Function Call, for every caller. Then
+    Remove Dead Code.
   - Leave it when: the two differ in one branch that a test records.
 - **Convention drift**
-  - Signal: a second idiom for a concern the project settled, used in fewer
-    than one in five places: a second HTTP client, logger, assertion style,
-    error type, or naming case.
-  - Refactoring: Replace with Project Idiom, one concern per finding, with
-    the file that shows the dominant idiom named as the exemplar.
+  - Signal: a second idiom for a concern the project settled, used in fewer than
+    one in five places: a second HTTP client, logger, assertion style, error
+    type, or naming case.
+  - Refactoring: Replace with Project Idiom, one concern per finding, with the
+    file that shows the dominant idiom named as the exemplar.
   - Leave it when: the project's docs allow both idioms.
 - **Impossible-state check**
-  - Signal: a null check or a type check on a value that the type system,
-    the signature, or a check a few lines earlier already guarantees.
+  - Signal: a null check or a type check on a value that the type system, the
+    signature, or a check a few lines earlier already guarantees.
   - Refactoring: Remove Dead Code.
-  - Leave it when: the value enters from a system boundary or a public
-    entry point.
+  - Leave it when: the value enters from a system boundary or a public entry
+    point.
 - **Leftover compatibility path**
-  - Signal: an alias that re-exports a renamed symbol, a branch named
-    legacy or fallback, or a flag that one place reads with one value. Scan
-    kind `compat-path`.
+  - Signal: an alias that re-exports a renamed symbol, a branch named legacy or
+    fallback, or a flag that one place reads with one value. Scan kind
+    `compat-path`.
   - Refactoring: Remove Dead Code.
   - Leave it when: a caller outside the repository uses the old form.
 - **Magic literal**
   - Signal: a URL, a path, or a number other than 0, 1, and -1 inside a
     decision. Scan kind `hard-coded-value`.
-  - Refactoring: Replace Magic Literal with a named constant, or move the
-    value into the configuration the project reads at its entry point.
+  - Refactoring: Replace Magic Literal with a named constant, or move the value
+    into the configuration the project reads at its entry point.
   - Leave it when: the literal appears once and the line names it.
 - **Credential in code**
   - Signal: a key, a token, or a password as a literal. Scan kind `credential`,
     with the value hidden.
-  - Report: the location alone. Never copy the value into a finding or a
-    note.
-  - Leave it when: the value is in a test file and reads as a placeholder.
-    It holds `test`, `fake`, `dummy`, or `example`, or repeats one
-    character. A known token format, such as an `AKIA` key or a private
-    key header, always counts.
+  - Report: the location alone. Never copy the value into a finding or a note.
+  - Leave it when: the value is in a test file and reads as a placeholder. It
+    holds `test`, `fake`, `dummy`, or `example`, or repeats one character. A
+    known token format, such as an `AKIA` key or a private key header, always
+    counts.
 - **Masked error**
   - Signal: a catch that logs and continues, an empty catch, or a default
     returned in place of an error. Scan kind `masked-error`.
-  - Report: the location and the statement that the code keeps the
-    behavior.
-  - Leave it when: the catch sits at a system boundary and the project's
-    docs name that behavior.
+  - Report: the location and the statement that the code keeps the behavior.
+  - Leave it when: the catch sits at a system boundary and the project's docs
+    name that behavior.
 - **Placeholder**
-  - Signal: a marker comment for unfinished work, a not-implemented error,
-    or a stub that returns nothing. Scan kind `placeholder`.
+  - Signal: a marker comment for unfinished work, a not-implemented error, or a
+    stub that returns nothing. Scan kind `placeholder`.
   - Report: the location, as a feature gap. When no code reaches the stub,
     Remove Dead Code instead.
 
 ## Legibility
 
 - **Oversized file**
-  - Signal: a code file over 400 lines, or over the project's own file
-    length limit. Scan kind `oversized-file`.
+  - Signal: a code file over 400 lines, or over the project's own file length
+    limit. Scan kind `oversized-file`.
   - Refactoring: Extract Module, one concept per file, named by the concept.
   - Leave it when: the file is a flat list, such as a route table, a
     configuration table, or generated code.
 - **Implicit wiring**
   - Signal: a collaborator reached by reflection, a string name, a global
-    registration, or a patch at import time, so that no import names it.
-    Scan kind `implicit-wiring`.
-  - Refactoring: Replace Implicit Wiring with an import and a call that a
-    search for the name finds.
+    registration, or a patch at import time, so that no import names it. Scan
+    kind `implicit-wiring`.
+  - Refactoring: Replace Implicit Wiring with an import and a call that a search
+    for the name finds.
   - Leave it when: the project's framework requires the form, such as its
     dependency injection container or its plugin registry.
 
@@ -337,20 +330,20 @@ the evidence of the finding:
 In a test file, only these entries and Credential in code are findings.
 
 - **Weak test**
-  - Signal: an assertion that proves nothing, such as not null, not
-    throwing, or truthy. Also an expected value computed with the logic of
-    the code under test. Scan kind `weak-assertion` for the first form.
-  - Refactoring: Replace Assertion with Literal: the value, the state, or
-    the error that the unchanged code produces, written as a literal.
-  - Leave it when: the test checks a type at a system boundary and the
-    project's docs say so.
+  - Signal: an assertion that proves nothing, such as not null, not throwing, or
+    truthy. Also an expected value computed with the logic of the code under
+    test. Scan kind `weak-assertion` for the first form.
+  - Refactoring: Replace Assertion with Literal: the value, the state, or the
+    error that the unchanged code produces, written as a literal.
+  - Leave it when: the test checks a type at a system boundary and the project's
+    docs say so.
 - **Over-mocked test**
-  - Signal: a test double for a collaborator inside the project that is
-    fast and deterministic, or for a part of the unit under test.
-  - Refactoring: Replace Test Double with Real Collaborator. Each assertion
-    on a call to the removed double becomes an assertion on the real result.
-    When a test then fails, the implementer reverts the change and reports
-    the difference that the double hid.
+  - Signal: a test double for a collaborator inside the project that is fast and
+    deterministic, or for a part of the unit under test.
+  - Refactoring: Replace Test Double with Real Collaborator. Each assertion on a
+    call to the removed double becomes an assertion on the real result. When a
+    test then fails, the implementer reverts the change and reports the
+    difference that the double hid.
   - Leave it when: the collaborator reaches a system boundary.
 - **Unfindable test**
   - Signal: a test file whose name and whose content never name the unit it
