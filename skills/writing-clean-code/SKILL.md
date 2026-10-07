@@ -1,6 +1,6 @@
 ---
 name: writing-clean-code
-description: Writes and reviews code by 14 clean code principles, each with a rule, an example, and a check that a diff passes or fails. Use when code is written, changed, cleaned up, or reviewed for names, function size, duplication, error handling, coupling, or SOLID, or the user asks for clean code.
+description: Writes, cleans up, and reviews code by 14 clean code principles, each with a rule, an example, and a check that a diff passes or fails. Use when code is written, changed, cleaned up, or reviewed for names, error handling, coupling, SOLID, or clean code, never to list smells, long functions, or duplication in existing code.
 license: MIT
 compatibility: Requires the finding-dev-commands skill.
 argument-hint: <code to write | paths or git range to review>
@@ -15,6 +15,14 @@ works on beat a principle. The numbers in the principles are targets for
 the lines a change writes or edits. Review mode with paths applies them to
 every line under those paths. Examples are TypeScript. The rule holds in
 every language.
+
+## Terms
+
+These words have exactly one meaning in this skill.
+
+- **System boundary**: the network, files, a database, the clock,
+  randomness, the process environment, or third-party code. Third-party
+  code includes a framework, a driver, an HTTP client, and a UI toolkit.
 
 ## Invocation
 
@@ -59,6 +67,11 @@ its `format` line for principle 6.
 
 Write mode only. Write the code the user asked for. Apply every principle to
 the lines you write or change.
+
+Principle 9 asks for tests. Before the first test, invoke the
+`writing-unit-tests` skill (in Claude Code, with the `Skill` tool) with the
+invocation text `from writing-clean-code: write`, when the agent has it.
+Write every test by the rules it loads.
 
 ### Step 3: Check the diff
 
@@ -245,7 +258,7 @@ No example: the rule limits scope.
 ### 9. Tests
 
 Each added or changed behavior has a test. The `writing-unit-tests` skill
-holds the rules for writing one.
+holds the rules for writing one, and Step 2 invokes it.
 
 No example: the rule names what needs a test, never how to write it.
 
@@ -366,5 +379,5 @@ const applyDiscount = (price: number) => price * 0.9;
 ```
 
 **Check:** every interface has 2 implementations or more besides test
-doubles, or is a boundary from principle 12. Every option and every
-parameter has a caller that passes it.
+doubles, or wraps a system boundary. Every option and every parameter has a
+caller that passes it.

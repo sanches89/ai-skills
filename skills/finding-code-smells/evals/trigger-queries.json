@@ -6,7 +6,7 @@
   {"query": "Find the duplicated code, long functions, and magic numbers in this package.", "should_trigger": true},
   {"query": "Refactor src/orders and write the refactor task with one subtask per change.", "should_trigger": false},
   {"query": "Measure the coverage and duplication of src/orders before my change.", "should_trigger": false},
-  {"query": "Clean up this function so it reads better and keep the tests green.", "should_trigger": false},
+  {"query": "Review the diff I am about to commit against the clean code principles.", "should_trigger": false},
   {"query": "Review my pull request for bugs before I merge it.", "should_trigger": false},
   {"query": "Analyze the repository and give me the ranked measurement report.", "should_trigger": false}
 ]

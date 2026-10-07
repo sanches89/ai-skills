@@ -15,8 +15,12 @@ and this list checks the review.
       that keeps it. The only exception is a change the request names,
       stated in Approach.
 - [ ] No subtask deletes, skips, or loosens a test, lint rule, or type
-      check. No assertion gets weaker, and an assertion changes only by
-      Replace Assertion with Literal.
+      check. No assertion gets weaker. An assertion changes only by Replace
+      Assertion with Literal, or by Replace Test Double with Real
+      Collaborator. The latter swaps an assertion on a call to the removed
+      double for one on the real result.
+- [ ] Every Remove Dead Code subtask names the proof from the evidence of
+      its finding.
 - [ ] Every file a subtask changes is in the refactor scope, or is a caller
       moved by a contract change the request names.
 - [ ] No subtask touches generated or vendored code, a lockfile, build

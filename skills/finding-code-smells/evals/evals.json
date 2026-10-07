@@ -9,14 +9,14 @@
     },
     {
       "id": 2,
-      "prompt": "from refactoring-code: paths src/billing, summary /tmp/r/summary.json, out /tmp/r",
-      "expected_output": "Does not invoke measuring-code: reads /tmp/r/summary.json, taking the limits and the ignore globs from its settings. Writes /tmp/r/contract.md, /tmp/r/findings.md, and /tmp/r/scan.json. Applies the default limits: a function over 50 lines, over 4 parameters, over ccn 10, or nested 3 levels or deeper is a candidate. A clone is a finding with Extract Function from three copies, or from two copies that state one rule. Leaves a message chain through a fluent builder, and a clone of imports. Asks nothing. The final message is exactly four lines: findings, contract, scan, and counts per smell.",
+      "prompt": "from refactoring-code: paths src/billing, summary /tmp/r/summary.json, ignore **/generated/**, out /tmp/r, limits ccn 10, length 50, params 4, clone 5 lines and 50 tokens, each default",
+      "expected_output": "Does not invoke measuring-code: reads /tmp/r/summary.json. Takes the limits from the limits option, which comes last and runs to the end of the text, commas included, and the ignore globs from the ignore option. Writes /tmp/r/contract.md, /tmp/r/findings.md, and /tmp/r/scan.json. A function over 50 lines, over 4 parameters, over ccn 10, or nested 3 levels or deeper is a candidate. A clone is a finding with Extract Function from three copies, or from two copies that state one rule. Leaves a message chain through a fluent builder, and a clone of imports. Asks nothing. The final message is exactly four lines: findings, contract, scan, and counts per smell.",
       "files": []
     },
     {
       "id": 3,
-      "prompt": "from refactoring-code: paths lib, out /tmp/q",
-      "expected_output": "Invokes measuring-code with 'from finding-code-smells: paths lib, out /tmp/q'. When Node.js cannot start the scan script, records 'scan: none:' with the first error line and searches by hand for catch blocks, skip markers, URLs and numbers of three digits or more, reflection calls, and files over 400 lines. A test with a skip marker becomes a Skipped test entry with refactoring report. An unused exported function of a library that others install is never Dead code. A Remove Dead Code entry holds in its evidence the search of every reference as symbol and as text. Ends with the four-line return block.",
+      "prompt": "from refactoring-code: paths lib, summary none, out /tmp/q, limits ccn 10, length 50, params 4, clone 5 lines and 50 tokens, each default",
+      "expected_output": "Does not invoke measuring-code, because summary is none: reads every function against the limits of the limits option. When Node.js cannot start the scan script, records 'scan: none:' with the first error line and searches by hand for catch blocks, skip markers, URLs and numbers of three digits or more, reflection calls, and files over 400 lines. A test with a skip marker becomes a Skipped test entry with refactoring report. An unused exported function of a library that others install is never Dead code. A Remove Dead Code entry holds in its evidence the search of every reference as symbol and as text. Ends with the four-line return block.",
       "files": []
     }
   ]

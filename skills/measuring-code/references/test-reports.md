@@ -23,8 +23,9 @@ Cobertura XML, JaCoCo XML, or Go cover profile format.
 
 ## Report options per runner
 
-Add these options to the test command and nothing else. `<dir>` is
-`<out>/reports`, as Step 1 sets.
+Add these options to the test command and nothing else. The Jest line
+also sets one environment variable. `<dir>` is `<out>/reports`, as Step 1
+sets.
 
 ```bash
 # Node.js test runner
@@ -36,8 +37,9 @@ node --test --experimental-test-coverage \
 vitest run --reporter=junit --outputFile=<dir>/junit.xml \
   --coverage --coverage.reporter=lcov --coverage.reportsDirectory=<dir>
 
-# Jest. JUnit only with jest-junit installed.
-jest --coverage --coverageReporters=lcov --coverageDirectory=<dir>
+# Jest. Without jest-junit, leave out the variable and both --reporters.
+JEST_JUNIT_OUTPUT_DIR=<dir> jest --reporters=default --reporters=jest-junit \
+  --coverage --coverageReporters=lcov --coverageDirectory=<dir>
 
 # pytest. Coverage only with pytest-cov installed.
 pytest --junitxml=<dir>/junit.xml \

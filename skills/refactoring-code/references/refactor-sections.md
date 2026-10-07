@@ -63,7 +63,8 @@ what the review settled. Step numbers are those of `SKILL.md`.
   from `refactoring-rules.md` and the conventions this refactoring follows,
   restated. Every part of the contract the change touches, as a statement
   that it stays. For a rename or a move across many files, the rewrite
-  tool from `analysis-tools.md`. For an entry marked
+  tool from `analysis-tools.md`. For Remove Dead Code, the proof from the
+  evidence of the finding. For an entry marked
   `characterization tests first`, the rules of *Characterization tests*
   below.
 - *References*: `None.`
@@ -75,8 +76,10 @@ what the review settled. Step numbers are those of `SKILL.md`.
   unchanged code and after the change. The structure after the change, as a
   binary check. The tests that cover the code pass. Every part of the
   contract the change touches keeps its name, signature, and format. No
-  assertion of an existing test changed, except by the Replace Assertion
-  with Literal that the subtask names.
+  assertion of an existing test changed, except by the refactoring the
+  subtask names. Replace Assertion with Literal changes an expected value.
+  Replace Test Double with Real Collaborator swaps each assertion on a call
+  to the removed double for one on the real result.
 - *Verification*: the one command from Step 6.
 
 ## Characterization tests

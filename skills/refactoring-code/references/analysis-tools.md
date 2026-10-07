@@ -22,8 +22,8 @@ for the task, and how the task names them.
 ## Tools the project configures
 
 - **Dead-code detection**, such as knip, vulture, `deadcode`, or the unused
-  warnings of the compiler. Treat each hit as a signal. Prove it by the
-  search that *Removing code* in `refactoring-rules.md` requires.
+  warnings of the compiler. Treat each hit as a signal. Prove it by a
+  search of every reference as a symbol and as text, as Step 5 states.
 - **Duplication detection** other than jscpd, such as PMD CPD or SonarQube.
   Use its findings beside the measurement summary.
 - **Mutation testing**, such as Stryker, PIT, Infection, or cargo-mutants.

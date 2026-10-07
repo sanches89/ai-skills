@@ -6,8 +6,9 @@ Tests.
 
 Every smell this skill reports. A function is a function, a method, or a
 procedure. A module is a class, a file, or a package. A system boundary is the
-network, the clock, the filesystem, a database, an external service, randomness,
-or the process environment. Skip an entry that the language of the code has no
+network, files, a database, the clock, randomness, the process environment,
+or third-party code. Third-party code includes a framework, a driver, an HTTP
+client, and a UI toolkit. Skip an entry that the language of the code has no
 form for. Each entry gives the **Signal** that shows the smell, the
 **Refactoring** that removes it, and the case to **Leave it**. An entry with
 **Report** in place of a refactoring names a behavior change: its finding has
@@ -68,8 +69,9 @@ into the evidence of the finding:
     results.
 - **Long parameter list**
   - Signal: `params` above its limit of 4.
-  - Refactoring: Introduce Parameter Object, Preserve Whole Object, Remove
-    Flag Argument.
+  - Refactoring: Preserve Whole Object, Remove Flag Argument, or Extract
+    Function. Introduce Parameter Object only when the same values travel
+    together in three places or more.
   - Leave it when: the signature is part of the contract.
 - **Large module**
   - Signal: a file at the head of `hotspots.top`, or a module whose functions
@@ -354,9 +356,10 @@ credential in a test file leaks as much as one in code.
 - **Over-mocked test**
   - Signal: a test double for a collaborator inside the project that is
     fast and deterministic, or for a part of the unit under test.
-  - Refactoring: Replace Test Double with Real Collaborator. When a test
-    then fails, the implementer reverts the change and reports the
-    difference that the double hid.
+  - Refactoring: Replace Test Double with Real Collaborator. Each assertion
+    on a call to the removed double becomes an assertion on the real result.
+    When a test then fails, the implementer reverts the change and reports
+    the difference that the double hid.
   - Leave it when: the collaborator reaches a system boundary.
 - **Unfindable test**
   - Signal: a test file whose name and whose content never name the unit it

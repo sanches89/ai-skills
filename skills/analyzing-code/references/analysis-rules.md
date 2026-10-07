@@ -10,7 +10,9 @@ and its action.
 
 ## What to read
 
-Read the code behind these entries of `summary.json`:
+Read the code behind these entries of `summary.json`. Skip every entry of
+`duplication.top` and `complexity.top` with a location in a test file
+before counting, because such an entry is never a finding:
 - the first 10 entries of `duplication.top`;
 - the first 10 entries of `complexity.top`;
 - the first 5 entries of `hotspots.top`;
@@ -33,6 +35,7 @@ action is `Extract Function` when the copies are in one module, else
 the locations and the line count.
 
 Leave a clone when:
+- a copy lies in a test file;
 - it holds only imports, declarations, or type definitions;
 - it is test data, a fixture, or a table of literals;
 - it is in generated code: the first line of the file says so;
@@ -52,7 +55,10 @@ over the limit:
   Kind `long function`. Action `Extract Function`;
 - `params` over the limit, and the signature is not one that callers
   outside the repository depend on. Kind `long parameter list`. Action
-  `Introduce Parameter Object`.
+  `Introduce Parameter Object` when the same values travel together in
+  three places or more. Else `Remove Flag Argument` for a flag parameter,
+  else `Preserve Whole Object` for values read from one object, else
+  `Extract Function`.
 
 The evidence is the measured values against their limits. A function in a
 test file is never a finding of these kinds.
@@ -120,6 +126,8 @@ The action of a finding is an item of this list, or two items joined by
 - `Extract Function`;
 - `Replace Nested Conditional with Guard Clauses`;
 - `Introduce Parameter Object`;
+- `Remove Flag Argument`;
+- `Preserve Whole Object`;
 - `Move Function to a shared module`.
 
 ## Ranking

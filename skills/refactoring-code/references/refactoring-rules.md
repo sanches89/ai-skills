@@ -80,7 +80,8 @@ limit the project configures replaces a value here.
 - Give a complex condition a name: extract it into a variable or a function.
 - Replace a flag argument with one function per flag value.
 - Replace a long parameter list with a parameter object when the same values
-  travel together in three places.
+  travel together in three places. Else pass the whole object the values
+  come from, remove a flag argument, or extract a function.
 - Separate a query from a modifier. A function that returns a value changes no
   state that a caller observes.
 - Narrow the scope of a mutable variable to the smallest block that uses it.
@@ -115,16 +116,9 @@ limit the project configures replaces a value here.
 
 ## Removing code
 
-- Remove code only with proof that nothing reaches it. Search every reference
-  as a symbol and as text, including reflection, dependency injection,
-  configuration, templates, and build scripts.
-- Never remove a part of the contract on the grounds that the repository has
-  no caller.
-- Remove a parameter, a field, or a branch that no caller uses, by the same
-  proof.
-- Remove a check on a value that the type system, the signature, or an
-  earlier check guarantees. The proof is that guarantee, named in the
-  subtask.
+- Remove code only by the proof in the evidence of its finding: the search
+  of every reference, or the guarantee that makes a check dead. The subtask
+  names that proof.
 - Remove commented-out code.
 - Remove a comment that repeats the code. Keep a comment that says why.
 
@@ -139,13 +133,9 @@ limit the project configures replaces a value here.
 ## Tests during a refactoring
 
 - Run the tests that cover the changed code after every subtask.
-- Edit an existing test only for an import, a path, or a symbol name that
-  the refactoring moved or renamed. A weak test or an over-mocked test that
-  the subtask names is the other reason.
-- Change an assertion only by Replace Assertion with Literal, with the
-  value the unchanged code produces. Never weaken one.
-- Replace a test double of a collaborator inside the project with the real
-  one only when the real one is fast and deterministic.
+- Edit an existing test only as the `writing-unit-tests` skill allows. The
+  weak test or over-mocked test that a subtask names is the one reason to
+  change an assertion.
 - Treat a test that fails after a refactoring as proof of a behavior change.
   Revert the change. Never edit the assertion.
 - Treat a test that breaks on every structure change as a finding. It asserts

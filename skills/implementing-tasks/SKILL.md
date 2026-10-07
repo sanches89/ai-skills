@@ -274,12 +274,16 @@ Work the subtasks one at a time, then prove the task itself.
 2. **Work each subtask** in the order of the map's `subtasks` lines, never
    two at once, because they share one working tree. Skip a subtask that
    is done by the rule in Step 3. A subtask whose `at` reads `none` has no
-   file and no item: go to number 5 with the result `blocked`. For every
-   other one, run Steps 1 to 9 with the `at` of its line as the target.
-   When the agent offers subagents, run each subtask in its own subagent,
-   and keep only the work report it returns. Give it one instruction: invoke the
+   file and no item: go to number 5 with the result `blocked`. Run Steps 1
+   to 9 for every other one: the `at` of its line is the target, and the
+   subtask facts are the caller's facts. The subtask facts are the
+   caller's facts, then every bullet under *Deviations* and *Affects other
+   work* of each earlier subtask's work report. When the agent offers
+   subagents, run each subtask in its own subagent, and keep only the work
+   report it returns. Give it one instruction: invoke the
    `implementing-tasks` skill (in Claude Code, with the `Skill` tool) with
-   the invocation text `from implementing-tasks: <the at of its line>`.
+   the invocation text `from implementing-tasks: <the at of its line>`,
+   with the subtask facts listed after it.
 3. **Stop on `blocked`.** When a subtask's result is `blocked`, work no
    further subtask. Go to number 5 with the result `blocked`.
 4. **Prove the task.** After the last subtask, run Steps 5, 7, and 8 with

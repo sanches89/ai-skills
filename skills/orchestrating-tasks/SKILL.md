@@ -32,9 +32,9 @@ These words have exactly one meaning in this skill.
 
 1. **Every change comes from a job or a round.** Never edit project code
    yourself, except to restore the tree as Step 4 states. Never edit a task
-   file, a subtask file, or the body of an item. Put a wrong or stale fact
-   found in one in the orchestration record as a fact. A change outside a
-   job has no work report and no commit of its own.
+   file, a subtask file, or the title or body of an item. Put a wrong or
+   stale fact found in one in the orchestration record as a fact. A change
+   outside a job has no work report and no commit of its own.
 2. **One job at a time.** Never run two jobs at once: they share one working
    tree, and two edits in one tree corrupt each other's diff.
 3. **Ask only where the jobs run.** Ask only the tree question of Steps 2
@@ -194,9 +194,9 @@ continue.
 Run the jobs in plan order, one at a time. Read
 `references/job-prompt-template.md` once, before the first job. The entry
 of a job is its line under the `subtasks` line of its task map. A job that
-is the target itself has no such line. Its entry takes the map's `target`
-line as its `at`, and the map's `verification`, `new`, and `state`
-lines. For each job:
+is the target itself has no such line. Its entry takes the path or the URL
+on the map's `target` line as its `at`, and the map's `verification`,
+`new`, and `state` lines. For each job:
 
 1. **Skip a done job.** The job's target is done when, for source
    *tracker*, its entry holds `state: completed`. For source *file*, it is
@@ -253,7 +253,8 @@ it. For each round:
    Invoke the `refactoring-code` skill (in Claude Code, with the `Skill`
    tool) with the invocation text `from orchestrating-tasks: <the git
    range <base>..HEAD | the paths under Changes of every work report so
-   far>, files`. Return its final line and nothing else.
+   far, except those marked (deleted)>, files`. Return its final line and
+   nothing else.
    ```
 
 2. **Round result.** Add `R<round>: <final line>` under `rounds` in the
@@ -264,15 +265,16 @@ it. For each round:
      Step 7 with the result `blocked` and the line as its cause;
    - it names no task file path and no item identifier: the round is
      empty. Go to Step 6;
-   - else, commit the new task files alone on the branch, for source
-     *file* in a git repository with the task file path inside `<tree>`.
-     Use the project's commit convention, with the subject
-     `Add <refactor task title>`.
+   - else continue.
 3. **Load.** Run the prompt of Step 1, with `<tree>` as `<folder>` and the
    final line as `<target>`. Keep its return as the refactor task's task
    map. Add one job per line of its `subtasks` line under `jobs` in the
    orchestration record, as `R<round>.<n> <title>: pending`, in that order.
-4. **Run.** Run the new jobs by Step 4, with the target's orchestration
+4. **Commit the refactor task.** In a git repository, when the final line
+   is a task file path inside `<tree>`, commit the new task files alone on
+   the branch. Use the project's commit convention, with the subject
+   `Add <title>`. `<title>` is the `title` line of the refactor task's map.
+5. **Run.** Run the new jobs by Step 4, with the target's orchestration
    record. Then start the next round.
 
 ### Step 6: Prove the target
@@ -303,7 +305,8 @@ Step 7.
    <skill-dir>/references/orchestration-report-template.md and
    <skill-dir>/references/quality-checklist.md. Fill the orchestration
    report from the orchestration record and from git in <tree>. The
-   proof is <pass | fail: <command> (<failing check>) | not run>. Run
+   proof is <pass | fail: <command> (<failing check>) | not run>. The
+   run is blocked by <the cause from Step 4, 5, or 6 | nothing>. Run
    every check in the checklist except those under Run, grep helper
    included, and fix every failure. Return the report and nothing else.
    ```

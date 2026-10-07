@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "src/billing/proration.ts has no tests at all. Add unit tests for it.",
-      "expected_output": "Invokes the finding-dev-commands skill for the test command and the single-file command, then records the test setup: framework and version, test location and naming, existing fixtures and helpers, and covering tests. Writes tests in the project's framework only, through the public interface: the normal path, the boundaries of each input, and one test per error the code raises. Each test name states the unit, the condition, and the expected result; expected values are literals; no loops or conditionals inside a test; no real clock or network. Breaks the asserted behavior by hand once per test to see it fail, then restores the code. Runs each new test file alone with the single-file command, then the test command, then the Checks, and ends with the test files and the behaviors their tests prove.",
+      "expected_output": "Invokes the finding-dev-commands skill for the test command and the single-file command, then records the test setup: framework and version, test location and naming, existing fixtures and helpers, and covering tests. Writes tests in the project's framework only, through the public interface: the normal path, the boundaries of each input, and one test per error the code raises. Each test name states the unit, the condition, and the expected result; expected values are literals; no loops or conditionals inside a test; no real clock or network. Runs each new test file alone with the single-file command, then the test command, then the Checks, and ends with the test files and the behaviors their tests prove.",
       "files": []
     },
     {

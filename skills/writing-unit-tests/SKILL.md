@@ -13,6 +13,14 @@ behavior breaks. The rules hold in any language and framework. A convention
 of the project, as the test setup records it, beats a rule here. The request
 is the task the caller works on, or what the user asked for.
 
+## Terms
+
+These words have exactly one meaning in this skill.
+
+- **System boundary**: the network, files, a database, the clock,
+  randomness, the process environment, or third-party code. Third-party
+  code includes a framework, a driver, an HTTP client, and a UI toolkit.
+
 ## Hard rules
 
 1. **No test setup, no test.** Without a test setup, write no test and
@@ -161,8 +169,7 @@ A test gives the same result on every run, on every machine, in any order:
 
 ## Test doubles
 
-- Replace only system boundaries: network, clock, filesystem, database,
-  external services, randomness.
+- Replace only a system boundary.
 - Use the project's own fakes, factories, and helpers before writing a new
   test double.
 - Never replace the unit under test or any part of it.
@@ -207,6 +214,8 @@ A test gives the same result on every run, on every machine, in any order:
 - Fix a weak test by an expected value written as a literal: what the
   unchanged code returns, changes, or raises. Fix an over-mocked test by
   the real collaborator, when it is fast and deterministic.
+- In an over-mocked test, delete each assertion on a call to the double
+  that the fix removes. Assert the real result in its place.
 - Never edit an assertion for a rename or a move. Fix every other failing
   test in the code.
 - Leave alone a test that already failed before the change, unless an
@@ -250,14 +259,13 @@ test location, naming, fixtures, and helpers replace a rule here.
 
 **Reaching the code.**
 - Reach a private function through the public function that calls it.
-- Replace only system boundaries with a test double: network, clock,
-  filesystem, database, external services, randomness.
+- Replace only a system boundary with a test double.
 - Use the project's own fakes, factories, and helpers before a new test
   double.
 - Use a seam the code already has: a parameter, a constructor argument, an
   injected dependency, a module the framework lets a test replace.
-- Add a seam only from the safe set, as a change of its own made before the
-  tests. Take the first of these that reaches the code:
+- Add a seam only by one of these refactorings, as a change of its own made
+  before the tests. Take the first one that reaches the code:
   1. Parameterize Function: the collaborator becomes a parameter with a
      default equal to the current one;
   2. Parameterize Constructor: the same, as a constructor argument stored
@@ -300,4 +308,5 @@ check by its bold name.
 - **snapshot**: no snapshot of logic, and no snapshot where the project
   uses none.
 - **weakened**: against `HEAD`, no test is deleted, skipped, or loosened,
-  and no assertion changed for a rename or a move.
+  and no assertion changed for a rename or a move. An assertion on a call
+  to a removed double, replaced by one on the real result, is no loosening.

@@ -1,5 +1,7 @@
 # Orchestration report template
 
+Sections: Orchestration report.
+
 The orchestration report is all the caller keeps from a run: what landed
 on the branch, what stayed open, and what the rest of the work needs. Make
 every line a fact that changes what the caller does next. Keep the
@@ -19,13 +21,15 @@ What each section keeps:
   passes, else `blocked`.
 - **Branch**: the branch the commits are on and the commit the run started
   from, or `none: no git repository`.
-- **Worktree**: its path when it still exists, else `removed`, else `none`.
+- **Worktree**: `removed` when the run created the worktree and the result
+  is `done`: Step 7 removes it after the report. Else the path of `<tree>`
+  when it is a worktree, else `none`.
 - **Jobs** line: the number of jobs in each state, refactor jobs included.
 - **Refactor rounds**: the number of rounds that ran, an empty round
   included. Reaching three is no failure.
 - **Verification**: the target's one verification command, or
   `<number> steps` when its Verification is a list. `pass` only when every
-  step passes. `not run` when a job is `blocked`.
+  step passes. `not run` when the run ended before Step 6.
 - **Commits**: every commit a job made, in order.
 - **Jobs** section: one line per job in plan order, with its state and its
   commit. A refactor job keeps its `R<round>.<n>` number.
@@ -38,8 +42,9 @@ What each section keeps:
   this run has since worked, and a fact the plan carried to a later job.
   Add every wrong or stale fact found in a task file, a subtask file, or
   an item, with the correct fact.
-- **Blocked by**: one bullet per blocked job and per failed proof: its
-  cause and what unblocks it.
+- **Blocked by**: one bullet per blocked job, per round whose final line
+  starts with `not saved:`, and per failed proof: its cause and what
+  unblocks it.
 
 What the report leaves out:
 - the steps taken, the prompts, and attempts that failed;
@@ -93,7 +98,7 @@ not run
 
 ## Blocked by
 
-- <Job title | failing command>: <cause in one sentence>. Needs: <what
-  unblocks it>.
+- <Job title | R<round> | failing command>: <cause in one sentence>.
+  Needs: <what unblocks it>.
 - <...>
 ```

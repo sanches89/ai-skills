@@ -24,6 +24,9 @@ These words have exactly one meaning in this skill.
   depend on. Exported symbols with their signatures, endpoints, command-line
   flags, file formats, database schemas, configuration keys, and the names of
   events, logs, and metrics.
+- **System boundary**: the network, files, a database, the clock,
+  randomness, the process environment, or third-party code. Third-party
+  code includes a framework, a driver, an HTTP client, and a UI toolkit.
 
 ## Hard rules
 
@@ -53,14 +56,15 @@ keep only what it names.
 Drop a leading `from <skill name>:` from the invocation text, and a
 trailing `, files`, which asks for files. Resolve the rest, or the request
 in the conversation, as exactly one request kind:
-- *path*: one or more paths of files or folders that exist.
+- *path*: one or more paths of files or folders that exist, other than the
+  files and folders of *task*.
 - *symbol*: a symbol name, a function or a module in the code. Search for
   its definition. With more than one, take every definition.
 - *range*: a git range, such as `main..HEAD`, or words that name the
   uncommitted changes or the current branch.
-- *task*: an item identifier or URL (`PAY-212`, `#128`, an issue link), a
-  file named `task.md`, or a file named `###-<subtask-slug>.md` next to a
-  `task.md`.
+- *task*: an item identifier or URL (`PAY-212`, `#128`, an issue link), or
+  a file named `task.md`. Also a folder that holds a `task.md`, or a file
+  named `###-<subtask-slug>.md` next to a `task.md`.
 - *text*: free text, or the path of any other file, whose content is then
   the text.
 - *path* with the repository root, when nothing is given.
@@ -161,18 +165,20 @@ Invoke the `finding-code-smells` skill (in Claude Code, with the `Skill`
 tool) with the invocation text below. `<path>...` is the refactor scope
 after Step 4. `<summary>` is the path on the `summary` line of the
 measurement record, or `none` when that line reads `none`. `<limits>` is
-its `limits` line. Leave out `ignore` when Step 2 recorded no glob:
+its `limits` line without the `limits:` label. It comes last, because its
+value holds commas. Leave out `ignore` when Step 2 recorded no glob:
 
 ```
 from refactoring-code: paths <path>..., summary <summary>,
-limits <limits>, ignore <globs>, out <scratch-dir>
+ignore <globs>, out <scratch-dir>, limits <limits>
 ```
 
 Read the `findings.md` and the `contract.md` it names. `contract.md` lists the
 contract. Add a finding in the same form for each refactoring the request names,
 with the location and the reason the request gives. Add one for each hit of an
-analysis tool from 3d that the code confirms. Prove a dead-code hit by the
-search that *Removing code* in `references/refactoring-rules.md` requires.
+analysis tool from 3d that the code confirms. Prove a dead-code hit by a
+search of every reference as a symbol and as text. Write the search into its
+evidence.
 
 Put every finding with refactoring `report` under the task's *Out of
 scope*. Give every other finding its risk:

@@ -60,8 +60,7 @@ const DECLARATION = new RegExp(
   '^\\s*(export\\s+|public\\s+|private\\s+|protected\\s+|static\\s+|final\\s+' +
   '|readonly\\s+|const\\s+|let\\s+|var\\s+|val\\s+' +
   '|[A-Za-z_][\\w<>\\[\\].]*\\s+)*[A-Za-z_]\\w*\\s*(:\\s*[\\w<>\\[\\]|.]+\\s*)?' +
-  '=(?!=)\\s*[^=]' +
-  '|^\\s*#define\\s+\\w+\\s',
+  '=(?!=)\\s*[^=]',
 );
 
 // One regex per kind, run per line. A `test` flag limits the kind to test
@@ -324,7 +323,10 @@ function scanFile(full, rel, options, signals) {
   const add = (kind, line, text) => {
     const bucket = signals[kind];
     bucket.count += 1;
-    if (bucket.top.length < options.top) bucket.top.push({ file: rel, line, text });
+    // The largest files lead the oversized-file list, so main cuts it after sorting.
+    if (kind === 'oversized-file' || bucket.top.length < options.top) {
+      bucket.top.push({ file: rel, line, text });
+    }
   };
   // In a test file the catalog counts only the Tests entries and credentials.
   if (options.kinds.includes('oversized-file') && !test && lineCount > options.maxLines) {
@@ -375,7 +377,9 @@ function main() {
     }
   }
   if (signals['oversized-file']) {
-    signals['oversized-file'].top.sort((a, b) => parseInt(b.text, 10) - parseInt(a.text, 10));
+    const { top } = signals['oversized-file'];
+    top.sort((a, b) => parseInt(b.text, 10) - parseInt(a.text, 10));
+    top.length = Math.min(top.length, options.top);
   }
   const result = {
     version: 1,

@@ -1,6 +1,6 @@
 ---
 name: finding-code-smells
-description: Reviews code for smells, design flaws, and the marks of agent-written code, and lists each finding with its evidence and the refactoring that removes it, changing no code. Use when the user wants code reviewed for smells, AI slop, coupling, or legibility, or asks what in the code needs refactoring.
+description: Reviews existing code for smells and the marks of agent-written code, and lists each finding with its evidence and the refactoring that removes it, changing no code. Use when the user wants code reviewed for smells, AI slop, coupling, or legibility, wants long functions, duplication, or magic numbers found, or asks what needs refactoring.
 license: MIT
 compatibility: Requires the measuring-code skill. The scan script needs Node.js 22.13 or newer.
 argument-hint: "[path...]"
@@ -43,18 +43,20 @@ invoked this run. The text then takes this form:
 
 ```
 from <caller>: paths <path>...[, summary <measurement summary path | none>]
-[, limits <limits>][, ignore <globs>][, out <folder>]
+[, ignore <globs>][, out <folder>][, limits <limits>]
 ```
 
 - `paths`: the paths to review, relative to the repository root.
 - `summary`: a measurement summary of those paths. `none` means the
   caller's measurement produced no summary: Step 3 measures nothing.
   Without `summary`, Step 3 measures the paths.
-- `limits`: the `limits` line of the caller's measurement record.
 - `ignore`: the ignore globs, joined by commas with no space. Default the
   ignore globs of the measurement.
 - `out`: the folder of the files this skill writes. Default
   `<scratch-dir>/smells`.
+- `limits`: the `limits` line of the caller's measurement record, without
+  its `limits:` label. It comes last, because its value holds commas: the
+  value runs to the end of the text.
 
 Without that prefix, a user invoked this run. Take the paths from the
 request, else `.`, and the defaults above.
@@ -156,7 +158,9 @@ Leave out `--ignore` with no glob. Pass `--max-lines <n>` when the project
 configures its own file length limit, such as the `max-lines` rule of
 ESLint. `--help` lists the other options. Each kind holds its `count` and
 a `top` list of `file`, `line`, and `text`: the matched line, cut to 120
-characters. A `credential` entry hides its text.
+characters. A `credential` entry hides its text. An `oversized-file` entry
+holds the line count and the estimated tokens as its text, and its `top`
+list holds the largest files first.
 
 Exit codes: `0` signals printed, `1` unexpected failure, `2` invalid
 arguments. The script finds a signal by text. It misses a form it has no

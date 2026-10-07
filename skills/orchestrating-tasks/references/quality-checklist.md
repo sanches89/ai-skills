@@ -14,17 +14,18 @@ branch.
       and 3.
 - [ ] Every fact in the orchestration record went into the prompt of every
       job run after it was added.
-- [ ] No two jobs ran at once. After every job, `git status --porcelain`
-      in `<tree>` listed no path beyond the job's start but the
-      orchestration record.
+- [ ] No two jobs ran at once. After every `done` job,
+      `git status --porcelain` in `<tree>` listed no path beyond the job's
+      start but the orchestration record. A `blocked` job keeps its change.
 - [ ] Every read of a task, an item, a manifest, or a doc ran in a
       subagent when the agent offered one.
 - [ ] Every build, lint, type-check, test, and Verification command ran in
       a subagent when the agent offered one.
 - [ ] At most three rounds ran, and a round that wrote no task ended
       the loop.
-- [ ] The Verification of the target and of every refactor task, and every
-      command on the `baseline` line, ran after the last commit.
+- [ ] When the run reached Step 6, these ran after the last commit: the
+      Verification of the target and of every refactor task, and every
+      command on the `baseline` line.
 - [ ] No push or pull request. No status change or comment beyond the
       rules of Step 1, unless the request asked.
 
@@ -52,7 +53,7 @@ branch.
 
 ## Scope
 
-- [ ] No task file, subtask file, or item body changed.
+- [ ] No task file, subtask file, or item title or body changed.
 - [ ] The run changed no project code outside the jobs' commits. It
       committed no file outside them but the orchestration record and the
       refactor tasks.

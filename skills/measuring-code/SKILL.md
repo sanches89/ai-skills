@@ -1,6 +1,6 @@
 ---
 name: measuring-code
-description: Measures duplication, complexity, hotspots, tests, coverage, and mutation score of given paths with the project's own test and mutation commands, changing no project file, and returns the measurement record. Use when a baseline, coverage, complexity, or duplication numbers are needed before or after a change.
+description: Measures duplication, complexity, hotspots, tests, coverage, and mutation score of given paths with the project's own test and mutation commands, changing no project file, and returns the measurement record. Use when numbers for given paths are needed, such as a baseline before or after a change, never for a ranked report of a whole codebase.
 license: MIT
 compatibility: Requires the finding-dev-commands skill. Needs Node.js 22.13 or newer with npx and git, with network access on the first run. Complexity needs lizard on PATH, or uv, pipx, or a Python that has lizard. Tests and coverage need the project's own test command. Mutation needs the project's own mutation command. A missing tool skips its measurement.
 argument-hint: "[path...] [mutation all | <files>]"
