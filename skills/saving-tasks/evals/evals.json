@@ -9,8 +9,8 @@
     },
     {
       "id": 2,
-      "prompt": "from refactoring-code: task /tmp/scratch/task.md, subtasks /tmp/scratch/subtask-1.md /tmp/scratch/subtask-2.md /tmp/scratch/subtask-3.md, unattended\n\n(Linear is reached through an MCP server. Its create tool requires a team, and the docs name none. tasks/005-extract-retry-policy/ already exists, and the draft's title has the same slug.)",
-      "expected_output": "Invokes finding-trackers with 'from saving-tasks: find'. The required team field reads unsettled, so with unattended the save goes to files instead and no question is asked. The same-slug folder stays untouched: a new folder gets the next free number. Writes task.md and three subtask files numbered 001 to 003, with links on the Task, Depends on, and Subtasks lines and no other text changed. The final message is one line: the path of the new task.md.",
+      "prompt": "from refactoring-code: task /tmp/scratch/task.md, subtasks /tmp/scratch/subtask-1.md /tmp/scratch/subtask-2.md /tmp/scratch/subtask-3.md, unattended\n\n(Linear is reached through an MCP server. Its create tool requires a team, the tracker lists two teams, and the docs name none. tasks/005-extract-retry-policy/ already exists, and the draft's title has the same slug.)",
+      "expected_output": "Invokes finding-trackers with 'from saving-tasks: find'. The team is the destination, never a required field: the map reads 'destination: none named' and 'destinations: several'. With unattended, that unsettled destination sends the save to files instead, and no question is asked. The same-slug folder stays untouched: a new folder gets the next free number. Writes task.md and three subtask files numbered 001 to 003, with links on the Task, Depends on, and Subtasks lines and no other text changed. The final message is one line: the path of the new task.md.",
       "files": []
     },
     {

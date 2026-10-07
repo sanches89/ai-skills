@@ -16,7 +16,8 @@ identifier, or the task file path.
 
 1. **Change only the links.** Replace the titles and numbers on the `Task`
    and `Depends on` lines and in the Subtasks section with links. Change no
-   other text of a draft. The drafts hold approved text, and an edit saves
+   other text of a draft. The one addition is the `Task` line that Step 3
+   keeps on `replace`. The drafts hold approved text, and an edit saves
    text nobody approved.
 2. **Write only the task and its subtasks.** Create, overwrite, close, or
    delete only the task file, its subtask files, the folders that hold
@@ -46,7 +47,7 @@ from <caller>: task <draft path>[, subtasks <draft path> <draft path>...]
 - `destination`: the team, project, or board that the request or the
   caller's task names for new items.
 - `unattended`: ask nothing. A same-slug folder gets a new number. An
-  unsettled required tracker value sends the save to files.
+  unsettled destination or required field sends the save to files.
 
 Run the workflow and send its one final line as the final message, with
 nothing else.
@@ -98,9 +99,11 @@ with one line: `not saved: the tracker holds no such item`.
 For the tracker, settle these values from the tracker map:
 - **Destination.** On `replace`, the replaced item's. Else the `destination`
   option, else the map's `destination` line. When it reads `none named` and
-  the map's `destinations` line does not read `one`, ask one question: which
-  team, project, or board receives the items. With `unattended`, create the
-  items without one.
+  the map's `destinations` line reads `one`, create the items without one.
+  When it reads `none named` and the `destinations` line does not read
+  `one`, ask one question: which team, project, or board receives the
+  items. With `unattended`, that unsettled destination sends the save to
+  files instead.
 - **Required fields.** Take each value the map's `required fields` line
   settles. Ask one question for each field that reads `unsettled`. With
   `unattended`, an `unsettled` field sends the save to files instead. Give
@@ -111,14 +114,19 @@ Save to the tracker by Step 3, or to files by Step 4.
 ### Step 3: Save to the tracker
 
 Use the tools and commands that the tracker map names:
-1. **Task item.** On `replace`, set the item's title to the task's title
-   and its body to the task draft. Else create a new item at the
+1. **Task item.** On `replace`, first read the item's old body with
+   `read item`. Then set the item's title to the task's title and its body
+   to the task draft. When the old body holds a `Task` line, put that line
+   under the draft's `#` heading: it links the parent when the map's
+   `read parent` line reads `none`. Keep the item's title when the draft's
+   title equals it. Without `replace`, create a new item at the
    destination, with the task's title, the task draft as body, and the
-   required field values. On `replace`, keep the item's title when the
-   draft's title equals it.
+   required field values.
 2. **Old children.** On `replace`, list the item's children with
-   `list children` and delete each with `delete item`. When that line reads
-   `none`, or the delete fails, close each with `close item`.
+   `list children`. When that line reads `none`, take them from the links
+   in the old body's Subtasks section. Delete each with `delete item`. When
+   the `delete item` line reads `none`, or the delete fails, close each
+   with `close item`.
 3. **Children.** Create one child item per subtask draft, in subtask order,
    so that later children link to earlier siblings by their created
    identifiers. The subtask's title is the title, its draft the body, and

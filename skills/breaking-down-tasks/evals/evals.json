@@ -10,13 +10,13 @@
     {
       "id": 2,
       "prompt": "Split PAY-212 into subtasks. It already has three child issues from a first attempt that went nowhere.",
-      "expected_output": "The task map from the loading-tasks skill has 'source: tracker' and a 'subtasks' line that is not 'none', so the skill asks one question: replace them, or abort. On replace, it invokes the saving-tasks skill with ', replace PAY-212' appended, which writes the approved task body back to PAY-212, deletes the existing children or closes them when the tracker cannot delete, and creates one child item per subtask in order, linked to PAY-212. On abort, stops without changing the tracker. The last message is one line: the identifier PAY-212.",
+      "expected_output": "The task map from the loading-tasks skill has 'source: tracker' and a 'subtasks' line that is not 'none', so the skill asks one question: replace them, or abort. On replace, it invokes the saving-tasks skill with ', replace PAY-212' appended, which writes the approved task body back to PAY-212, deletes the existing children or closes them when the tracker cannot delete, and creates one child item per subtask in order, linked to PAY-212. On abort, it ends with the one line 'Aborted: the task keeps its subtasks.' and changes nothing in the tracker. After a save, the last message is one line: the identifier PAY-212.",
       "files": []
     },
     {
       "id": 3,
       "prompt": "Break this down: 'Add dark mode to the settings page.' We have no issue tracker connected and no tasks folder.",
-      "expected_output": "Invokes the loading-tasks skill with 'from breaking-down-tasks: Add dark mode to the settings page.' and gets a task map with 'source: text'. Does no research, asks no interview question, invokes neither formatting-tasks nor saving-tasks, and writes no file. The last message is one line: no task to break down, write the task first with the creating-tasks skill.",
+      "expected_output": "Invokes the loading-tasks skill with 'from breaking-down-tasks: Add dark mode to the settings page.' and gets a task map with 'source: text'. Does no research, asks no interview question, invokes neither formatting-tasks nor saving-tasks, and writes no file. The last message is one line: 'No task to break down: write the task first with the creating-tasks skill.'",
       "files": []
     }
   ]

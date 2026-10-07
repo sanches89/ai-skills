@@ -96,7 +96,7 @@ of the server. Then fill:
 - read parent with the tool or the field that returns an item's parent.
   Without such a relation, write `none`;
 - list children with the tool or the field that returns an item's
-  children;
+  children. Without such a relation, write `none`;
 - link child with the tool and the field of the tracker's relation for
   children: a sub-issue, a child, or a parent field. Without such a
   relation, write `none: children linked in the body`;
@@ -108,7 +108,8 @@ of the server. Then fill:
   them, write `unsettled`;
 - required fields with every field that the input schema of the create
   tool marks required, for an item and for a child item. Leave out the
-  title, the body, and the parent field. Give each field the value the
+  title, the body, the parent field, and the team, project, or board
+  field: the `destination` lines cover it. Give each field the value the
   docs of rule 1 name, else `unsettled`. With no such field, write `none`.
 
 **Destination.** Write the team, project, or board that the docs of rule 1
@@ -124,14 +125,14 @@ reached through: <MCP server name> | gh
 search items: <tool or command>
 read item: <tool or command>
 read parent: <tool or command> | none
-list children: <tool or command>
+list children: <tool or command> | none
 create item: <tool or command>
 edit item: <tool or command>
 comment on item: <tool or command>
 close item: <tool or command>
-delete item: <tool or command>
+delete item: <tool or command> | none
 link child: <tool or command> | none: children linked in the body
-completed status: <status names>
+completed status: <status names> | unsettled
 destination: <team, project, or board the docs name> | none named
 destinations: one | several | unsettled
 required fields: <field>: <value | unsettled>, ... | none

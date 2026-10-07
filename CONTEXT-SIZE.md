@@ -24,12 +24,12 @@ counts one tier.
 ## Summary
 
 Tokens per skill and tier. With all 19 skills installed, the startup
-tier costs 1,405 tokens per session. Using one skill then adds its
+tier costs 1,416 tokens per session. Using one skill then adds its
 `SKILL.md` and the references it reads.
 
 | Skill                | Startup | SKILL.md | References | Scripts |   Total |
 |----------------------|--------:|---------:|-----------:|--------:|--------:|
-| analyzing-code       |      76 |    1,301 |      2,905 |       0 |   4,989 |
+| analyzing-code       |      77 |    1,302 |      3,009 |       0 |   5,095 |
 | breaking-down-tasks  |      70 |    3,206 |        343 |       0 |   4,620 |
 | creating-tasks       |      67 |    2,223 |        143 |       0 |   3,332 |
 | disambiguating-text  |      72 |    2,109 |      1,819 |       0 |   4,738 |
@@ -39,7 +39,7 @@ tier costs 1,405 tokens per session. Using one skill then adds its
 | formatting-tasks     |      63 |    1,945 |      2,701 |       0 |   5,589 |
 | implementing-tasks   |      65 |    3,619 |      1,749 |       0 |   8,650 |
 | loading-tasks        |      88 |    1,836 |          0 |       0 |   2,630 |
-| measuring-code       |      64 |    2,613 |      5,225 |       0 |   8,861 |
+| measuring-code       |      74 |    2,623 |      5,263 |       0 |   8,909 |
 | orchestrating-tasks  |      81 |    4,244 |      2,315 |       0 |   7,622 |
 | refactoring-code     |      85 |    3,551 |      4,553 |       0 |   9,293 |
 | saving-tasks         |      69 |    2,544 |          0 |       0 |   3,526 |
@@ -48,7 +48,7 @@ tier costs 1,405 tokens per session. Using one skill then adds its
 | writing-clean-code   |      75 |    2,846 |          0 |       0 |   3,580 |
 | writing-glossaries   |      79 |    3,021 |      1,166 |       0 |   5,115 |
 | writing-unit-tests   |      65 |    3,474 |          0 |       0 |   4,242 |
-| **All skills**       |   1,405 |   50,694 |     34,378 |  10,659 | 115,479 |
+| **All skills**       |   1,416 |   50,705 |     34,520 |  10,659 | 115,633 |
 
 ## Files per skill
 
@@ -58,13 +58,13 @@ Lines, words, and tokens of every file, grouped by skill.
 
 | File                                        | Lines | Words | Tokens |
 |---------------------------------------------|------:|------:|-------:|
-| `SKILL.md`                                  |   120 |   862 |  1,301 |
+| `SKILL.md`                                  |   120 |   862 |  1,302 |
 | `evals/evals.json`                          |    23 |   312 |    500 |
-| `evals/trigger-queries.json`                |    12 |   161 |    283 |
-| `references/analysis-rules.md`              |   135 |   980 |  1,378 |
+| `evals/trigger-queries.json`                |    12 |   160 |    284 |
+| `references/analysis-rules.md`              |   143 | 1,052 |  1,482 |
 | `references/measurement-report-template.md` |    86 |   558 |    953 |
 | `references/quality-checklist.md`           |    56 |   341 |    574 |
-| **Total**                                   |   432 | 3,214 |  4,989 |
+| **Total**                                   |   440 | 3,285 |  5,095 |
 
 ### breaking-down-tasks
 
@@ -163,13 +163,13 @@ Lines, words, and tokens of every file, grouped by skill.
 
 | File                             | Lines | Words | Tokens |
 |----------------------------------|------:|------:|-------:|
-| `SKILL.md`                       |   221 | 1,629 |  2,613 |
+| `SKILL.md`                       |   221 | 1,639 |  2,623 |
 | `evals/evals.json`               |    23 |   455 |    747 |
 | `evals/trigger-queries.json`     |    12 |   170 |    276 |
 | `references/measure-tool.md`     |   174 | 1,308 |  2,502 |
 | `references/mutation-reports.md` |   129 |   898 |  1,700 |
-| `references/test-reports.md`     |    91 |   543 |  1,023 |
-| **Total**                        |   650 | 5,003 |  8,861 |
+| `references/test-reports.md`     |    93 |   559 |  1,061 |
+| **Total**                        |   652 | 5,029 |  8,909 |
 
 ### orchestrating-tasks
 

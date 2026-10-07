@@ -28,7 +28,8 @@ pass its own folder.
    agent follows without noticing.
 3. **Keep every heading.** Never rename, add, or drop a heading of
    `references/task-format.md`. The `loading-tasks`, `saving-tasks`,
-   `implementing-tasks`, and `refactoring-code` skills find each section by
+   `creating-tasks`, `breaking-down-tasks`, `implementing-tasks`,
+   `orchestrating-tasks`, and `refactoring-code` skills find each section by
    its heading. A renamed heading hides its section from them.
 
 ## Invocation
@@ -107,8 +108,7 @@ research notes. A rule of the notes adds to these and never replaces one.
   interface, a CLI flag, an endpoint signature. Never implementation code.
 - Write success criteria and acceptance criteria that are binary: someone
   else can answer yes or no.
-- In a subtask's *Verification*, write exactly one command, or one numbered
-  manual sequence when no command can prove it.
+- In a subtask's *Verification*, write exactly one command.
 - In *References*, give every entry its name, its URL, and what it
   settles. Write `None.` when there is none.
 - Add no section beyond the format: no Risks, Considerations, Alternatives,

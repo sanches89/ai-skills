@@ -36,8 +36,7 @@ again.
 
 ## Subtasks
 
-- [ ] Each subtask has exactly one verification command, or one numbered
-      manual sequence.
+- [ ] Each subtask has exactly one verification command.
 - [ ] No subtask depends on a subtask with a higher number.
 - [ ] Each subtask is mergeable on its own: after it, the project builds and
       every test passes.

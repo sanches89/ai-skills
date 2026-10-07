@@ -1,6 +1,6 @@
 ---
 name: breaking-down-tasks
-description: Splits an existing task into commit-sized subtasks, each self-contained with one verification command. Use when a task, ticket, issue, spec, or plan is too big for one change, when the user wants it broken down, sliced, phased, or split into steps, or before orchestrating-tasks runs it.
+description: Splits an existing task into commit-sized subtasks, each self-contained with one verification command. Use when a task, ticket, or issue is too big for one change, when the user wants it broken down, sliced, phased, or split into steps, or before orchestrating-tasks runs it.
 license: MIT
 compatibility: Requires the finding-trackers, loading-tasks, finding-dev-commands, formatting-tasks, and saving-tasks skills.
 argument-hint: <task id | task file>
@@ -64,8 +64,9 @@ line of the task map it returns:
 - `none: <reason>`: ask one question: give the task as a task file path or
   an item identifier. Then invoke the `loading-tasks` skill again with the
   invocation text `from breaking-down-tasks: <answer>`.
-- `text`: end with one line: no task to break down, write the task first
-  with the `creating-tasks` skill. Write nothing.
+- `text`: end with one line,
+  `No task to break down: write the task first with the creating-tasks skill.`
+  Write nothing.
 - `tracker` or `file`: continue.
 
 Read the target of the task map in full: its file, or its item through the
@@ -73,7 +74,8 @@ Read the target of the task map in full: its file, or its item through the
 
 The task already has subtasks when the `subtasks` line of the task map is
 not `none`. Then ask one question: replace them, or abort. On replace,
-Step 8 replaces them. On abort, stop.
+Step 8 replaces them. On abort, end with one line,
+`Aborted: the task keeps its subtasks.`, and write nothing.
 
 Write one sentence: *The task is to <change> so that <outcome>.* Ask the user
 to confirm or correct it before any research.

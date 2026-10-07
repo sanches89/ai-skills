@@ -130,7 +130,7 @@ chain:
 depends on: <the target's Depends on entries, as numbers or identifiers> |
   none
 verification: <the target's Verification section, word for word>
-new: <every path the target's Changes section marks (new)> | none
+new: <every path the target marks (new)> | none
 state: completed | open | unknown
 commands: <build, lint, type-check, and test commands from the Context
   sections of the chain, nearest task first> | none
@@ -146,6 +146,8 @@ tracker: none | <the tracker map, each line indented two spaces>
 Fill these lines by these rules:
 - `title`: the target's `#` heading, else the first line of the text.
 - `verification`: `none` when the target has no Verification section.
+- `new`: the paths that the target's Changes section marks `(new)`. A task
+  has no Changes section: take them from its Approach section.
 - `state`: the target's state, by the rule for a subtask's `state`.
 - `commands`: one entry per command, from the nearest task in the chain
   whose Context section names it.

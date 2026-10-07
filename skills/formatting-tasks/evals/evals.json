@@ -9,8 +9,8 @@
     },
     {
       "id": 2,
-      "prompt": "from breaking-down-tasks: check <scratch-dir>/draft/task.md <scratch-dir>/draft/subtask-1.md <scratch-dir>/draft/subtask-2.md, notes <scratch-dir>/notes.md. Subtask 2's Context reads 'Same backoff as above, see task', and the task's Decisions reads 'Store the attempts in Redis or Postgres'.",
-      "expected_output": "Runs every check and both grep helpers over the three drafts. Replaces 'see task' and 'as above' in subtask-2.md by restating the backoff decision from the task in full. Does not pick between Redis and Postgres: the alternative stays a decision needed. Asks nothing and keeps every heading. The final message is the return block alone: 'drafts:' with the three paths in order, then 'checks: decision needed: <store for the attempts: Redis or Postgres>' naming the Decisions section.",
+      "prompt": "from breaking-down-tasks: check <scratch-dir>/draft/task.md <scratch-dir>/draft/subtask-1.md <scratch-dir>/draft/subtask-2.md, notes <scratch-dir>/notes.md. Subtask 2's Context reads 'Same backoff as above, see task', and the task's Decisions reads 'Keep the attempts in Redis or Postgres'.",
+      "expected_output": "Runs every check and both grep helpers over the three drafts. Replaces 'see task' and 'as above' in subtask-2.md by restating the backoff decision from the task in full. Does not pick between Redis and Postgres: the alternative stays a decision needed. Asks nothing and keeps every heading. The final message is the return block alone: 'drafts:' with the three paths in order, then 'checks: decision needed: <storage for the attempts: Redis or Postgres>' naming the Decisions section.",
       "files": []
     },
     {
